@@ -1,0 +1,1 @@
+2D Pixel Art game landing page. It shows wonky stick man who is smiling and clearly happy. The stick man is wielding  spiked ball on a chain that crashes a stone boulder. The scene is in a gray 2D pixel art cartoon mine. On top of the image there is a calligraphic game title "Smash Dash!" with a subtitle "a game by Sasha".
