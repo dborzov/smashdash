@@ -70,7 +70,7 @@ docs/        you are here
 
 ## Deployment
 
-`.github/workflows/deploy.yml` builds and deploys on every push to `master`.
+`.github/workflows/deploy.yml` builds and deploys on every push to `master` (if it is not there yet, install it from `docs/github-workflows/`).
 `.github/workflows/ci.yml` checks pull requests and other branches. The Vite `base` is
 `/smashdash/` (see `vite.config.ts`); for a custom domain set `base: '/'` and add
 `public/CNAME`.
