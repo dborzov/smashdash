@@ -1,0 +1,17 @@
+id: gloomfen-outro
+title: The Bog Clears
+beats:
+  - type: narrate
+    text: >-
+      King Slurp sinks sulkily into the mud until only his eyes poke out. The fog over
+      Gloomfen thins. Fireflies spell out a wobbly THANK YOU over the water.
+  - type: say
+    who: grimble
+    text: >-
+      You know what that means? You can **solve equations**. Real ones. I haven't been this
+      proud since I caught a fly with my eyes closed.
+  - type: say
+    who: nettle
+    text: >-
+      Off you go, dearies. Up north, in the **Dragonspine Peaks**, the dragon's been locking
+      everything with double-wrapped spells. Wrap up warm! Heh heh!

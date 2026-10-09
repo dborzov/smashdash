@@ -1,0 +1,21 @@
+# Hero classes. Perks are implemented in src/engine (search for the class id).
+wizard:
+  name: Wizard
+  icon: "🧙"
+  perk: "One free hint in every fight"
+  desc: "Pointy hat, big brain, suspicious beard (even if you can't grow one yet)."
+knight:
+  name: Knight
+  icon: "🛡️"
+  perk: "+1 heart in every fight"
+  desc: "Shiny armour. Very brave. Slightly clanky when sneaking."
+rogue:
+  name: Rogue
+  icon: "🗡️"
+  perk: "+25% gold from everything"
+  desc: "Quick fingers, quicker wits. Definitely did not take that cookie."
+bard:
+  name: Bard
+  icon: "🎻"
+  perk: "+15% XP from everything"
+  desc: "Sings about every battle. Every. Single. One."

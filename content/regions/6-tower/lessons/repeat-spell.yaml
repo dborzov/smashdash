@@ -1,0 +1,47 @@
+id: repeat-spell
+title: The Repeat Spell
+skill: power-meaning
+beats:
+  - type: say
+    who: zoomwhistle
+    text: >-
+      First, the most powerful spell in the tower: the **Repeat Spell**! You write a small
+      number up high, like this: $2^3$.
+  - type: say
+    who: grimble
+    text: >-
+      The little number up top is called the **exponent**. It says how many times to multiply
+      the big number **by itself**. So $2^3 = 2 \times 2 \times 2$.
+  - type: play
+    text: "Build the tower for $2^3$: each floor multiplies by 2."
+    widget: { kind: tower, base: 2, exp: 3 }
+    done: "$2^3 = 2 \\times 2 \\times 2 = 8$."
+  - type: input
+    who: zoomwhistle
+    text: What is $2^3$?
+    math: 2^3
+    answer: 8
+    nudges:
+      - { value: 6, text: "The #1 trap in the tower! $2^3$ is NOT $2 \\times 3$. It's $2 \\times 2 \\times 2$." }
+      - { value: 9, text: "Other way round: the big number gets multiplied; the little one just counts." }
+    explain: "$2 \\times 2 \\times 2 = 8$."
+  - type: input
+    who: zoomwhistle
+    text: What is $3^2$?
+    math: 3^2
+    answer: 9
+    nudges:
+      - { value: 6, text: "Not $3 \\times 2$! It's $3 \\times 3$." }
+      - { value: 8, text: "Other way round: it's 3 multiplied by itself 2 times." }
+    explain: "$3 \\times 3 = 9$."
+  - type: input
+    who: zoomwhistle
+    text: What is $5^2$?
+    math: 5^2
+    answer: 25
+    nudges:
+      - { value: 10, text: "Not $5 \\times 2$! It's $5 \\times 5$." }
+    explain: "$5 \\times 5 = 25$."
+  - type: practice
+    skill: power-meaning
+    count: 4

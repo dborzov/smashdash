@@ -1,0 +1,200 @@
+/**
+ * Validates everything under content/: schema, cross-references and LaTeX.
+ * `npm run validate` runs just this file.
+ */
+import { describe, expect, it } from 'vitest';
+import { z } from 'zod';
+import * as S from '../src/content/schema';
+import {
+  raw,
+  regions,
+  lessons,
+  skills,
+  items,
+  cast,
+  petSpecies,
+  itemById,
+  classes,
+} from '../src/content';
+import { generators } from '../src/skills';
+import { renderMath } from '../src/ui/math';
+
+function check<T>(schema: z.ZodType<T>, data: unknown, where: string): T {
+  const r = schema.safeParse(data);
+  if (!r.success) {
+    throw new Error(
+      `${where}:\n${r.error.issues.map((i) => `  ${i.path.join('.')}: ${i.message}`).join('\n')}`,
+    );
+  }
+  return r.data;
+}
+
+/** Every $...$ fragment in a rich-text string must render. */
+function checkRich(text: string | undefined, where: string) {
+  if (!text) return;
+  const re = /\$\$([\s\S]+?)\$\$|\$([^$]+)\$/g;
+  let m;
+  while ((m = re.exec(text))) {
+    const tex = m[1] ?? m[2];
+    try {
+      renderMath(tex, !!m[1], true);
+    } catch (e) {
+      throw new Error(`${where}: bad LaTeX "${tex}": ${(e as Error).message}`);
+    }
+  }
+  const dollars = (text.replace(/\\\$/g, '').match(/\$/g) ?? []).length;
+  expect(dollars % 2, `${where}: unbalanced $ in "${text}"`).toBe(0);
+}
+
+describe('content schema', () => {
+  it('regions', () => {
+    for (const [file, data] of Object.entries(raw.regionFiles)) check(S.Region, data, file);
+  });
+  it('lessons and stories', () => {
+    for (const [file, data] of Object.entries({ ...raw.lessonFiles, ...raw.storyFiles }))
+      check(S.Lesson, data, file);
+  });
+  it('skills, items, pets, cast, classes', () => {
+    check(z.array(S.Skill), raw.skillsYaml, 'skills.yaml');
+    check(z.array(S.Item), raw.itemsYaml, 'items.yaml');
+    check(z.array(S.PetSpecies), raw.petsYaml, 'pets.yaml');
+    check(z.record(z.string(), S.CastMember), raw.castYaml, 'cast.yaml');
+    check(S.Classes, raw.classesYaml, 'classes.yaml');
+  });
+});
+
+describe('content references', () => {
+  const skillIds = new Set(skills.map((s) => s.id));
+  const regionIds = new Set(regions.map((r) => r.id));
+
+  it('ids are unique', () => {
+    expect(new Set(skills.map((s) => s.id)).size).toBe(skills.length);
+    expect(new Set(items.map((s) => s.id)).size).toBe(items.length);
+    expect(regionIds.size).toBe(regions.length);
+    for (const r of regions)
+      expect(new Set(r.path.map((n) => n.id)).size, r.id).toBe(r.path.length);
+  });
+
+  it('every skill has a generator and a home region, and vice versa', () => {
+    for (const s of skills) {
+      expect(generators[s.id], `generator for ${s.id}`).toBeDefined();
+      expect(regionIds.has(s.region), `region of ${s.id}`).toBe(true);
+    }
+    for (const id of Object.keys(generators))
+      expect(skillIds.has(id), `skills.yaml entry for ${id}`).toBe(true);
+  });
+
+  it('every skill is taught by exactly one lesson', () => {
+    for (const s of skills) {
+      const teachers = Object.values(lessons).filter((l) => l.skill === s.id);
+      expect(teachers.length, `lessons teaching ${s.id}`).toBe(1);
+    }
+  });
+
+  it('regions reference real lessons, skills and regions', () => {
+    for (const r of regions) {
+      for (const req of r.requires)
+        expect(regionIds.has(req), `${r.id} requires ${req}`).toBe(true);
+      expect(lessons[r.outro], `${r.id} outro ${r.outro}`).toBeDefined();
+      for (const n of r.path) {
+        const where = `${r.id}/${n.id}`;
+        if (n.type === 'lesson' || n.type === 'story')
+          expect(lessons[n.lesson], `${where} lesson ${n.lesson}`).toBeDefined();
+        if (n.type === 'encounter')
+          for (const s of n.skills) expect(skillIds.has(s), `${where} skill ${s}`).toBe(true);
+        if (n.type === 'boss')
+          for (const p of n.phases)
+            for (const s of p.skills) expect(skillIds.has(s), `${where} skill ${s}`).toBe(true);
+      }
+      expect(r.path[r.path.length - 1].type, `${r.id} ends with a boss`).toBe('boss');
+    }
+  });
+
+  it('skills are only practised after they are taught', () => {
+    for (const r of regions) {
+      const taught = new Set<string>();
+      // Skills from regions this one requires (transitively) count as taught.
+      const addRegion = (id: string) => {
+        const reg = regions.find((x) => x.id === id)!;
+        reg.requires.forEach(addRegion);
+        for (const n of reg.path)
+          if (n.type === 'lesson' && lessons[n.lesson].skill) taught.add(lessons[n.lesson].skill!);
+      };
+      r.requires.forEach(addRegion);
+      for (const n of r.path) {
+        const where = `${r.id}/${n.id}`;
+        if (n.type === 'lesson') {
+          const l = lessons[n.lesson];
+          if (l.skill) taught.add(l.skill);
+          for (const b of l.beats)
+            if (b.type === 'practice')
+              expect(taught.has(b.skill), `${where} practises ${b.skill}`).toBe(true);
+        }
+        const used =
+          n.type === 'encounter'
+            ? n.skills
+            : n.type === 'boss'
+              ? n.phases.flatMap((p) => p.skills)
+              : [];
+        for (const s of used)
+          expect(taught.has(s), `${where} uses ${s} before it is taught`).toBe(true);
+      }
+    }
+  });
+
+  it('lesson beats are consistent', () => {
+    for (const l of Object.values(lessons)) {
+      l.beats.forEach((b, i) => {
+        const where = `lesson ${l.id} beat ${i}`;
+        if ('who' in b && b.who) expect(cast[b.who], `${where}: speaker ${b.who}`).toBeDefined();
+        if (b.type === 'ask') {
+          expect(b.correct, where).toBeLessThan(b.options.length);
+          for (const k of Object.keys(b.nudges ?? {})) {
+            expect(Number(k), `${where}: nudge key ${k}`).toBeLessThan(b.options.length);
+            expect(Number(k), `${where}: nudge on the right answer`).not.toBe(b.correct);
+          }
+        }
+        if (b.type === 'input')
+          for (const n of b.nudges ?? [])
+            expect(n.value, `${where}: nudge equals answer`).not.toBe(b.answer);
+        if (b.type === 'practice')
+          expect(generators[b.skill], `${where}: skill ${b.skill}`).toBeDefined();
+        if (b.type === 'reward' && b.item)
+          expect(itemById[b.item], `${where}: item ${b.item}`).toBeDefined();
+        if (
+          (b.type === 'play' || b.type === 'show' || b.type === 'ask' || b.type === 'input') &&
+          b.widget?.kind === 'balance' &&
+          b.widget.goal === 'isolate'
+        ) {
+          const w = b.widget;
+          expect(w.value, `${where}: balance needs value`).toBeDefined();
+          expect(w.left.x * w.value! + w.left.c, `${where}: scale must start balanced`).toBe(
+            w.right.x * w.value! + w.right.c,
+          );
+        }
+      });
+    }
+  });
+
+  it('all text renders (LaTeX) and all speakers exist', () => {
+    for (const l of Object.values(lessons)) {
+      l.beats.forEach((b, i) => {
+        const where = `lesson ${l.id} beat ${i}`;
+        const texts: (string | undefined)[] = [];
+        if ('text' in b) texts.push(b.text);
+        if (b.type === 'ask') texts.push(b.explain, ...b.options, ...Object.values(b.nudges ?? {}));
+        if (b.type === 'input')
+          texts.push(b.explain, b.hint, ...(b.nudges ?? []).map((n) => n.text));
+        if (b.type === 'choose') texts.push(...b.options.flatMap((o) => [o.text, o.reply]));
+        if (b.type === 'play') texts.push(b.done);
+        for (const t of texts) checkRich(t, where);
+        if ('math' in b && b.math) renderMath(b.math, true, true);
+      });
+    }
+  });
+
+  it('pets and classes', () => {
+    for (const p of petSpecies) expect(itemById[p.favorite], `pet ${p.id} favourite`).toBeDefined();
+    expect(Object.keys(classes).sort()).toEqual(['bard', 'knight', 'rogue', 'wizard']);
+  });
+});

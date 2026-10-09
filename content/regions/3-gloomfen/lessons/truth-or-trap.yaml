@@ -1,0 +1,53 @@
+id: truth-or-trap
+title: Truth or Trap
+skill: check-solution
+beats:
+  - type: say
+    who: nettle
+    text: >-
+      Careful, dearie. The bog-imps LIE. They'll tell you the wrong answer with a big smile,
+      just to watch you splash.
+  - type: say
+    who: grimble
+    text: >-
+      Here's a secret weapon nobody tells you about: you can always **check** an answer.
+      Put the number back in the box and see if both sides match. If they do — truth. If not —
+      trap!
+  - type: show
+    text: "Is $x = 7$ really the answer to $x + 8 = 15$? Put 7 in the box:"
+    math: '7 + 8 = 15 \;\; \good{\checkmark}'
+  - type: ask
+    who: nettle
+    text: An imp says $x = 4$ solves $3x + 2 = 14$. Truth or trap?
+    options:
+      - "Truth"
+      - "Trap"
+    correct: 0
+    nudges:
+      "1": "Check it: $3 \\times 4 + 2 = ?$"
+    explain: "$3 \\times 4 + 2 = 14$ ✓ Both sides match. Truth!"
+  - type: ask
+    who: nettle
+    text: Another imp says $x = 6$ solves $2x - 1 = 13$. Truth or trap?
+    options:
+      - "Truth"
+      - "Trap"
+    correct: 1
+    nudges:
+      "0": "Check it: $2 \\times 6 - 1 = ?$ Is that 13?"
+    explain: "$2 \\times 6 - 1 = 11$, not 13. Trap! (The real answer is $x = 7$.)"
+  - type: input
+    who: grimble
+    text: Put $x = 5$ into the left side of $4x - 3 = 17$. What do you get?
+    answer: 17
+    nudges:
+      - { value: 8, text: "Multiply first: $4 \\times 5$, then subtract 3." }
+    explain: "$4 \\times 5 - 3 = 17$. It matches — so $x = 5$ is the answer."
+  - type: say
+    who: grimble
+    text: >-
+      This is the magic of algebra. You never have to just trust anyone — not imps, not
+      toads, not even yourself. You can always check.
+  - type: practice
+    skill: check-solution
+    count: 4

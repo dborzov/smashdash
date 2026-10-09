@@ -1,0 +1,18 @@
+id: tower-outro
+title: Sizes Restored
+beats:
+  - type: narrate
+    text: >-
+      Gigantus Minimus shrinks to the size of a flea and hops away, squeaking. All over the
+      tower, things snap back to their proper sizes. The mouse is mouse-sized. Clarence the
+      elephant gets out of his teacup, a little sadly.
+  - type: say
+    who: zoomwhistle
+    text: >-
+      Splendid! Magnificent! $10^{100}$ thank-yous! You now understand numbers bigger than
+      mountains and smaller than fleas. Very few heroes can say that.
+  - type: say
+    who: grimble
+    text: >-
+      Still a frog. Of course. But — hero — you're getting seriously powerful. Keep your
+      skills sharp: monsters still wander the land, and the Muddler is never gone for long.

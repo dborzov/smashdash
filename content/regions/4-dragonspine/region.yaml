@@ -1,0 +1,57 @@
+id: dragonspine
+order: 4
+name: Dragonspine Peaks
+tagline: Icy mountains, double-wrapped locks, and a dragon with a fiery bottom.
+scene: peaks
+map: { x: 76, y: 32 }
+requires: [gloomfen]
+palette: { sky: ["#0b1a3d", "#6fb7ff"], accent: "#9ae6ff", ground: "#e8f4ff" }
+outro: dragonspine-outro
+monsters:
+  - { name: Ice Kobold, seed: 31, hue: 195, taunts: ["Brrr-ha-ha!", "Freeze, hero!"] }
+  - { name: Frost Bat, seed: 32, hue: 220, taunts: ["Skreee!", "Flap flap FLAP!"] }
+  - { name: Snow Goblin, seed: 33, hue: 175, taunts: ["Snowball to the face!"] }
+path:
+  - id: intro
+    type: story
+    title: The Frozen Gate
+    lesson: dragonspine-intro
+  - id: last-on-first-off
+    type: lesson
+    title: Last On, First Off
+    lesson: last-on-first-off
+  - id: kobold-camp
+    type: encounter
+    title: Kobold Camp
+    game: battle
+    skills: [undo-order, pick-move]
+    count: 5
+    monster: { name: Ice Kobold, seed: 31, hue: 195 }
+  - id: dragon-locks
+    type: lesson
+    title: The Dragon Locks
+    lesson: dragon-locks
+  - id: ice-bridge
+    type: encounter
+    title: The Ice Bridge
+    game: bridge
+    skills: [two-step, undo-order]
+    count: 6
+  - id: frozen-chest
+    type: encounter
+    title: The Frozen Hoard
+    game: chest
+    skills: [two-step, check-solution, one-step-mul]
+    count: 6
+  - id: boss
+    type: boss
+    title: Smolderbutt the Dragon
+    monster: { name: Smolderbutt, seed: 404, hue: 0 }
+    intro:
+      - "WHO DARES ENTER THE LAIR OF SMOLDERBUTT? …Don't laugh at the name. My mother chose it."
+      - "My locks are wrapped TWICE. No tiny hero can unwrap them! Prepare to be… toasted!"
+    phases:
+      - { skills: [undo-order], count: 3, taunt: "*A puff of smoke comes out of the dragon's rear* …Ignore that." }
+      - { skills: [two-step], count: 3, taunt: "Double-wrapped! DOUBLE! Feel the heat!" }
+      - { skills: [two-step, check-solution], count: 3, taunt: "I'll check your answers myself! WITH FIRE!" }
+    defeat: "Ow! Okay! You win! Please don't tell anyone a kid beat me. My reputation is all I have. That and gold."

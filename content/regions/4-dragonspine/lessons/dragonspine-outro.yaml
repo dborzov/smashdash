@@ -1,0 +1,17 @@
+id: dragonspine-outro
+title: The Dragon's Promise
+beats:
+  - type: narrate
+    text: >-
+      Smolderbutt slumps onto his gold pile with a sad little puff of smoke. From the wrong
+      end, naturally. All across the mountains, the ice-locks crack and fall open.
+  - type: say
+    who: grimble
+    text: >-
+      Double-wrapped equations, unwrapped. Hero, you're dangerously good at this now.
+  - type: say
+    who: snowbert
+    text: >-
+      The Muddler flew past here last night, laughing. He went south-west, to the **Bazaar of
+      Whispers**. They say the Sphinx there only speaks in riddles… and the Muddler loves a
+      riddle.

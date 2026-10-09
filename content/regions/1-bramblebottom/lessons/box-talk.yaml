@@ -1,0 +1,90 @@
+id: box-talk
+title: Box Talk
+skill: notation
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      Rule one of box-talk: a box hides **one** number. Same letter, same number, everywhere.
+      A goblin can't hide a 3 in one $x$ and a 7 in another $x$. That's cheating, even by
+      goblin standards.
+  - type: show
+    text: "Three boxes, all hiding the same number. Mathematicians write this as $3x$."
+    widget: { kind: boxes, a: 3, b: 0 }
+  - type: say
+    who: grimble
+    text: >-
+      See how the 3 is glued right onto the $x$? That means **3 times x**. There's an
+      invisible times sign hiding in there. Mathematicians stopped writing $\times$ next to
+      letters because $\times$ and $x$ look like twins. Imagine $3 \times x \times x$. Ugh.
+      Headache.
+  - type: ask
+    who: grimble
+    text: So what does $5x$ mean?
+    options:
+      - "$5 + x$"
+      - "$5 \\times x$ — five boxes"
+      - "Fifty-something"
+    correct: 1
+    nudges:
+      "0": "No plus sign is hiding there — it's an invisible **times**."
+      "2": "Ha! $x$ is a box, not a digit. $5x$ isn't a two-digit number."
+    explain: "$5x = 5 \\times x$: five boxes, each hiding $x$."
+  - type: show
+    text: "Two boxes and four loose coins: $2x + 4$. The **coins** are numbers we know. The **boxes** are the mystery."
+    widget: { kind: boxes, a: 2, b: 4 }
+  - type: ask
+    who: mayor
+    text: Then what do you call THIS pile I found in my pantry?
+    widget: { kind: boxes, a: 4, b: 1 }
+    options:
+      - "$4x + 1$"
+      - "$x + 4$"
+      - "$1x + 4$"
+      - "$5x$"
+    correct: 0
+    nudges:
+      "1": "Count the boxes again! The boxes are the $x$ part."
+      "2": "That's 1 box and 4 coins. Count again!"
+      "3": "Coins aren't boxes — they can't be counted together."
+    explain: "Four boxes is $4x$, plus one coin: $4x + 1$."
+  - type: say
+    who: grimble
+    text: >-
+      Here's a neat trick: $x + x + x$ is just three boxes sitting together. So it's $3x$.
+      Adding boxes is the same as counting them.
+  - type: ask
+    who: grimble
+    text: "$x + x$ is the same as…"
+    options:
+      - "$2x$"
+      - "$x^2$"
+      - "$xx$ — a box hug"
+    correct: 0
+    nudges:
+      "1": "$x^2$ means $x$ **times** $x$. We're adding here, not multiplying!"
+      "2": "Adorable. But no. Two boxes is $2x$."
+    explain: "Two boxes added together: $x + x = 2x$."
+  - type: say
+    who: grimble
+    text: >-
+      Last one. Dividing is written as a fraction. $\frac{x}{2}$ means: take the box's number
+      and split it into 2 equal piles. The box goes **on top** — it's the thing being split.
+  - type: ask
+    who: grimble
+    text: Which means "$x$ split into 4 equal piles"?
+    options:
+      - "$\\frac{x}{4}$"
+      - "$\\frac{4}{x}$"
+      - "$4x$"
+    correct: 0
+    nudges:
+      "1": "Upside down! The box goes on top — it's what gets split."
+    explain: "$\\frac{x}{4}$ — the box on top, split into 4."
+  - type: practice
+    skill: notation
+    count: 4
+    text: Now a few on your own. The goblins are watching.
+  - type: say
+    who: grimble
+    text: Not bad! You speak Box now. Next, we learn to **open** them.

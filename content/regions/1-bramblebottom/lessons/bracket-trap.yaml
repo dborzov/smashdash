@@ -1,0 +1,59 @@
+id: bracket-trap
+title: The Bracket Trap
+skill: eval-parens
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      The goblins have found a new weapon: **brackets**. Brackets are like a VIP room.
+      Whatever is inside gets done FIRST. No queue. No exceptions.
+  - type: show
+    text: "This means: first work out $x + 3$, THEN multiply the whole thing by 2."
+    math: '2(x + 3)'
+  - type: input
+    who: grimble
+    text: If $x = 4$, what is $2(x + 3)$?
+    math: '2(x + 3)'
+    answer: 14
+    nudges:
+      - { value: 11, text: "So close! The brackets say add first: $4 + 3 = 7$, then $\\times 2$." }
+      - { value: 27, text: "A number in front of a bracket means **times**." }
+    explain: "Inside first: $4 + 3 = 7$. Then $2 \\times 7 = 14$."
+  - type: input
+    who: grimble
+    text: Now without brackets. If $x = 4$, what is $2x + 3$?
+    math: 2x + 3
+    answer: 11
+    nudges:
+      - { value: 14, text: "No brackets this time! Multiply first: $2 \\times 4$, then add 3." }
+    explain: "$2 \\times 4 = 8$, then $8 + 3 = 11$."
+  - type: say
+    who: grimble
+    text: >-
+      See? Same numbers, different brackets, different answers: 14 versus 11. A goblin who
+      forgets his brackets ends up with the wrong number of pants. It's happened. It wasn't
+      pretty.
+  - type: ask
+    who: grimble
+    text: Which one means "add 1 to $x$, **then** triple it"?
+    options:
+      - "$3(x + 1)$"
+      - "$3x + 1$"
+    correct: 0
+    nudges:
+      "1": "That one triples first and adds 1 after. We want to add first — that needs brackets!"
+    explain: "Adding first needs brackets: $3(x + 1)$."
+  - type: input
+    who: grimble
+    text: If $x = 10$, what is $\frac{x + 2}{4}$?
+    math: '\frac{x + 2}{4}'
+    answer: 3
+    nudges:
+      - { value: 4.5, text: "The whole top gets divided — add first, then divide." }
+    explain: "A fraction bar is a sneaky bracket: top first, $10 + 2 = 12$. Then $12 \\div 4 = 3$."
+  - type: practice
+    skill: eval-parens
+    count: 4
+  - type: say
+    who: grimble
+    text: Bracket trap disarmed. The goblins are running out of tricks. Almost.

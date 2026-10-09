@@ -1,0 +1,43 @@
+id: split-the-swarm
+title: Split the Swarm
+skill: one-step-mul
+beats:
+  - type: say
+    who: nettle
+    text: >-
+      My fireflies have split into 4 swarms, dearie. 28 fireflies in all, same number in each
+      swarm. How many per swarm? I need to know who to scold.
+  - type: say
+    who: grimble
+    text: >-
+      Four boxes, each hiding the same number, weigh 28. That's $4x = 28$. The box is being
+      **multiplied** by 4 — so undo it by **dividing** both sides by 4.
+  - type: show
+    math: '\begin{aligned} 4x &= 28 \\ \frac{4x}{\hl{4}} &= \frac{28}{\hl{4}} \\ x &= 7 \end{aligned}'
+    text: "Seven fireflies per swarm."
+  - type: input
+    who: grimble
+    text: Solve $3x = 21$.
+    math: 3x = 21
+    answer: 7
+    nudges:
+      - { value: 18, text: "$3x$ means 3 **times** $x$. Undo times with **divide**, not minus." }
+      - { value: 63, text: "That's multiplying again! Divide both sides by 3." }
+    explain: "Divide both sides by 3: $x = 21 \\div 3 = 7$."
+  - type: say
+    who: grimble
+    text: >-
+      And if the box is being **divided**, multiply to undo. $\frac{x}{5} = 4$ means "a fifth
+      of the box is 4", so the whole box is $4 \times 5 = 20$.
+  - type: input
+    who: nettle
+    text: Solve $\frac{x}{2} = 9$.
+    math: '\frac{x}{2} = 9'
+    answer: 18
+    nudges:
+      - { value: 4.5, text: "The box is already divided by 2. Undo it by **multiplying** by 2." }
+      - { value: 11, text: "Undo dividing with multiplying, not adding." }
+    explain: "Multiply both sides by 2: $x = 9 \\times 2 = 18$."
+  - type: practice
+    skill: one-step-mul
+    count: 4

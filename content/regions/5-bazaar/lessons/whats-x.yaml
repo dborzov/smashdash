@@ -1,0 +1,47 @@
+id: whats-x
+title: What's x?
+skill: name-unknown
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      Step one for any riddle: **find the mystery.** Read the question at the end — whatever
+      it asks for, THAT is $x$. Everything else in the story, we already know.
+  - type: show
+    who: pib
+    text: >-
+      "I sell apples in bags of 6, plus 2 loose ones. A troll bought 20 apples. **How many
+      bags did he buy?**"
+
+      We know: 6 per bag, 2 loose, 20 in total. We DON'T know the number of bags. So $x$ = the
+      number of bags.
+  - type: ask
+    who: ptolemeow
+    text: >-
+      A goblin had some coins and found 5 more. Now he has 12. **How many did he have at the
+      start?** What is $x$?
+    options:
+      - "The coins he had at the start"
+      - "The 5 coins he found"
+      - "The 12 coins he has now"
+    correct: 0
+    nudges:
+      "1": "We already know that number — it's 5! $x$ is the one we don't know."
+      "2": "We already know he has 12 now. What does the question ask for?"
+    explain: "The question asks how many he had at the start — so that's $x$."
+  - type: ask
+    who: ptolemeow
+    text: >-
+      Each of my naps lasts 3 hours. Today I napped some naps, plus a 2-hour bonus snooze:
+      14 hours of sleep in all. **How many naps did I take?** What is $x$?
+    options:
+      - "The number of naps"
+      - "The hours in each nap"
+      - "The total hours of sleep"
+    correct: 0
+    nudges:
+      "2": "We know the total — it's 14. The question asks for something else."
+    explain: "The question asks how many naps — so $x$ is the number of naps."
+  - type: practice
+    skill: name-unknown
+    count: 3

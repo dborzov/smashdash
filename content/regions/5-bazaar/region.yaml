@@ -1,0 +1,61 @@
+id: bazaar
+order: 5
+name: Bazaar of Whispers
+tagline: A night market of lanterns, riddles and a very sleepy sphinx.
+scene: bazaar
+map: { x: 48, y: 22 }
+requires: [dragonspine]
+palette: { sky: ["#1a0b3d", "#ff6fa8"], accent: "#ffcf5a", ground: "#c98a4b" }
+outro: bazaar-outro
+monsters:
+  - { name: Pickpocket Djinn, seed: 41, hue: 260, taunts: ["Your gold is my gold now!", "Poof!"] }
+  - { name: Sand Scorpion, seed: 42, hue: 40, taunts: ["Click clack!", "Pinch pinch!"] }
+  - { name: Riddle Rat, seed: 43, hue: 320, taunts: ["What has four legs and is about to beat you? ME!"] }
+path:
+  - id: intro
+    type: story
+    title: Lanterns and Riddles
+    lesson: bazaar-intro
+  - id: whats-x
+    type: lesson
+    title: What's x?
+    lesson: whats-x
+  - id: riddle-to-equation
+    type: lesson
+    title: Riddle to Equation
+    lesson: riddle-to-equation
+  - id: rat-riddles
+    type: encounter
+    title: Rat Riddles
+    game: battle
+    skills: [name-unknown, story-to-equation]
+    count: 5
+    monster: { name: Riddle Rat, seed: 43, hue: 320 }
+  - id: solve-the-riddle
+    type: lesson
+    title: Crack the Riddle
+    lesson: solve-the-riddle
+  - id: merchant-chest
+    type: encounter
+    title: Pib's Locked Chest
+    game: chest
+    skills: [story-solve, two-step]
+    count: 6
+  - id: rope-bridge
+    type: encounter
+    title: The Rope Bridge
+    game: bridge
+    skills: [story-to-equation, story-solve, two-step, one-step-add]
+    count: 8
+  - id: boss
+    type: boss
+    title: The Muddler
+    monster: { name: The Muddler, seed: 909, hue: 275, art: muddler }
+    intro:
+      - "YOU! The little box-opener! Do you know how LONG it took me to box up a whole kingdom?!"
+      - "No matter. Here, every number hides inside a STORY. Let's see you un-muddle THIS!"
+    phases:
+      - { skills: [one-step-add, one-step-mul], count: 3, taunt: "Fog! FOG! Feel the confusion!" }
+      - { skills: [two-step, undo-order], count: 3, taunt: "Wrapped! Double-wrapped! TRIPLE— no, I can't do triple. DOUBLE-wrapped!" }
+      - { skills: [story-to-equation, story-solve], count: 4, taunt: "A riddle! A RIDDLE! You'll never find the x!" }
+    defeat: "NOOO! My beautiful muddle! Curse you and your… your… CLARITY! I'll be back! In my TOWER!"

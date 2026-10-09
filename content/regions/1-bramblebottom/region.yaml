@@ -1,0 +1,76 @@
+id: bramblebottom
+order: 1
+name: Bramblebottom
+tagline: A sleepy village where every number has been stuffed into a box.
+scene: village
+map: { x: 24, y: 74 }
+requires: []
+palette: { sky: ["#ffb26b", "#7a5cff"], accent: "#ffd166", ground: "#4caf50" }
+outro: bramblebottom-outro
+monsters:
+  - { name: Snot Goblin, seed: 1, hue: 100, taunts: ["Your box is MINE!", "Nyeh heh heh!"] }
+  - { name: Box Mimic, seed: 2, hue: 35, taunts: ["I'm not a box. I'm totally a box.", "*chomp*"] }
+  - { name: Sock Gremlin, seed: 3, hue: 200, taunts: ["Gimme your socks!", "Socks socks SOCKS!"] }
+path:
+  - id: intro
+    type: story
+    title: Fog over the Village
+    lesson: bramblebottom-intro
+  - id: box-talk
+    type: lesson
+    title: Box Talk
+    lesson: box-talk
+  - id: open-the-box
+    type: lesson
+    title: Open the Box
+    lesson: open-the-box
+  - id: goblin-scuffle
+    type: encounter
+    title: Goblin Scuffle
+    game: battle
+    skills: [notation, eval-one]
+    count: 5
+    monster: { name: Snot Goblin, seed: 1, hue: 100, taunts: ["Nyeh! You can't open MY boxes!"] }
+  - id: two-locks
+    type: lesson
+    title: The Double Lock
+    lesson: two-locks
+  - id: bakery-chest
+    type: encounter
+    title: The Bakery Chest
+    game: chest
+    skills: [eval-one, eval-two]
+    count: 5
+  - id: bracket-trap
+    type: lesson
+    title: The Bracket Trap
+    lesson: bracket-trap
+  - id: rickety-bridge
+    type: encounter
+    title: Rickety Bridge
+    game: bridge
+    skills: [eval-two, eval-parens]
+    count: 6
+  - id: goblin-gibberish
+    type: lesson
+    title: Goblin Gibberish
+    lesson: goblin-gibberish
+  - id: market-mayhem
+    type: encounter
+    title: Market Mayhem
+    game: battle
+    skills: [words-to-expr, eval-two, eval-parens]
+    count: 6
+    monster: { name: Sock Gremlin, seed: 3, hue: 200, taunts: ["Socks! Socks! SOCKS!"] }
+  - id: boss
+    type: boss
+    title: Grub the Unboxable
+    monster: { name: Grub the Unboxable, seed: 101, hue: 95 }
+    intro:
+      - "So YOU'RE the one opening all my boxes! I am GRUB. Grub the UNBOXABLE!"
+      - "I've got boxes inside boxes inside BRACKETS. You'll never open them all!"
+    phases:
+      - { skills: [notation, eval-one], count: 3, taunt: "Ha! Those were the easy ones. Try THESE!" }
+      - { skills: [eval-two, eval-parens], count: 3, taunt: "Brackets! BRACKETS! Feel my bracket power!" }
+      - { skills: [words-to-expr, eval-two], count: 3, taunt: "Gibberish! Glorp! Snarfle! TRANSLATE THAT!" }
+    defeat: "Nooo! My boxes! My beautiful boxes! …Fine. They're all open. Happy now?"

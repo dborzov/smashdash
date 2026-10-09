@@ -1,0 +1,218 @@
+# Everything you can buy, find or use. Effects are applied in src/engine/items.ts.
+# drop: weight in random loot (0 = shop only). max: carry limit. level: hero level to buy.
+
+# --- Pet food -------------------------------------------------------------
+- id: bug-pie
+  name: Crunchy Bug Pie
+  kind: food
+  icon: "🥧"
+  price: 8
+  desc: "Baked with love and at least eleven kinds of beetle."
+  use: "*crunch crunch crunch* ...something is still wiggling."
+  effect: { hunger: 40, sound: eat }
+  drop: 3
+- id: slime-soup
+  name: Slime Soup
+  kind: food
+  icon: "🍲"
+  price: 14
+  desc: "Green, warm, and slightly alive. Very filling."
+  use: "*SLURRRP* Your pet licks the bowl. Then licks the table."
+  effect: { hunger: 65, joy: 5, sound: eat }
+  drop: 2
+- id: mystery-meat
+  name: Mystery Meat
+  kind: food
+  icon: "🍖"
+  price: 5
+  desc: "Cheap! Don't ask what it is. Comes out the other end almost immediately."
+  use: "Gulp. ...gurgle. Oh no. OH NO."
+  effect: { hunger: 35, poop: 1, sound: poop }
+  drop: 4
+- id: cheese
+  name: Suspicious Cheese
+  kind: food
+  icon: "🧀"
+  price: 6
+  desc: "It has been suspicious for at least three years."
+  use: "Nom. Your pet's breath could now knock out a goblin."
+  effect: { hunger: 25, joy: 10, sound: eat }
+  drop: 3
+- id: dragon-pepper
+  name: Dragon Pepper
+  kind: food
+  icon: "🌶️"
+  price: 10
+  desc: "Spicy enough to make a dragon cry. Side effects: flames. From the back."
+  use: "*PFFFRRRT* A tiny jet of flame shoots out of your pet's bottom. It looks VERY proud."
+  effect: { hunger: 15, joy: 30, sound: fart }
+  drop: 2
+- id: cake
+  name: Enormous Cake
+  kind: food
+  icon: "🎂"
+  price: 30
+  desc: "For special occasions, like Tuesday."
+  use: "Your pet faceplants into the cake. Best day ever."
+  effect: { hunger: 90, joy: 35, sound: eat }
+  drop: 1
+
+# --- Toys -------------------------------------------------------------
+- id: rubber-chicken
+  name: Rubber Chicken
+  kind: toy
+  icon: "🐔"
+  price: 15
+  desc: "Squeaks when squeezed. Screams when squeezed hard."
+  use: "BWAAAAK! Your pet laughs so hard it falls over."
+  effect: { joy: 30, sound: squawk }
+  drop: 2
+- id: whoopee-cushion
+  name: Whoopee Cushion
+  kind: toy
+  icon: "💨"
+  price: 10
+  desc: "The most sophisticated toy in the kingdom."
+  use: "*PBBBBTTHHH* Never gets old. NEVER."
+  effect: { joy: 40, sound: fart }
+  drop: 3
+- id: burp-jar
+  name: Burp in a Jar
+  kind: toy
+  icon: "🫙"
+  price: 12
+  desc: "A rare, vintage burp, collected from a troll in 1847."
+  use: "You open the jar. A majestic burp echoes across the land."
+  effect: { joy: 35, sound: burp }
+  drop: 2
+- id: yarn
+  name: Ball of Yarn
+  kind: toy
+  icon: "🧶"
+  price: 6
+  desc: "Simple. Classic. Will be tangled around everything in 4 seconds."
+  use: "Zoom zoom zoom. Now everything is tangled."
+  effect: { joy: 20, sound: pop }
+  drop: 3
+
+# --- Care ---------------------------------------------------------------
+- id: bubble-bath
+  name: Bubble Bath
+  kind: care
+  icon: "🛁"
+  price: 12
+  desc: "Washes away poop, grime and bad decisions."
+  use: "Splish splash! All clean. The bathwater is now a biohazard."
+  effect: { clean: true, joy: 10, health: 10, sound: splash }
+  drop: 2
+- id: medicine
+  name: Frog-Spit Medicine
+  kind: care
+  icon: "💊"
+  price: 20
+  desc: "Grimble's own recipe. Don't ask how it's made. (It's spit.)"
+  use: "Your pet makes a face like it licked a battery. Health restored!"
+  effect: { health: 45, sound: heal }
+  drop: 2
+
+# --- Battle items ---------------------------------------------------------
+- id: heart-potion
+  name: Heart Potion
+  kind: potion
+  icon: "❤️"
+  price: 15
+  desc: "Drink during a fight to get a heart back. Tastes like strawberries and socks."
+  effect: { heart: 1 }
+  drop: 3
+  max: 5
+- id: hint-scroll
+  name: Hint Scroll
+  kind: potion
+  icon: "📜"
+  price: 10
+  desc: "Read during a fight to get a hint. Single use — the scroll bursts into confetti."
+  effect: { hint: true }
+  drop: 4
+  max: 9
+- id: streak-shield
+  name: Streak Shield
+  kind: special
+  icon: "🛡️"
+  price: 150
+  desc: "Protects your streak for one missed day. Pricey, and you can only carry 2."
+  effect: { shield: true }
+  max: 2
+  level: 3
+- id: mystery-egg
+  name: Mystery Egg
+  kind: special
+  icon: "🥚"
+  price: 60
+  desc: "Something is inside. Something hungry."
+  effect: { egg: true }
+
+# --- Hats (hero and pet) -------------------------------------------------
+- id: party-hat
+  name: Party Hat
+  kind: hat
+  icon: "🥳"
+  price: 25
+  desc: "Instantly makes any situation a party, including funerals."
+  drop: 1
+- id: viking-helmet
+  name: Viking Helmet
+  kind: hat
+  icon: "⚔️"
+  price: 60
+  desc: "Horns included. Rowing boat not included."
+  level: 3
+- id: propeller-cap
+  name: Propeller Cap
+  kind: hat
+  icon: "🧢"
+  price: 45
+  desc: "Does not make you fly. We tested it. Twice."
+  level: 2
+- id: crown
+  name: Golden Crown
+  kind: hat
+  icon: "👑"
+  price: 250
+  desc: "For true royalty, or people with 250 gold."
+  level: 6
+- id: chicken-hat
+  name: Chicken Hat
+  kind: hat
+  icon: "🐓"
+  price: 35
+  desc: "It's a live chicken. It seems happy up there."
+  drop: 1
+
+# --- Capes -------------------------------------------------------------
+- id: red-cape
+  name: Hero's Red Cape
+  kind: cape
+  icon: "🟥"
+  price: 30
+  desc: "Flaps dramatically even when there's no wind."
+- id: purple-cape
+  name: Midnight Cape
+  kind: cape
+  icon: "🟪"
+  price: 50
+  desc: "Mysterious. Smells faintly of lavender and danger."
+  level: 2
+- id: gold-cape
+  name: Cape of Gold
+  kind: cape
+  icon: "🟨"
+  price: 120
+  desc: "Too shiny. Birds keep attacking it."
+  level: 4
+- id: rainbow-cape
+  name: Rainbow Cape
+  kind: cape
+  icon: "🌈"
+  price: 200
+  desc: "Every colour at once. Unicorns are jealous."
+  level: 7

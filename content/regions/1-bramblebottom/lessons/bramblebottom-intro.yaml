@@ -1,0 +1,38 @@
+id: bramblebottom-intro
+title: Fog over the Village
+beats:
+  - type: narrate
+    text: >-
+      Bramblebottom. Thatched roofs, crooked chimneys, and a purple fog curling between
+      the houses. Wooden boxes are everywhere — on doorsteps, in trees, on top of a very
+      confused cow.
+  - type: say
+    who: mayor
+    text: >-
+      Oh thank goodness, a hero! The Muddler's goblins stuffed every number in the village
+      into boxes! The baker doesn't know how many eggs to use! My pants size is a BOX! I
+      don't know my own pants size!
+  - type: say
+    who: grimble
+    text: >-
+      Right. Lesson zero. In maths, a box that hides a number has a fancy name: a
+      **variable**. And mathematicians are lazy, so instead of drawing a box every time, we
+      write a letter. Usually $x$.
+  - type: show
+    text: "From now on, this box and this letter mean the same thing: a hidden number."
+    math: '\box \;=\; x'
+  - type: ask
+    who: grimble
+    text: Quick check. What is $x$?
+    options:
+      - "A number hiding in a box"
+      - "The letter after w, obviously"
+      - "Always the number 10"
+    correct: 0
+    nudges:
+      "1": "Well… yes. But in maths it's a **hidden number**. That's the important part."
+      "2": "Nope! It can hide ANY number. That's what makes it a mystery."
+    explain: "$x$ is a mystery number — a number hiding in a box. Our job is to figure out what's inside."
+  - type: say
+    who: grimble
+    text: Let's start by learning to read the goblins' box-language. Follow me. Mind the cow.

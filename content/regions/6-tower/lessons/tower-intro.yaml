@@ -1,0 +1,32 @@
+id: tower-intro
+title: The Floating Staircase
+beats:
+  - type: narrate
+    text: >-
+      The tower is impossibly tall. Its stairs float in mid-air, each one a little bigger or
+      a little smaller than the last. At the bottom, a mouse the size of a horse is eating a
+      wheel of cheese the size of a coin.
+  - type: say
+    who: zoomwhistle
+    text: >-
+      Ah! Visitors! Welcome, welcome to the Tower of Tens! Mind the giant mouse. Mind the tiny
+      elephant. Mind EVERYTHING, really. Someone has been stealing the sizes of things!
+  - type: say
+    who: zoomwhistle
+    text: >-
+      It's that rascal Gigantus Minimus, the Size Thief. He's jumbled up my powers of ten, so
+      now nobody knows how big or small anything is. A flea could be a mountain! A mountain
+      could be a flea!
+  - type: say
+    who: grimble
+    text: >-
+      Professor Zoomwhistle is the only wizard who understands REALLY big and REALLY small
+      numbers. Hero, this is a different kind of magic from boxes — but just as powerful.
+  - type: choose
+    who: zoomwhistle
+    text: Shall we begin? Up the stairs, please. They're a bit wobbly.
+    options:
+      - text: Race you to the top!
+        reply: "Ha! I'm 300 years old, my dear. I'll take the elevator. It's a large bird."
+      - text: Why is the elephant so small?
+        reply: "That's Clarence. He used to be enormous. Now he lives in a teacup. He's surprisingly happy about it."

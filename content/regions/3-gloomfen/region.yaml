@@ -1,0 +1,61 @@
+id: gloomfen
+order: 3
+name: Gloomfen Marsh
+tagline: A foggy swamp of glowing lily pads, bog-imps and one very rude toad.
+scene: swamp
+map: { x: 68, y: 72 }
+requires: [ironhold]
+palette: { sky: ["#0f2a3a", "#3b8f7a"], accent: "#7cffc4", ground: "#1d4a3a" }
+outro: gloomfen-outro
+monsters:
+  - { name: Bog Imp, seed: 21, hue: 150, taunts: ["Glub glub, wrong answer!", "Heehee, splash!"] }
+  - { name: Mud Leech, seed: 22, hue: 300, taunts: ["Slurrrp…", "I'll stick to you like homework!"] }
+  - { name: Will-o'-Wisp, seed: 23, hue: 180, taunts: ["Follow meee… into the BOG!"] }
+path:
+  - id: intro
+    type: story
+    title: Into the Marsh
+    lesson: gloomfen-intro
+  - id: lilypad-hop
+    type: lesson
+    title: Lily Pad Hop
+    lesson: lilypad-hop
+  - id: imp-ambush
+    type: encounter
+    title: Imp Ambush
+    game: battle
+    skills: [one-step-add]
+    count: 5
+    monster: { name: Bog Imp, seed: 21, hue: 150 }
+  - id: split-the-swarm
+    type: lesson
+    title: Split the Swarm
+    lesson: split-the-swarm
+  - id: sunken-chest
+    type: encounter
+    title: The Sunken Chest
+    game: chest
+    skills: [one-step-add, one-step-mul]
+    count: 6
+  - id: truth-or-trap
+    type: lesson
+    title: Truth or Trap
+    lesson: truth-or-trap
+  - id: lilypad-path
+    type: encounter
+    title: The Lily Pad Path
+    game: bridge
+    skills: [one-step-add, one-step-mul, check-solution]
+    count: 7
+  - id: boss
+    type: boss
+    title: King Slurp
+    monster: { name: King Slurp, seed: 303, hue: 160 }
+    intro:
+      - "Well, well, WELL. If it isn't little Grimble. Still the Royal Maths-frog? Ha! RIBBIT!"
+      - "I am KING SLURP, ruler of the bog! My lily pads, my rules. And my rule is: you sink!"
+    phases:
+      - { skills: [one-step-add], count: 3, taunt: "*BURRRP* That's my royal burp. Feel its power!" }
+      - { skills: [one-step-mul], count: 3, taunt: "I'll split you into tiny pieces! Mathematically!" }
+      - { skills: [check-solution, one-step-add, one-step-mul], count: 3, taunt: "Is that true? IS IT? Hah, you don't even know!" }
+    defeat: "Glurk. Fine. FINE. You win. Grimble, your friend is… acceptable. For a non-frog."

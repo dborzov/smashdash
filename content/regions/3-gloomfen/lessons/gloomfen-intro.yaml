@@ -1,0 +1,33 @@
+id: gloomfen-intro
+title: Into the Marsh
+beats:
+  - type: narrate
+    text: >-
+      The ground turns squishy. Fireflies blink in the fog. Lily pads glow faintly on the black
+      water, each with an equation carved into it. Something burps in the distance. Loudly.
+  - type: say
+    who: nettle
+    text: >-
+      Heh heh heh! Visitors! Welcome to Gloomfen, dearies. Mind the lily pads — step on the one
+      that tells the truth, or it's a swim with the bog-eels.
+  - type: say
+    who: grimble
+    text: >-
+      Ma Nettle! Still alive, I see. Hero, this is where it all comes together. We know how to
+      keep a scale balanced. We know how to undo moves. Now we use both to **solve equations**:
+      find out exactly what's in the box.
+  - type: choose
+    who: nettle
+    text: "Before you go… care for a cup of my famous swamp tea, dearie?"
+    options:
+      - text: Yes please!
+        reply: "Heh! Brave one. It's mostly mud. And a tadpole. Say hi, Gerald."
+      - text: Is that… a tadpole in the cup?
+        reply: "That's Gerald. He's a guest too. Be polite."
+      - text: No thanks, I'm allergic to mud.
+        reply: "Smart. Smart and alive. Off you go then!"
+  - type: say
+    who: grimble
+    text: >-
+      And keep your voice down. This marsh belongs to King Slurp. Big toad. Huge ego. We…
+      have history. Let's move.

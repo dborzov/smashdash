@@ -1,0 +1,71 @@
+id: goblin-gibberish
+title: Goblin Gibberish
+skill: words-to-expr
+beats:
+  - type: say
+    who: mayor
+    text: >-
+      We caught a goblin! But he only talks in riddles. He keeps shouting "My teeth are
+      five more than my toes!" and then laughing at his own joke.
+  - type: say
+    who: grimble
+    text: >-
+      Goblin gibberish is just maths wearing a silly hat. If his toes are $x$, then "five
+      more than $x$" is $x + 5$. Translate the words one piece at a time.
+  - type: ask
+    who: grimble
+    text: '"Twice a number" means…'
+    options:
+      - "$2x$"
+      - "$x + 2$"
+      - "$x^2$"
+    correct: 0
+    nudges:
+      "1": '"Twice" means two **times**. Double it!'
+      "2": "$x^2$ is $x$ times $x$. Twice means $2 \\times x$."
+    explain: '"Twice" means $2 \\times x$, written $2x$.'
+  - type: say
+    who: grimble
+    text: >-
+      Now the sneakiest phrase in all of Smashdash: **"less than"**. "3 less than $x$" means
+      start with $x$ and take 3 away: $x - 3$. It's written backwards from how you say it!
+      Goblins LOVE this trap.
+  - type: ask
+    who: grimble
+    text: '"4 less than $x$" is…'
+    options:
+      - "$x - 4$"
+      - "$4 - x$"
+    correct: 0
+    nudges:
+      "1": "Trap! Start with $x$, then take 4 away."
+    explain: '"4 less than $x$": start at $x$, take 4 away: $x - 4$.'
+  - type: ask
+    who: grimble
+    text: '"$x$ cookies shared equally among 3 goblins" — how many does each goblin get?'
+    options:
+      - "$\\frac{x}{3}$"
+      - "$3x$"
+      - "$\\frac{3}{x}$"
+    correct: 0
+    nudges:
+      "2": "Upside down! The cookies get split, so $x$ goes on top."
+    explain: "Sharing means dividing: $\\frac{x}{3}$."
+  - type: ask
+    who: grimble
+    text: '"Double $x$, then add 1" is…'
+    options:
+      - "$2x + 1$"
+      - "$2(x + 1)$"
+    correct: 0
+    nudges:
+      "1": "Brackets would mean adding first. Here we double first, then add."
+    explain: "Double first ($2x$), then add 1: $2x + 1$."
+  - type: practice
+    skill: words-to-expr
+    count: 4
+  - type: say
+    who: grimble
+    text: >-
+      The goblin is speechless. Mostly because you translated everything he said. Now…
+      I hear stomping. Big, cranky, box-shaped stomping.

@@ -1,0 +1,43 @@
+id: riddle-to-equation
+title: Riddle to Equation
+skill: story-to-equation
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      Step two: **tell the story in maths.** Follow what happens to $x$, one bit at a time.
+  - type: show
+    who: pib
+    text: >-
+      Bags of 6, and $x$ bags: that's $6x$ apples. Plus 2 loose ones: $6x + 2$. And the total
+      is 20. So the riddle is just…
+    math: 6x + 2 = 20
+  - type: ask
+    who: ptolemeow
+    text: >-
+      My naps last 3 hours each. I took $x$ naps plus a 2-hour bonus snooze, 14 hours in all.
+      Which equation tells my story?
+    options:
+      - "$3x + 2 = 14$"
+      - "$2x + 3 = 14$"
+      - "$3 + 2 + x = 14$"
+    correct: 0
+    nudges:
+      "1": "Swapped! Each nap is 3 hours, so the 3 goes with $x$."
+      "2": "Each nap is 3 hours — that's $3$ times the number of naps."
+    explain: "$x$ naps of 3 hours is $3x$; plus 2 hours: $3x + 2 = 14$."
+  - type: ask
+    who: ptolemeow
+    text: You had some gold. You spent 7 on fish (good choice) and have 10 left. Which equation?
+    options:
+      - "$x - 7 = 10$"
+      - "$x + 7 = 10$"
+      - "$7 - x = 10$"
+    correct: 0
+    nudges:
+      "1": "You **spent** gold — your pile got smaller. That's a minus."
+      "2": "Start with your gold, $x$, and take 7 away."
+    explain: "Start with $x$, spend 7: $x - 7 = 10$."
+  - type: practice
+    skill: story-to-equation
+    count: 3

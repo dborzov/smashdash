@@ -1,0 +1,65 @@
+id: ironhold
+order: 2
+name: Ironhold
+tagline: The dwarven forge, where the Great Scale of Truth has gone wonky.
+scene: forge
+map: { x: 44, y: 54 }
+requires: [bramblebottom]
+palette: { sky: ["#3a1c2e", "#ff7a3d"], accent: "#ff9f43", ground: "#5b3a29" }
+outro: ironhold-outro
+monsters:
+  - { name: Soot Sprite, seed: 11, hue: 20, taunts: ["Pff! Pff! Soot in your eyes!"] }
+  - { name: Rock Troll, seed: 12, hue: 30, taunts: ["Troll SMASH scale!", "Me like things UNBALANCED."] }
+  - { name: Anvil Imp, seed: 13, hue: 0, taunts: ["Clang! Clang! Hee hee!"] }
+path:
+  - id: intro
+    type: story
+    title: The Wonky Scale
+    lesson: ironhold-intro
+  - id: scales-of-truth
+    type: lesson
+    title: Scales of Truth
+    lesson: scales-of-truth
+  - id: same-to-both
+    type: lesson
+    title: Same to Both
+    lesson: same-to-both
+  - id: soot-sprites
+    type: encounter
+    title: Soot Sprites
+    game: battle
+    skills: [balance-rule, both-sides]
+    count: 5
+    monster: { name: Soot Sprite, seed: 11, hue: 20 }
+  - id: undo-spells
+    type: lesson
+    title: Undo Spells
+    lesson: undo-spells
+  - id: forge-vault
+    type: encounter
+    title: The Forge Vault
+    game: chest
+    skills: [inverse-ops, both-sides]
+    count: 5
+  - id: right-hammer
+    type: lesson
+    title: The Right Hammer
+    lesson: right-hammer
+  - id: lava-bridge
+    type: encounter
+    title: Lava Bridge
+    game: bridge
+    skills: [pick-move, inverse-ops, balance-rule]
+    count: 6
+  - id: boss
+    type: boss
+    title: Tipsy the Troll
+    monster: { name: Tipsy the Troll, seed: 202, hue: 20 }
+    intro:
+      - "HUR HUR. Me Tipsy. Me LIKE when things fall over."
+      - "Me push one side of the scale. Only ONE side. Hur hur hur!"
+    phases:
+      - { skills: [balance-rule, both-sides], count: 3, taunt: "Me add rock to one side! TIP! TIP!" }
+      - { skills: [inverse-ops], count: 3, taunt: "You can't undo Tipsy!" }
+      - { skills: [pick-move, both-sides], count: 3, taunt: "Box stays STUCK forever! Hur!" }
+    defeat: "Ow. Okay. Tipsy sit down now. Tipsy feel… balanced. Weird."

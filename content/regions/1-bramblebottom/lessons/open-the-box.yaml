@@ -1,0 +1,70 @@
+id: open-the-box
+title: Open the Box
+skill: eval-one
+beats:
+  - type: say
+    who: mayor
+    text: >-
+      A goblin pinned this note to the bakery door: "Eggs needed: $3x$. Ha ha!" And under it,
+      in smaller writing: "P.S. $x = 4$." Goblins are terrible at keeping secrets.
+  - type: say
+    who: grimble
+    text: >-
+      When we KNOW what's in the box, we just swap it in. Mathematicians call this
+      **substituting**. It's a fancy word for "replace the box with its number".
+  - type: play
+    text: Tap each box to open it.
+    widget: { kind: boxes, a: 3, b: 0, reveal: 4 }
+    done: "Three boxes with 4 in each: $3 \\times 4 = 12$ eggs!"
+  - type: ask
+    who: grimble
+    text: A smug goblin says that $3x$ with $x = 4$ is **34**. Is he right?
+    options:
+      - "Yes — 3 and 4 make 34"
+      - "No! It's $3 \\times 4 = 12$"
+    correct: 1
+    nudges:
+      "0": "That's gluing the digits together! Remember the invisible **times** sign."
+    explain: "$3x$ means $3 \\times x$. With $x = 4$ that's $3 \\times 4 = 12$, not 34."
+  - type: input
+    who: grimble
+    text: If $x = 5$, what is $2x$?
+    math: 2x
+    answer: 10
+    nudges:
+      - { value: 25, text: "Don't glue the digits! $2x$ is $2 \\times 5$." }
+      - { value: 7, text: "Times, not plus! $2x$ means $2 \\times x$." }
+    explain: "$2 \\times 5 = 10$."
+  - type: input
+    who: grimble
+    text: If $x = 6$, what is $x + 9$?
+    math: x + 9
+    answer: 15
+    nudges:
+      - { value: 69, text: "No gluing! It's $6 + 9$." }
+      - { value: 54, text: "That's a plus sign, not times." }
+    explain: "$6 + 9 = 15$."
+  - type: input
+    who: grimble
+    text: If $x = 12$, what is $\frac{x}{3}$?
+    math: '\frac{x}{3}'
+    answer: 4
+    nudges:
+      - { value: 36, text: "The fraction bar means **divide**." }
+    explain: "$12 \\div 3 = 4$."
+  - type: practice
+    skill: eval-one
+    count: 4
+  - type: narrate
+    text: >-
+      The bakery door creaks open. In the oven, instead of bread, there's… a big speckled
+      egg. It's warm. It **wiggles**.
+  - type: say
+    who: grimble
+    text: >-
+      Oh no. Oh no no no. That's a pet egg. Those things eat, poop, and DEMAND attention.
+      …Fine. Take it. Hatch it in your Pet Den. But if it poops in my lily pond, it's going
+      back in the oven.
+  - type: reward
+    egg: true
+    text: You found a mysterious egg! Visit the Pet Den to hatch it.

@@ -1,0 +1,61 @@
+id: undo-spells
+title: Undo Spells
+skill: inverse-ops
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      Every operation has an evil twin that undoes it. Add 7, then subtract 7: you're back
+      where you started. Multiply by 3, then divide by 3: back again. Like nothing happened.
+  - type: show
+    math: '5 \xrightarrow{\;+7\;} 12 \xrightarrow{\;-7\;} 5'
+    text: "Plus and minus undo each other…"
+  - type: show
+    math: '4 \xrightarrow{\;\times 3\;} 12 \xrightarrow{\;\div 3\;} 4'
+    text: "…and times and divide undo each other."
+  - type: ask
+    who: grimble
+    text: What undoes $\times 4$?
+    options:
+      - "$\\div 4$"
+      - "$- 4$"
+      - "$\\times 4$"
+    correct: 0
+    nudges:
+      "1": "Minus undoes **plus**. What undoes **times**?"
+      "2": "That would do it twice! We want to go backwards."
+    explain: "Dividing by 4 undoes multiplying by 4."
+  - type: ask
+    who: grimble
+    text: What undoes $- 9$?
+    options:
+      - "$+ 9$"
+      - "$- 9$"
+      - "$\\div 9$"
+    correct: 0
+    nudges:
+      "1": "That takes away 9 again. Go the other way!"
+    explain: "Adding 9 undoes taking away 9."
+  - type: input
+    who: brokka
+    text: I think of a number, add 6, and get 20. What was my number?
+    answer: 14
+    nudges:
+      - { value: 26, text: "That's adding 6 again. Undo the $+6$ with a $-6$!" }
+    explain: "Undo the $+6$: $20 - 6 = 14$."
+  - type: input
+    who: brokka
+    text: I think of a number, multiply it by 5, and get 35. What was it?
+    answer: 7
+    nudges:
+      - { value: 175, text: "That's multiplying again. Undo times with divide!" }
+      - { value: 30, text: "Undo **times** with **divide**, not minus." }
+    explain: "Undo the $\\times 5$: $35 \\div 5 = 7$."
+  - type: say
+    who: grimble
+    text: >-
+      Psst. You just solved two equations in your head without writing them down. That
+      "undo" trick is the whole secret of algebra. Don't tell the Muddler.
+  - type: practice
+    skill: inverse-ops
+    count: 4

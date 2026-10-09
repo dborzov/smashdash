@@ -1,0 +1,49 @@
+id: giant-numbers
+title: Giant Numbers
+skill: sci-notation
+beats:
+  - type: say
+    who: zoomwhistle
+    text: >-
+      Scientists hate writing lots of zeros. Too much ink! So they use **scientific
+      notation**: a number from 1 up to 10, times a power of ten.
+  - type: show
+    who: zoomwhistle
+    text: >-
+      The Moon is about $384{,}000$ km away: that's $3.84 \times 10^5$ km.
+
+      A flea is about $0.002$ m long: that's $2 \times 10^{-3}$ m.
+  - type: input
+    who: zoomwhistle
+    text: Write $5 \times 10^4$ as a normal number.
+    math: '5 \times 10^4'
+    answer: 50000
+    nudges:
+      - { value: 500000, text: "One hop too many — exactly 4." }
+      - { value: 20, text: "It's not $5 \\times 4$! Hop the point 4 places." }
+    explain: "Four hops right: $50{,}000$."
+  - type: input
+    who: zoomwhistle
+    text: "$6{,}000{,}000 = 6 \\times 10^{?}$"
+    answer: 6
+    nudges:
+      - { value: 7, text: "Count the hops of the point, not the digits." }
+    explain: "From 6, the point hops 6 places to make $6{,}000{,}000$."
+  - type: say
+    who: grimble
+    text: >-
+      To compare numbers in scientific notation, look at the **power first**! $2 \times 10^8$
+      beats $9 \times 10^7$ — a whole extra hop is worth more than any front number.
+  - type: ask
+    who: zoomwhistle
+    text: Which is bigger?
+    options:
+      - "$2 \\times 10^8$"
+      - "$9 \\times 10^7$"
+    correct: 0
+    nudges:
+      "1": "Look at the power of ten first! $10^8$ is ten times bigger than $10^7$."
+    explain: "$2 \\times 10^8 = 200{,}000{,}000$ and $9 \\times 10^7 = 90{,}000{,}000$."
+  - type: practice
+    skill: sci-notation
+    count: 4

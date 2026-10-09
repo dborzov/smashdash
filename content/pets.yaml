@@ -1,0 +1,54 @@
+# Pet species. Art lives in src/art/Pet.tsx (keyed by id).
+- id: blorp
+  name: Slime
+  desc: "A wobbly blob of green goo. Eats anything. Is mostly anything."
+  color: "#6ee26b"
+  favorite: slime-soup
+  lines:
+    - "Blorp."
+    - "Blorp blorp!"
+    - "*absorbs a sock*"
+    - "*wobbles happily*"
+    - "*makes a noise like a wet balloon*"
+  epitaphs:
+    - "Here lies a slime. It was mostly water anyway."
+    - "Wobbled its last wobble."
+- id: dragonling
+  name: Dragonling
+  desc: "A baby dragon, about the size of a cat and twice as dramatic."
+  color: "#ff6b5a"
+  favorite: dragon-pepper
+  lines:
+    - "Rawr! (it's a small rawr)"
+    - "*sets your homework on fire*"
+    - "*hiccups a smoke ring*"
+    - "*tries to hoard your socks*"
+  epitaphs:
+    - "Fierce in spirit. Small in size. Hungry, mostly."
+    - "Now breathing fire in the great volcano in the sky."
+- id: mushling
+  name: Mushling
+  desc: "A walking mushroom with tiny legs. Releases spores when excited. Do not inhale."
+  color: "#ff9fd0"
+  favorite: cheese
+  lines:
+    - "*puff* (that was a spore, sorry)"
+    - "Mush mush!"
+    - "*grows a tiny mushroom on its head*"
+    - "*smells faintly of forest floor*"
+  epitaphs:
+    - "Returned to the soil. As mushrooms do."
+    - "Fun guy. Truly, a fun guy."
+- id: owlbear
+  name: Owlbear Cub
+  desc: "Half owl, half bear, all hugs. The hugs are dangerously strong."
+  color: "#c79a6b"
+  favorite: bug-pie
+  lines:
+    - "Hoo-RAWR!"
+    - "*turns head all the way around*"
+    - "*hugs you, cracking two ribs (affectionately)*"
+    - "*hoots at nothing at 3am*"
+  epitaphs:
+    - "Gave the best hugs. Also the most painful."
+    - "Hoo will we hug now?"

@@ -1,0 +1,49 @@
+id: scales-of-truth
+title: Scales of Truth
+skill: balance-rule
+beats:
+  - type: say
+    who: brokka
+    text: >-
+      First law of the forge: a balanced scale stays balanced only if you treat both pans
+      **exactly the same**. Let me show you what happens if you don't.
+  - type: play
+    text: Take a coin off just ONE pan and see what happens.
+    widget: { kind: balance, left: { x: 1, c: 3 }, right: { x: 0, c: 8 }, value: 5, goal: tip, tools: [left, right] }
+    done: "CLUNK! It tipped. Changing only one side breaks the balance."
+  - type: say
+    who: grimble
+    text: >-
+      The golden rule of algebra: **whatever you do to one side, you do to the other.**
+      Then the scale can't tell anything happened. Clever, right?
+  - type: play
+    text: Now use the "both pans" buttons. Add and remove coins from both sides. Try to tip it — you can't!
+    widget: { kind: balance, left: { x: 1, c: 3 }, right: { x: 0, c: 8 }, value: 5, goal: none, tools: [both] }
+  - type: ask
+    who: brokka
+    text: "$x + 3 = 8$ is balanced. Which move keeps it balanced?"
+    options:
+      - "Add 5 to both sides"
+      - "Add 5 to the left side only"
+      - "Add 5 to the left side and 3 to the right"
+    correct: 0
+    nudges:
+      "1": "Only one side changes — the scale tips!"
+      "2": "Different amounts on each side tip the scale."
+    explain: "Same amount to both sides: still balanced."
+  - type: ask
+    who: grimble
+    text: What about **doubling** everything on both sides?
+    options:
+      - "Still balanced — both sides got twice as heavy"
+      - "It tips over"
+    correct: 0
+    nudges:
+      "1": "If both sides double, they're still equal. 8 and 8 become 16 and 16."
+    explain: "Doubling both sides keeps them equal. Any move works, as long as both sides get it."
+  - type: practice
+    skill: balance-rule
+    count: 3
+  - type: say
+    who: brokka
+    text: Good. You've got Scale Sense. Now let's write it down — dwarves write EVERYTHING down.

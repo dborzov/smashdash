@@ -1,0 +1,53 @@
+id: shrinking-potion
+title: Shrinking Potion
+skill: pow10-down
+beats:
+  - type: say
+    who: zoomwhistle
+    text: >-
+      And now… the **Shrinking Potion**! Going DOWN the exponents, every step divides by 10.
+      What happens when we go below zero? Let's find out!
+  - type: play
+    text: Slide the potion meter down, below zero.
+    widget: { kind: powers, min: -3, max: 3, start: 2 }
+  - type: show
+    math: '\begin{aligned} 10^2 &= 100 \\ 10^1 &= 10 \\ 10^0 &= 1 \\ 10^{-1} &= 0.1 \\ 10^{-2} &= 0.01 \\ 10^{-3} &= 0.001 \end{aligned}'
+    text: "Each step down divides by 10."
+  - type: say
+    who: grimble
+    text: >-
+      Two things to notice. First: $10^0 = 1$. Zero steps — you're standing on 1. Second, and
+      this is the big one: a **negative** exponent does NOT make a negative number. It makes a
+      **tiny** one.
+  - type: ask
+    who: zoomwhistle
+    text: What is $10^{-2}$?
+    options:
+      - "$0.01$"
+      - "$-100$"
+      - "$-20$"
+    correct: 0
+    nudges:
+      "1": "Negative exponent = tiny, not negative! Divide 1 by 10, twice."
+      "2": "It's not $10 \\times (-2)$. Start at 1 and shrink by 10, twice."
+    explain: "Start at 1, divide by 10 twice: $0.01$."
+  - type: input
+    who: zoomwhistle
+    text: What is $10^{-3}$? (Use a decimal.)
+    math: 10^{-3}
+    answer: 0.001
+    nudges:
+      - { value: -1000, text: "A negative power makes it **tiny**, not negative!" }
+      - { value: 0.0001, text: "One hop too many! Divide by 10 exactly 3 times." }
+      - { value: -30, text: "Start at 1 and divide by 10, three times." }
+    explain: "$1 \\div 10 \\div 10 \\div 10 = 0.001$."
+  - type: input
+    who: zoomwhistle
+    text: "$0.1 = 10^{?}$"
+    answer: -1
+    nudges:
+      - { value: 1, text: "$0.1$ is **smaller** than 1, so the exponent is negative." }
+    explain: "One step below 1: $10^{-1} = 0.1$."
+  - type: practice
+    skill: pow10-down
+    count: 4

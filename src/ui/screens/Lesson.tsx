@@ -1,0 +1,422 @@
+/**
+ * Plays a lesson or story: a sequence of beats (dialogue, explanations, quick checks,
+ * interactive widgets, inline practice). Checks never cost hearts — lessons are a safe place.
+ */
+import { useMemo, useState } from 'preact/hooks';
+import type { Beat, Lesson } from '../../content/schema';
+import type { Problem } from '../../skills/types';
+import { Rng, hashString } from '../../engine/rng';
+import { generate, levelFor } from '../../skills';
+import { effectiveMastery, recordAnswer, type Outcome } from '../../engine/mastery';
+import { getProfile, update } from '../../engine/store';
+import { grant } from '../../engine/rewards';
+import { Scene } from '../../art/scenes';
+import { Dialogue, TypeText } from '../components/Dialogue';
+import { ProblemCard } from '../components/ProblemCard';
+import { Bar, Modal } from '../components/Bits';
+import { MathBig, Rich } from '../components/Rich';
+import { WidgetView } from '../widgets';
+import { Portrait } from '../../art/Portrait';
+import { Egg } from '../../art/Pet';
+import { cast, itemById } from '../../content';
+import { sfx } from '../../audio/sfx';
+
+/** XP for quick checks inside lessons (smaller than practice). */
+const CHECK_XP = { right: 5, nudged: 3, wrong: 0 };
+const PRACTICE_XP = { right: 10, nudged: 6, wrong: 0 };
+
+export interface LessonResult {
+  right: number;
+  wrong: number;
+  rewards: Extract<Beat, { type: 'reward' }>[];
+}
+
+function beatToProblem(
+  b: Extract<Beat, { type: 'ask' | 'input' }>,
+  skill: string,
+  seed: number,
+): Problem {
+  if (b.type === 'input') {
+    return {
+      skill,
+      prompt: b.text,
+      math: b.math,
+      visual:
+        b.widget && (b.widget.kind === 'boxes' || b.widget.kind === 'balance')
+          ? b.widget
+          : undefined,
+      answer: { kind: 'number', value: b.answer },
+      nudges: (b.nudges ?? []).map((n) => ({ match: n.value, text: n.text })),
+      hint: b.hint,
+      explain: b.explain,
+    };
+  }
+  // Shuffle options so the right answer isn't always where the author wrote it.
+  const order = new Rng(seed).shuffle(b.options.map((_, i) => i));
+  return {
+    skill,
+    prompt: b.text,
+    math: b.math,
+    visual:
+      b.widget && (b.widget.kind === 'boxes' || b.widget.kind === 'balance')
+        ? { ...b.widget }
+        : undefined,
+    answer: {
+      kind: 'choice',
+      options: order.map((i) => b.options[i]),
+      correct: order.indexOf(b.correct),
+    },
+    nudges: Object.entries(b.nudges ?? {}).map(([k, text]) => ({
+      match: order.indexOf(Number(k)),
+      text,
+    })),
+    explain: b.explain,
+  };
+}
+
+function Speaker({ who }: { who?: string }) {
+  if (!who) return null;
+  const c = cast[who];
+  return (
+    <div class="row" style={{ marginBottom: '8px' }}>
+      <div
+        class="portrait"
+        style={
+          {
+            width: '56px',
+            height: '56px',
+            borderRadius: '16px',
+            animation: 'none',
+            '--who': c?.color,
+          } as Record<string, string>
+        }
+      >
+        <Portrait who={who} profile={getProfile()} />
+      </div>
+      <b style={{ fontFamily: 'var(--font-display)', color: c?.color ?? 'var(--gold)' }}>
+        {who === 'hero' ? getProfile()?.hero.name : c?.name}
+      </b>
+    </div>
+  );
+}
+
+function Continue({
+  onClick,
+  label = 'Continue →',
+  disabled,
+}: {
+  onClick: () => void;
+  label?: string;
+  disabled?: boolean;
+}) {
+  return (
+    <div class="row" style={{ justifyContent: 'flex-end', marginTop: '14px' }}>
+      <button
+        class="btn gold big"
+        disabled={disabled}
+        onClick={() => {
+          sfx('page');
+          onClick();
+        }}
+      >
+        {label}
+      </button>
+    </div>
+  );
+}
+
+function PracticeBeat({
+  beat,
+  onAnswer,
+  onDone,
+}: {
+  beat: Extract<Beat, { type: 'practice' }>;
+  onAnswer: (skill: string, o: Outcome, practice: boolean) => void;
+  onDone: () => void;
+}) {
+  const [i, setI] = useState(0);
+  const [seed] = useState(() => Math.floor(Math.random() * 1e9));
+  const problem = useMemo(() => {
+    const p = getProfile();
+    const lvl = beat.level
+      ? (beat.level as 1 | 2 | 3)
+      : levelFor(effectiveMastery(p?.skills[beat.skill]));
+    return generate(beat.skill, lvl, new Rng(seed + i * 7919));
+  }, [i]);
+  return (
+    <div>
+      <div class="row" style={{ marginBottom: '8px' }}>
+        <span class="chip">
+          🏋️ Practice {i + 1} / {beat.count}
+        </span>
+        {beat.text && i === 0 && <span class="muted">{beat.text}</span>}
+      </div>
+      <ProblemCard
+        key={i}
+        problem={problem}
+        onResult={(o) => {
+          onAnswer(beat.skill, o, true);
+          if (i + 1 >= beat.count) onDone();
+          else setI(i + 1);
+        }}
+      />
+    </div>
+  );
+}
+
+function BeatView({
+  beat,
+  index,
+  lessonSkill,
+  firstTime,
+  onNext,
+  onAnswer,
+}: {
+  beat: Beat;
+  index: number;
+  lessonSkill?: string;
+  firstTime: boolean;
+  onNext: () => void;
+  onAnswer: (skill: string, o: Outcome, practice: boolean) => void;
+}) {
+  const [chosen, setChosen] = useState<number | null>(null);
+  const [widgetDone, setWidgetDone] = useState(false);
+
+  switch (beat.type) {
+    case 'say':
+      return (
+        <>
+          <Dialogue who={beat.who} text={beat.text} />
+          <Continue onClick={onNext} />
+        </>
+      );
+    case 'narrate':
+      return (
+        <>
+          <div class="panel">
+            <TypeText text={beat.text} class="narration" />
+          </div>
+          <Continue onClick={onNext} />
+        </>
+      );
+    case 'show':
+      return (
+        <>
+          <div class="panel">
+            <Speaker who={beat.who} />
+            {beat.text && <Rich text={beat.text} />}
+            {beat.math && <MathBig tex={beat.math} />}
+            {beat.widget && <WidgetView w={beat.widget} interactive={false} />}
+          </div>
+          <Continue onClick={onNext} />
+        </>
+      );
+    case 'ask':
+    case 'input': {
+      const problem = beatToProblem(
+        beat,
+        lessonSkill ?? 'lesson',
+        hashString(`${index}${beat.text}`),
+      );
+      return (
+        <>
+          <Speaker who={beat.who} />
+          <ProblemCard
+            problem={problem}
+            hint={beat.type === 'input' && beat.hint ? 'free' : 'none'}
+            onResult={(o) => {
+              onAnswer(lessonSkill ?? '', o, false);
+              onNext();
+            }}
+          />
+        </>
+      );
+    }
+    case 'choose':
+      return (
+        <>
+          <Dialogue who={beat.who} text={beat.text} />
+          {chosen === null ? (
+            <div class="choices">
+              {beat.options.map((o, i) => (
+                <button
+                  key={i}
+                  class="choice"
+                  onClick={() => {
+                    sfx('click');
+                    setChosen(i);
+                  }}
+                >
+                  <span class="letter">{'ABCD'[i]}</span>
+                  <Rich text={o.text} />
+                </button>
+              ))}
+            </div>
+          ) : (
+            <>
+              <div style={{ marginTop: '12px' }}>
+                <Dialogue who="hero" text={beat.options[chosen].text} />
+              </div>
+              <div style={{ marginTop: '12px' }}>
+                <Dialogue
+                  who={beat.options[chosen].who ?? beat.who}
+                  text={beat.options[chosen].reply}
+                />
+              </div>
+              <Continue onClick={onNext} />
+            </>
+          )}
+        </>
+      );
+    case 'play':
+      return (
+        <>
+          <Dialogue who={beat.who} text={beat.text} />
+          <div class="panel" style={{ marginTop: '12px' }}>
+            <WidgetView w={beat.widget} onDone={() => setWidgetDone(true)} />
+            {widgetDone && beat.done && (
+              <div class="feedback right" style={{ marginTop: '12px' }}>
+                <Rich text={beat.done} />
+              </div>
+            )}
+          </div>
+          <Continue
+            onClick={onNext}
+            disabled={!widgetDone}
+            label={widgetDone ? 'Continue →' : 'Try it first!'}
+          />
+        </>
+      );
+    case 'practice':
+      return <PracticeBeat beat={beat} onAnswer={onAnswer} onDone={onNext} />;
+    case 'reward':
+      return (
+        <>
+          <div class="panel center" style={{ animation: 'pop-in .4s' }}>
+            {beat.egg && (
+              <div style={{ width: '120px', height: '150px', margin: '0 auto' }}>
+                <Egg class="anim-wobble" />
+              </div>
+            )}
+            {beat.gold && <div style={{ fontSize: '4rem' }}>🪙</div>}
+            {beat.item && <div style={{ fontSize: '4rem' }}>{itemById[beat.item]?.icon}</div>}
+            {beat.text && <h3>{beat.text}</h3>}
+            {beat.gold ? (
+              <p style={{ color: 'var(--gold)', fontWeight: 700 }}>+{beat.gold} gold</p>
+            ) : null}
+            {!firstTime && <p class="muted">(You already collected this one.)</p>}
+          </div>
+          <Continue onClick={onNext} />
+        </>
+      );
+  }
+}
+
+export function LessonPlayer({
+  lesson,
+  scene,
+  firstTime,
+  onFinish,
+  onQuit,
+  dry,
+}: {
+  lesson: Lesson;
+  scene: string;
+  firstTime: boolean;
+  /** Preview mode: nothing is saved. */
+  dry?: boolean;
+  onFinish: (r: LessonResult) => void;
+  onQuit: () => void;
+}) {
+  const [i, setI] = useState(0);
+  const [stats] = useState({ right: 0, wrong: 0 });
+  const [quitAsk, setQuitAsk] = useState(false);
+  const beat = lesson.beats[i];
+
+  const onAnswer = (skill: string, o: Outcome, practice: boolean) => {
+    if (o === 'wrong') stats.wrong++;
+    else stats.right++;
+    if (dry) return;
+    update((p) => {
+      if (skill) recordAnswer(p, skill, o);
+      return grant(p, { xp: (practice ? PRACTICE_XP : CHECK_XP)[o] });
+    });
+  };
+
+  const next = () => {
+    if (i + 1 >= lesson.beats.length) {
+      onFinish({
+        ...stats,
+        rewards: lesson.beats.filter(
+          (b): b is Extract<Beat, { type: 'reward' }> => b.type === 'reward',
+        ),
+      });
+    } else setI(i + 1);
+  };
+
+  return (
+    <div class="screen">
+      <Scene id={scene} dim={0.35} />
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 5,
+          padding: '10px 14px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          background: 'linear-gradient(rgba(10,6,30,.85), rgba(10,6,30,0))',
+        }}
+      >
+        <button class="icon-btn" onClick={() => setQuitAsk(true)} aria-label="Quit lesson">
+          ✕
+        </button>
+        <div style={{ flex: 1 }}>
+          <Bar value={i} max={lesson.beats.length} kind="good" lg />
+        </div>
+        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600 }}>{lesson.title}</span>
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          inset: '64px 0 0 0',
+          overflowY: 'auto',
+          zIndex: 4,
+          padding: '12px 16px 28px',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <div class="content-col" style={{ width: '100%', marginTop: 'auto' }} key={i}>
+          <div style={{ animation: 'pop-in .25s ease-out' }}>
+            <BeatView
+              beat={beat}
+              index={i}
+              lessonSkill={lesson.skill}
+              firstTime={firstTime}
+              onNext={next}
+              onAnswer={onAnswer}
+            />
+          </div>
+        </div>
+      </div>
+      {quitAsk && (
+        <Modal onClose={() => setQuitAsk(false)}>
+          <h2>Leave the lesson?</h2>
+          <p>You'll keep the XP you earned, but you'll have to start the lesson again.</p>
+          <div class="row" style={{ justifyContent: 'center' }}>
+            <button class="btn ghost" onClick={() => setQuitAsk(false)}>
+              Stay
+            </button>
+            <button class="btn danger" onClick={onQuit}>
+              Leave
+            </button>
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
+}

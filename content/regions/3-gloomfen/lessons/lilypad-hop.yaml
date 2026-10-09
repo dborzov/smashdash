@@ -1,0 +1,51 @@
+id: lilypad-hop
+title: Lily Pad Hop
+skill: one-step-add
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      To **solve** an equation means to find what's in the box. The method: get the box alone,
+      and whatever you do to one side, do to the other. You already know both halves!
+  - type: show
+    who: grimble
+    text: "The box has $+8$ stuck to it. Subtract 8 from both sides:"
+    math: '\begin{aligned} x + 8 &= 15 \\ x + 8 \hl{\,- 8} &= 15 \hl{\,- 8} \\ x &= 7 \end{aligned}'
+  - type: input
+    who: nettle
+    text: "This lily pad says: solve $x + 6 = 11$."
+    math: x + 6 = 11
+    answer: 5
+    nudges:
+      - { value: 17, text: "You added 6! To undo $+6$ we **subtract** 6." }
+    explain: "Subtract 6 from both sides: $x = 11 - 6 = 5$."
+  - type: say
+    who: grimble
+    text: When the box has a **minus** stuck to it, we **add** to undo it.
+  - type: input
+    who: nettle
+    text: "Next pad: solve $x - 4 = 9$."
+    math: x - 4 = 9
+    answer: 13
+    nudges:
+      - { value: 5, text: "You subtracted. But to undo $-4$, we **add** 4!" }
+    explain: "Add 4 to both sides: $x = 9 + 4 = 13$."
+  - type: say
+    who: grimble
+    text: >-
+      One more trick. The box doesn't have to be on the left. $12 = x + 3$ is the same scale,
+      just looked at from the other side of the swamp.
+  - type: input
+    who: nettle
+    text: "Last pad: solve $12 = x + 3$."
+    math: 12 = x + 3
+    answer: 9
+    nudges:
+      - { value: 15, text: "Undo the $+3$ with a $-3$, on both sides." }
+    explain: "Subtract 3 from both sides: $9 = x$. So $x = 9$."
+  - type: practice
+    skill: one-step-add
+    count: 4
+  - type: say
+    who: nettle
+    text: Heh! Not a single splash. Gerald is impressed. That's rare. He's a tadpole.

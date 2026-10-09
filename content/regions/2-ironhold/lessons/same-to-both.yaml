@@ -1,0 +1,55 @@
+id: same-to-both
+title: Same to Both
+skill: both-sides
+beats:
+  - type: say
+    who: brokka
+    text: >-
+      In the forge, every move goes in the Ledger. We don't draw pictures of scales — we
+      write equations. Let me show you a page.
+  - type: show
+    text: "Start with $x + 5 = 12$. Take 5 from **both** sides:"
+    math: '\begin{aligned} x + 5 \hl{\,- 5} &= 12 \hl{\,- 5} \\ x &= 7 \end{aligned}'
+  - type: say
+    who: grimble
+    text: >-
+      Here's the funny part: you're allowed to do ANY move to both sides. Even a silly one.
+      Add 100 to both sides? Still true! Useless — but true. For now, let's just practise
+      doing a move and writing what comes out.
+  - type: ask
+    who: brokka
+    text: Start with $x + 2 = 9$. **Add 4** to both sides. What do you get?
+    options:
+      - "$x + 6 = 13$"
+      - "$x + 6 = 9$"
+      - "$x + 2 = 13$"
+    correct: 0
+    nudges:
+      "1": "You only changed the left side! The right side gets $+4$ too."
+      "2": "You only changed the right side! The left side gets $+4$ too."
+    explain: "Left: $x + 2 + 4 = x + 6$. Right: $9 + 4 = 13$. So $x + 6 = 13$."
+  - type: ask
+    who: brokka
+    text: Start with $3x = 15$. **Divide** both sides by 3. What do you get?
+    options:
+      - "$x = 5$"
+      - "$x = 15$"
+      - "$3x = 5$"
+    correct: 0
+    nudges:
+      "1": "The right side has to be divided by 3 too!"
+      "2": "The left side gets divided too: $3x \\div 3 = x$."
+    explain: "$3x \\div 3 = x$ and $15 \\div 3 = 5$, so $x = 5$."
+  - type: input
+    who: brokka
+    text: Start with $x - 4 = 10$. **Add 4** to both sides. The left side becomes $x$. What does the right side become?
+    answer: 14
+    nudges:
+      - { value: 6, text: "We're **adding** 4, not subtracting." }
+    explain: "$10 + 4 = 14$, so $x = 14$."
+  - type: practice
+    skill: both-sides
+    count: 4
+  - type: say
+    who: brokka
+    text: Neat handwriting. For a human. Now — I smell soot sprites. Pesky things.

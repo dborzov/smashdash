@@ -1,0 +1,85 @@
+# Speakers in dialogue. `art` picks the portrait painter (src/art/Portrait.tsx).
+grimble:
+  name: Grimble
+  art: grimble
+  color: "#6ee26b"
+hero:
+  name: You
+  art: hero
+  color: "#ffd166"
+muddler:
+  name: The Muddler
+  art: muddler
+  color: "#b98cff"
+mayor:
+  name: Mayor Plumpkin
+  art: npc
+  color: "#ff9f5a"
+  seed: 11
+  hue: 25
+brokka:
+  name: Brokka Ironbeard
+  art: npc
+  color: "#ff7a45"
+  seed: 23
+  hue: 10
+nettle:
+  name: Old Ma Nettle
+  art: npc
+  color: "#9be37a"
+  seed: 37
+  hue: 110
+snowbert:
+  name: Snowbert the Yeti
+  art: npc
+  color: "#bde4ff"
+  seed: 41
+  hue: 200
+ptolemeow:
+  name: Ptolemeow the Sphinx
+  art: npc
+  color: "#ffcf5a"
+  seed: 53
+  hue: 45
+zoomwhistle:
+  name: Professor Zoomwhistle
+  art: npc
+  color: "#8fb4ff"
+  seed: 67
+  hue: 230
+pib:
+  name: Merchant Pib
+  art: npc
+  color: "#ffb3d1"
+  seed: 71
+  hue: 330
+grub:
+  name: Grub the Unboxable
+  art: monster
+  color: "#a3e05a"
+  seed: 101
+  hue: 95
+tipsy:
+  name: Tipsy the Troll
+  art: monster
+  color: "#ff8c5a"
+  seed: 202
+  hue: 20
+slurp:
+  name: King Slurp
+  art: monster
+  color: "#5ae0b4"
+  seed: 303
+  hue: 160
+smolderbutt:
+  name: Smolderbutt
+  art: monster
+  color: "#ff5a5a"
+  seed: 404
+  hue: 0
+gigantus:
+  name: Gigantus Minimus
+  art: monster
+  color: "#c08cff"
+  seed: 505
+  hue: 270

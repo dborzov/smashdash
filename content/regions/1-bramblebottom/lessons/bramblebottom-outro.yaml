@@ -1,0 +1,22 @@
+id: bramblebottom-outro
+title: Bramblebottom Unboxed
+beats:
+  - type: narrate
+    text: >-
+      With Grub defeated, the boxes of Bramblebottom pop open one by one. Numbers tumble out
+      and scurry home. The baker counts his eggs. The cow is finally let down from the box.
+  - type: say
+    who: mayor
+    text: >-
+      Size 42! My pants size is 42! Oh, happy day! Hero, take this: the Key to the Village!
+      …It's a box. I'm sorry. Old habits.
+  - type: say
+    who: grimble
+    text: >-
+      Not bad, hero. You can read boxes and open them. But the fog is spreading east. The
+      dwarves of **Ironhold** need help — someone has been messing with their Great Scale.
+  - type: say
+    who: grimble
+    text: >-
+      And there's a tall, wobbly tower to the north-west. The **Tower of Tens**. Weird things
+      happen to numbers there — they grow huge or shrink tiny. Go whichever way you like.

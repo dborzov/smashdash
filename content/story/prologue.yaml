@@ -1,0 +1,48 @@
+id: prologue
+title: The Muddling
+beats:
+  - type: narrate
+    text: >-
+      The Kingdom of Smashdash used to be a sensible place. Bakers knew how many eggs
+      went in a cake. Bridges had exactly the right number of bolts. Everyone knew their own
+      pants size.
+  - type: say
+    who: muddler
+    mood: smug
+    text: >-
+      MWAHAHA! Not anymore! From this day on, every number in Smashdash shall be
+      **stuffed into a box**! Nobody will know how many cookies they have! CHAOS! Delicious,
+      confusing CHAOS!
+  - type: narrate
+    text: >-
+      A purple fog rolls over the land. Numbers everywhere vanish into little wooden boxes.
+      A baker bursts into tears. A bridge wobbles. Somewhere, a goblin giggles.
+  - type: say
+    who: grimble
+    text: >-
+      Psst. Down here. No — lower. *Lower.* Yes. I'm a frog. I'm ALSO the former Royal
+      Mathematician, before that fog-brained show-off turned me into… this. *Ribbit.* Ugh, I
+      hate it when that slips out.
+  - type: say
+    who: grimble
+    text: >-
+      Listen. The Muddler thinks a number in a box is lost forever. He's wrong. If you know
+      the clues, you can **always** figure out what's in the box. That's called **algebra**,
+      and between you and me, it's basically a superpower.
+  - type: choose
+    who: grimble
+    text: So. Will you help me un-muddle the kingdom?
+    options:
+      - text: Obviously. I was born for this.
+        reply: Excellent. Modest, too. I like you already.
+      - text: What's in it for me?
+        reply: >-
+          Gold. Loot. Glory. A pet, probably. And a frog who will stop complaining. (That last
+          one is not a promise.)
+      - text: Can I lick you first?
+        reply: …No. Absolutely not. Why is it ALWAYS the licking.
+  - type: say
+    who: grimble
+    text: >-
+      First stop: **Bramblebottom**, the village at the edge of the fog. Let's go poke some
+      boxes. Hop to it. …Sorry. Frog joke. Couldn't help it.

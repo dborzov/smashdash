@@ -1,0 +1,21 @@
+id: bazaar-outro
+title: The Muddle Lifts
+beats:
+  - type: narrate
+    text: >-
+      The Muddler vanishes in a puff of purple smoke, still shouting. The fog over the
+      kingdom thins… and then blows away completely. Boxes pop open from the mountains to the
+      marsh. Numbers come home.
+  - type: say
+    who: grimble
+    text: >-
+      We did it. YOU did it. Every box in Smashdash, unboxed. You can read expressions,
+      balance equations, unwrap them and solve riddles with them. That's real algebra, hero.
+  - type: say
+    who: grimble
+    text: >-
+      …I'm still a frog, though. Hm. Maybe the cure is in the **Tower of Tens**. That's where
+      the Muddler said he was going. If you haven't climbed it yet — now's the time.
+  - type: say
+    who: ptolemeow
+    text: Mrrrow. Come back any time. Bring fish.

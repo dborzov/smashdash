@@ -1,0 +1,40 @@
+id: growing-potion
+title: Growing Potion
+skill: pow10-up
+beats:
+  - type: say
+    who: zoomwhistle
+    text: >-
+      Now my favourite number to repeat: **ten**! Every time you multiply by 10, the number
+      grows a zero. Drink the Growing Potion and see!
+  - type: play
+    text: Slide the potion meter up and watch the number grow.
+    widget: { kind: powers, min: 0, max: 6, start: 0 }
+  - type: show
+    math: '\begin{aligned} 10^1 &= 10 \\ 10^2 &= 100 \\ 10^3 &= 1{,}000 \\ 10^6 &= 1{,}000{,}000 \end{aligned}'
+    text: "The exponent counts the zeros!"
+  - type: input
+    who: zoomwhistle
+    text: What is $10^4$?
+    math: 10^4
+    answer: 10000
+    nudges:
+      - { value: 40, text: "Not $10 \\times 4$! It's four tens multiplied together: a 1 with 4 zeros." }
+      - { value: 100000, text: "Count the zeros: exactly 4." }
+      - { value: 1000, text: "Count the zeros: exactly 4." }
+    explain: "A 1 with 4 zeros: $10{,}000$."
+  - type: input
+    who: zoomwhistle
+    text: "$1{,}000{,}000 = 10^{?}$"
+    answer: 6
+    nudges:
+      - { value: 7, text: "Count only the zeros, not the 1!" }
+    explain: "A million has 6 zeros, so it's $10^6$."
+  - type: say
+    who: grimble
+    text: >-
+      Fun fact: a million is $10^6$. A billion is $10^9$. The number of flies I have eaten
+      today is $10^1$. Don't judge me.
+  - type: practice
+    skill: pow10-up
+    count: 4

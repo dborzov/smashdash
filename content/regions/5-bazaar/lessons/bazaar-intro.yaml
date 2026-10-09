@@ -1,0 +1,30 @@
+id: bazaar-intro
+title: Lanterns and Riddles
+beats:
+  - type: narrate
+    text: >-
+      The desert night is warm and full of lanterns. Stalls sell spices, flying carpets
+      (slightly used) and suspicious cheese. In the middle of the market, on a giant cushion,
+      lies a sphinx. A cat sphinx. She is mostly asleep.
+  - type: say
+    who: ptolemeow
+    text: >-
+      Mrrrow. Visitors. The Muddler has hidden every price in this market inside a riddle.
+      Nobody can buy anything. Nobody can sell anything. It's been very quiet. I've enjoyed
+      the naps. But the fish stall is closed, and THAT is unacceptable.
+  - type: say
+    who: grimble
+    text: >-
+      Riddles! Story problems! Hero, these are just equations wearing costumes. Everything we've
+      learned works here — we just need to get the costume off first.
+  - type: say
+    who: ptolemeow
+    text: >-
+      Answer my riddles, little hero, and I will help you. Fail, and I shall… sit on you.
+      For hours. I am very warm and very heavy.
+  - type: say
+    who: grimble
+    text: >-
+      And here's the big question: **when is algebra worth it?** For tiny numbers, you could
+      just guess. But when the numbers get big, guessing takes forever — and an equation
+      solves it in two moves. That's the whole point.

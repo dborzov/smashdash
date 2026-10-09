@@ -1,0 +1,39 @@
+id: decimal-hop
+title: Decimal Hop
+skill: times-pow10
+beats:
+  - type: say
+    who: zoomwhistle
+    text: >-
+      Here's a trick that will make you the fastest calculator in the kingdom. Multiplying by
+      $10^n$ just makes the **decimal point hop**! Positive power: it hops right, the number
+      grows. Negative power: it hops left, the number shrinks.
+  - type: play
+    text: "Work out $3.2 \\times 10^3$: tap Hop to move the decimal point."
+    widget: { kind: hop, mantissa: 3.2, exp: 3 }
+    done: "Three hops right: $3.2 \\times 10^3 = 3200$."
+  - type: input
+    who: zoomwhistle
+    text: What is $4.5 \times 10^2$?
+    math: '4.5 \times 10^2'
+    answer: 450
+    nudges:
+      - { value: 0.045, text: "Wrong way! A positive power makes it bigger — hop right." }
+      - { value: 4500, text: "One hop too many — hop exactly 2." }
+    explain: "Two hops right: $450$."
+  - type: play
+    text: "Now a negative power: $6 \\times 10^{-2}$."
+    widget: { kind: hop, mantissa: 6, exp: -2 }
+    done: "Two hops left: $6 \\times 10^{-2} = 0.06$."
+  - type: input
+    who: zoomwhistle
+    text: What is $7 \times 10^{-1}$?
+    math: '7 \times 10^{-1}'
+    answer: 0.7
+    nudges:
+      - { value: 70, text: "Wrong way! A negative power makes it smaller — hop left." }
+      - { value: -70, text: "Negative power = smaller, not negative. Hop the point left once." }
+    explain: "One hop left: $0.7$."
+  - type: practice
+    skill: times-pow10
+    count: 4

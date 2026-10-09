@@ -1,0 +1,72 @@
+id: two-locks
+title: The Double Lock
+skill: eval-two
+beats:
+  - type: say
+    who: mayor
+    text: >-
+      The village vault has a new lock! The code is $3x + 7$, and the goblins say
+      $x = 2$. But two of my guards got different answers and now they're fighting.
+  - type: say
+    who: grimble
+    text: >-
+      Two operations now: a times AND a plus. So which goes first? Here's the law of the
+      land: **multiplying happens before adding.** Count the boxes first, then add the loose
+      coins.
+  - type: play
+    text: Open the boxes to see how much the pile is worth.
+    widget: { kind: boxes, a: 3, b: 7, reveal: 2 }
+    done: "Three boxes of 2 is 6. Plus 7 loose coins: $6 + 7 = 13$."
+  - type: ask
+    who: mayor
+    text: So which guard was right about $3x + 7$ when $x = 2$?
+    options:
+      - "Guard 1: $3 \\times 2 = 6$, then $6 + 7 = 13$"
+      - "Guard 2: $2 + 7 = 9$, then $3 \\times 9 = 27$"
+    correct: 0
+    nudges:
+      "1": "Guard 2 added first! But the 7 coins aren't inside the boxes."
+    explain: "Multiply first: $3 \\times 2 = 6$. Then add: $6 + 7 = 13$."
+  - type: input
+    who: grimble
+    text: If $x = 4$, what is $2x + 5$?
+    math: 2x + 5
+    answer: 13
+    nudges:
+      - { value: 18, text: "You added first! Multiply first: $2 \\times 4$." }
+      - { value: 29, text: "No gluing! $2x$ is $2 \\times 4$." }
+      - { value: 11, text: "$2x$ means $2 \\times x$, not $2 + x$." }
+    explain: "$2 \\times 4 = 8$, then $8 + 5 = 13$."
+  - type: say
+    who: grimble
+    text: >-
+      Tricky bit: even when the plus is written FIRST, multiplying still goes first.
+      $10 + 2x$ is 10 coins plus two boxes.
+  - type: input
+    who: grimble
+    text: If $x = 3$, what is $10 + 2x$?
+    math: 10 + 2x
+    answer: 16
+    nudges:
+      - { value: 36, text: "Multiplying goes first, even if it's written second! Do $2x$ first." }
+    explain: "$2 \\times 3 = 6$, then $10 + 6 = 16$."
+  - type: input
+    who: grimble
+    text: If $x = 5$, what is $4x - 3$?
+    math: 4x - 3
+    answer: 17
+    nudges:
+      - { value: 8, text: "Multiply first, then subtract: $4 \\times 5$ first." }
+      - { value: 42, text: "No gluing! $4x$ is $4 \\times 5$." }
+    explain: "$4 \\times 5 = 20$, then $20 - 3 = 17$."
+  - type: practice
+    skill: eval-two
+    count: 4
+  - type: say
+    who: grimble
+    text: >-
+      The vault swings open. Inside: a pile of gold and… one sock. Just one sock. Goblins,
+      honestly.
+  - type: reward
+    gold: 15
+    text: The mayor lets you keep some vault gold.

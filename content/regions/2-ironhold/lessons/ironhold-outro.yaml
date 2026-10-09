@@ -1,0 +1,18 @@
+id: ironhold-outro
+title: Balance Restored
+beats:
+  - type: narrate
+    text: >-
+      Tipsy the Troll shuffles off, rubbing his head. The dwarves cheer. The Great Scale
+      swings gently… and settles perfectly level.
+  - type: say
+    who: brokka
+    text: >-
+      You've done Ironhold a great service, hero. Here — take this ledger. Every true
+      equation in the kingdom is a balanced scale. Never forget it.
+  - type: say
+    who: grimble
+    text: >-
+      Now we know how to keep things balanced AND how to undo moves. Put those together and
+      you can **solve equations**. South-east of here is **Gloomfen Marsh**. The fog is
+      thickest there. Bring boots. And maybe a nose clip.

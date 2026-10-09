@@ -1,0 +1,52 @@
+id: right-hammer
+title: The Right Hammer
+skill: pick-move
+beats:
+  - type: say
+    who: brokka
+    text: >-
+      Now the real forge-work. We want the box **alone** on one pan. Then the other pan tells
+      us exactly what's inside. Easy to say. Takes the right hammer.
+  - type: say
+    who: grimble
+    text: >-
+      Look at what's stuck to the box. Then use its evil twin — on both sides, of course.
+  - type: play
+    text: "Get the box alone on its pan! ($x + 4 = 9$)"
+    widget: { kind: balance, left: { x: 1, c: 4 }, right: { x: 0, c: 9 }, value: 5, goal: isolate, tools: [both] }
+    done: "The box sits alone, balanced against 5 coins. So $x = 5$!"
+  - type: ask
+    who: brokka
+    text: To get $x$ alone in $x + 6 = 10$, we…
+    options:
+      - "subtract 6 from both sides"
+      - "add 6 to both sides"
+      - "subtract 10 from both sides"
+    correct: 0
+    nudges:
+      "1": "Adding makes it $x + 12$ — the box gets MORE buried!"
+      "2": "Look at what's stuck to the box: it's the $+6$."
+    explain: "The box has $+6$ stuck to it, so subtract 6 from both sides."
+  - type: play
+    text: "Three boxes weigh 12 coins ($3x = 12$). Split both pans into 3 equal groups!"
+    widget: { kind: balance, left: { x: 3, c: 0 }, right: { x: 0, c: 12 }, value: 4, goal: isolate, tools: [divide] }
+    done: "One box balances 4 coins. $x = 4$."
+  - type: ask
+    who: brokka
+    text: To get $x$ alone in $\frac{x}{2} = 6$, we…
+    options:
+      - "multiply both sides by 2"
+      - "divide both sides by 2"
+      - "subtract 2 from both sides"
+    correct: 0
+    nudges:
+      "1": "The box is already being divided. Undo it with the opposite!"
+    explain: "The box is divided by 2, so multiply both sides by 2."
+  - type: practice
+    skill: pick-move
+    count: 4
+  - type: say
+    who: brokka
+    text: >-
+      Hah! A natural. Now, about that rock-dropping menace. I found footprints. Big ones.
+      Smelly ones. Troll ones.

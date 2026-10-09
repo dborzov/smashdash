@@ -1,0 +1,27 @@
+id: dragonspine-intro
+title: The Frozen Gate
+beats:
+  - type: narrate
+    text: >-
+      Snow. Lots of snow. The path winds up between icy peaks under a sky full of green
+      lights. Halfway up, something big and white and furry waves at you.
+  - type: say
+    who: snowbert
+    text: >-
+      Brrr-hello! I'm Snowbert. Don't worry, I'm a vegetarian yeti. The dragon up there,
+      Smolderbutt, has frozen all the mountain gates with double-wrapped locks. Nobody can get
+      home! My cave has been locked for a week. I've been sleeping in a snowdrift.
+  - type: say
+    who: grimble
+    text: >-
+      Double-wrapped locks. Ha! Those are just **two-step equations** — boxes with two things
+      stuck to them, like $3x + 5$. We've got everything we need. We just need to know what to
+      unwrap first.
+  - type: choose
+    who: snowbert
+    text: Would you like to borrow a scarf? I knitted it myself.
+    options:
+      - text: "Yes! It's freezing!"
+        reply: "Here you go! It's only slightly covered in yeti fur. Very warm."
+      - text: Does it come in frog size?
+        reply: "Sadly no. Grimble will have to stay chilly. Grimble is always a bit chilly, though."

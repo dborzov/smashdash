@@ -1,0 +1,560 @@
+/**
+ * The player's hero: a chibi adventurer drawn in SVG from a few choices
+ * (skin, hair colour, hair style, outfit colour), the class gear and equipped hat/cape.
+ */
+import type { Look } from '../engine/profile';
+
+export const SKINS = [
+  '#ffe0c2',
+  '#f6c99b',
+  '#e2a86f',
+  '#c68642',
+  '#8d5524',
+  '#5c3a1e',
+  '#9fe0a0',
+  '#b9a7ff',
+];
+export const HAIRS = [
+  '#2b1b0e',
+  '#5a3825',
+  '#a0522d',
+  '#e6be8a',
+  '#f2d16b',
+  '#d94f30',
+  '#ff6fb5',
+  '#5ec8ff',
+  '#9b7bff',
+  '#f2f2f2',
+];
+export const OUTFITS = [
+  '#6c4ce0',
+  '#e0475b',
+  '#1f9e75',
+  '#2b7de0',
+  '#e08a1f',
+  '#3a405a',
+  '#d14fb0',
+];
+export const HAIR_STYLES = ['Spiky', 'Long', 'Buns', 'Curly', 'Mohawk'];
+
+const CAPES: Record<string, string> = {
+  'red-cape': '#e0334d',
+  'purple-cape': '#5b2ea6',
+  'gold-cape': '#f2b705',
+  'rainbow-cape': 'url(#rainbow)',
+};
+
+function darker(hex: string, f = 0.7): string {
+  const n = parseInt(hex.slice(1), 16);
+  const r = Math.round(((n >> 16) & 255) * f);
+  const g = Math.round(((n >> 8) & 255) * f);
+  const b = Math.round((n & 255) * f);
+  return `rgb(${r},${g},${b})`;
+}
+
+function Hair({ style, color, back }: { style: number; color: string; back?: boolean }) {
+  const d = darker(color, 0.75);
+  if (back) {
+    if (style === 1)
+      return (
+        <path
+          d="M30 48 Q28 95 42 104 L78 104 Q92 95 90 48 Z"
+          fill={color}
+          stroke={d}
+          stroke-width="2.5"
+        />
+      );
+    if (style === 2)
+      return (
+        <g fill={color} stroke={d} stroke-width="2.5">
+          <circle cx="29" cy="30" r="11" />
+          <circle cx="91" cy="30" r="11" />
+        </g>
+      );
+    return null;
+  }
+  switch (style) {
+    case 0: // spiky
+      return (
+        <path
+          d="M30 46 L28 30 L38 34 L40 18 L50 28 L58 12 L64 27 L74 15 L77 30 L88 24 L86 38 L92 44 Q78 30 60 32 Q42 30 30 46 Z"
+          fill={color}
+          stroke={d}
+          stroke-width="2.5"
+          stroke-linejoin="round"
+        />
+      );
+    case 1: // long
+      return (
+        <path
+          d="M29 52 Q26 22 60 18 Q94 22 91 52 Q86 34 72 32 Q66 40 52 36 Q38 36 29 52 Z"
+          fill={color}
+          stroke={d}
+          stroke-width="2.5"
+        />
+      );
+    case 2: // buns
+      return (
+        <path
+          d="M30 46 Q30 20 60 19 Q90 20 90 46 Q80 32 60 33 Q40 32 30 46 Z"
+          fill={color}
+          stroke={d}
+          stroke-width="2.5"
+        />
+      );
+    case 3: // curly
+      return (
+        <g fill={color} stroke={d} stroke-width="2.5">
+          {[
+            [32, 40],
+            [36, 28],
+            [46, 20],
+            [58, 17],
+            [70, 19],
+            [81, 26],
+            [88, 38],
+            [40, 34],
+            [52, 28],
+            [66, 27],
+            [78, 33],
+          ].map(([x, y], i) => (
+            <circle key={i} cx={x} cy={y} r="9" />
+          ))}
+        </g>
+      );
+    default: // mohawk
+      return (
+        <path
+          d="M50 34 L48 8 L56 14 L60 4 L64 14 L72 8 L70 34 Q60 30 50 34 Z"
+          fill={color}
+          stroke={d}
+          stroke-width="2.5"
+          stroke-linejoin="round"
+        />
+      );
+  }
+}
+
+export function HatArt({ id, outfit }: { id: string; outfit: string }) {
+  switch (id) {
+    case 'party-hat':
+      return (
+        <g transform="rotate(-8 60 20)">
+          <path
+            d="M44 30 L60 -6 L76 30 Z"
+            fill="#ff5fa2"
+            stroke="#8a1c4a"
+            stroke-width="2.5"
+            stroke-linejoin="round"
+          />
+          <path d="M50 18 L70 18 M54 8 L66 8" stroke="#ffd166" stroke-width="4" />
+          <circle cx="60" cy="-7" r="5" fill="#ffd166" stroke="#a86b00" stroke-width="2" />
+        </g>
+      );
+    case 'viking-helmet':
+      return (
+        <g>
+          <path
+            d="M22 26 Q12 10 16 -4 Q24 12 34 18 Z"
+            fill="#fff4dc"
+            stroke="#7a6a50"
+            stroke-width="2.5"
+          />
+          <path
+            d="M98 26 Q108 10 104 -4 Q96 12 86 18 Z"
+            fill="#fff4dc"
+            stroke="#7a6a50"
+            stroke-width="2.5"
+          />
+          <path
+            d="M28 36 Q30 6 60 6 Q90 6 92 36 Z"
+            fill="#9aa4b5"
+            stroke="#4a5263"
+            stroke-width="2.5"
+          />
+          <rect
+            x="26"
+            y="32"
+            width="68"
+            height="8"
+            rx="4"
+            fill="#c98a3c"
+            stroke="#6b4a2b"
+            stroke-width="2"
+          />
+        </g>
+      );
+    case 'propeller-cap':
+      return (
+        <g>
+          <path
+            d="M30 34 Q32 10 60 10 Q88 10 90 34 Z"
+            fill="#2b7de0"
+            stroke="#163f73"
+            stroke-width="2.5"
+          />
+          <path d="M30 34 L60 34" stroke="#ffd166" stroke-width="0" />
+          <path d="M60 10 L60 0" stroke="#333" stroke-width="3" />
+          <g style={{ transformOrigin: '60px 0px', animation: 'spin .4s linear infinite' }}>
+            <ellipse
+              cx="60"
+              cy="0"
+              rx="20"
+              ry="4"
+              fill="#ff5fa2"
+              stroke="#8a1c4a"
+              stroke-width="2"
+            />
+          </g>
+          <path
+            d="M84 32 Q100 32 104 38 L86 38 Z"
+            fill="#2b7de0"
+            stroke="#163f73"
+            stroke-width="2"
+          />
+        </g>
+      );
+    case 'crown':
+      return (
+        <g>
+          <path
+            d="M36 32 L34 6 L48 18 L60 0 L72 18 L86 6 L84 32 Z"
+            fill="#ffd166"
+            stroke="#a86b00"
+            stroke-width="2.5"
+            stroke-linejoin="round"
+          />
+          <circle cx="60" cy="22" r="4" fill="#e0334d" />
+          <circle cx="46" cy="25" r="3" fill="#5ec8ff" />
+          <circle cx="74" cy="25" r="3" fill="#5ee6a8" />
+        </g>
+      );
+    case 'chicken-hat':
+      return (
+        <g>
+          <ellipse
+            cx="60"
+            cy="18"
+            rx="24"
+            ry="16"
+            fill="#fffaf0"
+            stroke="#8a7a60"
+            stroke-width="2.5"
+          />
+          <circle cx="78" cy="6" r="10" fill="#fffaf0" stroke="#8a7a60" stroke-width="2.5" />
+          <path
+            d="M78 -4 Q80 -12 84 -6 Q88 -12 88 -2"
+            fill="#e0334d"
+            stroke="#8a1c1c"
+            stroke-width="1.5"
+          />
+          <path d="M87 8 L96 10 L87 13 Z" fill="#ffb020" stroke="#a86b00" stroke-width="1.5" />
+          <circle cx="81" cy="4" r="2" fill="#222" />
+          <path d="M40 16 Q32 12 30 22" fill="none" stroke="#8a7a60" stroke-width="2.5" />
+        </g>
+      );
+    case 'wizard':
+      return (
+        <g>
+          <path
+            d="M28 34 Q60 26 92 34 L66 -14 Q60 -18 58 -12 Z"
+            fill={outfit}
+            stroke={darker(outfit, 0.55)}
+            stroke-width="2.5"
+            stroke-linejoin="round"
+          />
+          <ellipse
+            cx="60"
+            cy="34"
+            rx="36"
+            ry="7"
+            fill={outfit}
+            stroke={darker(outfit, 0.55)}
+            stroke-width="2.5"
+          />
+          <path d="M56 6 l2 5 5 1 -4 3 1 5 -4 -3 -4 3 1 -5 -4 -3 5 -1 Z" fill="#ffd166" />
+          <circle cx="70" cy="18" r="2.5" fill="#ffd166" />
+        </g>
+      );
+    case 'knight':
+      return (
+        <g>
+          <path
+            d="M28 40 Q28 6 60 6 Q92 6 92 40 L84 40 Q84 22 60 22 Q36 22 36 40 Z"
+            fill="#c9d1de"
+            stroke="#4a5263"
+            stroke-width="2.5"
+          />
+          <path
+            d="M60 6 Q64 -6 76 -8 Q70 2 66 8"
+            fill="#e0334d"
+            stroke="#8a1c1c"
+            stroke-width="2"
+          />
+        </g>
+      );
+    case 'rogue':
+      return (
+        <path
+          d="M24 56 Q22 12 60 10 Q98 12 96 56 Q90 30 60 28 Q30 30 24 56 Z"
+          fill="#2e2a3d"
+          stroke="#14111f"
+          stroke-width="2.5"
+        />
+      );
+    case 'bard':
+      return (
+        <g>
+          <path
+            d="M30 32 Q34 12 62 12 Q88 14 92 30 Q60 24 30 32 Z"
+            fill={outfit}
+            stroke={darker(outfit, 0.55)}
+            stroke-width="2.5"
+          />
+          <path
+            d="M76 18 Q100 -6 108 2 Q96 6 80 22 Z"
+            fill="#ffd166"
+            stroke="#a86b00"
+            stroke-width="2"
+          />
+        </g>
+      );
+    default:
+      return null;
+  }
+}
+
+function Weapon({ cls }: { cls: string }) {
+  switch (cls) {
+    case 'wizard':
+      return (
+        <g>
+          <rect
+            x="92"
+            y="62"
+            width="5"
+            height="68"
+            rx="2"
+            fill="#8b5a2b"
+            stroke="#4a2e14"
+            stroke-width="1.5"
+          />
+          <circle cx="94.5" cy="58" r="8" fill="#7dd3fc" stroke="#1d6fa3" stroke-width="2" />
+          <circle cx="92" cy="55" r="2.5" fill="#fff" />
+        </g>
+      );
+    case 'knight':
+      return (
+        <g>
+          <rect
+            x="93"
+            y="50"
+            width="6"
+            height="50"
+            rx="2"
+            fill="#e8edf5"
+            stroke="#4a5263"
+            stroke-width="2"
+          />
+          <rect
+            x="86"
+            y="96"
+            width="20"
+            height="5"
+            rx="2"
+            fill="#c98a3c"
+            stroke="#6b4a2b"
+            stroke-width="1.5"
+          />
+          <rect x="93.5" y="100" width="5" height="12" rx="2" fill="#6b4a2b" />
+          <path
+            d="M16 78 L36 78 L36 98 Q26 110 16 98 Z"
+            fill="#e0334d"
+            stroke="#6b1020"
+            stroke-width="2.5"
+          />
+          <path d="M26 82 L26 102 M18 90 L34 90" stroke="#ffd166" stroke-width="3" />
+        </g>
+      );
+    case 'rogue':
+      return (
+        <g>
+          <path d="M96 78 L104 58 L100 80 Z" fill="#e8edf5" stroke="#4a5263" stroke-width="1.5" />
+          <rect x="94" y="78" width="8" height="4" rx="1" fill="#6b4a2b" />
+          <path d="M22 80 L14 62 L20 82 Z" fill="#e8edf5" stroke="#4a5263" stroke-width="1.5" />
+        </g>
+      );
+    case 'bard':
+      return (
+        <g transform="rotate(-25 98 90)">
+          <ellipse
+            cx="98"
+            cy="98"
+            rx="12"
+            ry="14"
+            fill="#c98a3c"
+            stroke="#6b4a2b"
+            stroke-width="2"
+          />
+          <circle cx="98" cy="96" r="4" fill="#4a2e14" />
+          <rect
+            x="95.5"
+            y="58"
+            width="5"
+            height="32"
+            fill="#8b5a2b"
+            stroke="#4a2e14"
+            stroke-width="1.5"
+          />
+        </g>
+      );
+    default:
+      return null;
+  }
+}
+
+export interface AvatarProps {
+  look: Look;
+  cls: string;
+  hat?: string;
+  cape?: string;
+  /** Crop to head and shoulders. */
+  portrait?: boolean;
+  class?: string;
+  mood?: 'happy' | 'hurt' | 'ko';
+}
+
+export function Avatar({
+  look,
+  cls,
+  hat,
+  cape,
+  portrait,
+  class: className,
+  mood = 'happy',
+}: AvatarProps) {
+  const skin = SKINS[look.skin % SKINS.length];
+  const hair = HAIRS[look.hair % HAIRS.length];
+  const outfit = OUTFITS[look.outfit % OUTFITS.length];
+  const skinD = darker(skin, 0.75);
+  const capeFill = cape ? CAPES[cape] : null;
+  const headgear = hat ?? cls;
+  return (
+    <svg
+      width="100%"
+      height="100%"
+      viewBox={portrait ? '18 -4 84 84' : '0 -20 120 160'}
+      class={className}
+      style={{ overflow: 'visible' }}
+    >
+      <defs>
+        <linearGradient id="rainbow" x1="0" x2="1">
+          <stop offset="0" stop-color="#ff5f5f" />
+          <stop offset=".25" stop-color="#ffd166" />
+          <stop offset=".5" stop-color="#5ee6a8" />
+          <stop offset=".75" stop-color="#5ec8ff" />
+          <stop offset="1" stop-color="#9b7bff" />
+        </linearGradient>
+      </defs>
+      {capeFill && (
+        <path
+          d="M40 70 L80 70 Q98 104 96 132 Q60 140 24 132 Q22 104 40 70 Z"
+          fill={capeFill}
+          stroke="rgba(0,0,0,.35)"
+          stroke-width="2.5"
+        />
+      )}
+      <Hair style={look.hairStyle} color={hair} back />
+      {/* legs */}
+      <rect x="46" y="110" width="11" height="20" rx="5" fill="#3a2e4d" />
+      <rect x="63" y="110" width="11" height="20" rx="5" fill="#3a2e4d" />
+      <ellipse cx="51" cy="131" rx="9" ry="5" fill="#4a2e14" />
+      <ellipse cx="69" cy="131" rx="9" ry="5" fill="#4a2e14" />
+      {/* body */}
+      <path
+        d="M40 76 Q60 66 80 76 L84 114 Q60 122 36 114 Z"
+        fill={cls === 'knight' ? '#c9d1de' : outfit}
+        stroke={cls === 'knight' ? '#4a5263' : darker(outfit, 0.55)}
+        stroke-width="2.5"
+      />
+      {cls === 'knight' && (
+        <path
+          d="M48 82 L72 82 L70 104 Q60 110 50 104 Z"
+          fill={outfit}
+          stroke={darker(outfit, 0.55)}
+          stroke-width="2"
+        />
+      )}
+      {cls === 'wizard' && <path d="M60 72 L60 118" stroke="#ffd166" stroke-width="3" />}
+      {cls === 'rogue' && <path d="M40 92 L84 100" stroke="#6b4a2b" stroke-width="5" />}
+      {cls === 'bard' && (
+        <path
+          d="M52 76 L60 92 L68 76"
+          fill="#fff4dc"
+          stroke={darker(outfit, 0.55)}
+          stroke-width="2"
+        />
+      )}
+      <rect x="38" y="102" width="44" height="6" rx="3" fill="#4a2e14" opacity=".8" />
+      {/* arms */}
+      <path
+        d="M40 80 Q28 90 28 102"
+        stroke={cls === 'knight' ? '#c9d1de' : outfit}
+        stroke-width="10"
+        stroke-linecap="round"
+        fill="none"
+      />
+      <path
+        d="M80 80 Q92 88 94 98"
+        stroke={cls === 'knight' ? '#c9d1de' : outfit}
+        stroke-width="10"
+        stroke-linecap="round"
+        fill="none"
+      />
+      <circle cx="28" cy="104" r="6" fill={skin} stroke={skinD} stroke-width="2" />
+      <Weapon cls={cls} />
+      <circle cx="95" cy="100" r="6" fill={skin} stroke={skinD} stroke-width="2" />
+      {/* head */}
+      <circle cx="60" cy="48" r="30" fill={skin} stroke={skinD} stroke-width="2.5" />
+      <ellipse cx="31" cy="52" rx="4" ry="6" fill={skin} stroke={skinD} stroke-width="2" />
+      <ellipse cx="89" cy="52" rx="4" ry="6" fill={skin} stroke={skinD} stroke-width="2" />
+      {mood === 'ko' ? (
+        <g stroke="#2a1c10" stroke-width="3" stroke-linecap="round">
+          <path d="M45 48 l8 8 M53 48 l-8 8 M67 48 l8 8 M75 48 l-8 8" />
+        </g>
+      ) : mood === 'hurt' ? (
+        <g stroke="#2a1c10" stroke-width="3" stroke-linecap="round" fill="none">
+          <path d="M44 52 l8 -3 M76 52 l-8 -3" />
+        </g>
+      ) : (
+        <g>
+          <ellipse cx="49" cy="52" rx="4.5" ry="5.5" fill="#2a1c10" />
+          <ellipse cx="71" cy="52" rx="4.5" ry="5.5" fill="#2a1c10" />
+          <circle cx="50.5" cy="50" r="1.8" fill="#fff" />
+          <circle cx="72.5" cy="50" r="1.8" fill="#fff" />
+        </g>
+      )}
+      <ellipse cx="42" cy="62" rx="5" ry="3" fill="#ff7a9a" opacity=".45" />
+      <ellipse cx="78" cy="62" rx="5" ry="3" fill="#ff7a9a" opacity=".45" />
+      {mood === 'happy' ? (
+        <path
+          d="M52 64 Q60 71 68 64"
+          stroke="#2a1c10"
+          stroke-width="2.5"
+          fill="#fff"
+          stroke-linecap="round"
+        />
+      ) : (
+        <path
+          d="M53 68 Q60 63 67 68"
+          stroke="#2a1c10"
+          stroke-width="2.5"
+          fill="none"
+          stroke-linecap="round"
+        />
+      )}
+      <Hair style={look.hairStyle} color={hair} />
+      <HatArt id={headgear} outfit={outfit} />
+    </svg>
+  );
+}

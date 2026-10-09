@@ -1,0 +1,37 @@
+id: ironhold-intro
+title: The Wonky Scale
+beats:
+  - type: narrate
+    text: >-
+      The road climbs into the mountains. Hammers ring. Lava glows orange in deep channels.
+      This is Ironhold, home of the dwarves — and of the Great Scale of Truth, where every
+      trade in the kingdom is weighed.
+  - type: say
+    who: brokka
+    text: >-
+      Who goes there? A frog and a… hero? Hmph. Well, we need help. Something keeps sneaking
+      in at night and dropping rocks on ONE side of the Great Scale. Now nothing balances, and
+      dwarves are getting cheated left and right. Mostly left.
+  - type: say
+    who: grimble
+    text: >-
+      Brokka, my dear, this is perfect. Hero, here's a secret: an **equation** IS a balance
+      scale. The left side and the right side weigh exactly the same. The $=$ sign is the
+      pivot in the middle.
+  - type: show
+    text: "Left pan: a box and 3 coins. Right pan: 8 coins. Balanced — so we can write $x + 3 = 8$."
+    widget: { kind: balance, left: { x: 1, c: 3 }, right: { x: 0, c: 8 }, value: 5 }
+  - type: ask
+    who: brokka
+    text: If the scale is balanced, what does the $=$ sign tell us?
+    options:
+      - "Both sides weigh exactly the same"
+      - "The answer comes next"
+      - "The left side is heavier"
+    correct: 0
+    nudges:
+      "1": "That's how it works on a calculator. In an equation, $=$ means **both sides are the same amount**."
+    explain: "$=$ means both sides balance: they are exactly the same amount."
+  - type: say
+    who: brokka
+    text: Right. Let's teach you the Laws of the Forge. Grab an apron. Mind your eyebrows.

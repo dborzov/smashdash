@@ -1,0 +1,49 @@
+id: solve-the-riddle
+title: Crack the Riddle
+skill: story-solve
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      Step three: **solve it.** Step four: **answer the question that was asked.** You'd be
+      amazed how many heroes solve the equation and then shout the wrong number.
+  - type: show
+    who: pib
+    math: '\begin{aligned} 6x + 2 &= 20 \\ 6x &= 18 \\ x &= 3 \end{aligned}'
+    text: "So the troll bought **3 bags**. (And then ate them, bags included.)"
+  - type: input
+    who: ptolemeow
+    text: >-
+      I ate the same number of mice each day for 4 days, plus 2 mice for dessert. 22 mice in
+      all. **How many mice per day?**
+    answer: 5
+    nudges:
+      - { value: 20, text: "That's how many in the 4 days. How many is that **per day**?" }
+      - { value: 22, text: "That's the total. The riddle asks for mice per day." }
+    hint: "Let $x$ be mice per day: $4x + 2 = 22$."
+    explain: "$4x + 2 = 22$, so $4x = 20$ and $x = 5$ mice per day."
+  - type: say
+    who: grimble
+    text: >-
+      Now the Sphinx's next riddle has BIG numbers. Try guessing this one. I'll wait. …No,
+      actually, let's use algebra. It's faster.
+  - type: input
+    who: ptolemeow
+    text: >-
+      Circus tickets cost 12 gold each. A troll family buys some tickets and an 18-gold bucket
+      of popcorn. They pay 138 gold. **How many tickets?**
+    answer: 10
+    nudges:
+      - { value: 120, text: "That's what the tickets cost altogether. How many tickets is that?" }
+      - { value: 138, text: "That's the total. The riddle asks how many tickets." }
+    hint: "Let $x$ be the number of tickets: $12x + 18 = 138$."
+    explain: "$12x + 18 = 138$, so $12x = 120$ and $x = 10$ tickets."
+  - type: practice
+    skill: story-solve
+    count: 4
+  - type: say
+    who: ptolemeow
+    text: >-
+      Mrrrow. Impressive. The fish stall has reopened. In gratitude, I shall not sit on you.
+      But beware: the Muddler is HERE, in the market. I can smell his fog. It smells like wet
+      socks.

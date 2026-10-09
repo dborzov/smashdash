@@ -1,0 +1,76 @@
+id: tower
+order: 6
+name: Tower of Tens
+tagline: A wizard's tower where numbers grow gigantic and shrink to specks.
+scene: tower
+map: { x: 16, y: 30 }
+requires: [bramblebottom]
+palette: { sky: ["#090b2e", "#5a3bd6"], accent: "#c6a8ff", ground: "#2a2370" }
+outro: tower-outro
+monsters:
+  - { name: Zero Gremlin, seed: 51, hue: 250, taunts: ["I eat zeros! Nom nom!", "Where did your zeros go? HEHE"] }
+  - { name: Decimal Pixie, seed: 52, hue: 300, taunts: ["Hop hop! Wrong way!"] }
+  - { name: Giant Flea, seed: 53, hue: 60, taunts: ["I'm 10 to the minus 3 metres of PURE RAGE!"] }
+path:
+  - id: intro
+    type: story
+    title: The Floating Staircase
+    lesson: tower-intro
+  - id: repeat-spell
+    type: lesson
+    title: The Repeat Spell
+    lesson: repeat-spell
+  - id: growing-potion
+    type: lesson
+    title: Growing Potion
+    lesson: growing-potion
+  - id: gremlin-gang
+    type: encounter
+    title: Zero Gremlins
+    game: battle
+    skills: [power-meaning, pow10-up]
+    count: 5
+    monster: { name: Zero Gremlin, seed: 51, hue: 250 }
+  - id: shrinking-potion
+    type: lesson
+    title: Shrinking Potion
+    lesson: shrinking-potion
+  - id: potion-cabinet
+    type: encounter
+    title: The Potion Cabinet
+    game: chest
+    skills: [pow10-up, pow10-down]
+    count: 6
+  - id: decimal-hop
+    type: lesson
+    title: Decimal Hop
+    lesson: decimal-hop
+  - id: staircase
+    type: encounter
+    title: The Floating Staircase
+    game: bridge
+    skills: [times-pow10, pow10-down, pow10-up]
+    count: 6
+  - id: giant-numbers
+    type: lesson
+    title: Giant Numbers
+    lesson: giant-numbers
+  - id: observatory
+    type: encounter
+    title: The Observatory
+    game: battle
+    skills: [sci-notation, times-pow10]
+    count: 6
+    monster: { name: Giant Flea, seed: 53, hue: 60 }
+  - id: boss
+    type: boss
+    title: Gigantus Minimus
+    monster: { name: Gigantus Minimus, seed: 505, hue: 270 }
+    intro:
+      - "I am GIGANTUS MINIMUS! The Size Thief! I make mice as big as mountains and mountains as small as mice!"
+      - "Without the Professor's powers of ten, nobody can tell how big ANYTHING is! Mwahaha— ahem. Sorry. I'm the Muddler's apprentice. He makes me practise the laugh."
+    phases:
+      - { skills: [power-meaning, pow10-up], count: 3, taunt: "BIGGER! BIGGER! Ten times ten times TEN!" }
+      - { skills: [pow10-down, times-pow10], count: 3, taunt: "Shrink! Shrink to a speck! A decimal speck!" }
+      - { skills: [sci-notation], count: 3, taunt: "Is it giant? Is it tiny? You'll NEVER know!" }
+    defeat: "Waaah! I'm shrinking! I'm shrinking! I'm… 10 to the minus 3 metres tall… this is so embarrassing."
