@@ -1,0 +1,41 @@
+id: mirrors-intro
+title: The Echoing Door
+beats:
+  - type: narrate
+    text: >-
+      Behind Bramblebottom's turnip fields, a cave mouth glitters. Inside, every wall is a
+      mirror. You see a hundred of you. Ninety-nine of them have spinach in their teeth.
+  - type: say
+    who: ogre
+    text: >-
+      "OI! Stop right there!" "No, YOU stop right there!" "I was talking to the hero, Lefty."
+      "So was I, Righty!" …A huge ogre with two heads glares at you. Then at itself.
+  - type: say
+    who: ogre
+    text: >-
+      We're Lefty and Righty. One body, two heads, one stomach. And, sadly, one pair of socks.
+      We look after the **Copy Mirrors** — magic mirrors that make copies of things.
+  - type: say
+    who: grimble
+    text: >-
+      Copy mirrors! Copying is just multiplying, hero. Three copies of something is three
+      *times* that something.
+  - type: say
+    who: ogre
+    text: >-
+      Problem is, the Muddler let an imp in here. **Halfcopy.** He's meant to work the mirrors,
+      but he only copies the FIRST thing in each parcel and pockets the rest. Our lunch comes
+      out as two sandwiches and no pudding. Every. Single. Day.
+  - type: choose
+    who: ogre
+    text: You look hungry. Want some of our lunch?
+    options:
+      - text: Yes please!
+        reply: "Here's a sandwich. Righty licked it. Sorry. He licks everything."
+      - text: What's the pudding?
+        reply: "Was. WAS. Halfcopy took it. It was custard. We've cried about it twice today."
+  - type: say
+    who: grimble
+    text: >-
+      A number stuck to a bracket means *make that many copies of EVERYTHING inside*. Not
+      just the first thing. Let's teach that imp some proper copying.

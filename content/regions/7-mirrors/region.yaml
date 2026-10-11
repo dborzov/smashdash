@@ -1,0 +1,76 @@
+id: mirrors
+order: 7
+name: Mirrormaze Caves
+tagline: Crystal caves where everything comes in copies — and an imp who copies badly.
+scene: caves
+map: { x: 46, y: 86 }
+requires: [bramblebottom]
+palette: { sky: ["#120a2e", "#3a8fd6"], accent: "#8ff0ff", ground: "#3b2d6b" }
+outro: mirrors-outro
+monsters:
+  - { name: Mirror Mimic, seed: 61, hue: 190, taunts: ["I'm you! But worse!", "Copy THIS!"] }
+  - { name: Crystal Bat, seed: 62, hue: 280, taunts: ["Skreee! I eat columns!", "Crunchy crystals!"] }
+  - { name: Echo Goblin, seed: 63, hue: 140, taunts: ["Nyeh! Nyeh! …nyeh… nyeh…", "Copy copy copy!"] }
+path:
+  - id: intro
+    type: story
+    title: The Echoing Door
+    lesson: mirrors-intro
+  - id: copy-mirror
+    type: lesson
+    title: The Copy Mirror
+    lesson: copy-mirror
+  - id: bracket-buster
+    type: lesson
+    title: Bracket Buster
+    lesson: bracket-buster
+  - id: echo-scuffle
+    type: encounter
+    title: Echo Scuffle
+    game: battle
+    skills: [copy-groups, expand]
+    count: 5
+    monster: { name: Echo Goblin, seed: 63, hue: 140, taunts: ["Copy copy copy! …half!"] }
+  - id: number-spy
+    type: lesson
+    title: The Number Spy
+    lesson: number-spy
+  - id: mimic-chest
+    type: encounter
+    title: The Mimic's Hoard
+    game: chest
+    skills: [expand, expand-check, eval-parens]
+    count: 6
+  - id: mind-split
+    type: lesson
+    title: Split and Conquer
+    lesson: mind-split
+  - id: nearly-ten
+    type: lesson
+    title: Nearly Ten
+    lesson: nearly-ten
+  - id: crystal-bridge
+    type: encounter
+    title: The Crystal Bridge
+    game: bridge
+    skills: [split-tens, round-down, expand]
+    count: 6
+  - id: bat-cave
+    type: encounter
+    title: Bat Cave
+    game: battle
+    skills: [round-down, split-tens, expand-check]
+    count: 6
+    monster: { name: Crystal Bat, seed: 62, hue: 280 }
+  - id: boss
+    type: boss
+    title: Halfcopy the Imp
+    monster: { name: Halfcopy the Imp, seed: 606, hue: 285 }
+    intro:
+      - "Hee hee! I'm HALFCOPY! I copy the first thing and keep the rest! Your boxes, your coins, your times tables — all MINE!"
+      - "Every bracket in this cave is MY bracket now. You'll never bust them all!"
+    phases:
+      - { skills: [copy-groups, expand], count: 3, taunt: "Copy, copy, copy… HALF! Hee hee!" }
+      - { skills: [expand-check, expand], count: 3, taunt: "These rules are TOTALLY real. Don't test them. Please don't test them." }
+      - { skills: [split-tens, round-down], count: 3, taunt: "Seven times nine is sixty-NINE! Probably! Ish!" }
+    defeat: "Fine! FINE! I'll copy the whole parcel! Both coins! Even the pudding! …I hate pudding."

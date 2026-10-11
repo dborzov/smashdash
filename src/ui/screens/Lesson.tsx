@@ -3,8 +3,8 @@
  * interactive widgets, inline practice). Checks never cost hearts — lessons are a safe place.
  */
 import { useMemo, useState } from 'preact/hooks';
-import type { Beat, Lesson } from '../../content/schema';
-import type { Problem } from '../../skills/types';
+import type { Beat, Lesson, Widget } from '../../content/schema';
+import type { Problem, Visual } from '../../skills/types';
 import { Rng, hashString } from '../../engine/rng';
 import { generate, levelFor } from '../../skills';
 import { effectiveMastery, recordAnswer, type Outcome } from '../../engine/mastery';
@@ -31,6 +31,12 @@ export interface LessonResult {
   rewards: Extract<Beat, { type: 'reward' }>[];
 }
 
+/** Widgets that work as a still picture next to a question. */
+const PICTURES = new Set(['boxes', 'balance', 'groups', 'area', 'plot', 'circuit']);
+function asVisual(w: Widget | undefined): Visual | undefined {
+  return w && PICTURES.has(w.kind) ? ({ ...w } as Visual) : undefined;
+}
+
 function beatToProblem(
   b: Extract<Beat, { type: 'ask' | 'input' }>,
   skill: string,
@@ -41,10 +47,7 @@ function beatToProblem(
       skill,
       prompt: b.text,
       math: b.math,
-      visual:
-        b.widget && (b.widget.kind === 'boxes' || b.widget.kind === 'balance')
-          ? b.widget
-          : undefined,
+      visual: asVisual(b.widget),
       answer: { kind: 'number', value: b.answer },
       nudges: (b.nudges ?? []).map((n) => ({ match: n.value, text: n.text })),
       hint: b.hint,
@@ -57,10 +60,7 @@ function beatToProblem(
     skill,
     prompt: b.text,
     math: b.math,
-    visual:
-      b.widget && (b.widget.kind === 'boxes' || b.widget.kind === 'balance')
-        ? { ...b.widget }
-        : undefined,
+    visual: asVisual(b.widget),
     answer: {
       kind: 'choice',
       options: order.map((i) => b.options[i]),

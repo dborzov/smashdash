@@ -157,7 +157,7 @@ export function ProblemCard({
       {problem.math && <MathBig tex={problem.math} />}
       {problem.visual && (
         <div style={{ margin: '6px 0' }}>
-          <WidgetView w={problem.visual} interactive={false} />
+          <WidgetView w={problem.visual} interactive={false} quiz />
         </div>
       )}
 

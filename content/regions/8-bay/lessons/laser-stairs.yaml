@@ -1,0 +1,51 @@
+id: laser-stairs
+title: Laser Stairs
+skill: step-pattern
+beats:
+  - type: say
+    who: polly
+    text: >-
+      Look at my log: 3, 5, 7, 9… Every step along, the beam climbs the same amount. Like
+      stairs! Stairs for a laser! I love it! SQUAWK!
+  - type: show
+    text: "Start at 3. Then up 2, up 2, up 2."
+    widget: { kind: plot, size: 10, line: { m: 2, b: 3 }, points: [{ x: 0, y: 3 }, { x: 1, y: 5 }, { x: 2, y: 7 }, { x: 3, y: 9 }] }
+  - type: ask
+    who: grimble
+    text: In $y = 2x + 3$, each step along ($x$ goes up by 1), how far does $y$ climb?
+    options:
+      - "2"
+      - "3"
+      - "5"
+    correct: 0
+    nudges:
+      "1": "The $+ 3$ is where the beam *starts*. The climb comes from the 2 stuck to $x$."
+      "2": "Look at the log: 5, 7, 9… how much does it jump each time?"
+    explain: "One more $x$ means one more lot of 2. The beam climbs 2 per step."
+  - type: say
+    who: grimble
+    text: >-
+      So a rule tells you two things. The number stuck to $x$ is the **climb**. The number
+      added on is the **start** — where the beam is at $x = 0$. $y = 2x + 3$: start at 3,
+      climb 2.
+  - type: input
+    who: polly
+    text: The rule $y = 3x + 1$ gives 1, 4, 7, … What comes next?
+    math: '\begin{array}{c|cccc} x & 0 & 1 & 2 & 3 \\ \hline y & 1 & 4 & 7 & \box \end{array}'
+    answer: 10
+    nudges:
+      - { value: 8, text: "It doesn't go up by 1 — it climbs 3 each step." }
+      - { value: 11, text: "It climbs 3, the number stuck to $x$. Not 4." }
+    explain: "$7 + 3 = 10$."
+  - type: input
+    who: polly
+    text: A beam passes $(1, 4)$ and $(2, 7)$. Where will it be at $x = 4$?
+    answer: 13
+    nudges:
+      - { value: 10, text: "That's at $x = 3$. One more step!" }
+      - { value: 9, text: "It climbs 3 per step, not 1." }
+    hint: "From $(2, 7)$, two more steps of 3."
+    explain: "It climbs 3 per step: $7 + 3 + 3 = 13$."
+  - type: practice
+    skill: step-pattern
+    count: 4

@@ -905,6 +905,382 @@ function Tower() {
 
 // ---------------------------------------------------------------------------
 
+function Crystal({
+  x,
+  y,
+  s = 1,
+  c = '#8ff0ff',
+  r = 0,
+}: {
+  x: number;
+  y: number;
+  s?: number;
+  c?: string;
+  r?: number;
+}) {
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${r}) scale(${s})`}>
+      <path
+        d="M0 0 L-22 -70 L0 -130 L22 -70 Z"
+        fill={c}
+        opacity=".85"
+        stroke="#1a1040"
+        stroke-width="3"
+      />
+      <path d="M0 0 L0 -130 L22 -70 Z" fill="#fff" opacity=".25" />
+      <path
+        d="M-30 0 L-44 -46 L-30 -80 L-18 -44 Z"
+        fill={c}
+        opacity=".7"
+        stroke="#1a1040"
+        stroke-width="3"
+      />
+      <path
+        d="M26 0 L40 -36 L30 -64 L18 -34 Z"
+        fill={c}
+        opacity=".7"
+        stroke="#1a1040"
+        stroke-width="3"
+      />
+    </g>
+  );
+}
+
+function Caves() {
+  return (
+    <Svg>
+      <defs>
+        <radialGradient id="c-bg" cx=".5" cy=".55" r=".75">
+          <stop offset="0" stop-color="#3a2a8a" />
+          <stop offset=".55" stop-color="#1c1250" />
+          <stop offset="1" stop-color="#07041a" />
+        </radialGradient>
+        <radialGradient id="c-pool">
+          <stop offset="0" stop-color="#8ff0ff" stop-opacity=".8" />
+          <stop offset="1" stop-color="#8ff0ff" stop-opacity="0" />
+        </radialGradient>
+        <linearGradient id="c-mirror" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#dff8ff" />
+          <stop offset=".5" stop-color="#7ab8e0" />
+          <stop offset="1" stop-color="#c9b3ff" />
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="800" fill="url(#c-bg)" />
+      {/* mirrors on the back wall, each with a little reflected crystal */}
+      {[
+        [300, 330, -6],
+        [600, 300, 0],
+        [900, 330, 6],
+      ].map(([x, y, r], i) => (
+        <g key={i} transform={`translate(${x} ${y}) rotate(${r})`}>
+          <ellipse rx="92" ry="140" fill="#2a1c10" />
+          <ellipse rx="80" ry="128" fill="url(#c-mirror)" opacity=".85" />
+          <path
+            d="M-40 -80 Q-10 -110 30 -96"
+            stroke="#fff"
+            stroke-width="8"
+            fill="none"
+            opacity=".5"
+            stroke-linecap="round"
+          />
+          <g opacity=".5" transform="translate(0 60) scale(.6)">
+            <path d="M0 0 L-22 -70 L0 -130 L22 -70 Z" fill={i === 1 ? '#ff8ac4' : '#8ff0ff'} />
+          </g>
+          <ellipse
+            rx="80"
+            ry="128"
+            fill="#fff"
+            opacity=".0"
+            style={{ animation: `flicker ${3 + i}s ease-in-out infinite` }}
+          />
+        </g>
+      ))}
+      {/* stalactites */}
+      {Array.from({ length: 14 }, (_, i) => {
+        const x = i * 90 + 20;
+        const h = 60 + ((i * 53) % 90);
+        return <path key={i} d={`M${x - 26} 0 L${x} ${h} L${x + 26} 0 Z`} fill="#140c38" />;
+      })}
+      <path d={hills(71, 600, 26, 7)} fill="#1a1248" />
+      <ellipse cx="600" cy="690" rx="330" ry="60" fill="url(#c-pool)" filter="url(#blur8)" />
+      <ellipse cx="600" cy="690" rx="250" ry="34" fill="#5ad0f0" opacity=".55" />
+      <Crystal x={140} y={640} s={1.2} c="#8ff0ff" r={-8} />
+      <Crystal x={330} y={700} s={0.8} c="#ff8ac4" r={6} />
+      <Crystal x={900} y={690} s={1} c="#c6a8ff" r={-4} />
+      <Crystal x={1080} y={650} s={1.3} c="#8ff0ff" r={10} />
+      <path d={hills(72, 740, 14, 6)} fill="#0d0828" />
+      {[180, 520, 760, 1010].map((x, i) => (
+        <circle
+          key={i}
+          cx={x}
+          cy={420 + (i % 2) * 60}
+          r="5"
+          fill="#fff"
+          filter="url(#glow)"
+          style={{ animation: `twinkle ${1.8 + i * 0.5}s ease-in-out infinite` }}
+        />
+      ))}
+    </Svg>
+  );
+}
+
+// ---------------------------------------------------------------------------
+
+function Bay() {
+  return (
+    <Svg>
+      <defs>
+        <linearGradient id="b-sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#0a1a3a" />
+          <stop offset=".55" stop-color="#7a3a7a" />
+          <stop offset="1" stop-color="#ff8a5c" />
+        </linearGradient>
+        <linearGradient id="b-sea" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#1f6f8b" />
+          <stop offset="1" stop-color="#0a2a4a" />
+        </linearGradient>
+        <linearGradient id="b-beam" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#ff6fa8" stop-opacity="0" />
+          <stop offset="1" stop-color="#ff6fa8" stop-opacity=".9" />
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="800" fill="url(#b-sky)" />
+      <Stars n={50} seed={81} maxY={260} />
+      <circle cx="420" cy="470" r="90" fill="#ffd166" opacity=".95" />
+      <rect x="0" y="470" width="1200" height="330" fill="url(#b-sea)" />
+      {[0, 1, 2, 3, 4].map((i) => (
+        <rect
+          key={i}
+          x={360 + i * 8}
+          y={490 + i * 28}
+          width={120 - i * 18}
+          height="5"
+          rx="2"
+          fill="#ffd166"
+          opacity={0.6 - i * 0.1}
+        />
+      ))}
+      {/* fog ships on the horizon */}
+      {[
+        [180, 470],
+        [640, 476],
+      ].map(([x, y], i) => (
+        <g
+          key={i}
+          transform={`translate(${x} ${y})`}
+          opacity=".7"
+          style={{ animation: `bob ${3 + i}s ease-in-out infinite` }}
+        >
+          <path d="M-40 0 L40 0 L30 14 L-30 14 Z" fill="#5a4a7a" />
+          <path d="M0 0 L0 -50 L30 -10 Z" fill="#d8ccf0" />
+          <path d="M-60 6 Q0 -20 60 6" fill="#c9b3ff" opacity=".35" filter="url(#blur8)" />
+        </g>
+      ))}
+      {/* the laser beam, sweeping the bay */}
+      <path
+        d="M1010 235 L110 160 L110 230 Z"
+        fill="url(#b-beam)"
+        opacity=".75"
+        style={{ animation: 'sway 6s ease-in-out infinite', transformOrigin: '1010px 235px' }}
+      />
+      {/* cliff and lighthouse */}
+      <path
+        d="M820 800 L860 520 Q930 470 1010 480 L1060 440 Q1140 450 1200 470 L1200 800 Z"
+        fill="#3a2a2a"
+      />
+      <path
+        d="M860 520 Q930 470 1010 480 L1060 440 Q1140 450 1200 470 L1200 500 Q1100 480 1060 470 L1010 505 Q930 495 870 540 Z"
+        fill="#3f8a4a"
+      />
+      <g transform="translate(1010 480)">
+        <path
+          d="M-34 0 L-24 -230 L24 -230 L34 0 Z"
+          fill="#fff4e6"
+          stroke="#2a1c10"
+          stroke-width="4"
+        />
+        {[-40, -110, -180].map((y) => {
+          // The tower tapers from 34 wide (half) at the base to 24 at the top.
+          const hw = (v: number) => 34 + (v * 10) / 230;
+          return (
+            <path
+              key={y}
+              d={`M${-hw(y)} ${y} L${hw(y)} ${y} L${hw(y - 34)} ${y - 34} L${-hw(y - 34)} ${y - 34} Z`}
+              fill="#e0334d"
+            />
+          );
+        })}
+        <rect
+          x="-30"
+          y="-262"
+          width="60"
+          height="34"
+          rx="6"
+          fill="#ffd166"
+          stroke="#2a1c10"
+          stroke-width="4"
+          filter="url(#glow)"
+        />
+        <path
+          d="M-36 -262 L0 -300 L36 -262 Z"
+          fill="#e0334d"
+          stroke="#2a1c10"
+          stroke-width="4"
+          stroke-linejoin="round"
+        />
+        {/* Polly on the rail */}
+        <text x="34" y="-266" font-size="34">
+          🦜
+        </text>
+      </g>
+      {/* Inkbert's tentacles */}
+      {[
+        [90, 640, 1],
+        [250, 690, -1],
+      ].map(([x, y, d], i) => (
+        <path
+          key={i}
+          d={`M${x} ${y + 60} Q${x + 30 * d} ${y - 40} ${x - 10 * d} ${y - 110} Q${x - 30 * d} ${y - 140} ${x + 10 * d} ${y - 150}`}
+          fill="none"
+          stroke="#7a4ac9"
+          stroke-width="26"
+          stroke-linecap="round"
+          style={{
+            animation: `sway ${4 + i}s ease-in-out infinite`,
+            transformOrigin: `${x}px ${y + 60}px`,
+          }}
+        />
+      ))}
+      <path d={hills(91, 760, 10, 9)} fill="#0a2a4a" opacity=".8" />
+    </Svg>
+  );
+}
+
+// ---------------------------------------------------------------------------
+
+function Junkyard() {
+  const junk = [];
+  for (let i = 0; i < 26; i++) {
+    const x = (i * 97) % 1200;
+    const y = 540 + ((i * 61) % 120);
+    const k = i % 4;
+    junk.push(
+      k === 0 ? (
+        <circle key={i} cx={x} cy={y} r="26" fill="#2a2a2a" stroke="#555" stroke-width="10" />
+      ) : k === 1 ? (
+        <rect
+          key={i}
+          x={x - 40}
+          y={y - 20}
+          width="80"
+          height="40"
+          rx="4"
+          fill="#8a6a4a"
+          stroke="#3a2a1a"
+          stroke-width="3"
+          transform={`rotate(${((i * 23) % 40) - 20} ${x} ${y})`}
+        />
+      ) : k === 2 ? (
+        <path
+          key={i}
+          d={`M${x - 50} ${y + 10} L${x + 40} ${y - 30} L${x + 50} ${y - 16} L${x - 40} ${y + 24} Z`}
+          fill="#9aa4b8"
+          stroke="#3a4050"
+          stroke-width="3"
+        />
+      ) : (
+        <g key={i} transform={`translate(${x} ${y})`}>
+          <circle r="22" fill="#c98a4b" stroke="#5a3a20" stroke-width="3" />
+          <circle r="8" fill="#5a3a20" />
+        </g>
+      ),
+    );
+  }
+  return (
+    <Svg>
+      <defs>
+        <linearGradient id="j-sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#1a0f2e" />
+          <stop offset=".6" stop-color="#7a3a3a" />
+          <stop offset="1" stop-color="#ff9a3c" />
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="800" fill="url(#j-sky)" />
+      {/* storm clouds and lightning */}
+      {[0, 1, 2].map((i) => (
+        <ellipse
+          key={i}
+          cx={200 + i * 400}
+          cy={90 + (i % 2) * 40}
+          rx="260"
+          ry="70"
+          fill="#2a1a3a"
+          opacity=".85"
+          filter="url(#blur8)"
+        />
+      ))}
+      <path
+        d="M760 110 L720 220 L760 220 L700 360"
+        fill="none"
+        stroke="#bfe6ff"
+        stroke-width="7"
+        stroke-linejoin="round"
+        filter="url(#glow)"
+        style={{ animation: 'flicker 3.5s steps(2) infinite' }}
+      />
+      <path d={hills(101, 520, 60, 5)} fill="#4a3a3a" />
+      {/* tesla coil */}
+      <g transform="translate(940 520)">
+        <path
+          d="M-30 0 L-14 -200 L14 -200 L30 0 Z"
+          fill="#7a6a5a"
+          stroke="#2a1c10"
+          stroke-width="4"
+        />
+        {[-40, -80, -120, -160].map((y) => (
+          <rect key={y} x="-22" y={y} width="44" height="8" rx="3" fill="#e0a526" />
+        ))}
+        <ellipse cy="-214" rx="44" ry="20" fill="#c9c9c9" stroke="#2a1c10" stroke-width="4" />
+        {[-1, 1].map((d) => (
+          <path
+            key={d}
+            d={`M${d * 40} -214 l${d * 30} -20 l${d * -10} -10 l${d * 40} -26`}
+            fill="none"
+            stroke="#7dd3fc"
+            stroke-width="4"
+            filter="url(#glow)"
+            style={{ animation: `flicker ${1.2 + (d + 1) * 0.3}s steps(2) infinite` }}
+          />
+        ))}
+      </g>
+      <path d={hills(102, 600, 40, 7)} fill="#5a4a3a" />
+      {junk}
+      {/* Nugget the battlebot */}
+      <g transform="translate(360 650)" style={{ animation: 'bob 1.4s ease-in-out infinite' }}>
+        <rect
+          x="-50"
+          y="-40"
+          width="100"
+          height="44"
+          rx="10"
+          fill="#e0a526"
+          stroke="#2a1c10"
+          stroke-width="4"
+        />
+        <path d="M50 -36 L84 -18 L50 0 Z" fill="#9aa4b8" stroke="#2a1c10" stroke-width="4" />
+        <circle cx="-30" cy="8" r="14" fill="#2a2a2a" />
+        <circle cx="30" cy="8" r="14" fill="#2a2a2a" />
+        <circle cx="10" cy="-22" r="8" fill="#7dd3fc" stroke="#2a1c10" stroke-width="3" />
+        <rect x="-38" y="-34" width="12" height="22" rx="3" fill="#2a2a2a" />
+        <rect x="-22" y="-34" width="12" height="22" rx="3" fill="#2a2a2a" />
+      </g>
+      <path d={hills(103, 740, 16, 8)} fill="#3a2a22" />
+    </Svg>
+  );
+}
+
+// ---------------------------------------------------------------------------
+
 export const SCENES: Record<
   string,
   { Art: ComponentType; particles?: ParticleKind; count?: number }
@@ -915,6 +1291,9 @@ export const SCENES: Record<
   peaks: { Art: Peaks, particles: 'snow', count: 50 },
   bazaar: { Art: Bazaar, particles: 'spark', count: 18 },
   tower: { Art: Tower, particles: 'spark', count: 30 },
+  caves: { Art: Caves, particles: 'spark', count: 22 },
+  bay: { Art: Bay, particles: 'star', count: 16 },
+  junkyard: { Art: Junkyard, particles: 'ember', count: 30 },
 };
 
 export function Scene({ id, dim = 0 }: { id: string; dim?: number }) {

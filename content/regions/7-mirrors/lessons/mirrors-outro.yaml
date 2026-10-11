@@ -1,0 +1,20 @@
+id: mirrors-outro
+title: Whole Copies
+beats:
+  - type: narrate
+    text: >-
+      Halfcopy coughs up every coin he ever pinched. They bounce off the mirrors, a thousand
+      sparkly copies of a thousand sparkly coins. The Copy Mirrors hum happily.
+  - type: say
+    who: ogre
+    text: >-
+      "Two whole lunches!" "WITH custard!" "Best day ever!" "Hero, we wrote you a song." "It's
+      called *Two Times Everything*." "It's very long." "Twice as long as a normal song."
+  - type: say
+    who: grimble
+    text: >-
+      You can bust brackets, catch fake rules with a spy, and do $7 \times 9$ faster than a
+      dwarf with an abacus. Not bad for someone who still can't catch flies with their tongue.
+  - type: reward
+    gold: 40
+    text: Lefty and Righty give you their pudding money.

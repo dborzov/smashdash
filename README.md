@@ -4,13 +4,14 @@
 
 Smashdash is a story-driven fantasy RPG for curious kids (about grades 3–7) that teaches the
 *point* of algebra — variables, expressions, balancing and solving equations, story problems —
-plus powers of ten and scientific notation. Create a hero, explore six regions, learn spells
-(skills) from a sarcastic frog, battle monsters with maths, keep your streak alive, and try
-not to let your pet die of poop.
+plus powers of ten, the distributive law and mental maths, coordinates and straight-line
+graphs, and an intuitive first taste of electricity and Ohm's law. Create a hero, explore nine
+regions, learn spells (skills) from a sarcastic frog, battle monsters with maths, keep your
+streak alive, and try not to let your pet die of poop.
 
 ▶ **Play:** https://dborzov.github.io/smashdash/
 
-- 22 atomic skills, each with a story lesson, interactive checks and an adaptive problem
+- 38 atomic skills, each with a story lesson, interactive checks and an adaptive problem
   generator that predicts common mistakes and nudges instead of punishing.
 - Battles, treasure chests, rickety bridges, bosses, wandering monsters for spaced review.
 - XP, levels, gold, loot, a shop, hats and capes, a daily goal with streaks, and a

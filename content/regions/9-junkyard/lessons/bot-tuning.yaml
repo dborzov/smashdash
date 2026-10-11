@@ -1,0 +1,55 @@
+id: bot-tuning
+title: Tune the Bot
+skill: ohm-solve
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      Here's the clever bit. Ohm's law is an **equation**, and you're an equation-smashing
+      hero! Multiply both sides of $I = \frac{V}{R}$ by $R$ and you get the same law, back
+      to front.
+  - type: show
+    math: 'I = \frac{V}{R} \quad\Longrightarrow\quad V = I \times R'
+    text: "Volts = amps × ohms. Push = flow × squeeze."
+  - type: input
+    who: sprocket
+    text: Nugget's motor is $3\,\Omega$ and needs $3\,\text{A}$ to ram at full power. How many volts of push?
+    math: 'V = 3 \times 3'
+    answer: 9
+    nudges:
+      - { value: 6, text: "Not plus — volts = amps **times** ohms." }
+      - { value: 1, text: "Multiply, don't divide: $3 \\times 3$." }
+    explain: "$V = 3 \\times 3 = 9$ volts."
+  - type: input
+    who: sprocket
+    text: And how many AA batteries is that? (Each gives $1.5$ volts.)
+    answer: 6
+    nudges:
+      - { value: 9, text: "9 is the volts. How many 1.5-volt batteries make 9 volts?" }
+      - { value: 13.5, text: "Divide by 1.5, don't multiply." }
+    hint: Two AAs make 3 volts.
+    explain: "$9 \\div 1.5 = 6$ batteries."
+  - type: play
+    text: >-
+      Stack the AAs for exactly $3\,\text{A}$. Careful: anything over $3\,\text{A}$ blows
+      the fuse! Poof, smoke, sad robot.
+    widget: { kind: circuit, cells: 2, load: motor, ohms: 3, fuse: 3, tools: [cells], goal: amps, target: 3 }
+    done: "Six AAs, nine volts, three amps. Nugget is ready for RAMMAGEDDON!"
+  - type: say
+    who: sprocket
+    text: >-
+      One last thing. Our spies tested Clankenstein's armour: $12$ volts made only $4$ amps
+      flow through it. How many ohms of mud is that armour?
+  - type: input
+    who: grimble
+    text: Solve for $R$, just like in Gloomfen!
+    math: '12 = 4 \times R'
+    answer: 3
+    nudges:
+      - { value: 48, text: "Undo the $\\times 4$ by **dividing** both sides by 4." }
+      - { value: 8, text: "It's $4 \\times R$, so undo it with ÷, not −." }
+    hint: Divide both sides by 4.
+    explain: "$R = 12 \\div 4 = 3$ ohms. Not so tough after all, Clankenstein."
+  - type: practice
+    skill: ohm-solve
+    count: 4

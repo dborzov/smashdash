@@ -1,0 +1,78 @@
+id: babies-want-nanny
+title: Babies Want Nanny
+skill: closed-loop
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      Inside every wire are zillions of teeny-tiny things called **electrons**. And here's a
+      secret about electrons: they are babies. Grumpy ones.
+  - type: say
+    who: zap
+    text: WAAAAH! NANNYYYY!
+  - type: say
+    who: grimble
+    text: >-
+      This is Little Zap, a baby electron. Every electron carries a tiny **negative**
+      charge. Which explains the attitude.
+  - type: show
+    text: >-
+      A battery has two ends. The **−** end is a crowded nursery, packed with crying baby
+      electrons. The **+** end is full of **Nanny Ions**, with open arms and biscuits. The
+      babies want Nanny SO much.
+    widget: { kind: circuit, cells: 2, gap: true }
+  - type: say
+    who: zap
+    text: >-
+      I can't go through the battery! There's a wall in the middle! WAAAH! I'll have to crawl
+      ALL the way round!
+  - type: say
+    who: grimble
+    text: >-
+      Exactly. The babies must crawl out of the − end, along a wire, all the way round to the
+      + end. That complete road is a **circuit** — from "circle". It has to be a full loop.
+  - type: ask
+    who: grimble
+    text: So what do the babies need, to get to Nanny?
+    options:
+      - "A complete loop of wire from − all the way round to +"
+      - "Just one wire coming out of the − end"
+      - "A really loud battery"
+    correct: 0
+    nudges:
+      "1": "A wire that doesn't reach the + end is a dead end! The road has to go all the way round."
+    explain: "No full loop, no flow. The babies only move if they can reach Nanny."
+  - type: play
+    text: Rust rats chewed the wire! Join up the gap.
+    widget: { kind: circuit, cells: 2, gap: true, tools: [close], goal: close }
+    done: "The babies stream round the loop — and as they squeeze through the bulb, it glows!"
+  - type: say
+    who: grimble
+    text: >-
+      Why does the bulb glow? Its wire is super thin, so the babies have to squeeze through so
+      hard they get hot. Hot enough to shine. Sweaty babies make light. Science is disgusting.
+  - type: ask
+    who: sprocket
+    text: I wired this one up for Nugget. Will the bulb light?
+    widget: { kind: circuit, cells: 2, sameEnd: true }
+    options:
+      - "Yes"
+      - "No"
+    correct: 1
+    nudges:
+      "0": "Follow both wires. They both go to the **same** end! The babies never reach Nanny."
+    explain: "Both wires land on the − end, so there's no road to +. No loop, no light."
+  - type: ask
+    who: sprocket
+    text: How about Nugget's motor?
+    widget: { kind: circuit, cells: 2, load: motor }
+    options:
+      - "It spins"
+      - "It stays still"
+    correct: 0
+    nudges:
+      "1": "Follow the wire from − round to +. Any gaps?"
+    explain: "A complete loop! The babies crawl through the motor and spin it."
+  - type: practice
+    skill: closed-loop
+    count: 4

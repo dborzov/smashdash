@@ -83,3 +83,45 @@ gigantus:
   color: "#c08cff"
   seed: 505
   hue: 270
+ogre:
+  name: Lefty & Righty
+  art: npc
+  color: "#b5e05a"
+  seed: 79
+  hue: 90
+polly:
+  name: Captain Polly Gon
+  art: npc
+  color: "#ff6b6b"
+  seed: 83
+  hue: 0
+sprocket:
+  name: Sprocket
+  art: npc
+  color: "#7dd3fc"
+  seed: 89
+  hue: 190
+zap:
+  name: Little Zap
+  art: npc
+  color: "#9fd8ff"
+  seed: 97
+  hue: 205
+halfcopy:
+  name: Halfcopy the Imp
+  art: monster
+  color: "#c08cff"
+  seed: 606
+  hue: 285
+inkbert:
+  name: Inkbert the Kraken
+  art: monster
+  color: "#5ab4e0"
+  seed: 707
+  hue: 200
+clankenstein:
+  name: Clankenstein
+  art: monster
+  color: "#ff9f43"
+  seed: 808
+  hue: 30

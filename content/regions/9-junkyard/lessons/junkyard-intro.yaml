@@ -1,0 +1,35 @@
+id: junkyard-intro
+title: Rammageddon!
+beats:
+  - type: narrate
+    text: >-
+      Mountains of scrap glitter under a stormy orange sky. Something small whizzes between
+      the heaps and rams a tin bucket so hard it rings like a church bell.
+  - type: say
+    who: sprocket
+    text: >-
+      NUGGET! BRAKES! Oh — hi! I'm Sprocket, best bot-builder in the junkyard. That's Nugget.
+      He's a battlebot. He runs on AA batteries and pure attitude.
+  - type: say
+    who: sprocket
+    text: >-
+      The Muddler is hosting **RAMMAGEDDON**, the biggest battlebot rumble ever. His bot,
+      Clankenstein, is the size of a barn. If we lose, he gets the whole junkyard!
+  - type: say
+    who: sprocket
+    text: >-
+      But Nugget keeps stopping. Or crawling like a snail. Or — one time — exploding. Just a
+      tiny bit. He's fine. He's mostly fine.
+  - type: say
+    who: grimble
+    text: >-
+      Hmm. I'm a mathematician, not an electrician. But electricity is just numbers that
+      wiggle. Let's find out what's *really* going on inside those wires.
+  - type: choose
+    who: sprocket
+    text: Want to pat Nugget?
+    options:
+      - text: Yes!
+        reply: "He likes you! That's his happy beep. Or his 'about to ram you' beep. Hard to tell."
+      - text: Does he bite?
+        reply: "No, no. He rams. Totally different. Stand behind the fridge."

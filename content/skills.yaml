@@ -117,3 +117,86 @@
   region: tower
   icon: "🔭"
   summary: "Read, write and compare numbers like 4.5 × 10⁶."
+
+- id: copy-groups
+  name: Copycat
+  region: mirrors
+  icon: "🪞"
+  summary: "3(x + 2) means three copies of the whole parcel (x + 2)."
+- id: expand
+  name: Bracket Buster
+  region: mirrors
+  icon: "🧨"
+  summary: "The number outside multiplies everything inside: 2(x + 3) = 2x + 6."
+- id: expand-check
+  name: Number Spy
+  region: mirrors
+  icon: "🕵️"
+  summary: "Catch fake rules: put x = 1 into both sides and see if they match."
+- id: split-tens
+  name: Mind Splitter
+  region: mirrors
+  icon: "🧠"
+  summary: "7 × 12 = 7 × 10 + 7 × 2: split a number, multiply both bits."
+- id: round-down
+  name: Nearly Ten
+  region: mirrors
+  icon: "🦇"
+  summary: "7 × 9 = 7 × (10 − 1) = 70 − 7. Take off a whole copy, not just 1."
+
+- id: read-point
+  name: Sea Reader
+  region: bay
+  icon: "📍"
+  summary: "(3, 5) means 3 along, then 5 up. Along first!"
+- id: plot-point
+  name: Laser Aim
+  region: bay
+  icon: "🎯"
+  summary: "Find the spot (x, y) on the grid and fire."
+- id: table-rule
+  name: Ship's Log
+  region: bay
+  icon: "📋"
+  summary: "Fill a table for y = 2x + 3: x = 1 gives 5, x = 2 gives 7…"
+- id: step-pattern
+  name: Laser Stairs
+  region: bay
+  icon: "🪜"
+  summary: "In y = 2x + 3, each step along climbs 2 — the 3 is where it starts."
+- id: line-rule
+  name: Beam Reader
+  region: bay
+  icon: "📈"
+  summary: "Read a straight-line graph: start at x = 0, climb per step, and the rule."
+
+- id: closed-loop
+  name: Loop Sense
+  region: junkyard
+  icon: "🔁"
+  summary: "Electrons need a complete loop from − round to + (no gaps!)."
+- id: volts
+  name: Push Power
+  region: junkyard
+  icon: "🔋"
+  summary: "Volts are push. An AA gives 1.5 V; nose-to-tail batteries add up."
+- id: current
+  name: Baby Counter
+  region: junkyard
+  icon: "👶"
+  summary: "Amps count electrons passing per second — the same all round the loop."
+- id: resistance
+  name: Mud Tunnel
+  region: junkyard
+  icon: "🧱"
+  summary: "Ohms are squeeze. More ohms, less flow; tunnels in a row add up."
+- id: ohm-current
+  name: Ohm's Law
+  region: junkyard
+  icon: "⚡"
+  summary: "Current = push ÷ squeeze: I = V ÷ R."
+- id: ohm-solve
+  name: Bot Tuner
+  region: junkyard
+  icon: "🤖"
+  summary: "V = I × R: work out the volts, the ohms or the batteries a bot needs."

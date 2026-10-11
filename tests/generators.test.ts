@@ -65,3 +65,38 @@ describe('specific answers', () => {
     }
   });
 });
+
+describe('new topics', () => {
+  it('expand-check never calls a true rule fake', () => {
+    let checked = 0;
+    for (let seed = 1; seed < 2000; seed++) {
+      const p = generators['expand-check'](new Rng(seed), 1);
+      const m = /says: "\$(\d+)\(x \+ (\d+)\) = (\d+)x \+ (\d+)\$"/.exec(p.prompt);
+      if (!m || p.answer.kind !== 'choice') continue;
+      const [a, b, , c] = m.slice(1).map(Number);
+      const saysFake = p.answer.options[p.answer.correct].startsWith('Fake');
+      expect(saysFake, p.prompt).toBe(a * b !== c);
+      checked++;
+    }
+    expect(checked).toBeGreaterThan(100);
+  });
+  it('electricity answers are friendly (whole numbers or halves)', () => {
+    for (const id of ['volts', 'current', 'resistance', 'ohm-current', 'ohm-solve'])
+      for (const level of LEVELS)
+        for (let seed = 1; seed <= 300; seed++) {
+          const p = generators[id](new Rng(seed), level);
+          if (p.answer.kind === 'number') expect(Number.isInteger(p.answer.value * 2), `${id}: ${p.prompt}`).toBe(true);
+        }
+  });
+  it('table-rule answers follow the rule shown', () => {
+    for (let seed = 1; seed < 500; seed++) {
+      const p = generators['table-rule'](new Rng(seed), 3);
+      const m = /y = (\d*)x(?: ([+-]) (\d+))?\$/.exec(p.prompt)!;
+      const k = m[1] === '' ? 1 : Number(m[1]);
+      const b = m[2] ? (m[2] === '-' ? -1 : 1) * Number(m[3]) : 0;
+      const xs = /x & ([\d &]+) \\\\/.exec(p.math!)![1].split('&').map((v) => Number(v.trim()));
+      const x = xs[xs.length - 1];
+      expect(p.answer.kind === 'number' && p.answer.value, p.prompt).toBe(k * x + b);
+    }
+  });
+});

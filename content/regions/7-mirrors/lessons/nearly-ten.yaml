@@ -1,0 +1,64 @@
+id: nearly-ten
+title: Nearly Ten
+skill: round-down
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      Quick: what's $7 \times 9$? Don't panic. Nine is just a ten that lost one.
+  - type: say
+    who: ogre
+    text: >-
+      "Like Righty's brain!" "OI."
+  - type: show
+    text: "Nine is $10 - 1$. Now bust the bracket — and remember the 7 copies the $-1$ too!"
+    math: '7 \times 9 = 7 \times (10 - 1) = 7 \times 10 - 7 \times 1'
+  - type: play
+    text: A crystal bat is hungry. Count the full slab, then feed it the last column.
+    widget: { kind: area, rows: 7, tens: 10, extra: -1, tap: true }
+    done: "$7 \\times 10 = 70$. The bat crunches a whole column of 7: $70 - 7 = 63$."
+  - type: ask
+    who: halfcopy
+    text: "Hee hee! $7 \\times 9 = 70 - 1 = 69$! I'm a genius!"
+    options:
+      - "He only took away 1, but the bat ate a whole column of 7"
+      - "He's right, it's 69"
+      - "He should have added 1, not taken it away"
+    correct: 0
+    nudges:
+      "1": "Count them: seven rows of nine crystals is 63, not 69."
+      "2": "Nine is *less* than ten, so we do take some away. Just how much?"
+    explain: "The 7 copies the $-1$: $70 - 7 = 63$. Seven rows each lose one crystal."
+  - type: input
+    who: grimble
+    text: What's $6 \times 9$?
+    math: '6 \times 9 = 6 \times (10 - 1)'
+    answer: 54
+    nudges:
+      - { value: 59, text: "Halfcopy's trap! Take off $6 \\times 1 = 6$, not just 1." }
+      - { value: 66, text: "Nine is less than ten, so take away." }
+    explain: "$60 - 6 = 54$."
+  - type: input
+    who: grimble
+    text: Bigger! $19$ is $20 - 1$. What's $5 \times 19$?
+    math: '5 \times 19 = 5 \times (20 - 1)'
+    answer: 95
+    nudges:
+      - { value: 99, text: "Take away $5 \\times 1$, not just 1!" }
+      - { value: 105, text: "Take away, don't add: 19 is *less* than 20." }
+    explain: "$100 - 5 = 95$."
+  - type: say
+    who: grimble
+    text: >-
+      Shopkeepers hate this trick. Three potions at 99 gold? That's $300 - 3$. Done before
+      they finish fibbing about the price.
+  - type: input
+    text: Three potions at 99 gold each. How much altogether?
+    math: '3 \times 99'
+    answer: 297
+    nudges:
+      - { value: 299, text: "Three potions are each 1 gold under 100, so take off 3!" }
+    explain: "$3 \\times 99 = 300 - 3 = 297$."
+  - type: practice
+    skill: round-down
+    count: 4

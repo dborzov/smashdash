@@ -1,0 +1,65 @@
+id: bracket-buster
+title: Bracket Buster
+skill: expand
+beats:
+  - type: narrate
+    text: >-
+      A cackle bounces off a thousand mirrors. A tiny purple imp with one enormous eyebrow pops
+      out of a crystal, juggling stolen coins.
+  - type: say
+    who: halfcopy
+    text: >-
+      I'm HALFCOPY! I copy the FIRST thing and keep the rest! $3(x + 4)$? That's $3x + 4$!
+      Hee hee! Free coins for meeee!
+  - type: say
+    who: grimble
+    text: >-
+      That's theft AND bad maths. Which is worse? Bad maths. Obviously.
+  - type: show
+    text: "Busting a bracket properly: the 3 multiplies **both** things inside."
+    math: '3(x + 4) = \hl{3} \times x + \hl{3} \times 4 = 3x + 12'
+  - type: input
+    who: grimble
+    text: >-
+      Halfcopy says $3(x + 4) = 3x + 4$, but it should be $3x + 12$. How many coins did he
+      pinch?
+    answer: 8
+    nudges:
+      - { value: 12, text: "12 is how many there *should* be. He only gave out 4. How many did he keep?" }
+    explain: "$12 - 4 = 8$ coins. Cheeky imp."
+  - type: ask
+    who: halfcopy
+    text: "Bet you can't bust THIS one: $5(x + 2)$!"
+    options:
+      - "$5x + 10$"
+      - "$5x + 2$"
+      - "$5x + 7$"
+    correct: 0
+    nudges:
+      "1": "That's Halfcopy's trick! The 5 multiplies the 2 as well."
+      "2": "Copying is **multiplying**: $5 \\times 2$, not $5 + 2$."
+    explain: "$5 \\times x + 5 \\times 2 = 5x + 10$."
+  - type: show
+    text: "Minus signs get copied too. Five copies of a debt is a bigger debt!"
+    math: '2(x - 5) = 2x - 10'
+  - type: input
+    text: "Fill the gap:"
+    math: '4(x - 3) = 4x - \box'
+    answer: 12
+    nudges:
+      - { value: 3, text: "Halfcopy strikes again! The 4 copies the 3 too." }
+      - { value: 7, text: "Multiply, don't add: $4 \\times 3$." }
+    explain: "$4 \\times 3 = 12$, so $4(x - 3) = 4x - 12$."
+  - type: say
+    who: ogre
+    text: >-
+      Think of us! If you hand a two-headed ogre $2(\text{sandwich} + \text{custard})$, BOTH
+      heads want a sandwich AND custard. Give Righty only a sandwich and he bites Lefty's ear.
+  - type: practice
+    skill: expand
+    count: 4
+  - type: say
+    who: halfcopy
+    text: >-
+      Grr! Fine! But you'll never spot my FAKE rules. I write them on the walls. They look
+      very real. I use a nice font.

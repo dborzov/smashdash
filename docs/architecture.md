@@ -24,7 +24,7 @@ src/
   art/       procedural SVG art: Avatar, Monster, Pet, Portrait, scenes/, paint.ts helpers
   audio/     sfx.ts — WebAudio-synthesised sound effects (no audio files)
   styles/    main.css — design tokens + all styles
-tests/       vitest: generators, content validation, engine
+tests/       vitest: generators, content validation, engine, widget logic, save compatibility
 docs/        you are here
 ```
 

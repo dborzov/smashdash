@@ -1,0 +1,56 @@
+id: along-then-up
+title: Along, Then Up
+skill: read-point
+beats:
+  - type: say
+    who: polly
+    text: >-
+      Here's my sea chart. The lighthouse sits in the bottom corner, at zero. The beach runs
+      along the bottom. The sea goes up.
+  - type: show
+    text: >-
+      Every spot has two numbers. The **first** is how far **along** the beach — that's $x$.
+      The **second** is how far **up** — that's $y$. This ship is at $(4, 2)$: 4 along, 2 up.
+    widget: { kind: plot, size: 6, points: [{ x: 4, y: 2, label: "🚢" }] }
+  - type: say
+    who: grimble
+    text: >-
+      Along first, then up. Like a house: you walk along the hall *before* you climb the
+      stairs. And $x$ comes before $y$ in the alphabet. Easy.
+  - type: ask
+    who: polly
+    text: Where's this ship?
+    widget: { kind: plot, size: 6, points: [{ x: 1, y: 3, label: "🚢" }] }
+    options:
+      - "$(1, 3)$"
+      - "$(3, 1)$"
+      - "$(2, 4)$"
+    correct: 0
+    nudges:
+      "1": "Swapped! The first number is how far **along**, the second how far **up**."
+      "2": "Count from the corner, which is $0$ — not 1."
+    explain: "1 along, 3 up: $(1, 3)$."
+  - type: input
+    who: polly
+    text: How far **up** is this ship? (That's its $y$.)
+    widget: { kind: plot, size: 6, points: [{ x: 2, y: 5, label: "🚢" }] }
+    answer: 5
+    nudges:
+      - { value: 2, text: "That's how far *along*. Up means ↑." }
+      - { value: 6, text: "Count the lines from $0$, not the squares." }
+    explain: "It's at $(2, 5)$, so $y = 5$."
+  - type: ask
+    who: grimble
+    text: Where is a ship at $(0, 3)$?
+    options:
+      - "On the up-line, 3 up from the lighthouse"
+      - "On the beach, 3 along"
+      - "Nowhere — zero isn't a place"
+    correct: 0
+    nudges:
+      "1": "That would be $(3, 0)$. Along comes first — and here 'along' is zero!"
+      "2": "Zero is a place! It's the lighthouse's own line."
+    explain: "0 along (don't move sideways), then 3 up."
+  - type: practice
+    skill: read-point
+    count: 4

@@ -10,6 +10,9 @@ import { balanceRule, bothSides, inverseOps, pickMove } from './balance';
 import { checkSolution, oneStepAdd, oneStepMul, twoStep, undoOrder } from './equations';
 import { nameUnknown, storySolve, storyToEquation } from './words';
 import { pow10Down, pow10Up, powerMeaning, sciNotation, timesPow10 } from './powers';
+import { copyGroups, expand, expandCheck, roundDown, splitTens } from './distribute';
+import { lineRule, plotPoint, readPoint, stepPattern, tableRule } from './graphs';
+import { closedLoop, current, ohmCurrent, ohmSolve, resistance, volts } from './electricity';
 
 export const generators: Record<string, Generator> = {
   notation,
@@ -34,6 +37,22 @@ export const generators: Record<string, Generator> = {
   'pow10-down': pow10Down,
   'times-pow10': timesPow10,
   'sci-notation': sciNotation,
+  'copy-groups': copyGroups,
+  expand,
+  'expand-check': expandCheck,
+  'split-tens': splitTens,
+  'round-down': roundDown,
+  'read-point': readPoint,
+  'plot-point': plotPoint,
+  'table-rule': tableRule,
+  'step-pattern': stepPattern,
+  'line-rule': lineRule,
+  'closed-loop': closedLoop,
+  volts,
+  current,
+  resistance,
+  'ohm-current': ohmCurrent,
+  'ohm-solve': ohmSolve,
 };
 
 /** Difficulty tier from mastery in [0, 1]. */

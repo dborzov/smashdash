@@ -18,9 +18,14 @@ its own characters, a story intro, lessons, encounters, a boss and an outro.
 | Dragonspine Peaks | aurora mountains | two-step equations | Snowbert the Yeti | Smolderbutt the dragon |
 | Bazaar of Whispers | night market | story problems | Ptolemeow the Sphinx | **The Muddler** |
 | Tower of Tens | starry wizard tower | powers of ten | Professor Zoomwhistle | Gigantus Minimus |
+| Mirrormaze Caves | crystal mirror cave | distributive law, mental maths | Lefty & Righty (two-headed ogre) | Halfcopy the Imp |
+| Beamhook Bay | sunset lighthouse | coordinates & straight-line graphs | Captain Polly Gon (pirate parrot) | Inkbert the Kraken |
+| Sparkwick Junkyard | stormy scrapyard | electricity & Ohm's law | Sprocket (goblin bot-builder), Little Zap (a baby electron) | Clankenstein (the Muddler's battlebot) |
 
-The Tower of Tens opens right after Bramblebottom, so kids can alternate between the equations
-arc and the powers arc.
+The Tower of Tens, Mirrormaze Caves and Beamhook Bay open right after Bramblebottom, so kids
+can alternate between the equations arc and the side arcs. The Sparkwick Junkyard opens after
+Gloomfen Marsh, because Ohm's law is solved as a one-step equation. Players with older saves
+keep all their progress; the new regions simply appear on the map (see `tests/compat.test.ts`).
 
 ## Core loop
 

@@ -74,6 +74,15 @@ beats:
 | `tower` | `base`, `exp` | build $base^{exp}$ floor by floor |
 | `powers` | `min`, `max`, `start` | slider over $10^n$ with real-world sizes |
 | `hop` | `mantissa`, `exp` | decimal point hops |
+| `groups` | `n`, `c`, `x?`, `sort?` | $n(x + c)$ as n parcels; with `sort`, tap to unpack into piles |
+| `area` | `rows`, `tens`, `extra`, `tap?` | rows × (tens ± extra) crystals; negative `extra` = a bat eats columns |
+| `plot` | `size?`, `points?`, `line?`, `rule?` + `targets?`, `aim?` | coordinate grid; `aim` = fire at given points; `rule` + `targets` = work out each y, then fire |
+| `circuit` | `cells`, `flipped?`, `load?`, `ohms?`, `mud?`, `mudOhms?`, `gap?`, `sameEnd?`, `readout?`, `tools?`, `goal?`, `target?`, `fuse?` | battery loop; `tools`: `cells`/`mud`/`flip`/`close`; `goal`: `close`/`volts`/`amps` |
+| `pipe` | `height`, `squeeze`, `target?` | water analogy: flow = height ÷ squeeze |
+
+`boxes`, `balance`, `groups`, `area`, `plot` and `circuit` also work as still pictures in `ask`
+and `input` beats. Tests check that every interactive goal can actually be reached (plot
+targets on the grid, circuit and pipe targets reachable with the tools given).
 
 ## Adding a skill
 

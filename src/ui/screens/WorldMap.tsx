@@ -24,6 +24,9 @@ const BIOME: Record<string, string> = {
   peaks: '#e8f2ff',
   bazaar: '#f2c27a',
   tower: '#7b5ce0',
+  caves: '#5a4aa8',
+  bay: '#e8d49a',
+  junkyard: '#8a7a6a',
 };
 
 function Landmark({ scene }: { scene: string }) {
@@ -223,6 +226,115 @@ function Landmark({ scene }: { scene: string }) {
             rx="3"
             fill="#c6b8ff"
             style={{ animation: 'bob 2.6s ease-in-out infinite' }}
+          />
+        </g>
+      );
+    case 'caves':
+      return (
+        <g>
+          <path
+            d="M-70 0 Q-60 -80 0 -90 Q60 -80 70 0 Z"
+            fill="#6a5a8a"
+            stroke="#2a1c4a"
+            stroke-width="3"
+          />
+          <path d="M-34 0 Q-30 -50 0 -54 Q30 -50 34 0 Z" fill="#140c38" />
+          {[
+            [-46, -4, '#8ff0ff', -14],
+            [44, -2, '#ff8ac4', 12],
+            [8, -56, '#c6a8ff', 0],
+          ].map(([x, y, c, r], i) => (
+            <path
+              key={i}
+              d="M0 0 L-9 -26 L0 -48 L9 -26 Z"
+              transform={`translate(${x} ${y}) rotate(${r})`}
+              fill={c as string}
+              stroke="#1a1040"
+              stroke-width="2.5"
+              style={{ animation: `flicker ${2 + i * 0.7}s ease-in-out infinite` }}
+            />
+          ))}
+        </g>
+      );
+    case 'bay':
+      return (
+        <g>
+          <path
+            d="M-50 0 Q-20 -24 30 -18 Q60 -10 60 0 Z"
+            fill="#7a6a5a"
+            stroke="#3a2a1a"
+            stroke-width="2.5"
+          />
+          <path
+            d="M-12 -14 L-8 -96 L8 -96 L12 -14 Z"
+            fill="#fff4e6"
+            stroke="#2a1c10"
+            stroke-width="3"
+          />
+          <path
+            d="M-11 -34 L11 -34 L10 -50 L-10 -50 Z M-9.5 -66 L9.5 -66 L9 -80 L-9 -80 Z"
+            fill="#e0334d"
+          />
+          <rect
+            x="-12"
+            y="-110"
+            width="24"
+            height="15"
+            rx="3"
+            fill="#ffd166"
+            stroke="#2a1c10"
+            stroke-width="3"
+          />
+          <path d="M-14 -110 L0 -124 L14 -110 Z" fill="#e0334d" stroke="#2a1c10" stroke-width="3" />
+          <path
+            d="M0 -103 L-90 -126 L-90 -96 Z"
+            fill="#ff6fa8"
+            opacity=".55"
+            style={{ animation: 'flicker 2.4s ease-in-out infinite' }}
+          />
+        </g>
+      );
+    case 'junkyard':
+      return (
+        <g>
+          <path
+            d="M-70 0 Q-40 -50 -6 -40 Q20 -70 64 0 Z"
+            fill="#7a6a5a"
+            stroke="#3a2a1a"
+            stroke-width="3"
+          />
+          <circle cx="-30" cy="-20" r="12" fill="#2a2a2a" stroke="#555" stroke-width="5" />
+          <rect
+            x="4"
+            y="-36"
+            width="30"
+            height="16"
+            rx="3"
+            fill="#e0a526"
+            stroke="#3a2a1a"
+            stroke-width="2.5"
+          />
+          <path
+            d="M44 -6 L50 -84 L60 -84 L66 -6 Z"
+            fill="#9aa4b8"
+            stroke="#2a1c10"
+            stroke-width="3"
+          />
+          <ellipse
+            cx="55"
+            cy="-88"
+            rx="16"
+            ry="7"
+            fill="#c9c9c9"
+            stroke="#2a1c10"
+            stroke-width="2.5"
+          />
+          <path
+            d="M70 -90 l14 -8 l-6 -6 l16 -10"
+            fill="none"
+            stroke="#7dd3fc"
+            stroke-width="3"
+            style={{ animation: 'flicker 1.3s steps(2) infinite' }}
           />
         </g>
       );

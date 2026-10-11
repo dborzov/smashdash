@@ -1,0 +1,55 @@
+id: ohms-law
+title: Ohm's Law
+skill: ohm-current
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      Time for the big one. Two hundred years ago, a German schoolteacher called **Georg Ohm**
+      spotted the rule that ties push, flow and squeeze together. People laughed at him.
+      Then they named the ohm after him. Ha!
+  - type: show
+    text: >-
+      **Current = push ÷ squeeze.** In science letters: $I$ is current (amps), $V$ is voltage
+      (volts) and $R$ is resistance (ohms). The $I$ comes from the French *intensité* — how
+      intense the flow is.
+    math: 'I = \frac{V}{R}'
+  - type: say
+    who: zap
+    text: More push, more of us get through! More mud, fewer of us! WAAAH, it makes SENSE!
+  - type: input
+    who: grimble
+    text: $6$ volts push babies through a $3\,\Omega$ motor. How many amps flow?
+    math: 'I = \frac{6}{3}'
+    answer: 2
+    nudges:
+      - { value: 18, text: "More squeeze should mean *less* flow — so divide, don't multiply." }
+      - { value: 0.5, text: "Upside down! Push on top, squeeze underneath." }
+    explain: "$I = \\frac{6}{3} = 2$ amps."
+  - type: play
+    text: Tune Nugget! Get exactly $2\,\text{A}$ through his $3\,\Omega$ motor.
+    widget: { kind: circuit, cells: 2, load: motor, ohms: 3, mudOhms: 3, tools: [cells, mud], goal: amps, target: 2 }
+    done: "Full ramming speed! (Did you find more than one way? 6 volts and no mud works. So does 12 volts with one mud tunnel!)"
+  - type: ask
+    who: sprocket
+    text: Which is Ohm's law in baby-electron language?
+    options:
+      - "babies per second = push ÷ squeeze"
+      - "babies per second = push × squeeze"
+      - "babies per second = squeeze ÷ push"
+    correct: 0
+    nudges:
+      "1": "More squeeze should mean *fewer* babies, so we divide by it."
+      "2": "Upside down! More push should mean *more* babies."
+    explain: "Current = push ÷ squeeze: $I = \\frac{V}{R}$."
+  - type: input
+    who: grimble
+    text: $12$ volts through a $4\,\Omega$ bulb. How many amps?
+    answer: 3
+    nudges:
+      - { value: 48, text: "Divide the push by the squeeze." }
+      - { value: 8, text: "Not minus — divide: $12 \\div 4$." }
+    explain: "$I = \\frac{12}{4} = 3$ amps."
+  - type: practice
+    skill: ohm-current
+    count: 4

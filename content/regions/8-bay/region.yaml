@@ -1,0 +1,69 @@
+id: bay
+order: 8
+name: Beamhook Bay
+tagline: A pirate lighthouse with a laser, a parrot who can't aim, and a kraken with fog ships.
+scene: bay
+map: { x: 12, y: 58 }
+requires: [bramblebottom]
+palette: { sky: ["#0a1a3a", "#ff8a5c"], accent: "#ff6fa8", ground: "#1f6f8b" }
+outro: bay-outro
+monsters:
+  - { name: Ink Squid, seed: 71, hue: 210, taunts: ["Splort! Ink in your eye!", "Eight arms, zero manners!"] }
+  - { name: Sea Gremlin, seed: 72, hue: 170, taunts: ["Along or up? UP OR ALONG? Hehehe!"] }
+  - { name: Barnacle Bandit, seed: 73, hue: 30, taunts: ["I'm stuck to you now. Forever."] }
+path:
+  - id: intro
+    type: story
+    title: The Dark Lighthouse
+    lesson: bay-intro
+  - id: along-then-up
+    type: lesson
+    title: Along, Then Up
+    lesson: along-then-up
+  - id: fire-the-laser
+    type: lesson
+    title: Fire the Laser!
+    lesson: fire-the-laser
+  - id: squid-skirmish
+    type: encounter
+    title: Squid Skirmish
+    game: battle
+    skills: [read-point, plot-point]
+    count: 5
+    monster: { name: Ink Squid, seed: 71, hue: 210 }
+  - id: aiming-table
+    type: lesson
+    title: The Aiming Table
+    lesson: aiming-table
+  - id: laser-stairs
+    type: lesson
+    title: Laser Stairs
+    lesson: laser-stairs
+  - id: reef-chest
+    type: encounter
+    title: The Sunken Chest
+    game: chest
+    skills: [table-rule, step-pattern, eval-two]
+    count: 6
+  - id: join-the-dots
+    type: lesson
+    title: Join the Dots
+    lesson: join-the-dots
+  - id: harbour-bridge
+    type: encounter
+    title: The Harbour Bridge
+    game: bridge
+    skills: [line-rule, table-rule, plot-point]
+    count: 6
+  - id: boss
+    type: boss
+    title: Inkbert the Kraken
+    monster: { name: Inkbert the Kraken, seed: 707, hue: 200 }
+    intro:
+      - "BLOOOORP! I am INKBERT! Terror of the deep! Squirter of ink! Owner of eight left socks!"
+      - "My fog fleet is coming, your parrot can't aim, and I just inked all over your charts. Good luck, landlubber!"
+    phases:
+      - { skills: [read-point, plot-point], count: 3, taunt: "Ink in your eye! Can you still tell ALONG from UP?" }
+      - { skills: [table-rule, step-pattern], count: 3, taunt: "My ships follow a SECRET rule! …It's painted on the side of the ships. I should fix that." }
+      - { skills: [line-rule, table-rule], count: 3, taunt: "Behold my mighty beam of FOG! Why are you reading its rule?! STOP THAT!" }
+    defeat: "Blorp… okay, okay. I'll go back to the deep. I only came up because it's lonely down there. …Can I visit on Sundays?"

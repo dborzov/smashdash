@@ -1,0 +1,56 @@
+id: mind-split
+title: Split and Conquer
+skill: split-tens
+beats:
+  - type: say
+    who: ogre
+    text: >-
+      "The cave dwarves sell crystals in slabs. Seven rows of twelve!" "How many is that?"
+      "Counting on my fingers…" "THOSE ARE MY FINGERS."
+  - type: say
+    who: grimble
+    text: >-
+      Put the fingers down. Brackets aren't just for boxes. $12 = 10 + 2$, so
+      $7 \times 12 = 7 \times (10 + 2)$. And you know how to bust a bracket!
+  - type: play
+    text: Tap the big slab, then the little strip.
+    widget: { kind: area, rows: 7, tens: 10, extra: 2, tap: true }
+    done: "$7 \\times 12 = 70 + 14 = 84$. No fingers were harmed."
+  - type: input
+    who: grimble
+    text: "Your turn. Split the 13 into $10 + 3$:"
+    math: '6 \times 13 = 60 + \box'
+    answer: 18
+    nudges:
+      - { value: 3, text: "Halfcopy alert! The 6 copies the 3 as well: $6 \\times 3$." }
+      - { value: 9, text: "Multiply, don't add: $6 \\times 3$." }
+    explain: "$6 \\times 13 = 6 \\times 10 + 6 \\times 3 = 60 + 18 = 78$."
+  - type: ask
+    who: ogre
+    text: Which is the smart split for $4 \times 23$?
+    options:
+      - "$4 \\times 20 + 4 \\times 3$"
+      - "$4 \\times 20 + 3$"
+      - "$4 + 20 + 3$"
+    correct: 0
+    nudges:
+      "1": "So close! The 4 multiplies **both** pieces, the 20 and the 3."
+      "2": "We're multiplying by 4, not adding it."
+    explain: "$4 \\times 23 = 4 \\times 20 + 4 \\times 3 = 80 + 12 = 92$."
+  - type: input
+    who: grimble
+    text: Now all in your head. What is $8 \times 21$?
+    math: '8 \times 21'
+    answer: 168
+    nudges:
+      - { value: 161, text: "Halfcopy got you! $8 \\times 1$ is 8, not 1." }
+      - { value: 169, text: "$8 \\times 1 = 8$, not 9. Nearly!" }
+    hint: "$8 \\times 20 = 160$ and $8 \\times 1 = 8$."
+    explain: "$8 \\times 21 = 8 \\times 20 + 8 \\times 1 = 160 + 8 = 168$."
+  - type: practice
+    skill: split-tens
+    count: 4
+  - type: say
+    who: grimble
+    text: >-
+      That's how mental-maths wizards do it. Not magic. Just brackets wearing a disguise.

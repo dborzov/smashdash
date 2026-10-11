@@ -29,6 +29,57 @@ export const Widget = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('tower'), base: z.number().int(), exp: z.number().int().min(1).max(5) }),
   /** A box wrapped in layers of operations; tap the outermost layer to unwrap. */
   z.object({ kind: z.literal('unwrap'), layers: z.array(z.string()).min(1), value: z.number().optional() }),
+  /** n copies of a parcel (x boxes + c coins): n(x + c). With `sort`, tap to unpack and sort. */
+  z.object({
+    kind: z.literal('groups'),
+    n: z.number().int().min(1).max(6),
+    x: z.number().int().min(0).max(3).optional(),
+    c: z.number().int().min(0).max(6),
+    sort: z.boolean().optional(),
+  }),
+  /** rows × (tens ± extra) crystal grid: 7 × 12 = 7 × 10 + 7 × 2, or 7 × 9 = 7 × 10 − 7. */
+  z.object({
+    kind: z.literal('area'),
+    rows: z.number().int().min(1).max(12),
+    tens: z.number().int().min(1).max(30),
+    extra: z.number().int().min(-5).max(9),
+    tap: z.boolean().optional(),
+  }),
+  /** Coordinate grid. With `rule` + `targets`, the player fires the laser at each point. */
+  z.object({
+    kind: z.literal('plot'),
+    size: z.number().int().min(4).max(20).optional(),
+    points: z.array(z.object({ x: z.number(), y: z.number(), label: z.string().optional() })).optional(),
+    line: z.object({ m: z.number(), b: z.number() }).optional(),
+    rule: z.object({ m: z.number(), b: z.number() }).optional(),
+    targets: z.array(z.number().int().min(0)).optional(),
+    aim: z.array(z.object({ x: z.number().int().min(0), y: z.number().int().min(0) })).optional(),
+  }),
+  /** Battery, wires and a bulb or motor. Tools make it a little workshop. */
+  z.object({
+    kind: z.literal('circuit'),
+    cells: z.number().int().min(0).max(8),
+    flipped: z.number().int().min(0).optional(),
+    volts: z.number().positive().optional(),
+    load: z.enum(['bulb', 'motor']).optional(),
+    ohms: z.number().positive().optional(),
+    mud: z.number().int().min(0).max(6).optional(),
+    mudOhms: z.number().positive().optional(),
+    gap: z.boolean().optional(),
+    sameEnd: z.boolean().optional(),
+    readout: z.boolean().optional(),
+    tools: z.array(z.enum(['cells', 'mud', 'flip', 'close'])).optional(),
+    goal: z.enum(['close', 'volts', 'amps']).optional(),
+    target: z.number().positive().optional(),
+    fuse: z.number().positive().optional(),
+  }),
+  /** Water-tank analogy: tank height = push (volts), pipe squeeze = ohms, flow = amps. */
+  z.object({
+    kind: z.literal('pipe'),
+    height: z.number().int().min(1).max(6),
+    squeeze: z.number().int().min(1).max(4),
+    target: z.number().positive().optional(),
+  }),
 ]);
 export type Widget = z.infer<typeof Widget>;
 

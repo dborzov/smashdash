@@ -1,0 +1,56 @@
+id: join-the-dots
+title: Join the Dots
+skill: line-rule
+beats:
+  - type: say
+    who: polly
+    text: >-
+      Inkbert's been doodling laser beams all over my charts to confuse me. Which rule made
+      which beam? Help a poor parrot out.
+  - type: show
+    text: "To read a beam, look at two things: where it **starts** at $x = 0$, and how much it **climbs** each step."
+    widget: { kind: plot, size: 10, line: { m: 1, b: 4 }, points: [{ x: 0, y: 4 }, { x: 1, y: 5 }, { x: 2, y: 6 }] }
+  - type: ask
+    who: grimble
+    text: Which rule draws this beam?
+    widget: { kind: plot, size: 10, line: { m: 1, b: 4 }, points: [{ x: 0, y: 4 }, { x: 1, y: 5 }, { x: 2, y: 6 }] }
+    options:
+      - "$y = x + 4$"
+      - "$y = 4x + 1$"
+      - "$y = 4x$"
+    correct: 0
+    nudges:
+      "1": "Swapped! It starts at 4 and climbs only 1 per step."
+      "2": "This beam doesn't start at 0. Look at $x = 0$."
+    explain: "Starts at 4, climbs 1: $y = x + 4$."
+  - type: input
+    who: polly
+    text: Where does this beam start (at $x = 0$)?
+    widget: { kind: plot, size: 10, line: { m: 3, b: 2 }, points: [{ x: 0, y: 2 }, { x: 1, y: 5 }, { x: 2, y: 8 }] }
+    answer: 2
+    nudges:
+      - { value: 3, text: "That's how much it *climbs*. Where does it touch the up-line?" }
+    explain: "It starts at 2 (and climbs 3): $y = 3x + 2$."
+  - type: ask
+    who: polly
+    text: Will the beam $y = 2x + 3$ zap a ship at $(4, 11)$?
+    options:
+      - "Yes — zap!"
+      - "No — it misses"
+    correct: 0
+    nudges:
+      "1": "Put $x = 4$ into the rule: $2 \\times 4 + 3 = 11$. That's the ship's $y$!"
+    explain: "$2 \\times 4 + 3 = 11$. ZAP."
+  - type: ask
+    who: polly
+    text: And a ship at $(11, 4)$?
+    options:
+      - "Yes — zap!"
+      - "No — it misses"
+    correct: 1
+    nudges:
+      "0": "Careful! $x$ is the FIRST number, 11. $2 \\times 11 + 3 = 25$, not 4."
+    explain: "At $x = 11$ the beam is at $25$, way above 4. Swapped numbers, different spot!"
+  - type: practice
+    skill: line-rule
+    count: 4

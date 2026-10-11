@@ -1,0 +1,73 @@
+id: junkyard
+order: 9
+name: Sparkwick Junkyard
+tagline: Scrap heaps, lightning, and a battlebot that runs on AA batteries and pure attitude.
+scene: junkyard
+map: { x: 88, y: 55 }
+requires: [gloomfen]
+palette: { sky: ["#1a0f2e", "#ff9a3c"], accent: "#7dd3fc", ground: "#5a4a3a" }
+outro: junkyard-outro
+monsters:
+  - { name: Static Gremlin, seed: 81, hue: 55, taunts: ["Bzzzt! Your hair is standing up! Hehe!", "ZAP ZAP ZAP!"] }
+  - { name: Rust Rat, seed: 82, hue: 20, taunts: ["I chewed your wire! There's a GAP!", "Squeak-crunch!"] }
+  - { name: Spark Imp, seed: 83, hue: 190, taunts: ["More volts! MORE!", "I eat amps for breakfast!"] }
+path:
+  - id: intro
+    type: story
+    title: Rammageddon!
+    lesson: junkyard-intro
+  - id: babies-want-nanny
+    type: lesson
+    title: Babies Want Nanny
+    lesson: babies-want-nanny
+  - id: the-push
+    type: lesson
+    title: The Push
+    lesson: the-push
+  - id: rat-rumble
+    type: encounter
+    title: Rat Rumble
+    game: battle
+    skills: [closed-loop, volts]
+    count: 5
+    monster: { name: Rust Rat, seed: 82, hue: 20, taunts: ["I chewed your wire! There's a GAP! Squeak!"] }
+  - id: baby-traffic
+    type: lesson
+    title: Baby Traffic
+    lesson: baby-traffic
+  - id: mud-tunnels
+    type: lesson
+    title: Mud Tunnels
+    lesson: mud-tunnels
+  - id: scrap-chest
+    type: encounter
+    title: The Scrap Chest
+    game: chest
+    skills: [current, resistance, volts]
+    count: 6
+  - id: ohms-law
+    type: lesson
+    title: Ohm's Law
+    lesson: ohms-law
+  - id: bot-tuning
+    type: lesson
+    title: Tune the Bot
+    lesson: bot-tuning
+  - id: tesla-bridge
+    type: encounter
+    title: The Tesla Bridge
+    game: bridge
+    skills: [ohm-current, ohm-solve, resistance]
+    count: 6
+  - id: boss
+    type: boss
+    title: Clankenstein
+    monster: { name: Clankenstein, seed: 808, hue: 30 }
+    intro:
+      - "CLANK. CLANK. I AM CLANKENSTEIN. I RUN ON ONE THOUSAND BATTERIES AND THE TEARS OF SMALL ROBOTS."
+      - "*The Muddler's voice crackles from a speaker:* Ha! Your little Nugget is a toaster on wheels! RAMMAGEDDON… BEGIN!"
+    phases:
+      - { skills: [closed-loop, volts], count: 3, taunt: "CLANK! YOUR LOOP IS BROKEN! …PROBABLY. I DID NOT CHECK." }
+      - { skills: [current, resistance], count: 3, taunt: "MY ARMOUR IS PURE MUD. MAXIMUM OHMS. MAXIMUM SQUEEZE." }
+      - { skills: [ohm-current, ohm-solve], count: 3, taunt: "CALCULATING… CALCULATING… ERROR: SMALL HUMAN IS BETTER AT OHM'S LAW." }
+    defeat: "*Nugget rams so hard that Clankenstein's batteries pop out and roll away like marbles.* CLANK… clank… cl… *beep.* I WOULD LIKE TO BE A TOASTER NOW."

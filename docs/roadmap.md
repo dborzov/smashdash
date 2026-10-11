@@ -9,6 +9,14 @@
 - Pets: hatch, feed, play, poop, sickness, death, cemetery.
 - Multiple profiles, export/import, content preview, tests and CI/CD.
 
+## v1.1 — three new regions
+
+- **Mirrormaze Caves** (distributive law, $7 \times 9 = 7 \times (10 - 1)$), **Beamhook Bay**
+  (coordinates → tables → plotting $y = 2x + 3$ with a laser), **Sparkwick Junkyard**
+  (electricity intuition and Ohm's law, with a battlebot).
+- 16 new skills (38 total), 5 new widgets (`groups`, `area`, `plot`, `circuit`, `pipe`).
+- Old saves keep all progress; no migration needed.
+
 ## Next ideas (roughly in priority order)
 
 - **Variables on both sides** region (balance with boxes on both pans).

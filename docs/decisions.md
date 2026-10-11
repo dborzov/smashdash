@@ -25,3 +25,16 @@ contributor might want to reverse.
 12. **Lessons never cost hearts.** Lessons are a safe place to learn; encounters carry the risk.
 13. **Inline maths in display style.** Fractions and exponents stay full-size for young readers.
 14. **Default branch `master` deploys.** GitHub Actions builds and deploys Pages on push.
+15. **New topics are side regions, not insertions.** The distributive law, graphs and
+    electricity got their own regions (7–9) instead of new nodes inside old paths. Inserting a
+    node into an old region would re-lock its boss for existing players. `tests/compat.test.ts`
+    freezes every v1 region/node/skill id and checks old saves keep their progress.
+16. **No save migration for the expansion.** The `Profile` shape didn't change (skills and
+    nodes are keyed by id, and missing keys mean "not started"), so `SAVE_VERSION` stays 1.
+17. **Electricity through one silly metaphor.** Baby electrons crawling to the Nanny Ions,
+    backed by a water tank. Physics stays honest (electrons do go − to +; the same current
+    flows all round a loop) while skipping conventional-current arrows. Ohm's law is taught as
+    an equation to solve, which ties the science back to the algebra arc.
+18. **Halfcopy the Imp personifies the distributive misconception** ($a(x + b) = ax + b$), and
+    the same mistake is reused for mental maths ($7 \times 9 = 70 - 1$), so one nudge voice
+    covers both.

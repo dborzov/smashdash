@@ -62,7 +62,7 @@ export function Preview({ kind, id }: { kind?: string; id?: string }) {
                     <div key={k} class="card">
                       <Rich text={p.prompt} class="problem-prompt" />
                       {p.math && <MathBig tex={p.math} />}
-                      {p.visual && <WidgetView w={p.visual} interactive={false} />}
+                      {p.visual && <WidgetView w={p.visual} interactive={false} quiz />}
                       <div style={{ marginTop: '8px' }}>
                         <b>Answer: </b>
                         {p.answer.kind === 'number' ? (

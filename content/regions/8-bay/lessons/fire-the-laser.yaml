@@ -1,0 +1,42 @@
+id: fire-the-laser
+title: Fire the Laser!
+skill: plot-point
+beats:
+  - type: say
+    who: polly
+    text: >-
+      Now the fun bit. I shout coordinates, you point the laser and FIRE. SQUAWK! Fog ships
+      incoming!
+  - type: play
+    text: Zap the fog ships! Tap each spot on the sea.
+    widget: { kind: plot, size: 6, aim: [{ x: 2, y: 5 }, { x: 5, y: 2 }, { x: 3, y: 3 }] }
+    done: "Three fog ships, three zaps. Somewhere deep below, a kraken says a rude word."
+  - type: say
+    who: grimble
+    text: >-
+      Did you see $(2, 5)$ and $(5, 2)$? Same numbers, totally different places. Swapping $x$
+      and $y$ is the number one way to zap your own fishing boat. Please don't zap the fishing
+      boats.
+  - type: ask
+    who: polly
+    text: Fire at $(1, 4)$! Which target gets zapped?
+    widget:
+      kind: plot
+      size: 6
+      points: [{ x: 4, y: 1, label: A }, { x: 1, y: 4, label: B }, { x: 2, y: 5, label: C }]
+    options:
+      - "Target A"
+      - "Target B"
+      - "Target C"
+    correct: 1
+    nudges:
+      "0": "Swapped! Go 1 **along** first, then 4 **up**."
+      "2": "Off by one! Start counting at the corner, which is $0$."
+    explain: "1 along, 4 up: that's B."
+  - type: play
+    text: Inkbert sent more! Fire, fire, FIRE!
+    widget: { kind: plot, size: 10, aim: [{ x: 7, y: 2 }, { x: 0, y: 6 }, { x: 4, y: 9 }, { x: 9, y: 4 }] }
+    done: "The fog fleet is in tatters. Polly does a victory dance. It's mostly head-bobbing."
+  - type: practice
+    skill: plot-point
+    count: 4

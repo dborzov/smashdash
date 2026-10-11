@@ -1,0 +1,65 @@
+id: number-spy
+title: The Number Spy
+skill: expand-check
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      Halfcopy is scribbling fake rules all over the cave walls. How do you catch a fake?
+      Send in a **spy**: a number. Put the same number into both sides. If they come out
+      different, it's a FAKE.
+  - type: say
+    who: grimble
+    text: >-
+      The best spy is $x = 1$. It's small, it's friendly, and it never asks for a pay rise.
+  - type: show
+    text: "Is $2(x + 3) = 2x + 6$ true? Send in the spy $x = 1$:"
+    math: '\begin{aligned} 2(1 + 3) &= 2 \times 4 = \good{8} \\ 2 \times 1 + 6 &= 2 + 6 = \good{8} \end{aligned}'
+  - type: ask
+    who: grimble
+    text: Both sides made 8. So the rule…
+    options:
+      - "passes the spy test"
+      - "is fake"
+    correct: 0
+    nudges:
+      "1": "Same number on both sides means it passed!"
+    explain: "8 and 8 match, so $2(x + 3) = 2x + 6$ passes."
+  - type: input
+    who: halfcopy
+    text: >-
+      My version is better! $2(x + 3) = 2x + 3$. Go on, spy on it with $x = 1$. What does
+      my right side, $2x + 3$, make?
+    math: '2 \times 1 + 3'
+    answer: 5
+    nudges:
+      - { value: 8, text: "8 is the left side. Now work out the right: $2 \\times 1 + 3$." }
+    explain: "$2 \\times 1 + 3 = 5$."
+  - type: ask
+    who: grimble
+    text: "The left side made 8, Halfcopy's right side made 5. So his rule is…"
+    options:
+      - "FAKE!"
+      - "True!"
+      - "True on Tuesdays"
+    correct: 0
+    nudges:
+      "1": "8 and 5 aren't the same, so the two sides can't be the same thing."
+    explain: "$8 \\neq 5$. Caught red-handed!"
+  - type: say
+    who: grimble
+    text: >-
+      One spy can *catch* a fake. But when one spy says "looks fine", that's only a good sign,
+      not total proof. Proper mathematicians send a second spy, just to be sure.
+  - type: input
+    text: "Second spy, $x = 2$! What do both sides of this rule make?"
+    math: '3(x + 4) = 3x + 12'
+    answer: 18
+    nudges:
+      - { value: 10, text: "That's what Halfcopy's $3x + 4$ would make! Use the real sides." }
+      - { value: 9, text: "$3(\\ldots)$ means **times** the bracket: $3 \\times (2 + 4)$." }
+    hint: "Left: $2 + 4 = 6$, then $\\times 3$. Right: $3 \\times 2 + 12$."
+    explain: "$3(2 + 4) = 18$ and $3 \\times 2 + 12 = 18$. Passes again!"
+  - type: practice
+    skill: expand-check
+    count: 4

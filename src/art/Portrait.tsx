@@ -385,6 +385,155 @@ function Npc({ id, color, class: cls }: { id: string; color: string; class?: str
         </>
       );
       break;
+    case 'ogre':
+      // Two heads, one neck, zero agreement.
+      body = (
+        <>
+          <path d="M14 104 Q50 70 86 104 Z" fill="#8a6a3a" stroke="#4a3a1a" stroke-width="2.5" />
+          {[
+            [30, -1],
+            [70, 1],
+          ].map(([cx, d]) => (
+            <g key={cx}>
+              <circle cx={cx} cy="58" r="21" fill="#9bcf5a" stroke="#3a5a1a" stroke-width="2.5" />
+              <ellipse cx={cx - 7} cy="54" rx="3" ry="4" fill="#1b1033" />
+              <ellipse cx={cx + 7} cy="54" rx="3" ry="4" fill="#1b1033" />
+              <path
+                d={`M${cx - 8} 67 Q${cx} ${d > 0 ? 73 : 63} ${cx + 8} 67`}
+                fill="none"
+                stroke="#3a5a1a"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              />
+              <path d={`M${cx - 5} 66 l2 -5 l2 5 M${cx + 1} 66 l2 -5 l2 5`} fill="#fff" />
+              <path
+                d={`M${cx - 10} 44 Q${cx - 14} 34 ${cx - 8} 32 M${cx + 10} 44 Q${cx + 14} 34 ${cx + 8} 32`}
+                stroke="#3a5a1a"
+                stroke-width="2.5"
+                fill="none"
+              />
+            </g>
+          ))}
+          <path d="M44 48 Q50 44 56 48" stroke="#3a5a1a" stroke-width="2" fill="none" />
+        </>
+      );
+      break;
+    case 'polly':
+      body = (
+        <>
+          <path
+            d="M28 70 Q22 104 50 106 Q78 104 72 70 Z"
+            fill="#3aa05a"
+            stroke="#1a5a2a"
+            stroke-width="2.5"
+          />
+          <circle cx="50" cy="52" r="26" fill={color} stroke="#8a1a1a" stroke-width="2.5" />
+          <path
+            d="M50 54 Q74 56 68 76 Q60 66 50 66 Z"
+            fill="#ffd166"
+            stroke="#7a4a00"
+            stroke-width="2.5"
+          />
+          <circle cx="40" cy="48" r="5" fill="#fff" stroke="#1b1033" stroke-width="2" />
+          <circle cx="41" cy="48" r="2.5" fill="#1b1033" />
+          <path
+            d="M52 40 L66 52 M54 44 Q62 40 66 46 Q62 54 54 50 Z"
+            fill="#1b1033"
+            stroke="#1b1033"
+            stroke-width="2"
+          />
+          <path
+            d="M20 30 Q50 10 80 30 L72 36 Q50 26 28 36 Z"
+            fill="#2a1c10"
+            stroke="#000"
+            stroke-width="2"
+          />
+          <text x="50" y="30" text-anchor="middle" font-size="10" fill="#fff">
+            ☠
+          </text>
+        </>
+      );
+      break;
+    case 'sprocket':
+      body = (
+        <>
+          <path
+            d="M18 60 L4 48 L22 50 Z M82 60 L96 48 L78 50 Z"
+            fill="#7fbf5a"
+            stroke="#3a5a1a"
+            stroke-width="2.5"
+          />
+          {face('#8fcf6a', '#3a5a1a')}
+          <path
+            d="M40 66 Q50 74 60 66"
+            fill="none"
+            stroke="#3a5a1a"
+            stroke-width="2.5"
+            stroke-linecap="round"
+          />
+          <path d="M22 44 Q50 36 78 44" stroke="#5a3a20" stroke-width="5" fill="none" />
+          <circle
+            cx="40"
+            cy="42"
+            r="9"
+            fill="#7dd3fc"
+            stroke="#5a3a20"
+            stroke-width="3"
+            opacity=".9"
+          />
+          <circle
+            cx="60"
+            cy="42"
+            r="9"
+            fill="#7dd3fc"
+            stroke="#5a3a20"
+            stroke-width="3"
+            opacity=".9"
+          />
+          <path
+            d="M30 32 Q34 14 50 16 Q66 14 70 32"
+            fill="#ff8c5a"
+            stroke="#7a3a1a"
+            stroke-width="2.5"
+          />
+          <path d="M66 74 l10 8 l-4 2 l6 6" stroke="#e0a526" stroke-width="3" fill="none" />
+        </>
+      );
+      break;
+    case 'zap':
+      body = (
+        <>
+          <circle cx="50" cy="56" r="30" fill="#9fd8ff" stroke="#1d6fa3" stroke-width="3" />
+          <circle
+            cx="50"
+            cy="56"
+            r="38"
+            fill="none"
+            stroke="#9fd8ff"
+            stroke-width="2"
+            stroke-dasharray="3 7"
+            opacity=".7"
+          />
+          <path
+            d="M38 50 Q42 46 46 50 M54 50 Q58 46 62 50"
+            stroke="#1b1033"
+            stroke-width="2.5"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <ellipse cx="50" cy="70" rx="8" ry="6" fill="#ff7ab8" stroke="#a3165a" stroke-width="2" />
+          <circle cx="50" cy="70" r="3" fill="#ffd1e6" />
+          <path
+            d="M36 58 Q34 66 38 70 M64 58 Q66 66 62 70"
+            stroke="#7dd3fc"
+            stroke-width="2.5"
+            fill="none"
+          />
+          <path d="M44 22 L56 22" stroke="#1d6fa3" stroke-width="5" stroke-linecap="round" />
+          <path d="M50 26 Q46 18 52 14" stroke="#1d6fa3" stroke-width="2.5" fill="none" />
+        </>
+      );
+      break;
     default:
       body = face('#f6c99b');
   }

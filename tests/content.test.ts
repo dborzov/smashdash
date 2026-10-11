@@ -18,6 +18,7 @@ import {
 } from '../src/content';
 import { generators } from '../src/skills';
 import { renderMath } from '../src/ui/math';
+import { circuitState } from '../src/skills/electricity';
 
 function check<T>(schema: z.ZodType<T>, data: unknown, where: string): T {
   const r = schema.safeParse(data);
@@ -189,6 +190,65 @@ describe('content references', () => {
         if (b.type === 'play') texts.push(b.done);
         for (const t of texts) checkRich(t, where);
         if ('math' in b && b.math) renderMath(b.math, true, true);
+      });
+    }
+  });
+
+  it('interactive widgets can be finished', () => {
+    for (const l of Object.values(lessons)) {
+      l.beats.forEach((b, i) => {
+        if (!('widget' in b) || !b.widget) return;
+        const w = b.widget;
+        const where = `lesson ${l.id} beat ${i}`;
+        if (w.kind === 'plot') {
+          const size = w.size ?? 10;
+          const inside = (x: number, y: number) => x >= 0 && y >= 0 && x <= size && y <= size;
+          for (const p of [...(w.points ?? []), ...(w.aim ?? [])])
+            expect(inside(p.x, p.y), `${where}: (${p.x}, ${p.y}) off the grid`).toBe(true);
+          if (w.targets) {
+            expect(w.rule, `${where}: targets need a rule`).toBeDefined();
+            for (const x of w.targets)
+              expect(
+                inside(x, w.rule!.m * x + w.rule!.b),
+                `${where}: target x = ${x} off the grid`,
+              ).toBe(true);
+          }
+        }
+        if (w.kind === 'circuit' && w.goal && b.type === 'play') {
+          const tools = w.tools ?? [];
+          if (w.goal === 'close') {
+            expect(
+              w.gap && tools.includes('close'),
+              `${where}: needs a gap and the close tool`,
+            ).toBe(true);
+            return;
+          }
+          const hit = (c: typeof w) => {
+            const st = circuitState(c);
+            const over = w.fuse !== undefined && st.amps > w.fuse;
+            return w.goal === 'volts'
+              ? st.volts === w.target && !st.reversed
+              : st.amps === w.target && !over;
+          };
+          expect(hit(w), `${where}: already solved at the start`).toBe(false);
+          let reachable = false;
+          for (let cells = 0; cells <= 8; cells++)
+            for (let mud = 0; mud <= 6; mud++)
+              for (const flipped of [0, 1]) {
+                if (!tools.includes('cells') && cells !== w.cells) continue;
+                if (!tools.includes('mud') && mud !== (w.mud ?? 0)) continue;
+                if (!tools.includes('flip') && flipped !== (w.flipped ?? 0)) continue;
+                if (hit({ ...w, cells, mud, flipped, gap: false })) reachable = true;
+              }
+          expect(reachable, `${where}: goal can't be reached with the tools`).toBe(true);
+        }
+        if (w.kind === 'pipe' && w.target !== undefined) {
+          expect(w.height / w.squeeze, `${where}: already solved`).not.toBe(w.target);
+          let ok = false;
+          for (let h = 1; h <= 6; h++)
+            for (let s = 1; s <= 4; s++) if (h / s === w.target) ok = true;
+          expect(ok, `${where}: pipe target unreachable`).toBe(true);
+        }
       });
     }
   });

@@ -1,0 +1,60 @@
+id: baby-traffic
+title: Baby Traffic
+skill: current
+beats:
+  - type: say
+    who: sprocket
+    text: >-
+      So volts are the push. But what's actually *flowing* in the wire? Is the push the same
+      as the flow?
+  - type: say
+    who: grimble
+    text: >-
+      Different thing! Stand next to the wire with a clipboard and count how many babies crawl
+      past every second. That count is the **current**, measured in **amps** (written A).
+  - type: say
+    who: zap
+    text: >-
+      We crawl in CROWDS. One crowd is about 6 billion billion of us. Scientists call a crowd a
+      "coulomb". We call it "Tuesday".
+  - type: show
+    text: >-
+      **1 amp** means one crowd of babies passes every second. **3 amps** means three crowds
+      every second. Bigger current = busier wire = faster motor.
+    widget: { kind: circuit, cells: 4, load: motor }
+  - type: input
+    who: grimble
+    text: A gnome with a clipboard counts 12 crowds passing in 4 seconds. What's the current, in amps?
+    answer: 3
+    nudges:
+      - { value: 12, text: "That's crowds in 4 seconds. We want crowds **per second**." }
+      - { value: 48, text: "Share the crowds out over the seconds — divide, don't multiply." }
+    explain: "$12 \\div 4 = 3$ crowds per second: 3 amps."
+  - type: say
+    who: grimble
+    text: >-
+      Now a trick question. Mwahaha. Babies go INTO the bulb. Do fewer babies come OUT the
+      other side?
+  - type: ask
+    who: grimble
+    text: $2\,\text{A}$ go into the bulb. How much comes out the other side?
+    options:
+      - "$2\\,\\text{A}$ — every baby comes out"
+      - "$1\\,\\text{A}$ — the bulb uses some up"
+      - "$0\\,\\text{A}$ — the bulb eats them all"
+    correct: 0
+    nudges:
+      "1": "Nobody gets used up! Every baby that goes in comes out."
+      "2": "The bulb doesn't eat babies! What kind of bulb do you think this is?!"
+    explain: "In a single loop, the current is the same everywhere: $2\\,\\text{A}$ in, $2\\,\\text{A}$ out."
+  - type: say
+    who: zap
+    text: We just get SWEATY in the bulb. Nobody gets eaten! Rude!
+  - type: say
+    who: grimble
+    text: >-
+      Think of a conga line going round the room. If one dancer passes you every second here,
+      one passes every second *everywhere*. The bulb uses up the **push**, not the babies.
+  - type: practice
+    skill: current
+    count: 4

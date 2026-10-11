@@ -1,0 +1,53 @@
+id: mud-tunnels
+title: Mud Tunnels
+skill: resistance
+beats:
+  - type: say
+    who: sprocket
+    text: >-
+      Mystery! I gave Nugget a big heavy motor, same batteries as before. And now he goes
+      SLOWER. Why?!
+  - type: say
+    who: grimble
+    text: >-
+      **Resistance.** Some parts of a loop are like tight, muddy tunnels, and the babies have
+      to squeeze. Resistance is measured in **ohms**, written $\Omega$. It looks like a
+      horseshoe, because it's stubborn as a horse.
+  - type: play
+    text: Water again! Same tank. Squeeze the pipe until the flow drops to 1.
+    widget: { kind: pipe, height: 4, squeeze: 1, target: 1 }
+    done: "A narrower pipe lets less water through each second, even with the same tank. Ohms are the **squeeze**."
+  - type: ask
+    who: grimble
+    text: With the same batteries, more ohms means…
+    options:
+      - "Fewer babies get through each second"
+      - "More babies get through each second"
+      - "The babies get pushed harder"
+    correct: 0
+    nudges:
+      "1": "More squeeze = harder to get through = fewer per second."
+      "2": "The push comes from the battery (volts). Mud only squeezes."
+    explain: "More resistance, less current. Tight tunnels slow everything down."
+  - type: say
+    who: grimble
+    text: >-
+      Tunnels in a row add up. A $2\,\Omega$ tunnel and then a $3\,\Omega$ tunnel squeeze just
+      like one $5\,\Omega$ tunnel. The babies have to get through both!
+  - type: input
+    who: sprocket
+    text: Two mud tunnels in a row, $4\,\Omega$ and $5\,\Omega$. What's the total resistance?
+    answer: 9
+    nudges:
+      - { value: 5, text: "They have to squeeze through **both**. Add them!" }
+      - { value: 20, text: "Tunnels in a row add up, they don't multiply." }
+    explain: "$4 + 5 = 9$ ohms."
+  - type: play
+    text: >-
+      This bulb is SO bright it's about to pop! Add mud tunnels until the current is
+      $1\,\text{A}$.
+    widget: { kind: circuit, cells: 4, load: bulb, ohms: 3, mudOhms: 3, tools: [mud], goal: amps, target: 1 }
+    done: "More squeeze, less flow. The bulb calms down to a nice cosy glow."
+  - type: practice
+    skill: resistance
+    count: 4

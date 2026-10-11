@@ -1,0 +1,21 @@
+id: bay-outro
+title: Light in the Bay
+beats:
+  - type: narrate
+    text: >-
+      Inkbert sinks back into the deep with a sad little blorp. The fog ships dissolve. Up on
+      the cliff, Old Beamhook's laser sweeps across the bay in a perfectly straight line.
+  - type: say
+    who: polly
+    text: >-
+      SQUAWK! The bay is safe! The fishing boats are back! And Inkbert can visit on Sundays,
+      as long as he brings crackers. Hero, you've got the sharpest aim on the seven seas.
+  - type: say
+    who: grimble
+    text: >-
+      Two numbers for every spot. A rule turns each $x$ into a $y$. And the points line up
+      into a straight line you can read like a map. That, hero, is a **graph**. Scientists
+      would trade their lab coats for that skill.
+  - type: reward
+    item: hint-scroll
+    text: Polly gives you a rolled-up chart. It's mostly a hint scroll. Partly poop.

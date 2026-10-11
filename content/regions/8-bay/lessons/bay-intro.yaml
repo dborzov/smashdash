@@ -1,0 +1,31 @@
+id: bay-intro
+title: The Dark Lighthouse
+beats:
+  - type: narrate
+    text: >-
+      A rocky bay at sunset. A stripy lighthouse leans over the waves like it's had one too
+      many fizzy drinks. Its lamp is dark. On the very top, something squawks.
+  - type: say
+    who: polly
+    text: >-
+      SQUAWK! Ahoy! Captain Polly Gon, keeper of Old Beamhook Lighthouse. Mind the poop on the
+      stairs. It's mine. I'm not sorry.
+  - type: say
+    who: polly
+    text: >-
+      Every night **Inkbert the Kraken** sends fog ships into my bay to muddle the fishing
+      boats. Old Beamhook has a LASER to zap 'em — but the Muddler pinched my aiming crystal.
+      Now I have to aim by numbers. And I'm a parrot. I can only count up to "cracker".
+  - type: say
+    who: grimble
+    text: >-
+      Aiming by numbers! That's called **coordinates**. We draw the whole sea as a grid, and
+      every spot gets two numbers. Then we can hit anything. Even a sneaky kraken.
+  - type: choose
+    who: polly
+    text: Want a cracker?
+    options:
+      - text: Yes please!
+        reply: "Too bad, I ate them all! SQUAWK! Hahaha! …Sorry. Pirate humour."
+      - text: Is that laser safe?
+        reply: "Absolutely not! That's the fun part."

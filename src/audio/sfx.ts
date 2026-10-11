@@ -125,7 +125,9 @@ export type Sfx =
   | 'death'
   | 'page'
   | 'step'
-  | 'whoosh';
+  | 'whoosh'
+  | 'zap'
+  | 'buzz';
 
 export function sfx(name: Sfx | string | undefined): void {
   if (!name) return;
@@ -238,6 +240,14 @@ export function sfx(name: Sfx | string | undefined): void {
       break;
     case 'whoosh':
       noise(c, 0.35, 0.18, 0, 1500, 0.5);
+      break;
+    case 'zap':
+      tone(c, { type: 'sawtooth', freq: 1900, to: 180, dur: 0.22, vol: 0.12 });
+      tone(c, { type: 'square', freq: 2400, to: 900, dur: 0.1, vol: 0.05 });
+      break;
+    case 'buzz':
+      tone(c, { type: 'square', freq: 110, dur: 0.3, vol: 0.07 });
+      noise(c, 0.25, 0.12, 0, 3000, 2);
       break;
   }
 }

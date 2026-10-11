@@ -1,0 +1,24 @@
+id: junkyard-outro
+title: Champion of Rammageddon
+beats:
+  - type: narrate
+    text: >-
+      The crowd of junkyard goblins goes wild. Nugget does a victory lap, then rams the
+      trophy, which is honestly how he says thank you.
+  - type: say
+    who: sprocket
+    text: >-
+      WE WON! Nugget, you magnificent little toaster! Hero, you get it now: push, flow and
+      squeeze. Every gadget in the kingdom runs on that.
+  - type: say
+    who: zap
+    text: And all the babies got home to Nanny! …Can we go round again? WHEEEE!
+  - type: say
+    who: grimble
+    text: >-
+      Volts push, amps flow, ohms squeeze, and $V = I \times R$ ties them together. You just
+      learned real physics using algebra, hero. The Muddler must be hopping mad. I know I
+      would be. Mostly I'm just hopping. I'm a frog.
+  - type: reward
+    gold: 50
+    text: Sprocket hands you your share of the prize money. It smells faintly of burnt toast.

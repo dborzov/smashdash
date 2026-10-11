@@ -1,0 +1,58 @@
+id: the-push
+title: The Push
+skill: volts
+beats:
+  - type: say
+    who: sprocket
+    text: >-
+      Okay, the loop works. But Nugget crawls like a sleepy snail with a sore foot. How do I
+      make him go FASTER?
+  - type: say
+    who: grimble
+    text: >-
+      More **push**. How desperately do the babies want Nanny? That's called **voltage**,
+      measured in **volts** (written V).
+  - type: play
+    text: >-
+      Think of water in a tank. The higher the tank, the harder the water pushes down the
+      pipe. Raise the tank until the flow is 2.
+    widget: { kind: pipe, height: 2, squeeze: 2, target: 2 }
+    done: "Higher tank, harder push, faster flow. Volts are like the **height of the tank**."
+  - type: say
+    who: grimble
+    text: >-
+      One AA battery gives $1.5$ volts of push. And if you stack batteries nose to tail, their
+      pushes **add up**. Like stacking tanks on top of each other.
+  - type: play
+    text: Stack AA batteries until the push is $6$ volts.
+    widget: { kind: circuit, cells: 1, load: motor, tools: [cells], goal: volts, target: 6, readout: false }
+    done: "Four AAs: $1.5 + 1.5 + 1.5 + 1.5 = 6$ volts. Nugget zooms!"
+  - type: input
+    who: sprocket
+    text: How many volts of push do 3 AAs make?
+    answer: 4.5
+    nudges:
+      - { value: 3, text: "That's how many batteries. Each one gives $1.5$ volts!" }
+      - { value: 1.5, text: "Nose to tail, the pushes stack up! Add them." }
+    explain: "$1.5 + 1.5 + 1.5 = 4.5$ volts."
+  - type: say
+    who: zap
+    text: But what if one battery is in BACKWARDS? WAAAH! Which way do I crawl?!
+  - type: show
+    text: >-
+      A backwards battery doesn't just stop pushing. It pushes the **other way**! Here, two
+      push one way and one pushes back. The backwards one cancels a good one, so only one
+      battery's worth of push is left: $1.5$ volts.
+    widget: { kind: circuit, cells: 3, flipped: 1, load: motor }
+  - type: input
+    who: grimble
+    text: Four AAs, but Nugget put one in backwards. How many volts of push are left?
+    answer: 3
+    nudges:
+      - { value: 6, text: "The backwards one pushes the wrong way, it doesn't help!" }
+      - { value: 4.5, text: "Sneaky: a backwards battery doesn't just stop. It cancels a good one too!" }
+    hint: Three push forwards, one pushes back. What's left?
+    explain: "3 forwards − 1 backwards = 2 batteries' worth: $2 \\times 1.5 = 3$ volts."
+  - type: practice
+    skill: volts
+    count: 4
