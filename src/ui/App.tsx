@@ -43,6 +43,8 @@ export function App() {
   else if (a === 'play' && b && c) full = <PlayNode key={`${b}/${c}`} regionId={b} nodeId={c} />;
   else if (a === 'wander' && b) full = <PlayWanderer key={b} id={b} />;
   else if (a === 'practice' && b) full = <PlaySkill key={b} skillId={b} />;
+  else if (a === 'drill' && b)
+    full = <PlaySkill key={`${b}/${c}`} skillId={b} atom={c} back="/skills" />;
   else if (a === 'new') full = <CreateHero />;
   else if (a === 'preview') full = <Preview kind={b} id={c} />;
   if (full) {

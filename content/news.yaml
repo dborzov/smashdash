@@ -1,0 +1,28 @@
+# The dispatch feed on the adventure board, newest first. `region` links to a region.
+- date: '2026-10-13'
+  icon: "⚔️"
+  title: "New campaign: The Long Count"
+  region: greyhaven
+  text: >-
+    Four new regions in the frozen North: Greyhaven, the Ashen Road, the Siege of Thornwall and
+    the Glass Vaults. Big numbers, place value, rounding and decimals — the things a war is
+    actually won with.
+- date: '2026-10-13'
+  icon: "🌳"
+  title: "The Skill Tree"
+  text: >-
+    Every tiny skill in the game, from $10^2 = 100$ to "$3$ less than $x$", now has its own leaf
+    on the Skill Tree. Watch them turn gold.
+- date: '2026-10-13'
+  icon: "🏆"
+  title: "Trophies, bounties and a smarter training master"
+  text: >-
+    Daily bounties, trophies and titles. Fights now adapt: struggle with something and you get
+    more practice on exactly that; breeze through and you move up faster.
+- date: '2026-10-11'
+  icon: "🪞"
+  title: "Three new regions"
+  region: mirrors
+  text: >-
+    The Mirrormaze Caves, Beamhook Bay and the Sparkwick Junkyard: the distributive law,
+    straight-line graphs and electricity.

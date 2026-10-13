@@ -39,6 +39,7 @@ export const notation: Generator = (rng, level) => {
       ]);
       return {
         skill: 'notation',
+        atoms: ['times'],
         prompt: r`What does $${a}x$ mean?`,
         ...c,
         explain: r`A number stuck to the front of $x$ means **multiply**: $${a}x = ${a} \times x$ — ${a} mystery boxes.`,
@@ -57,6 +58,7 @@ export const notation: Generator = (rng, level) => {
       ]);
       return {
         skill: 'notation',
+        atoms: ['boxes'],
         prompt: `${a} mystery boxes and ${b} coins. Each box hides the same number $x$. Which expression shows the total?`,
         visual: { kind: 'boxes', a, b },
         ...c,
@@ -76,6 +78,7 @@ export const notation: Generator = (rng, level) => {
       ]);
       return {
         skill: 'notation',
+        atoms: ['repeat-add'],
         prompt: `Which is the same as $${sum}$?`,
         ...c,
         explain: r`${n} boxes added together is ${n} lots of $x$: $${sum} = ${n}x$.`,
@@ -93,6 +96,7 @@ export const notation: Generator = (rng, level) => {
       ]);
       return {
         skill: 'notation',
+        atoms: ['divide'],
         prompt: `Which means "$x$ split into ${a} equal piles" ($x$ divided by ${a})?`,
         ...c,
         explain: r`Divided-by is written as a fraction: the box on top, ${a} below: $\frac{x}{${a}}$.`,
@@ -104,6 +108,7 @@ export const notation: Generator = (rng, level) => {
       const ask = rng.pick(['times', 'plus'] as const);
       return {
         skill: 'notation',
+        atoms: ['parts'],
         prompt:
           ask === 'times'
             ? `In $${a}x + ${b}$, what number is the box **multiplied** by?`
@@ -130,6 +135,7 @@ export const notation: Generator = (rng, level) => {
       ]);
       return {
         skill: 'notation',
+        atoms: ['recipe'],
         prompt: `Which means "multiply $x$ by ${a}, **then** add ${b}"?`,
         ...c,
         explain: r`Multiply first: $${a}x$. Then add ${b}: $${a}x + ${b}$.`,
@@ -212,6 +218,7 @@ export const evalOne: Generator = (rng, level) => {
   }
   return {
     skill: 'eval-one',
+    atoms: [kind],
     prompt: `If $x = ${v}$, what is $${expr}$?`,
     math: expr,
     visual: level === 1 && boxes ? { kind: 'boxes', a: boxes, b: 0, reveal: v } : undefined,
@@ -291,6 +298,7 @@ export const evalTwo: Generator = (rng, level) => {
   }
   return {
     skill: 'eval-two',
+    atoms: [kind],
     prompt: `If $x = ${v}$, what is $${expr}$?`,
     math: expr,
     ...numeric(value, nudges),
@@ -328,6 +336,7 @@ export const evalParens: Generator = (rng, level) => {
     ]);
     return {
       skill: 'eval-parens',
+      atoms: ['compare'],
       prompt: r`If $x = ${v}$, which is bigger: $${a}(x + ${b})$ or $${a}x + ${b}$?`,
       ...c,
       explain: r`$${a}(${v} + ${b}) = ${a} \times ${v + b} = ${p}$ but $${a} \times ${v} + ${b} = ${q}$. The bracket multiplies the ${b} too!`,
@@ -363,6 +372,7 @@ export const evalParens: Generator = (rng, level) => {
   }
   return {
     skill: 'eval-parens',
+    atoms: [kind === 'xpbdiv' ? 'fracbar' : kind],
     prompt: `If $x = ${v}$, what is $${expr}$?`,
     math: expr,
     ...numeric(value, nudges),
@@ -386,6 +396,7 @@ export const wordsToExpr: Generator = (rng, level) => {
   const m = rng.int(2, 9);
   const what = rng.pick(nouns);
   type T = {
+    atom: string;
     say: string;
     right: string;
     wrong: (string | { text: string; nudge: string })[];
@@ -393,6 +404,7 @@ export const wordsToExpr: Generator = (rng, level) => {
   };
   const L1: T[] = [
     {
+      atom: 'more',
       say: `${n} more than ${what}`,
       right: `$x + ${n}$`,
       wrong: [
@@ -403,6 +415,7 @@ export const wordsToExpr: Generator = (rng, level) => {
       why: `"${n} more than $x$" means start at $x$ and add ${n}: $x + ${n}$.`,
     },
     {
+      atom: 'less',
       say: `${n} less than ${what}`,
       right: `$x - ${n}$`,
       wrong: [
@@ -416,6 +429,7 @@ export const wordsToExpr: Generator = (rng, level) => {
       why: `"${n} less than $x$": start with $x$, take ${n} away: $x - ${n}$.`,
     },
     {
+      atom: 'twice',
       say: `twice ${what}`,
       right: `$2x$`,
       wrong: [
@@ -426,6 +440,7 @@ export const wordsToExpr: Generator = (rng, level) => {
       why: `"Twice" means two times: $2x$.`,
     },
     {
+      atom: 'times',
       say: `${what} times ${n}`,
       right: `$${n}x$`,
       wrong: [`$x + ${n}$`, `$x^{${n}}$`, `$\\frac{x}{${n}}$`],
@@ -434,6 +449,7 @@ export const wordsToExpr: Generator = (rng, level) => {
   ];
   const L2: T[] = [
     {
+      atom: 'split',
       say: `${what} split into ${n} equal piles`,
       right: `$\\frac{x}{${n}}$`,
       wrong: [
@@ -444,12 +460,14 @@ export const wordsToExpr: Generator = (rng, level) => {
       why: `Splitting $x$ into ${n} piles: $\\frac{x}{${n}}$.`,
     },
     {
+      atom: 'two-step',
       say: `half of ${what}, minus ${n}`,
       right: `$\\frac{x}{2} - ${n}$`,
       wrong: [`$2x - ${n}$`, `$\\frac{x - ${n}}{2}$`, `$${n} - \\frac{x}{2}$`],
       why: `Half of $x$ is $\\frac{x}{2}$, then take away ${n}.`,
     },
     {
+      atom: 'less',
       say: `${n} taken away from ${what}`,
       right: `$x - ${n}$`,
       wrong: [
@@ -462,6 +480,7 @@ export const wordsToExpr: Generator = (rng, level) => {
   ];
   const L3: T[] = [
     {
+      atom: 'two-step',
       say: `triple ${what}, then add ${n}`,
       right: `$3x + ${n}$`,
       wrong: [
@@ -475,6 +494,7 @@ export const wordsToExpr: Generator = (rng, level) => {
       why: `Triple first ($3x$), then add ${n}: $3x + ${n}$.`,
     },
     {
+      atom: 'brackets',
       say: `add ${n} to ${what}, then multiply everything by ${m}`,
       right: `$${m}(x + ${n})$`,
       wrong: [
@@ -488,6 +508,7 @@ export const wordsToExpr: Generator = (rng, level) => {
       why: `Add first — brackets: $(x + ${n})$. Then multiply by ${m}: $${m}(x + ${n})$.`,
     },
     {
+      atom: 'two-step',
       say: `${n} less than double ${what}`,
       right: `$2x - ${n}$`,
       wrong: [
@@ -505,6 +526,7 @@ export const wordsToExpr: Generator = (rng, level) => {
   const t = rng.pick(pool);
   return {
     skill: 'words-to-expr',
+    atoms: [t.atom],
     prompt: `Translate the goblin gibberish into maths: **"${t.say}"**`,
     ...choice(rng, t.right, t.wrong),
     explain: t.why,

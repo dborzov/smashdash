@@ -249,6 +249,7 @@ export const nameUnknown: Generator = (rng, level) => {
   const s = makeStory(rng, level);
   return {
     skill: 'name-unknown',
+    atoms: [s.shape],
     prompt: `${s.text} **${s.question}**\n\nIf we call the mystery number $x$, what does $x$ stand for?`,
     ...choice(
       rng,
@@ -270,6 +271,7 @@ export const storyToEquation: Generator = (rng, level) => {
   const s = makeStory(rng, level);
   return {
     skill: 'story-to-equation',
+    atoms: [s.shape],
     prompt: `${s.text}\n\nLet $x$ be ${s.unknown}. Which equation tells this story?`,
     ...choice(rng, `$${storyEquation(s)}$`, wrongEquations(s)),
     explain: `$x$ is ${s.unknown}, so the story says $${storyEquation(s)}$.`,
@@ -294,6 +296,7 @@ export const storySolve: Generator = (rng, level) => {
     nudges.push([s.c / s.a, `Shared out means the hoard was bigger than each share!`]);
   return {
     skill: 'story-solve',
+    atoms: [s.shape],
     prompt: `${s.text} **${s.question}**`,
     ...numeric(s.x, nudges),
     hint: `Write the equation first: let $x$ be ${s.unknown}.`,

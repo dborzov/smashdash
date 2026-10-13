@@ -54,18 +54,21 @@ export const closedLoop: Generator = (rng, level) => {
         : ['pic', 'why', 'switch'];
   const kind = rng.pick(kinds);
   if (kind === 'pic') {
-    const variants: { pic: CircuitPic; lit: boolean; nudge: string }[] = [
+    const variants: { atom: string; pic: CircuitPic; lit: boolean; nudge: string }[] = [
       {
+        atom: 'loop',
         pic: { kind: 'circuit', cells: 2 },
         lit: true,
         nudge: `Follow the wire from − all the way round to +. Is there any break?`,
       },
       {
+        atom: 'gap',
         pic: { kind: 'circuit', cells: 2, gap: true },
         lit: false,
         nudge: `Look for a gap in the wire! Baby electrons can't jump across thin air.`,
       },
       {
+        atom: 'same-end',
         pic: { kind: 'circuit', cells: 2, sameEnd: true },
         lit: false,
         nudge: `Both wires go to the **same** end of the battery. The babies never get round to Nanny on the other end!`,
@@ -74,11 +77,13 @@ export const closedLoop: Generator = (rng, level) => {
     if (level >= 2) {
       variants.push(
         {
+          atom: 'cancel',
           pic: { kind: 'circuit', cells: 2, flipped: 1 },
           lit: false,
           nudge: `One battery is backwards! It pushes the other way, so the two pushes cancel out.`,
         },
         {
+          atom: 'net-push',
           pic: { kind: 'circuit', cells: 3, flipped: 1 },
           lit: true,
           nudge: `Two push one way, one pushes back: there's still one battery's worth of push left.`,
@@ -92,6 +97,7 @@ export const closedLoop: Generator = (rng, level) => {
     const no = load === 'bulb' ? 'It stays dark' : 'The motor stays still';
     return {
       skill: 'closed-loop',
+      atoms: [v.atom],
       prompt: `Will this ${load === 'bulb' ? 'bulb light up' : 'motor spin'}?`,
       visual: pic,
       answer: { kind: 'choice', options: [yes, no], correct: v.lit ? 0 : 1 },
@@ -115,6 +121,7 @@ export const closedLoop: Generator = (rng, level) => {
     ]);
     return {
       skill: 'closed-loop',
+      atoms: ['where'],
       prompt: `Baby electrons pour out of the − end of the battery. Where are they trying to get to?`,
       ...ch,
       explain: `They crawl through the wire, all the way round the loop, to the + end of the battery where the Nanny Ions are waiting.`,
@@ -134,6 +141,7 @@ export const closedLoop: Generator = (rng, level) => {
     ]);
     return {
       skill: 'closed-loop',
+      atoms: ['break-anywhere'],
       prompt: `Sprocket snips the wire on the far side of the battery, nowhere near the bulb. The bulb goes out. Why?`,
       ...ch,
       explain: `Electrons only flow if there's a complete loop from − back to +. One break anywhere and the whole crawl stops.`,
@@ -152,6 +160,7 @@ export const closedLoop: Generator = (rng, level) => {
   ]);
   return {
     skill: 'closed-loop',
+    atoms: ['switch'],
     prompt: `What does a switch really do?`,
     ...ch,
     explain: `A switch is a drawbridge: flip it open and there's a gap (no flow); close it and the loop is complete again.`,
@@ -173,6 +182,7 @@ export const volts: Generator = (rng, level) => {
     const n = rng.int(2, level === 1 ? 4 : 8);
     return {
       skill: 'volts',
+      atoms: ['stack'],
       prompt: `${n} AA batteries, nose to tail. Each one pushes with $${V(AA)}$. How many volts of push altogether?`,
       visual: { kind: 'circuit', cells: n, load: 'motor', readout: false },
       ...numeric(clean(n * AA), [
@@ -189,6 +199,7 @@ export const volts: Generator = (rng, level) => {
     const net = clean((n - 2 * f) * AA);
     return {
       skill: 'volts',
+      atoms: ['flip'],
       prompt: `${n} AAs, but Nugget put ${f === 1 ? 'one' : f} in **backwards**! How many volts of push are left?`,
       visual: { kind: 'circuit', cells: n, flipped: f, load: 'motor', readout: false },
       ...numeric(net, [
@@ -207,6 +218,7 @@ export const volts: Generator = (rng, level) => {
     const target = clean(k * AA);
     return {
       skill: 'volts',
+      atoms: ['howmany'],
       prompt: `Nugget's motor wants $${V(target)}$ of push. How many AAs do you stack?`,
       ...numeric(k, [
         [clean(target * AA), `Divide, don't multiply: how many $1.5$s fit into ${fmt(target)}?`],
@@ -226,6 +238,7 @@ export const volts: Generator = (rng, level) => {
   ]);
   return {
     skill: 'volts',
+    atoms: ['compare'],
     prompt: `Which battery pushes the baby electrons **harder**?`,
     ...ch,
     explain: `Volts measure push — like how high the water tank is. $${V(big)}$ is a much taller tank than $${V(AA)}$.`,
@@ -252,6 +265,7 @@ export const current: Generator = (rng, level) => {
     ]);
     return {
       skill: 'current',
+      atoms: ['same'],
       prompt: `$${A(i)}$ of current flows into the bulb. How much ${where}?`,
       ...numeric(i, [
         [0, `The bulb doesn't eat electrons! Every baby that goes in comes out.`],
@@ -275,6 +289,7 @@ export const current: Generator = (rng, level) => {
     ]);
     return {
       skill: 'current',
+      atoms: ['meaning'],
       prompt: `Current (measured in amps) tells you…`,
       ...ch,
       explain: `Current is the flow: how many babies crawl past a spot every second — like how many buckets of water pour out of a pipe each second.`,
@@ -285,6 +300,7 @@ export const current: Generator = (rng, level) => {
   const crowds = amps * secs;
   return {
     skill: 'current',
+    atoms: ['rate'],
     prompt: `The gnome at the gate counts ${crowds} crowds of baby electrons in ${secs} seconds. One crowd per second is 1 amp. What's the current?`,
     ...numeric(amps, [
       [crowds, `That's crowds in ${secs} seconds. We want crowds **per second**.`],
@@ -312,6 +328,7 @@ export const resistance: Generator = (rng, level) => {
     const total = parts.reduce((a, b) => a + b, 0);
     return {
       skill: 'resistance',
+      atoms: ['sum'],
       prompt: `The babies must squeeze through ${n} mud tunnels in a row: ${parts.map((p) => `$${O(p)}$`).join(', ')}. What's the total resistance?`,
       ...numeric(total, [
         [
@@ -338,6 +355,7 @@ export const resistance: Generator = (rng, level) => {
     ]);
     return {
       skill: 'resistance',
+      atoms: ['compare'],
       prompt: `Same battery, two different bulbs: one is $${O(lo)}$, the other $${O(hi)}$. Which one gets **more** current?`,
       ...ch,
       explain: `Less resistance = less squeeze = more babies per second. The $${O(lo)}$ bulb wins.`,
@@ -347,6 +365,7 @@ export const resistance: Generator = (rng, level) => {
     const i = rng.pick([2, 4, 6, 8]);
     return {
       skill: 'resistance',
+      atoms: ['double'],
       prompt: `A motor gets $${A(i)}$. Sprocket keeps the same batteries but **doubles** the resistance. What's the current now?`,
       ...numeric(i / 2, [
         [i * 2, `Backwards! More squeeze means *less* flow.`],
@@ -368,6 +387,7 @@ export const resistance: Generator = (rng, level) => {
   ]);
   return {
     skill: 'resistance',
+    atoms: ['meaning'],
     prompt: `What does a resistor (a "mud tunnel") do?`,
     ...ch,
     explain: `Resistance is squeeze: a tight, muddy tunnel. It slows the whole flow down, all the way round the loop.`,
@@ -395,6 +415,7 @@ export const ohmCurrent: Generator = (rng, level) => {
     ]);
     return {
       skill: 'ohm-current',
+      atoms: ['law'],
       prompt: `Which is Ohm's law in baby-electron language?`,
       ...ch,
       explain: r`More push → more flow; more squeeze → less flow. So $I = \frac{V}{R}$: current = push ÷ squeeze.`,
@@ -416,6 +437,7 @@ export const ohmCurrent: Generator = (rng, level) => {
   }
   return {
     skill: 'ohm-current',
+    atoms: [kind],
     prompt: `${setup} How many amps flow?`,
     math: r`I = \frac{V}{R}`,
     ...numeric(i, [
@@ -444,6 +466,7 @@ export const ohmSolve: Generator = (rng, level) => {
     const R = rng.int(2, 6);
     return {
       skill: 'ohm-solve',
+      atoms: ['volts'],
       prompt: `Nugget's motor is $${O(R)}$ and needs $${A(i)}$ to ram at full speed. How many volts of push?`,
       math: r`V = I \times R`,
       ...numeric(i * R, [
@@ -459,6 +482,7 @@ export const ohmSolve: Generator = (rng, level) => {
     const v = i * R;
     return {
       skill: 'ohm-solve',
+      atoms: ['ohms'],
       prompt: `A battery with $${V(v)}$ of push makes $${A(i)}$ flow through a mystery tunnel. How many ohms is the tunnel? Solve for $R$!`,
       math: r`${v} = ${i} \times R`,
       ...numeric(R, [
@@ -477,6 +501,7 @@ export const ohmSolve: Generator = (rng, level) => {
     const k = clean(v / AA);
     return {
       skill: 'ohm-solve',
+      atoms: ['cells'],
       prompt: `To ram at full power, Nugget's $${O(R)}$ motor needs $${A(i)}$. How many AA batteries (1.5 V each) do you stack?`,
       ...numeric(k, [
         [v, `That's the volts you need, $${V(v)}$. But each AA gives only 1.5 V.`],
@@ -490,6 +515,7 @@ export const ohmSolve: Generator = (rng, level) => {
   const R = rng.int(2, 4);
   return {
     skill: 'ohm-solve',
+    atoms: ['fuse'],
     prompt: `The motor's fuse pops above $${A(fuse)}$ (poof, smoke, sad robot). The motor is $${O(R)}$. What's the most push you can give it?`,
     ...numeric(fuse * R, [
       [fuse + R, `Volts = amps **×** ohms.`],

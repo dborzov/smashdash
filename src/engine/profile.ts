@@ -4,7 +4,7 @@
  */
 import type { Game, Monster } from '../content/schema';
 
-export const SAVE_VERSION = 1;
+export const SAVE_VERSION = 2;
 
 export interface Look {
   skin: number;
@@ -20,6 +20,28 @@ export interface SkillState {
   right: number;
   /** Last practised (ms since epoch). */
   last: number;
+  /**
+   * Difficulty tier the player has reached in this skill (1–3). Goes up after a run of clean
+   * answers at the current tier, down after repeated misses. Added in save v2.
+   */
+  tier?: 1 | 2 | 3;
+  /** Recent outcomes at the current tier: R (right), N (nudged), W (wrong). Newest last. */
+  th?: string;
+}
+
+/** Progress on one atomic sub-skill, keyed `${skill}/${atom}` in Profile.atoms. */
+export interface AtomState {
+  /** Times seen. */
+  n: number;
+  /** Right first time. */
+  r: number;
+  /** Right after a nudge. */
+  u: number;
+  /** Wrong. */
+  w: number;
+  last: number;
+  /** Recent outcomes (R/N/W), newest last, at most 8. */
+  h: string;
 }
 
 export interface NodeState {
@@ -41,6 +63,10 @@ export interface Pet {
   nextPoop: number | null;
   hat?: string;
   dead?: { at: number; cause: string };
+  /** Bond with the hero, 0–100. Grows with care; unlocks tricks. (v2) */
+  bond?: number;
+  /** Last time the bug-catching game was played. (v2) */
+  bugsAt?: number;
 }
 
 export interface Grave {
@@ -113,6 +139,42 @@ export interface Profile {
     bosses: number;
   };
   sound: boolean;
+
+  // ---- added in save v2 ----
+  /** Atomic sub-skill progress, keyed `${skill}/${atom}`. */
+  atoms: Record<string, AtomState>;
+  /** Achievements unlocked: id → time. */
+  ach: Record<string, number>;
+  /** Counters for achievements and bounties (fed, cleaned, grit, ...). */
+  counters: Record<string, number>;
+  /** Time spent per region, ms. */
+  time: Record<string, number>;
+  /** First time each region was opened (for "NEW" markers). */
+  visited: Record<string, number>;
+  /** Today's bounties. */
+  quests: QuestDay | null;
+  /** Displayed title (an achievement id), if chosen. */
+  title?: string;
+  /** Timed boosts. */
+  boosts: { xp2Until?: number; lucky?: number };
+  /** Den decorations the player owns and has placed. */
+  den: string[];
+  /** Newest news item the player has seen (date string). */
+  newsSeen: string;
+}
+
+export interface Quest {
+  id: string;
+  goal: number;
+  have: number;
+  claimed: boolean;
+}
+
+export interface QuestDay {
+  day: string;
+  list: Quest[];
+  /** Bonus chest for finishing all bounties claimed. */
+  chest: boolean;
 }
 
 export function newProfile(
@@ -137,6 +199,15 @@ export function newProfile(
     wanderAt: 0,
     stats: { right: 0, wrong: 0, nudged: 0, wins: 0, losses: 0, bosses: 0 },
     sound: true,
+    atoms: {},
+    ach: {},
+    counters: {},
+    time: {},
+    visited: {},
+    quests: null,
+    boosts: {},
+    den: [],
+    newsSeen: '',
   };
 }
 

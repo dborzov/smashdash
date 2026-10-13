@@ -28,6 +28,7 @@ export const powerMeaning: Generator = (rng, level) => {
   if (t === 0) {
     return {
       skill: 'power-meaning',
+      atoms: ['meaning'],
       prompt: `What does $${base}^{${exp}}$ mean?`,
       ...choice(rng, `$${mult}$`, [
         {
@@ -50,6 +51,7 @@ export const powerMeaning: Generator = (rng, level) => {
       .join(r` \times `);
     return {
       skill: 'power-meaning',
+      atoms: ['value'],
       prompt: `What is $${b}^{${exp}}$?`,
       math: `${b}^{${exp}}`,
       visual: exp <= 3 && b <= 5 ? { kind: 'power', base: b, exp } : undefined,
@@ -68,6 +70,7 @@ export const powerMeaning: Generator = (rng, level) => {
     const v = Math.pow(b, e);
     return {
       skill: 'power-meaning',
+      atoms: ['exponent'],
       prompt: `$${b}^{?} = ${v}$. What is the missing exponent?`,
       ...numeric(e, [
         [
@@ -95,6 +98,7 @@ export const powerMeaning: Generator = (rng, level) => {
   const small = v1 > v2 ? `$${y}^{${x}}$` : `$${x}^{${y}}$`;
   return {
     skill: 'power-meaning',
+    atoms: ['compare'],
     prompt: `Which is bigger: $${x}^{${y}}$ or $${y}^{${x}}$?`,
     ...choice(rng, big, [
       small,
@@ -113,6 +117,7 @@ export const pow10Up: Generator = (rng, level) => {
   if (t === 0) {
     return {
       skill: 'pow10-up',
+      atoms: [`e${n}`],
       prompt: `What is $10^{${n}}$?`,
       math: `10^{${n}}`,
       ...numeric(v, [
@@ -132,6 +137,7 @@ export const pow10Up: Generator = (rng, level) => {
   if (t === 1) {
     return {
       skill: 'pow10-up',
+      atoms: [`e${n}`, 'reverse'],
       prompt: `$${tex(v)} = 10^{?}$`,
       ...numeric(n, [
         [n + 1, `Count only the zeros, not the 1!`],
@@ -143,6 +149,7 @@ export const pow10Up: Generator = (rng, level) => {
   const m = rng.int(1, 5);
   return {
     skill: 'pow10-up',
+    atoms: ['multiply'],
     prompt: r`What is $10^{${n}} \times 10^{${m}}$? Give the answer as a power: $10^{?}$`,
     ...numeric(n + m, [
       [n * m, `Multiplying tens just stacks the zeros: ${n} zeros and ${m} zeros. Add them!`],
@@ -160,6 +167,7 @@ export const pow10Down: Generator = (rng, level) => {
   if (n === 0 || t === 0) {
     return {
       skill: 'pow10-down',
+      atoms: [n === 0 ? 'zero' : `m${n}`],
       prompt: n === 0 ? `What is $10^{0}$?` : `What is $10^{${-n}}$? (Use a decimal.)`,
       math: `10^{${-n}}`,
       ...numeric(
@@ -198,6 +206,7 @@ export const pow10Down: Generator = (rng, level) => {
   if (t === 1) {
     return {
       skill: 'pow10-down',
+      atoms: [`m${n}`, 'reverse'],
       prompt: r`$${tex(v)} = 10^{?}$`,
       ...numeric(-n, [
         [n, `${tex(v)} is **smaller** than 1, so the exponent is negative.`],
@@ -209,6 +218,7 @@ export const pow10Down: Generator = (rng, level) => {
   if (t === 2) {
     return {
       skill: 'pow10-down',
+      atoms: [`m${n}`, 'fraction'],
       prompt: `Which is the same as $10^{${-n}}$?`,
       ...choice(rng, r`$\frac{1}{${tex(pow10(n))}}$`, [
         { text: `$-${tex(pow10(n))}$`, nudge: `Negative exponent = tiny, not negative!` },
@@ -225,6 +235,7 @@ export const pow10Down: Generator = (rng, level) => {
   const bigger = a > b ? a : b;
   return {
     skill: 'pow10-down',
+    atoms: ['compare'],
     prompt: `Which is bigger: $10^{${a}}$ or $10^{${b}}$?`,
     ...choice(rng, `$10^{${bigger}}$`, [
       {
@@ -249,8 +260,13 @@ export const timesPow10: Generator = (rng, level) => {
         : rng.pick([2, 3, 5, -1, -2, -3]);
   const v = clean(m * pow10(n));
   const dir = n > 0 ? 'right' : 'left';
+  // Does the point hop past the end of the digits (so zeros must fill the gap)?
+  const decimals = (String(m).split('.')[1] ?? '').length;
+  const intDigits = m >= 1 ? String(Math.floor(m)).length : 0;
+  const pad = n > 0 ? n > decimals : -n > intDigits;
   return {
     skill: 'times-pow10',
+    atoms: [n > 0 ? 'up' : 'down', ...(pad ? ['pad'] : [])],
     prompt: r`What is $${tex(m)} \times 10^{${n}}$?`,
     math: r`${tex(m)} \times 10^{${n}}`,
     ...numeric(v, [
@@ -280,6 +296,7 @@ export const sciNotation: Generator = (rng, level) => {
     const v = clean(mant * pow10(n));
     return {
       skill: 'sci-notation',
+      atoms: ['expand'],
       prompt: r`A giant's shoe is $${tex(mant)} \times 10^{${n}}$ millimetres long. Write that as a normal number.`,
       math: r`${tex(mant)} \times 10^{${n}}`,
       ...numeric(v, [
@@ -299,6 +316,7 @@ export const sciNotation: Generator = (rng, level) => {
     const v = clean(mant * pow10(n));
     return {
       skill: 'sci-notation',
+      atoms: ['exponent'],
       prompt: r`$${tex(v)} = ${tex(mant)} \times 10^{?}$`,
       ...numeric(n, [
         [
@@ -316,6 +334,7 @@ export const sciNotation: Generator = (rng, level) => {
     const v = clean(m * pow10(-n));
     return {
       skill: 'sci-notation',
+      atoms: ['small'],
       prompt: r`A flea's sneeze lasts $${tex(v)}$ seconds. Write it as $${tex(m)} \times 10^{?}$`,
       ...numeric(-n, [
         [n, `The number is smaller than 1 — so the power is **negative**.`],
@@ -330,6 +349,7 @@ export const sciNotation: Generator = (rng, level) => {
     const good = r`$${tex(mant)} \times 10^{${n}}$`;
     return {
       skill: 'sci-notation',
+      atoms: ['form'],
       prompt: `Scientific notation needs a front number from 1 up to (but not including) 10. Which one is written properly?`,
       ...choice(rng, good, [
         {
@@ -352,6 +372,7 @@ export const sciNotation: Generator = (rng, level) => {
   const bigger = e1 > e2 ? A : B;
   return {
     skill: 'sci-notation',
+    atoms: ['compare'],
     prompt: `A troll has ${A} smelly socks. A giant has ${B}. Who has more socks?`,
     ...choice(rng, bigger, [
       {

@@ -35,7 +35,33 @@ function genericNudge(given: number, want: number): string | null {
  * @param given  number typed, or option index picked
  * @param nudged whether this problem already used its nudge (only one per problem)
  */
-export function judge(p: Problem, given: number, nudged: boolean): Verdict {
+export function judge(p: Problem, given: number | number[], nudged: boolean): Verdict {
+  if (p.answer.kind === 'order') {
+    const order = Array.isArray(given) ? given : [given];
+    const same = (a: number[]) => a.length === order.length && a.every((x, i) => x === order[i]);
+    if (same(p.answer.correct)) return { kind: 'right' };
+    if (!nudged) {
+      const t = p.answer.traps?.find((x) => same(x.order));
+      if (t) return { kind: 'nudge', text: t.text };
+      const rev = [...p.answer.correct].reverse();
+      if (same(rev))
+        return {
+          kind: 'nudge',
+          text: `Right idea, wrong way round! Check: ${p.answer.direction}.`,
+        };
+    }
+    return { kind: 'wrong' };
+  }
+  if (Array.isArray(given)) return { kind: 'wrong' };
+  if (p.answer.kind === 'line') {
+    const a = p.answer;
+    if (Math.abs(given - a.value) <= a.tolerance + 1e-9) return { kind: 'right' };
+    if (!nudged) {
+      const n = p.nudges?.find((x) => Math.abs(x.match - given) <= a.tolerance + 1e-9);
+      if (n) return { kind: 'nudge', text: n.text };
+    }
+    return { kind: 'wrong' };
+  }
   if (p.answer.kind === 'number') {
     if (sameNumber(given, p.answer.value)) return { kind: 'right' };
     if (!nudged) {

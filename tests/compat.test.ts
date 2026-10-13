@@ -127,7 +127,27 @@ function v1Save(done: string[], skills: string[]): Profile {
   p.hero.gold = 321;
   p.inv['hint-scroll'] = 4;
   p.seen = ['prologue'];
-  return JSON.parse(JSON.stringify(p));
+  // Strip everything added in save v2, so this really looks like an old save.
+  const old = JSON.parse(JSON.stringify(p));
+  old.v = 1;
+  for (const k of [
+    'atoms',
+    'ach',
+    'counters',
+    'time',
+    'visited',
+    'quests',
+    'boosts',
+    'den',
+    'newsSeen',
+    'title',
+  ])
+    delete old[k];
+  for (const sk of Object.values(old.skills) as Record<string, unknown>[]) {
+    delete sk.tier;
+    delete sk.th;
+  }
+  return old;
 }
 
 describe('v1 ids are still there', () => {
@@ -147,8 +167,43 @@ describe('v1 ids are still there', () => {
       expect(() => generate(s, 1, new Rng(1))).not.toThrow();
     }
   });
-  it('the save version has not changed (no Profile shape change, no migration needed)', () => {
-    expect(SAVE_VERSION).toBe(1);
+  it('the save version is known, and v1 saves migrate to it', () => {
+    // Bumping SAVE_VERSION needs a migration step in save.ts and a test here.
+    expect(SAVE_VERSION).toBe(2);
+  });
+});
+
+describe('save v1 → v2 migration', () => {
+  it('adds every new field with safe defaults and keeps all progress', () => {
+    const old = v1Save(['bramblebottom'], ['notation', 'eval-one', 'eval-two']);
+    // Mastery that would have been level 3 in v1 starts at tier 3.
+    old.skills['eval-one'].m = 0.8;
+    const p = migrate(JSON.parse(JSON.stringify(old)));
+    expect(p.v).toBe(SAVE_VERSION);
+    expect(p.atoms).toEqual({});
+    expect(p.ach).toEqual({});
+    expect(p.counters).toEqual({});
+    expect(p.time).toEqual({});
+    expect(p.den).toEqual([]);
+    expect(p.boosts).toEqual({});
+    expect(p.quests).toBeNull();
+    expect(p.skills['eval-one'].tier).toBe(3);
+    expect(p.skills['notation'].tier).toBe(1);
+    // Regions the player already played are not marked NEW.
+    expect(Object.keys(p.visited)).toEqual(['bramblebottom']);
+    expect(p.hero.xp).toBe(1234);
+    expect(p.nodes[nodeKey('bramblebottom', 'boss')].stars).toBe(3);
+  });
+  it('is idempotent', () => {
+    const once = migrate(v1Save(['bramblebottom'], ['notation']));
+    const twice = migrate(JSON.parse(JSON.stringify(once)));
+    expect(twice).toEqual(once);
+  });
+  it('an old save gets the new campaign as new, locked behind its requirements', () => {
+    const p = migrate(v1Save(Object.keys(V1_NODES), V1_SKILLS));
+    const march = regions.filter((r) => r.campaign === 'march');
+    expect(march.length).toBeGreaterThanOrEqual(4);
+    for (const r of march) expect(p.visited[r.id], r.id).toBeUndefined();
   });
 });
 

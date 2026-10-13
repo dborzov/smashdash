@@ -2,6 +2,9 @@ id: tower
 order: 6
 name: Tower of Tens
 tagline: A wizard's tower where numbers grow gigantic and shrink to specks.
+campaign: kingdom
+topic: 'Powers and powers of ten, decimal hops, scientific notation'
+added: '2026-10-09'
 scene: tower
 map: { x: 16, y: 30 }
 requires: [bramblebottom]

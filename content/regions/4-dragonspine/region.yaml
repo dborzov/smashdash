@@ -2,6 +2,9 @@ id: dragonspine
 order: 4
 name: Dragonspine Peaks
 tagline: Icy mountains, double-wrapped locks, and a dragon with a fiery bottom.
+campaign: kingdom
+topic: 'Two-step equations: solve $3x + 5 = 20$ (last on, first off)'
+added: '2026-10-09'
 scene: peaks
 map: { x: 76, y: 32 }
 requires: [gloomfen]

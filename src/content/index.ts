@@ -2,7 +2,17 @@
  * Loads every YAML file under content/ at build time (Vite plugin in vite.config.ts) and
  * exposes typed lookups. This is the only module the game uses to reach content.
  */
-import type { CastMember, Item, Lesson, PetSpecies, Region, Skill } from './schema';
+import type {
+  Achievement,
+  Campaign,
+  CastMember,
+  Item,
+  Lesson,
+  News,
+  PetSpecies,
+  Region,
+  Skill,
+} from './schema';
 
 const regionFiles = import.meta.glob('/content/regions/*/region.yaml', { eager: true, import: 'default' });
 const lessonFiles = import.meta.glob('/content/**/lessons/*.yaml', { eager: true, import: 'default' });
@@ -12,12 +22,16 @@ import itemsYaml from '../../content/items.yaml';
 import petsYaml from '../../content/pets.yaml';
 import castYaml from '../../content/cast.yaml';
 import classesYaml from '../../content/classes.yaml';
+import campaignsYaml from '../../content/campaigns.yaml';
+import achievementsYaml from '../../content/achievements.yaml';
+import newsYaml from '../../content/news.yaml';
 
 /** Default values zod would fill in; applied here so runtime does not depend on zod. */
 function regionDefaults(r: Region): Region {
   return {
     ...r,
     requires: r.requires ?? [],
+    campaign: r.campaign ?? 'kingdom',
     path: r.path.map((n) => (n.type === 'encounter' ? { ...n, count: n.count ?? 5 } : n)),
   };
 }
@@ -31,7 +45,10 @@ export const regionById: Record<string, Region> = Object.fromEntries(regions.map
 export const lessons: Record<string, Lesson> = {};
 for (const l of [...Object.values(lessonFiles), ...Object.values(storyFiles)] as Lesson[]) lessons[l.id] = l;
 
-export const skills: Skill[] = skillsYaml as Skill[];
+export const skills: Skill[] = (skillsYaml as Skill[]).map((s) => ({
+  ...s,
+  requires: s.requires ?? [],
+}));
 export const skillById: Record<string, Skill> = Object.fromEntries(skills.map((s) => [s.id, s]));
 
 export const items: Item[] = (itemsYaml as Item[]).map((i) => ({
@@ -56,5 +73,33 @@ export interface HeroClass {
 }
 export const classes: Record<string, HeroClass> = classesYaml as Record<string, HeroClass>;
 
+export const campaigns: Campaign[] = (campaignsYaml as Campaign[]).sort((a, b) => a.order - b.order);
+export const campaignById: Record<string, Campaign> = Object.fromEntries(
+  campaigns.map((c) => [c.id, c]),
+);
+
+export const achievements: Achievement[] = (achievementsYaml as Achievement[]).map((a) => ({
+  ...a,
+  gold: a.gold ?? 0,
+}));
+export const achievementById: Record<string, Achievement> = Object.fromEntries(
+  achievements.map((a) => [a.id, a]),
+);
+
+/** Dispatch feed, newest first. */
+export const news: News[] = (newsYaml as News[]).slice().sort((a, b) => (a.date < b.date ? 1 : -1));
+
 /** Raw objects for validation tests. */
-export const raw = { regionFiles, lessonFiles, storyFiles, skillsYaml, itemsYaml, petsYaml, castYaml, classesYaml };
+export const raw = {
+  regionFiles,
+  lessonFiles,
+  storyFiles,
+  skillsYaml,
+  itemsYaml,
+  petsYaml,
+  castYaml,
+  classesYaml,
+  campaignsYaml,
+  achievementsYaml,
+  newsYaml,
+};

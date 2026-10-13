@@ -2,6 +2,9 @@ id: bazaar
 order: 5
 name: Bazaar of Whispers
 tagline: A night market of lanterns, riddles and a very sleepy sphinx.
+campaign: kingdom
+topic: 'Story problems: turn words into an equation and solve it'
+added: '2026-10-09'
 scene: bazaar
 map: { x: 48, y: 22 }
 requires: [dragonspine]

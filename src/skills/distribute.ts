@@ -33,6 +33,7 @@ export const copyGroups: Generator = (rng, level) => {
       const c = rng.int(1, level === 1 ? 3 : 5);
       return {
         skill: 'copy-groups',
+        atoms: ['coins'],
         prompt: r`The mirror makes $${n}$ copies of the parcel $(x + ${c})$. How many **coins** are there altogether?`,
         math: bracket(n, c),
         visual: { kind: 'groups', n, c },
@@ -49,6 +50,7 @@ export const copyGroups: Generator = (rng, level) => {
       const c = rng.int(1, 5);
       return {
         skill: 'copy-groups',
+        atoms: ['boxes'],
         prompt: r`How many **mystery boxes** are in $${bracket(n, c)}$?`,
         visual: { kind: 'groups', n, c },
         ...numeric(n, [
@@ -72,6 +74,7 @@ export const copyGroups: Generator = (rng, level) => {
       ]);
       return {
         skill: 'copy-groups',
+        atoms: ['copies'],
         prompt: `Which one means the same as $${bracket(n, c)}$?`,
         ...ch,
         explain: r`A number in front of a bracket means *that many copies* of the whole bracket: $${bracket(n, c)} = ${sum}$.`,
@@ -93,6 +96,7 @@ export const copyGroups: Generator = (rng, level) => {
       ]);
       return {
         skill: 'copy-groups',
+        atoms: ['unpack'],
         prompt: `Unpack all the parcels and sort them: boxes in one pile, coins in the other. What do you get?`,
         math: bracket(n, c),
         visual: { kind: 'groups', n, c },
@@ -116,12 +120,14 @@ export const expand: Generator = (rng, level) => {
   const left = bracket(a, b, k);
   const right = flat(a * k, a * b);
   const sign = b < 0 ? '-' : '+';
+  const eAtoms = [b < 0 ? 'minus' : 'plus', ...(k > 1 ? ['coef'] : [])];
 
   if (rng.chance(0.5)) {
     // Fill in the missing number.
     const ab = Math.abs(a * b);
     return {
       skill: 'expand',
+      atoms: eAtoms,
       prompt: `Bust the bracket! Fill in the missing number.`,
       math: r`${left} = ${coef(a * k)} ${sign} \box`,
       ...numeric(ab, [
@@ -153,6 +159,7 @@ export const expand: Generator = (rng, level) => {
   ]);
   return {
     skill: 'expand',
+    atoms: eAtoms,
     prompt: `Which is the same as $${left}$?`,
     ...ch,
     explain: r`The ${a} multiplies everything inside: $${a} \times ${coef(k)} ${sign} ${a} \times ${Math.abs(b)} = ${right}$.`,
@@ -173,6 +180,7 @@ export const expandCheck: Generator = (rng, level) => {
     // Both sides of a TRUE rule give the same number.
     return {
       skill: 'expand-check',
+      atoms: ['spy'],
       prompt: r`Spy test! Put $x = ${v}$ into **both** sides. What number does each side make?`,
       math: `${left} = ${flat(a, a * b)}`,
       ...numeric(L, [
@@ -211,6 +219,7 @@ export const expandCheck: Generator = (rng, level) => {
   ]);
   return {
     skill: 'expand-check',
+    atoms: [fake ? 'fake' : 'honest'],
     prompt: r`${fake ? 'Halfcopy the Imp' : 'A cave dwarf'} says: "$${claim}$". Test it with $x = ${v}$!`,
     ...ch,
     explain: fake
@@ -228,10 +237,12 @@ export const splitTens: Generator = (rng, level) => {
   const u = rng.int(1, 9);
   const n = tens + u;
   const total = a * n;
+  const size = tens === 10 ? 'teens' : tens === 100 ? 'hundred' : 'tens';
   const kind = rng.int(0, 2);
   if (kind === 0) {
     return {
       skill: 'split-tens',
+      atoms: [size],
       prompt: r`Split the ${n} into $${tens} + ${u}$ and fill in the gap.`,
       math: r`${a} \times ${n} = ${a * tens} + \box`,
       ...numeric(a * u, [
@@ -253,6 +264,7 @@ export const splitTens: Generator = (rng, level) => {
     ]);
     return {
       skill: 'split-tens',
+      atoms: [size, 'method'],
       prompt: r`Which is a smart way to work out $${a} \times ${n}$ in your head?`,
       ...ch,
       explain: r`$${n} = ${tens} + ${u}$, and the ${a} copies both pieces: $${a} \times ${tens} + ${a} \times ${u} = ${total}$.`,
@@ -260,6 +272,7 @@ export const splitTens: Generator = (rng, level) => {
   }
   return {
     skill: 'split-tens',
+    atoms: [size],
     prompt: r`Work out $${a} \times ${n}$ in your head. (Split the ${n} first!)`,
     math: r`${a} \times ${n}`,
     ...numeric(total, [
@@ -280,10 +293,12 @@ export const roundDown: Generator = (rng, level) => {
   const d = level === 3 ? rng.int(1, 2) : 1;
   const n = round - d;
   const total = a * n;
+  const size = round === 10 ? 'nine' : round >= 50 ? 'big' : 'tens';
   const kind = rng.int(0, 2);
   if (kind === 0) {
     return {
       skill: 'round-down',
+      atoms: [size],
       prompt: r`${n} is nearly ${round}! Fill in the gap.`,
       math: r`${a} \times ${n} = ${a} \times (${round} - ${d}) = ${a * round} - \box`,
       ...numeric(a * d, [
@@ -308,6 +323,7 @@ export const roundDown: Generator = (rng, level) => {
     ]);
     return {
       skill: 'round-down',
+      atoms: [size, 'method'],
       prompt: r`Which is the same as $${a} \times ${n}$?`,
       ...ch,
       explain: r`$${n} = ${round} - ${d}$, so $${a} \times ${n} = ${a} \times ${round} - ${a} \times ${d} = ${total}$.`,
@@ -315,6 +331,7 @@ export const roundDown: Generator = (rng, level) => {
   }
   return {
     skill: 'round-down',
+    atoms: [size],
     prompt: r`Quick! What is $${a} \times ${n}$? (Think $${a} \times ${round}$, then fix it.)`,
     math: r`${a} \times ${n}`,
     ...numeric(total, [

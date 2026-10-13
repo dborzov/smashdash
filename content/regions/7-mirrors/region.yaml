@@ -2,6 +2,9 @@ id: mirrors
 order: 7
 name: Mirrormaze Caves
 tagline: Crystal caves where everything comes in copies — and an imp who copies badly.
+campaign: kingdom
+topic: 'The distributive law $a(x + b) = ax + ab$ and mental maths tricks'
+added: '2026-10-11'
 scene: caves
 map: { x: 46, y: 86 }
 requires: [bramblebottom]

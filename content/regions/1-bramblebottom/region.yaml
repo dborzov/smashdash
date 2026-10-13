@@ -2,6 +2,9 @@ id: bramblebottom
 order: 1
 name: Bramblebottom
 tagline: A sleepy village where every number has been stuffed into a box.
+campaign: kingdom
+topic: 'Expressions: what $3x + 7$ means, and working it out when $x = 4$'
+added: '2026-10-09'
 scene: village
 map: { x: 24, y: 74 }
 requires: []

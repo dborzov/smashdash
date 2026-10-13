@@ -3,6 +3,7 @@ import { generators } from '../src/skills';
 import { Rng } from '../src/engine/rng';
 import type { Level } from '../src/skills/types';
 import { renderMath } from '../src/ui/math';
+import { skillById } from '../src/content';
 
 const LEVELS: Level[] = [1, 2, 3];
 const SEEDS = 400;
@@ -26,14 +27,38 @@ describe.each(Object.keys(generators))('generator %s', (id) => {
       expect(p.explain.length, ctx).toBeGreaterThan(5);
       expect(p.prompt, ctx).not.toMatch(/undefined|NaN|Infinity|\[object/);
       expect(p.explain, ctx).not.toMatch(/undefined|NaN|Infinity|\[object/);
-      if (p.answer.kind === 'number') {
-        const v = p.answer.value;
+      // Every problem names the atoms it exercises, and they are declared in skills.yaml.
+      expect(p.atoms.length, `${ctx}: no atoms`).toBeGreaterThan(0);
+      const declared = skillById[id].atoms.map((a) => a.id);
+      for (const a of p.atoms) expect(declared, `${ctx}: atom ${a}`).toContain(a);
+      const a = p.answer;
+      if (a.kind === 'number' || a.kind === 'line') {
+        const v = a.value;
         expect(Number.isFinite(v), ctx).toBe(true);
         // No floating point noise like 0.30000000000000004.
         expect(String(v).length, ctx).toBeLessThan(14);
         for (const n of p.nudges ?? []) expect(n.match, ctx).not.toBe(v);
+        if (a.kind === 'line') {
+          expect(v >= a.min && v <= a.max, `${ctx}: target on the line`).toBe(true);
+          expect(a.tolerance, ctx).toBeLessThan((a.max - a.min) / 8);
+          for (const n of p.nudges ?? [])
+            expect(Math.abs(n.match - v), `${ctx}: nudge too close`).toBeGreaterThan(a.tolerance);
+        }
+        if (p.entry) {
+          // The dials must be able to show the answer.
+          expect(v, ctx).toBeLessThan(Math.pow(10, p.entry.int));
+          expect(
+            Math.round(v * Math.pow(10, p.entry.dec ?? 0)) / Math.pow(10, p.entry.dec ?? 0),
+            ctx,
+          ).toBe(v);
+        }
+      } else if (a.kind === 'order') {
+        expect(a.items.length, ctx).toBeGreaterThanOrEqual(2);
+        expect(new Set(a.items).size, ctx).toBe(a.items.length);
+        expect([...a.correct].sort(), ctx).toEqual(a.items.map((_, i) => i));
+        for (const t of a.traps ?? []) expect(t.order, ctx).not.toEqual(a.correct);
       } else {
-        const { options, correct } = p.answer;
+        const { options, correct } = a;
         expect(options.length, ctx).toBeGreaterThanOrEqual(2);
         expect(new Set(options).size, ctx).toBe(options.length);
         expect(correct, ctx).toBeGreaterThanOrEqual(0);
@@ -47,11 +72,24 @@ describe.each(Object.keys(generators))('generator %s', (id) => {
         p.explain,
         p.hint ?? '',
         ...(p.answer.kind === 'choice' ? p.answer.options : []),
+        ...(p.answer.kind === 'order' ? p.answer.items : []),
+        ...(p.answer.kind === 'order' ? (p.answer.traps ?? []).map((t) => t.text) : []),
       ];
       for (const n of p.nudges ?? []) texts.push(n.text);
       for (const t of texts) for (const m of mathBits(t)) renderMath(m, false, true);
       if (p.math) renderMath(p.math, true, true);
     }
+  });
+});
+
+describe('atoms', () => {
+  it.each(Object.keys(generators))('every declared atom of %s can be generated', (id) => {
+    const seen = new Set<string>();
+    for (const level of LEVELS)
+      for (let seed = 1; seed <= 600; seed++)
+        for (const a of generators[id](new Rng(seed * 104729 + level), level).atoms) seen.add(a);
+    const missing = skillById[id].atoms.map((a) => a.id).filter((a) => !seen.has(a));
+    expect(missing, `${id}: atoms never generated`).toEqual([]);
   });
 });
 
@@ -85,7 +123,8 @@ describe('new topics', () => {
       for (const level of LEVELS)
         for (let seed = 1; seed <= 300; seed++) {
           const p = generators[id](new Rng(seed), level);
-          if (p.answer.kind === 'number') expect(Number.isInteger(p.answer.value * 2), `${id}: ${p.prompt}`).toBe(true);
+          if (p.answer.kind === 'number')
+            expect(Number.isInteger(p.answer.value * 2), `${id}: ${p.prompt}`).toBe(true);
         }
   });
   it('table-rule answers follow the rule shown', () => {
@@ -94,7 +133,10 @@ describe('new topics', () => {
       const m = /y = (\d*)x(?: ([+-]) (\d+))?\$/.exec(p.prompt)!;
       const k = m[1] === '' ? 1 : Number(m[1]);
       const b = m[2] ? (m[2] === '-' ? -1 : 1) * Number(m[3]) : 0;
-      const xs = /x & ([\d &]+) \\\\/.exec(p.math!)![1].split('&').map((v) => Number(v.trim()));
+      const xs = /x & ([\d &]+) \\\\/
+        .exec(p.math!)![1]
+        .split('&')
+        .map((v) => Number(v.trim()));
       const x = xs[xs.length - 1];
       expect(p.answer.kind === 'number' && p.answer.value, p.prompt).toBe(k * x + b);
     }

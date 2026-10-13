@@ -55,10 +55,12 @@ export const readPoint: Generator = (rng, level) => {
     else y = 0;
   }
   const visual = { kind: 'plot' as const, size, points: [{ x, y, label: '🚢' }] };
+  const axisAtom = x === 0 || y === 0 ? ['axis'] : [];
   if (level >= 2 && rng.chance(0.4)) {
     const ask = rng.pick(['x', 'y'] as const);
     return {
       skill: 'read-point',
+      atoms: ['one', ...axisAtom],
       prompt:
         ask === 'x'
           ? `How far **along** the beach is the fog ship? (That's its $x$.)`
@@ -84,6 +86,7 @@ export const readPoint: Generator = (rng, level) => {
   ]);
   return {
     skill: 'read-point',
+    atoms: ['pair', ...axisAtom],
     prompt: `A fog ship! What are its coordinates? (Along first, then up.)`,
     visual,
     ...ch,
@@ -134,6 +137,7 @@ export const plotPoint: Generator = (rng, level) => {
   });
   return {
     skill: 'plot-point',
+    atoms: ['find', ...(x === 0 ? ['axis'] : [])],
     prompt: `Fire the laser at $${pt(x, y)}$! Which target gets zapped?`,
     visual: { kind: 'plot', size, points },
     answer,
@@ -165,6 +169,7 @@ export const tableRule: Generator = (rng, level) => {
   const y = m * x + b;
   return {
     skill: 'table-rule',
+    atoms: [b < 0 ? 'minus' : 'plus', ...(xs[0] === 0 ? ['zero'] : [])],
     prompt: `The laser's aim rule is $${ruleTex(m, b)}$. Fill in the gap in the aiming table.`,
     math: table(xs, ys),
     ...numeric(y, ruleNudges(m, b, x)),
@@ -184,6 +189,7 @@ export const stepPattern: Generator = (rng, level) => {
     const ys = xs.map((x) => m * x + b);
     return {
       skill: 'step-pattern',
+      atoms: ['next'],
       prompt: `Look at the laser's y numbers. What comes next, at $x = 4$?`,
       math: table([...xs, 4], [...ys, null]),
       ...numeric(4 * m + b, [
@@ -197,6 +203,7 @@ export const stepPattern: Generator = (rng, level) => {
   if (kind === 1) {
     return {
       skill: 'step-pattern',
+      atoms: ['climb'],
       prompt: `With the rule $${ruleTex(m, b)}$, every time $x$ goes up by 1, how much does $y$ go up?`,
       ...numeric(m, [
         [
@@ -214,6 +221,7 @@ export const stepPattern: Generator = (rng, level) => {
   const y1 = m * x1 + b;
   return {
     skill: 'step-pattern',
+    atoms: ['far'],
     prompt: r`The beam passes $${pt(x1, y1)}$ and $${pt(x1 + 1, y1 + m)}$. Where is it at $x = ${far}$?`,
     ...numeric(m * far + b, [
       [y1 + m + (far - x1 - 1), `It climbs ${m} for **every** step, not 1.`],
@@ -242,6 +250,7 @@ export const lineRule: Generator = (rng, level) => {
   if (kind === 0) {
     return {
       skill: 'line-rule',
+      atoms: ['start'],
       prompt: `Where does the laser beam start — at $x = 0$, how high is it?`,
       visual,
       ...numeric(b, [
@@ -262,6 +271,7 @@ export const lineRule: Generator = (rng, level) => {
     ]);
     return {
       skill: 'line-rule',
+      atoms: ['rule'],
       prompt: `Which aim rule makes this laser beam?`,
       visual,
       ...ch,
@@ -279,6 +289,7 @@ export const lineRule: Generator = (rng, level) => {
   const no = `No — the beam misses`;
   return {
     skill: 'line-rule',
+    atoms: ['on-line'],
     prompt: r`The beam follows $${ruleTex(m, b)}$. Will it zap a ship at $${pt(px, py)}$?`,
     answer: { kind: 'choice', options: [yes, no], correct: on ? 0 : 1 },
     nudges: [

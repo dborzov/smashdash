@@ -13,6 +13,20 @@ import { pow10Down, pow10Up, powerMeaning, sciNotation, timesPow10 } from './pow
 import { copyGroups, expand, expandCheck, roundDown, splitTens } from './distribute';
 import { lineRule, plotPoint, readPoint, stepPattern, tableRule } from './graphs';
 import { closedLoop, current, ohmCurrent, ohmSolve, resistance, volts } from './electricity';
+import {
+  pvCompare,
+  pvExpanded,
+  pvNumberline,
+  pvPlaces,
+  pvRead,
+  pvRegroup,
+  pvShift,
+  pvTimesTen,
+  pvValue,
+  pvWrite,
+} from './placevalue';
+import { estimate, pow10Places, roundBig, roundRange, roundSmall } from './rounding';
+import { decCompare, decPlaces, decRound, decShift, decWrite } from './decimals';
 
 export const generators: Record<string, Generator> = {
   notation,
@@ -53,6 +67,27 @@ export const generators: Record<string, Generator> = {
   resistance,
   'ohm-current': ohmCurrent,
   'ohm-solve': ohmSolve,
+  // The Long Count
+  'pv-places': pvPlaces,
+  'pv-value': pvValue,
+  'pv-read': pvRead,
+  'pv-write': pvWrite,
+  'pv-expanded': pvExpanded,
+  'pv-compare': pvCompare,
+  'pv-times-ten': pvTimesTen,
+  'pv-regroup': pvRegroup,
+  'pv-shift': pvShift,
+  'pv-numberline': pvNumberline,
+  'round-small': roundSmall,
+  'round-big': roundBig,
+  'round-range': roundRange,
+  estimate,
+  'pow10-places': pow10Places,
+  'dec-places': decPlaces,
+  'dec-write': decWrite,
+  'dec-compare': decCompare,
+  'dec-shift': decShift,
+  'dec-round': decRound,
 };
 
 /** Difficulty tier from mastery in [0, 1]. */
@@ -64,6 +99,33 @@ export function generate(skill: string, level: Level, rng: Rng = new Rng()): Pro
   const g = generators[skill];
   if (!g) throw new Error(`No generator for skill "${skill}"`);
   return g(rng, level);
+}
+
+/**
+ * Like `generate`, but tries to produce a problem that exercises `atom` (to drill a
+ * mistake). Generators aren't told the atom; we sample until one matches, first at the
+ * requested level, then at easier levels, then harder ones. Deterministic for a given rng.
+ */
+export function generateFor(
+  skill: string,
+  level: Level,
+  rng: Rng = new Rng(),
+  atom?: string,
+): Problem {
+  const first = generate(skill, level, rng);
+  if (!atom || first.atoms.includes(atom)) return first;
+  const levels: Level[] = [
+    level,
+    ...([1, 2, 3] as Level[]).filter((l) => l < level).reverse(),
+    ...([1, 2, 3] as Level[]).filter((l) => l > level),
+  ];
+  for (const l of levels) {
+    for (let i = 0; i < 40; i++) {
+      const p = generate(skill, l, rng);
+      if (p.atoms.includes(atom)) return p;
+    }
+  }
+  return first;
 }
 
 export type { Generator, Level, Problem } from './types';

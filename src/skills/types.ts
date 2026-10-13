@@ -14,7 +14,52 @@ export interface Nudge {
 }
 
 export type Answer =
-  { kind: 'number'; value: number } | { kind: 'choice'; options: string[]; correct: number };
+  | { kind: 'number'; value: number }
+  | { kind: 'choice'; options: string[]; correct: number }
+  | OrderAnswer
+  | LineAnswer;
+
+/**
+ * Put the items in order (tap them one by one). `correct` lists item indices in the right
+ * order. `traps` are predicted wrong orders (e.g. sorted by first digit) with a nudge each.
+ */
+export interface OrderAnswer {
+  kind: 'order';
+  items: string[];
+  correct: number[];
+  /** Shown above the slots, e.g. "smallest → largest". */
+  direction: string;
+  traps?: { order: number[]; text: string }[];
+}
+
+/**
+ * Tap a spot on a number line. The tap snaps to `snap`; anything within `tolerance` of
+ * `value` counts as right. Number nudges (Problem.nudges) also match within the tolerance.
+ */
+export interface LineAnswer {
+  kind: 'line';
+  min: number;
+  max: number;
+  /** Distance between labelled ticks. */
+  step: number;
+  /** Distance between minor ticks (default: step / 10 when that is a whole number). */
+  minor?: number;
+  snap: number;
+  value: number;
+  tolerance: number;
+  /** Label the ticks? (default: only the ends) */
+  labels?: 'ends' | 'all';
+}
+
+/**
+ * How a number answer is typed. `dials` shows one dial per place (a combination lock), so the
+ * player sees which place each digit goes in. `int` = whole-number places, `dec` = decimal places.
+ */
+export interface DialsEntry {
+  kind: 'dials';
+  int: number;
+  dec?: number;
+}
 
 /** Optional picture shown with a problem. */
 export type Visual =
@@ -24,7 +69,48 @@ export type Visual =
   | GroupsPic
   | AreaPic
   | PlotPic
-  | CircuitPic;
+  | CircuitPic
+  | PlaceChartPic
+  | NumberLinePic
+  | DecimalGridPic;
+
+/** A place-value chart: one column per place, grouped into periods (millions, thousands, ones). */
+export interface PlaceChartPic {
+  kind: 'placechart';
+  /** The number shown (digits fill the columns). Omit for an empty chart. */
+  value?: number;
+  /** Number of decimal places shown (0 = whole numbers only). */
+  dec?: number;
+  /** Highest place shown, as a power of ten (default: the number's own top place). */
+  top?: number;
+  /** Place to highlight, as a power of ten (2 = hundreds, -1 = tenths). */
+  hl?: number;
+  /** Hide the digit in the highlighted place (a "?" instead). */
+  hide?: boolean;
+}
+
+/** A number line with ticks, optional marked points and an arrow. */
+export interface NumberLinePic {
+  kind: 'numberline';
+  min: number;
+  max: number;
+  step: number;
+  minor?: number;
+  labels?: 'ends' | 'all';
+  /** An arrow pointing at this value (the "what number is here?" question). */
+  arrow?: number;
+  /** Lettered marks (for "which letter is 350,000?"). */
+  marks?: { at: number; label: string }[];
+  /** Shade the half-way point (for rounding). */
+  mid?: boolean;
+}
+
+/** A 10 × 10 grid of hundredths (or a strip of tenths) with some cells shaded. */
+export interface DecimalGridPic {
+  kind: 'decgrid';
+  /** Shaded amount, e.g. 0.37. */
+  value: number;
+}
 
 /** `n` identical parcels, each holding `x` mystery boxes and `c` coins: n(x + c). */
 export interface GroupsPic {
@@ -117,6 +203,13 @@ export interface Problem {
   hint?: string;
   /** Worked solution shown after a wrong answer. Rich text. */
   explain: string;
+  /**
+   * The atomic sub-skills this problem exercises (ids local to the skill, declared under
+   * `atoms:` in content/skills.yaml). Used for fine-grained progress and adaptive practice.
+   */
+  atoms: string[];
+  /** How the player enters a number answer (default: keypad). */
+  entry?: DialsEntry;
 }
 
 export type Generator = (rng: Rng, level: Level) => Problem;

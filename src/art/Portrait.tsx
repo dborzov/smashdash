@@ -1,4 +1,5 @@
 /** Dialogue portraits: Grimble the frog, the Muddler, named NPCs, monsters and the hero. */
+import { DarkFoeArt, DarkPortrait, type DarkFoe } from './Dark';
 import { cast } from '../content';
 import { MonsterArt } from './Monster';
 import { Avatar } from './Avatar';
@@ -579,6 +580,12 @@ export function Portrait({
       return <Muddler class={cls} />;
     case 'monster':
       return <MonsterArt seed={c.seed ?? 1} hue={c.hue} class={cls} />;
+    case 'dark':
+      return <DarkPortrait who={who} class={cls} />;
+    case 'foe':
+      return (
+        <DarkFoeArt art={(c.foe ?? 'hollow') as DarkFoe} seed={c.seed} hue={c.hue} class={cls} />
+      );
     default:
       return <Npc id={who} color={c.color} class={cls} />;
   }

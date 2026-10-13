@@ -67,14 +67,42 @@ export function saveProfile(p: Profile): void {
   writeJson(INDEX, idx);
 }
 
-/** Upgrades older saves to the current shape. Add a step for every SAVE_VERSION bump. */
+/** Mastery → starting tier, used when upgrading v1 saves (same thresholds as v1's levelFor). */
+const tierFromMastery = (m: number): 1 | 2 | 3 => (m < 0.35 ? 1 : m < 0.7 ? 2 : 3);
+
+/**
+ * Upgrades older saves to the current shape. Add a step for every SAVE_VERSION bump.
+ * Every step must be idempotent and must only ADD things: never drop a player's progress.
+ */
 export function migrate(p: Profile): Profile {
-  // v1 is the first version; future migrations go here, e.g.
-  // if (p.v < 2) { p.newField = default; p.v = 2; }
-  p.v = SAVE_VERSION;
   p.wanderers ??= [];
   p.graves ??= [];
   p.daily.history ??= {};
+  p.inv ??= {};
+  p.nodes ??= {};
+  p.skills ??= {};
+  p.seen ??= [];
+  p.stats ??= { right: 0, wrong: 0, nudged: 0, wins: 0, losses: 0, bosses: 0 };
+  if ((p.v ?? 1) < 2) {
+    // v2: atoms, tiers, achievements, bounties, time tracking, den, boosts.
+    for (const s of Object.values(p.skills)) s.tier ??= tierFromMastery(s.m);
+    // Regions the player already played are not "new" to them.
+    p.visited ??= {};
+    for (const k of Object.keys(p.nodes)) {
+      const region = k.split('/')[0];
+      p.visited[region] ??= p.created ?? Date.now();
+    }
+  }
+  p.atoms ??= {};
+  p.ach ??= {};
+  p.counters ??= {};
+  p.time ??= {};
+  p.visited ??= {};
+  p.quests ??= null;
+  p.boosts ??= {};
+  p.den ??= [];
+  p.newsSeen ??= '';
+  p.v = SAVE_VERSION;
   return p;
 }
 

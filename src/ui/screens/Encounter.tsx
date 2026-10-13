@@ -1,36 +1,58 @@
 /**
- * Practice as a mini-game. Three flavours share the same mechanics:
+ * Practice as a mini-game. Five flavours share the same mechanics:
  *  - battle: each right answer hits the monster; a wrong one and the monster hits you.
  *  - chest:  each right answer opens a lock; a wrong one and the chest (a mimic!) bites.
  *  - bridge: each right answer is a step across; a wrong one breaks a plank.
+ *  - siege:  hold the wall — each right answer drops a soldier; a wrong one cracks the gate.
+ *  - vault:  crack the vault — each right answer sets a tumbler; a wrong one trips an alarm.
  * Bosses are battles in phases, with taunts in between.
- * A wrong answer is retried with fresh numbers for the same skill.
+ *
+ * Every phase is an adaptive run (src/engine/adaptive.ts): mistakes add reinforcement problems
+ * (one more lock / plank / soldier) on exactly what went wrong, at an easier level, until it is
+ * put right; clean streaks on mastered skills finish early. Hearts still matter.
  */
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import type { Game, Monster } from '../../content/schema';
 import { Rng } from '../../engine/rng';
-import { generate, levelFor } from '../../skills';
+import { generateFor } from '../../skills';
 import type { Problem } from '../../skills/types';
-import { effectiveMastery, recordAnswer, type Outcome } from '../../engine/mastery';
+import type { Outcome, Tier } from '../../engine/mastery';
 import { getProfile, update } from '../../engine/store';
 import { maxHearts, levelFromXp } from '../../engine/profile';
 import { grant, XP, type Reward } from '../../engine/rewards';
 import { consume } from '../../engine/items';
-import { planProblems, rollLoot, type Loot } from '../../engine/encounters';
+import { rollLoot, type Loot } from '../../engine/encounters';
+import {
+  applyResult,
+  isOver,
+  newRun,
+  pickNext,
+  remaining,
+  type Run,
+  type RunEvent,
+} from '../../engine/adaptive';
+import { answerEffects } from '../../engine/play';
+import { track } from '../../engine/events';
 import type { Verdict } from '../../engine/answer';
+import { petMood } from '../../engine/pet';
 import { Scene } from '../../art/scenes';
 import { Avatar } from '../../art/Avatar';
 import { MonsterArt } from '../../art/Monster';
 import { Muddler } from '../../art/Portrait';
+import { DarkFoeArt, type DarkFoe } from '../../art/Dark';
+import { PetArt } from '../../art/Pet';
 import { ProblemCard } from '../components/ProblemCard';
 import { Bar, Hearts, Modal } from '../components/Bits';
+import { RunBar, RunNews } from '../components/RunBar';
 import { Confetti } from '../components/Confetti';
 import { itemById } from '../../content';
 import { sfx } from '../../audio/sfx';
+import { BridgeArt, ChestArt, SiegeArt, VaultArt } from './GameArt';
+import { useTimeTracker } from '../useTimeTracker';
 
-export interface Round {
-  skill: string;
-  phase: number;
+export interface Phase {
+  skills: string[];
+  count: number;
 }
 
 export interface EncounterSpec {
@@ -39,209 +61,49 @@ export interface EncounterSpec {
   scene: string;
   monster?: Monster;
   boss?: { intro: string[]; taunts: string[]; defeat: string };
-  /** Rounds grouped by phase (bosses have several phases). */
-  rounds: Round[];
+  phases: Phase[];
   /** Loot tier: 1 path fight, 2 wanderer, 3 boss. */
   tier: number;
   /** Extra reward for winning (first-time boss bonus etc). */
   winReward: Reward;
+  /** Voice and look: the bright kingdom or the grim North. */
+  tone: 'bright' | 'dark';
+  /** Region the time is counted towards. */
+  region?: string;
+  /** A drill on one atom (from the Skill Tree). */
+  focus?: { skill: string; atom: string };
 }
 
 export interface EncounterResult {
   won: boolean;
   wrong: number;
   loot?: Loot;
+  grit: number;
 }
 
-/** Builds rounds for a set of skills, chosen by need. */
-export function roundsFor(skills: string[], count: number, phase = 0): Round[] {
-  const p = getProfile();
-  if (!p) return [];
-  return planProblems(p, skills, count).map((x) => ({ skill: x.skill, phase }));
+const DARK_ARTS = ['hollow', 'wraith', 'tallyman', 'forger', 'golem', 'rider'];
+
+const WIN_TEXT: Record<Game, [string, string]> = {
+  battle: ['🏆', 'Victory!'],
+  chest: ['💰', 'Chest unlocked!'],
+  bridge: ['🏁', 'You made it across!'],
+  siege: ['🏰', 'The wall holds!'],
+  vault: ['🔓', 'The vault is open!'],
+};
+
+const ROUND_ICON: Record<Game, string> = {
+  battle: '⚔️',
+  chest: '🔒',
+  bridge: '🪵',
+  siege: '🏹',
+  vault: '⚙️',
+};
+
+interface Current {
+  skill: string;
+  level: Tier;
+  problem: Problem;
 }
-
-// --- Opponent art for each game -------------------------------------------------
-
-function ChestArt({ locks, open, biting }: { locks: number; open: number; biting: boolean }) {
-  const all = open >= locks;
-  return (
-    <svg viewBox="0 0 220 180" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
-      <ellipse cx="110" cy="170" rx="90" ry="10" fill="rgba(0,0,0,.3)" />
-      <g
-        style={{
-          transformOrigin: '110px 70px',
-          transform: all ? 'rotate(-18deg) translateY(-14px)' : biting ? 'rotate(-10deg)' : 'none',
-          transition: 'transform .3s',
-        }}
-      >
-        <path
-          d="M20 70 Q20 20 110 20 Q200 20 200 70 Z"
-          fill="#a0602b"
-          stroke="#4a2a10"
-          stroke-width="5"
-        />
-        <path
-          d="M20 70 Q20 20 110 20 Q200 20 200 70"
-          fill="none"
-          stroke="#ffd166"
-          stroke-width="8"
-          opacity=".85"
-        />
-        {biting && (
-          <path
-            d="M30 70 L40 84 L50 70 L60 84 L70 70 L80 84 L90 70 L100 84 L110 70 L120 84 L130 70 L140 84 L150 70 L160 84 L170 70 L180 84 L190 70"
-            fill="#fff"
-            stroke="#4a2a10"
-            stroke-width="2"
-          />
-        )}
-      </g>
-      {all && (
-        <g filter="url(#glowc)">
-          <ellipse cx="110" cy="74" rx="70" ry="16" fill="#ffd166" opacity=".9" />
-          {[0, 1, 2, 3, 4].map((i) => (
-            <circle
-              key={i}
-              cx={70 + i * 20}
-              cy={66 - (i % 2) * 8}
-              r="9"
-              fill="#ffe27a"
-              stroke="#a86b00"
-              stroke-width="2"
-            />
-          ))}
-        </g>
-      )}
-      <rect
-        x="20"
-        y="70"
-        width="180"
-        height="90"
-        rx="6"
-        fill="#b8733a"
-        stroke="#4a2a10"
-        stroke-width="5"
-      />
-      {biting && (
-        <path
-          d="M30 70 L40 58 L50 70 L60 58 L70 70 L80 58 L90 70 L100 58 L110 70 L120 58 L130 70 L140 58 L150 70 L160 58 L170 70 L180 58 L190 70"
-          fill="#fff"
-          stroke="#4a2a10"
-          stroke-width="2"
-        />
-      )}
-      <rect x="20" y="96" width="180" height="10" fill="#ffd166" opacity=".8" />
-      {biting && (
-        <g>
-          <circle cx="70" cy="40" r="10" fill="#fff" stroke="#4a2a10" stroke-width="3" />
-          <circle cx="150" cy="40" r="10" fill="#fff" stroke="#4a2a10" stroke-width="3" />
-          <circle cx="72" cy="42" r="5" fill="#c2185b" />
-          <circle cx="152" cy="42" r="5" fill="#c2185b" />
-        </g>
-      )}
-      {Array.from({ length: locks }, (_, i) => {
-        const x = 110 + (i - (locks - 1) / 2) * Math.min(34, 160 / locks);
-        const isOpen = i < open;
-        return (
-          <g key={i} transform={`translate(${x} 128)`} style={{ transition: 'transform .3s' }}>
-            <path
-              d={
-                isOpen
-                  ? 'M-7 -8 L-7 -18 Q-7 -26 0 -26 Q7 -26 7 -18 L7 -22'
-                  : 'M-7 -8 L-7 -16 Q-7 -24 0 -24 Q7 -24 7 -16 L7 -8'
-              }
-              fill="none"
-              stroke="#9aa4b5"
-              stroke-width="4"
-            />
-            <rect
-              x="-11"
-              y="-9"
-              width="22"
-              height="20"
-              rx="4"
-              fill={isOpen ? '#5ee6a8' : '#ffd166'}
-              stroke="#4a2a10"
-              stroke-width="2.5"
-            />
-            <circle cx="0" cy="0" r="3" fill="#4a2a10" />
-          </g>
-        );
-      })}
-      <defs>
-        <filter id="glowc">
-          <feGaussianBlur stdDeviation="4" />
-        </filter>
-      </defs>
-    </svg>
-  );
-}
-
-function BridgeArt({ planks, at, broken }: { planks: number; at: number; broken: number[] }) {
-  const w = 600;
-  const step = w / (planks + 1);
-  return (
-    <svg
-      viewBox={`0 0 ${w + 120} 200`}
-      style={{ width: '100%', height: '100%' }}
-      preserveAspectRatio="xMidYMid meet"
-    >
-      <defs>
-        <linearGradient id="chasm" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#1a1030" stop-opacity=".2" />
-          <stop offset="1" stop-color="#05020f" />
-        </linearGradient>
-      </defs>
-      <rect x="40" y="110" width={w + 40} height="90" fill="url(#chasm)" />
-      <path d="M0 110 L60 110 L60 200 L0 200 Z" fill="#4a3a6a" stroke="#1a1030" stroke-width="3" />
-      <path
-        d={`M${w + 60} 110 L${w + 120} 110 L${w + 120} 200 L${w + 60} 200 Z`}
-        fill="#4a3a6a"
-        stroke="#1a1030"
-        stroke-width="3"
-      />
-      <path
-        d={`M40 92 Q${w / 2 + 60} 140 ${w + 80} 92`}
-        fill="none"
-        stroke="#c9a24a"
-        stroke-width="4"
-      />
-      {Array.from({ length: planks }, (_, i) => {
-        const x = 60 + step * (i + 0.5) + step / 2 - 14;
-        const sag = Math.sin(((i + 1) / (planks + 1)) * Math.PI) * 28;
-        const isBroken = broken.includes(i);
-        return (
-          <g
-            key={i}
-            style={{
-              transition: 'transform .5s',
-              transform: isBroken ? 'translateY(60px) rotate(25deg)' : 'none',
-              transformBox: 'fill-box',
-              transformOrigin: 'center',
-              opacity: isBroken ? 0.4 : 1,
-            }}
-          >
-            <rect
-              x={x}
-              y={104 + sag}
-              width="28"
-              height="14"
-              rx="3"
-              fill={i < at ? '#5ee6a8' : '#a0703a'}
-              stroke="#3a2210"
-              stroke-width="2.5"
-            />
-          </g>
-        );
-      })}
-      <text x={w + 90} y="96" text-anchor="middle" font-size="34">
-        🏁
-      </text>
-    </svg>
-  );
-}
-
-// --- The encounter ----------------------------------------------------------------
 
 export function EncounterScreen({
   spec,
@@ -250,13 +112,20 @@ export function EncounterScreen({
   spec: EncounterSpec;
   onEnd: (r: EncounterResult) => void;
 }) {
+  useTimeTracker(spec.region);
   const p0 = getProfile()!;
   const hp = maxHearts(p0);
-  const rounds = spec.rounds;
-  const [i, setI] = useState(0);
+  const dark = spec.tone === 'dark';
+  const rng = useRef(new Rng(Math.floor(Math.random() * 1e9))).current;
+  const [phase, setPhase] = useState(0);
+  const [runs] = useState<Run[]>(() => [
+    newRun(p0, spec.phases[0].skills, spec.phases[0].count, rng, spec.focus),
+  ]);
+  const run = runs[phase];
+  const [, setTick] = useState(0);
+  const [qn, setQn] = useState(0);
   const [hearts, setHearts] = useState(hp);
-  const [wrong, setWrong] = useState(0);
-  const [phaseShown, setPhaseShown] = useState(0);
+  const [lost, setLost] = useState(0);
   const [stage, setStage] = useState<'intro' | 'taunt' | 'fight' | 'won' | 'lost'>(
     spec.boss ? 'intro' : 'fight',
   );
@@ -268,24 +137,32 @@ export function EncounterScreen({
   >([]);
   const [freeHint, setFreeHint] = useState(p0.hero.cls === 'wizard');
   const [loot, setLoot] = useState<Loot | null>(null);
+  const [petFind, setPetFind] = useState(0);
   const [broken, setBroken] = useState<number[]>([]);
   const [biting, setBiting] = useState(false);
   const [quitAsk, setQuitAsk] = useState(false);
-  const seed = useRef(Math.floor(Math.random() * 1e9));
+  const [ward, setWard] = useState(false);
+  const [rallied, setRallied] = useState(false);
+  const [events, setEvents] = useState<RunEvent[]>([]);
+  const [eliminated, setEliminated] = useState<number[]>([]);
   const fid = useRef(1);
 
-  const total = spec.rounds.length;
-  const round = rounds[i];
-  const problem: Problem | null = useMemo(() => {
-    if (!round) return null;
-    const p = getProfile();
-    // A wrong answer bumps `wrong`, which gives the same skill again with fresh numbers.
-    return generate(
-      round.skill,
-      levelFor(effectiveMastery(p?.skills[round.skill])),
-      new Rng(seed.current + i * 7919 + wrong * 104729),
-    );
-  }, [i, wrong]);
+  const current: Current = useMemo(() => {
+    const nx = pickNext(getProfile()!, run, rng);
+    return {
+      skill: nx.skill,
+      level: nx.level,
+      problem: generateFor(nx.skill, nx.level, rng, nx.atom),
+    };
+  }, [qn, phase]);
+
+  // Progress across all phases (later phases count with their planned size).
+  const doneBefore = runs.slice(0, phase).reduce((a, r) => a + r.done, 0);
+  const doneAll = doneBefore + run.done;
+  const future = spec.phases.slice(phase + 1).reduce((a, ph) => a + ph.count, 0);
+  const totalAll = doneAll + remaining(run) + future;
+  const gritAll = runs.reduce((a, r) => a + r.grit, 0);
+  const wrongAll = runs.reduce((a, r) => a + r.wrong, 0);
 
   const float = (text: string, side: 'hero' | 'foe', color: string) => {
     const id = fid.current++;
@@ -301,12 +178,26 @@ export function EncounterScreen({
 
   const onVerdict = (v: Verdict) => {
     if (v.kind === 'right') {
-      sfx(spec.game === 'chest' ? 'unlock' : spec.game === 'bridge' ? 'step' : 'hit');
+      sfx(
+        spec.game === 'chest' || spec.game === 'vault'
+          ? 'unlock'
+          : spec.game === 'bridge'
+            ? 'step'
+            : 'hit',
+      );
       if (spec.game === 'battle') {
         pulse(setHeroAnim, 'anim-lunge-right');
         setTimeout(() => pulse(setFoeAnim, 'anim-hit'), 160);
-        float(['💥', 'POW!', 'BONK!', 'ZAP!', 'WHAM!'][i % 5], 'foe', '#ffd166');
+        float(
+          dark
+            ? ['⚔️', 'Hit!', 'Strike!', '💥'][doneAll % 4]
+            : ['💥', 'POW!', 'BONK!', 'ZAP!', 'WHAM!'][doneAll % 5],
+          'foe',
+          '#ffd166',
+        );
       } else if (spec.game === 'chest') float('🔓 click!', 'foe', '#5ee6a8');
+      else if (spec.game === 'vault') float('⚙️ click', 'foe', '#ffd166');
+      else if (spec.game === 'siege') float('🏹 Down!', 'foe', '#ffd166');
       else float('👣', 'hero', '#5ee6a8');
     } else if (v.kind === 'wrong') {
       sfx('hurt');
@@ -317,41 +208,57 @@ export function EncounterScreen({
         setBiting(true);
         pulse(setFoeAnim, 'anim-lunge-left');
         setTimeout(() => setBiting(false), 900);
-      } else {
-        setBroken([i]);
+      } else if (spec.game === 'bridge') {
+        setBroken([doneAll]);
         setTimeout(() => setBroken([]), 1200);
         pulse(setHeroAnim, 'anim-hit');
-      }
-      float('−❤️', 'hero', '#ff6b6b');
+      } else pulse(setFoeAnim, 'anim-hit');
+      float(ward ? '🛡️ Blocked!' : '−❤️', 'hero', ward ? '#7dd3fc' : '#ff6b6b');
     }
   };
 
   const finishWin = () => {
     const p = getProfile()!;
     const l = rollLoot(new Rng(), spec.tier, levelFromXp(p.hero.xp));
-    setLoot(l);
+    const companion = p.pet && !p.pet.dead && (p.pet.bond ?? 0) >= 30;
+    const found = companion && rng.chance(0.35) ? rng.int(3, 8) : 0;
+    const lucky = (p.boosts.lucky ?? 0) > 0;
+    const gold = (l.gold + (spec.winReward.gold ?? 0)) * (lucky ? 2 : 1) + found;
+    setLoot({ ...l, gold });
+    setPetFind(found);
     update((q) => {
       q.stats.wins++;
-      return grant(q, {
+      if (lucky) q.boosts.lucky = Math.max(0, (q.boosts.lucky ?? 1) - 1);
+      const fx = grant(q, {
         xp: XP.winBonus + (spec.winReward.xp ?? 0),
-        gold: l.gold + (spec.winReward.gold ?? 0),
+        gold,
         items: { ...l.items, ...(spec.winReward.items ?? {}) },
         egg: spec.winReward.egg,
       });
+      fx.push(...track(q, 'win'));
+      if (wrongAll === 0) fx.push(...track(q, 'flawless'));
+      if (lost >= 2) fx.push(...track(q, 'comeback'));
+      if (spec.focus) fx.push(...track(q, 'drill'));
+      return fx;
     });
     sfx('win');
     setStage('won');
   };
 
   const onResult = (o: Outcome) => {
-    update((q) => {
-      recordAnswer(q, round.skill, o);
-      return grant(q, { xp: o === 'right' ? XP.right : o === 'nudged' ? XP.nudged : 0 });
-    });
+    const { skill, problem, level } = current;
+    const ev = applyResult(getProfile()!, run, skill, problem.atoms, o);
+    update((q) => answerEffects(q, skill, o, problem.atoms, level, { events: ev, dark }));
+    setEvents(ev);
+    setEliminated([]);
+    let h = hearts;
     if (o === 'wrong') {
-      setWrong(wrong + 1);
-      const h = hearts - 1;
-      setHearts(h);
+      if (ward) setWard(false);
+      else {
+        h = hearts - 1;
+        setHearts(h);
+        setLost(lost + 1);
+      }
       if (h <= 0) {
         sfx('lose');
         update((q) => {
@@ -361,31 +268,35 @@ export function EncounterScreen({
         setStage('lost');
         return;
       }
-      return;
+    } else if (!rallied && lost > 0 && run.combo >= 3 && h < hp) {
+      // Rally: three clean answers in a row after taking a hit win a heart back (once a fight).
+      setRallied(true);
+      setHearts(h + 1);
+      sfx('heal');
+      float('Rally! +❤️', 'hero', '#5ee6a8');
     }
-    const nextI = i + 1;
-    if (nextI >= rounds.length) {
+    if (isOver(run)) {
+      if (phase + 1 < spec.phases.length) {
+        const ph = spec.phases[phase + 1];
+        runs.push(newRun(getProfile()!, ph.skills, ph.count, rng));
+        setPhase(phase + 1);
+        setQn(0);
+        if (spec.boss) setStage('taunt');
+        return;
+      }
       finishWin();
       return;
     }
-    setI(nextI);
-    if (spec.boss && rounds[nextI].phase !== round.phase) {
-      setPhaseShown(rounds[nextI].phase);
-      setStage('taunt');
-    }
+    setQn(qn + 1);
+    setTick((t) => t + 1);
   };
 
-  const useHeart = () => {
-    if (hearts >= hp) return;
+  const useItem = (id: string, then: () => void) => {
     let ok = false;
     update((q) => {
-      ok = consume(q, 'heart-potion');
+      ok = consume(q, id);
     });
-    if (ok) {
-      sfx('heal');
-      setHearts(hearts + 1);
-      float('+❤️', 'hero', '#5ee6a8');
-    }
+    if (ok) then();
   };
 
   const tryHint = (): boolean => {
@@ -400,21 +311,46 @@ export function EncounterScreen({
     return ok;
   };
 
+  const useLens = () => {
+    const a = current.problem.answer;
+    if (a.kind !== 'choice') return;
+    useItem('scout-lens', () => {
+      sfx('page');
+      const wrongs = a.options.map((_, i) => i).filter((i) => i !== a.correct);
+      setEliminated(rng.shuffle(wrongs).slice(0, Math.max(0, Math.min(2, wrongs.length - 1))));
+    });
+  };
+
   const p = getProfile()!;
-  const potions = p.inv['heart-potion'] ?? 0;
-  const scrolls = p.inv['hint-scroll'] ?? 0;
-  const foeHp = total - i;
-  const isMuddler = spec.monster?.art === 'muddler';
+  const inv = (id: string) => p.inv[id] ?? 0;
+  const scrolls = inv('hint-scroll');
+  const pet = p.pet && !p.pet.dead && (p.pet.bond ?? 0) >= 30 ? p.pet : null;
 
   useEffect(() => {
     if (stage === 'intro' || stage === 'taunt') sfx('whoosh');
   }, [stage]);
 
+  const art = spec.monster?.art;
   const foe =
     spec.game === 'chest' ? (
-      <ChestArt locks={total} open={i} biting={biting} />
-    ) : isMuddler ? (
+      <ChestArt locks={totalAll} open={doneAll} biting={biting} />
+    ) : spec.game === 'vault' ? (
+      <VaultArt
+        total={totalAll}
+        done={doneAll}
+        alarms={hp - hearts}
+        ring={foeAnim === 'anim-hit'}
+      />
+    ) : art === 'muddler' ? (
       <Muddler />
+    ) : art && DARK_ARTS.includes(art) ? (
+      <DarkFoeArt
+        art={art as DarkFoe}
+        seed={spec.monster!.seed}
+        hue={spec.monster!.hue}
+        boss={!!spec.boss}
+        hurt={stage === 'won'}
+      />
     ) : spec.monster ? (
       <MonsterArt
         seed={spec.monster.seed}
@@ -424,49 +360,72 @@ export function EncounterScreen({
       />
     ) : null;
 
+  const heroArt = (
+    <Avatar
+      look={p.hero.look}
+      cls={p.hero.cls}
+      hat={p.hero.hat}
+      cape={p.hero.cape}
+      mood={stage === 'lost' ? 'ko' : heroAnim === 'anim-hit' ? 'hurt' : 'happy'}
+    />
+  );
+  const petArt = pet && (
+    <div class={`companion ${events.some((e) => e.kind === 'combo') ? 'cheer' : ''}`}>
+      <PetArt species={pet.species} mood={petMood(pet)} hat={pet.hat} />
+    </div>
+  );
+
   return (
-    <div class="screen">
-      <Scene id={spec.scene} dim={0.2} />
+    <div class={`screen ${dark ? 'dark-mode' : ''}`}>
+      <Scene id={spec.scene} dim={dark ? 0.35 : 0.2} />
       {/* top bar */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 6,
-          padding: '8px 12px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          background: 'linear-gradient(rgba(10,6,30,.9), rgba(10,6,30,0))',
-        }}
-      >
+      <div class="enc-top">
         <button class="icon-btn" onClick={() => setQuitAsk(true)} aria-label="Run away">
           🏃
         </button>
-        <div
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontWeight: 600,
-            flex: 1,
-            minWidth: 0,
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          {spec.title}
-        </div>
+        <div class="enc-title">{spec.title}</div>
         <Hearts n={hearts} max={hp} />
         <button
           class="btn small ghost"
-          disabled={potions === 0 || hearts >= hp || stage !== 'fight'}
-          onClick={useHeart}
+          disabled={inv('heart-potion') === 0 || hearts >= hp || stage !== 'fight'}
+          onClick={() =>
+            useItem('heart-potion', () => {
+              sfx('heal');
+              setHearts(hearts + 1);
+              float('+❤️', 'hero', '#5ee6a8');
+            })
+          }
           title="Drink a heart potion"
         >
-          ❤️‍🩹 {potions}
+          ❤️‍🩹 {inv('heart-potion')}
         </button>
+        {inv('ward-rune') > 0 && (
+          <button
+            class={`btn small ${ward ? 'mint' : 'ghost'}`}
+            disabled={ward || stage !== 'fight'}
+            onClick={() =>
+              useItem('ward-rune', () => {
+                sfx('heal');
+                setWard(true);
+              })
+            }
+            title="Ward Rune: blocks the next lost heart"
+          >
+            🛡️ {ward ? 'on' : inv('ward-rune')}
+          </button>
+        )}
+        {inv('scout-lens') > 0 &&
+          current.problem.answer.kind === 'choice' &&
+          current.problem.answer.options.length >= 3 && (
+            <button
+              class="btn small ghost"
+              disabled={stage !== 'fight' || eliminated.length > 0}
+              onClick={useLens}
+              title="Scout's Lens: rules out two wrong answers"
+            >
+              🔍 {inv('scout-lens')}
+            </button>
+          )}
         <span class="chip" title="Hint scrolls (use the hint button on a question)">
           📜 {scrolls}
           {freeHint ? ' +1' : ''}
@@ -474,72 +433,75 @@ export function EncounterScreen({
       </div>
 
       {/* arena */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '56px',
-          left: 0,
-          right: 0,
-          height: 'clamp(150px, 32vh, 300px)',
-          zIndex: 3,
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'center',
-          padding: '0 4vw',
-        }}
-      >
+      <div class="enc-arena">
         {spec.game === 'bridge' ? (
           <div style={{ position: 'relative', width: '100%', maxWidth: '760px', height: '100%' }}>
-            <BridgeArt planks={total} at={i} broken={broken} />
+            <BridgeArt planks={totalAll} at={doneAll} broken={broken} />
             <div
               class={heroAnim}
               style={{
                 position: 'absolute',
                 bottom: '38%',
-                left: `${4 + (i / (total + 1)) * 82}%`,
+                left: `${4 + (doneAll / (totalAll + 1)) * 82}%`,
                 width: '14%',
                 maxWidth: '90px',
                 transition: 'left .5s cubic-bezier(.3,1.4,.5,1)',
               }}
             >
-              <Avatar
-                look={p.hero.look}
-                cls={p.hero.cls}
-                hat={p.hero.hat}
-                cape={p.hero.cape}
-                mood={stage === 'lost' ? 'ko' : 'happy'}
-              />
+              {heroArt}
             </div>
             {floats.map((f) => (
               <div
                 key={f.id}
                 class="float-num"
-                style={{ left: `${10 + (i / (total + 1)) * 82}%`, top: '10%', color: f.color }}
+                style={{
+                  left: `${10 + (doneAll / (totalAll + 1)) * 82}%`,
+                  top: '10%',
+                  color: f.color,
+                }}
+              >
+                {f.text}
+              </div>
+            ))}
+          </div>
+        ) : spec.game === 'siege' ? (
+          <div style={{ position: 'relative', width: '100%', maxWidth: '760px', height: '100%' }}>
+            <SiegeArt
+              total={totalAll}
+              done={doneAll}
+              cracks={hp - hearts}
+              hit={foeAnim === 'anim-hit'}
+            />
+            <div
+              class={heroAnim}
+              style={{
+                position: 'absolute',
+                bottom: '58%',
+                left: '3%',
+                width: '11%',
+                maxWidth: '80px',
+              }}
+            >
+              {heroArt}
+            </div>
+            {floats.map((f) => (
+              <div
+                key={f.id}
+                class="float-num"
+                style={{ left: f.side === 'foe' ? '45%' : '12%', top: '15%', color: f.color }}
               >
                 {f.text}
               </div>
             ))}
           </div>
         ) : (
-          <div
-            style={{
-              position: 'relative',
-              width: '100%',
-              maxWidth: '760px',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div class={heroAnim} style={{ width: '26%', maxWidth: '170px', height: '92%' }}>
-              <Avatar
-                look={p.hero.look}
-                cls={p.hero.cls}
-                hat={p.hero.hat}
-                cape={p.hero.cape}
-                mood={stage === 'lost' ? 'ko' : heroAnim === 'anim-hit' ? 'hurt' : 'happy'}
-              />
+          <div class="enc-duel">
+            <div
+              class={heroAnim}
+              style={{ width: '26%', maxWidth: '170px', height: '92%', position: 'relative' }}
+            >
+              {heroArt}
+              {petArt}
             </div>
             <div
               style={{
@@ -553,18 +515,8 @@ export function EncounterScreen({
             >
               {spec.game === 'battle' && (
                 <div style={{ marginBottom: '6px' }}>
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontWeight: 600,
-                      fontSize: '.9rem',
-                      textAlign: 'center',
-                      textShadow: '0 2px 4px #000',
-                    }}
-                  >
-                    {spec.monster?.name}
-                  </div>
-                  <Bar value={foeHp} max={total} kind="hp" />
+                  <div class="foe-name">{spec.monster?.name}</div>
+                  <Bar value={totalAll - doneAll} max={totalAll} kind="hp" />
                 </div>
               )}
               <div
@@ -593,37 +545,34 @@ export function EncounterScreen({
       </div>
 
       {/* problem area */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 'calc(56px + clamp(150px, 32vh, 300px))',
-          left: 0,
-          right: 0,
-          bottom: 0,
-          overflowY: 'auto',
-          zIndex: 4,
-          padding: '10px 14px 24px',
-        }}
-      >
+      <div class="enc-problems">
         <div class="content-col">
-          {stage === 'fight' && problem && (
+          {stage === 'fight' && (
             <>
-              <div class="row" style={{ marginBottom: '6px' }}>
-                <span class="chip">
-                  {spec.game === 'chest' ? '🔒' : spec.game === 'bridge' ? '🪵' : '⚔️'} {i + 1} /{' '}
-                  {total}
-                </span>
-                {spec.monster?.taunts && spec.game === 'battle' && i > 0 && i % 2 === 0 && (
-                  <span class="muted" style={{ fontStyle: 'italic' }}>
-                    "{spec.monster.taunts[i % spec.monster.taunts.length]}"
+              <div class="row wrap" style={{ marginBottom: '6px' }}>
+                <RunBar run={run} icon={ROUND_ICON[spec.game]} />
+                {spec.boss && spec.phases.length > 1 && (
+                  <span class="chip">
+                    Phase {phase + 1} / {spec.phases.length}
                   </span>
                 )}
+                {spec.monster?.taunts &&
+                  spec.game === 'battle' &&
+                  doneAll > 0 &&
+                  doneAll % 3 === 2 && (
+                    <span class="muted" style={{ fontStyle: 'italic' }}>
+                      "{spec.monster.taunts[doneAll % spec.monster.taunts.length]}"
+                    </span>
+                  )}
               </div>
+              <RunNews events={events} dark={dark} />
               <ProblemCard
-                key={`${i}-${wrong}`}
-                problem={problem}
+                key={`${phase}-${qn}`}
+                tone={spec.tone}
+                problem={current.problem}
                 onResult={onResult}
                 onVerdict={onVerdict}
+                eliminated={eliminated}
                 hint={freeHint || scrolls > 0 ? 'paid' : 'none'}
                 onHint={tryHint}
                 hintLabel={freeHint ? '🧙 Free wizard hint' : `📜 Use a hint scroll (${scrolls})`}
@@ -642,10 +591,7 @@ export function EncounterScreen({
                 {spec.monster?.name}
               </div>
               <p style={{ fontSize: '1.25rem', margin: '6px 0 12px' }}>
-                "
-                {stage === 'intro'
-                  ? spec.boss.intro[introLine]
-                  : (spec.boss.taunts[phaseShown] ?? '…')}
+                "{stage === 'intro' ? spec.boss.intro[introLine] : (spec.boss.taunts[phase] ?? '…')}
                 "
               </p>
               <div class="row" style={{ justifyContent: 'flex-end' }}>
@@ -671,28 +617,39 @@ export function EncounterScreen({
       {stage === 'won' && (
         <Modal>
           <Confetti />
-          <div style={{ fontSize: '3.5rem' }}>
-            {spec.game === 'chest' ? '💰' : spec.game === 'bridge' ? '🏁' : '🏆'}
-          </div>
-          <h2>
-            {spec.game === 'chest'
-              ? 'Chest unlocked!'
-              : spec.game === 'bridge'
-                ? 'You made it across!'
-                : 'Victory!'}
-          </h2>
+          <div style={{ fontSize: '3.5rem' }}>{WIN_TEXT[spec.game][0]}</div>
+          <h2>{WIN_TEXT[spec.game][1]}</h2>
           {spec.boss && <p style={{ fontStyle: 'italic' }}>"{spec.boss.defeat}"</p>}
           <p>
-            {wrong === 0
+            {wrongAll === 0
               ? 'Flawless! Not a single mistake. ⭐⭐⭐'
-              : wrong <= 2
+              : wrongAll <= 2
                 ? 'Nicely done! ⭐⭐'
                 : 'You made it! ⭐'}
           </p>
+          {(gritAll > 0 || runs.some((r) => r.best >= 5)) && (
+            <div class="row wrap" style={{ justifyContent: 'center' }}>
+              {gritAll > 0 && (
+                <span class="chip" title="Mistakes you went back and got right">
+                  🪨 Grit: {gritAll} mistake{gritAll > 1 ? 's' : ''} put right
+                </span>
+              )}
+              {runs.some((r) => r.best >= 5) && (
+                <span class="chip">🔥 Best combo ×{Math.max(...runs.map((r) => r.best))}</span>
+              )}
+            </div>
+          )}
+          {gritAll > 0 && (
+            <p class="muted" style={{ fontSize: '.95rem' }}>
+              {dark
+                ? 'Struggling and then getting it right is how soldiers are made. That counted for more than an easy win.'
+                : 'Getting stuck and then getting it is exactly how brains grow. That was the good stuff.'}
+            </p>
+          )}
           {loot && (
             <div class="row wrap" style={{ justifyContent: 'center', margin: '10px 0' }}>
               <span class="chip gold" style={{ fontSize: '1.2rem' }}>
-                🪙 +{loot.gold + (spec.winReward.gold ?? 0)}
+                🪙 +{loot.gold}
               </span>
               {Object.entries({ ...loot.items, ...(spec.winReward.items ?? {}) }).map(([id, n]) => (
                 <span key={id} class="chip" style={{ fontSize: '1.2rem' }}>
@@ -706,9 +663,16 @@ export function EncounterScreen({
               )}
             </div>
           )}
+          {petFind > 0 && pet && (
+            <p class="muted">
+              🐾 {pet.name} sniffed out {petFind} extra gold.
+            </p>
+          )}
           <button
             class="btn gold big"
-            onClick={() => onEnd({ won: true, wrong, loot: loot ?? undefined })}
+            onClick={() =>
+              onEnd({ won: true, wrong: wrongAll, loot: loot ?? undefined, grit: gritAll })
+            }
           >
             Collect loot →
           </button>
@@ -718,12 +682,26 @@ export function EncounterScreen({
         <Modal>
           <div style={{ fontSize: '3.5rem' }}>😵</div>
           <h2>Knocked out!</h2>
-          <p>
-            Grimble drags you back to safety by your boot. You dropped a few coins on the way. The{' '}
-            {spec.game === 'chest' ? 'chest' : (spec.monster?.name ?? 'monster')} looks very smug.
+          {dark ? (
+            <p>
+              The line breaks. Wren drags you back behind the wall by your collar. You lost a few
+              coins in the mud. The {spec.monster?.name ?? 'enemy'} does not gloat. It just waits.
+            </p>
+          ) : (
+            <p>
+              Grimble drags you back to safety by your boot. You dropped a few coins on the way. The{' '}
+              {spec.game === 'chest' ? 'chest' : (spec.monster?.name ?? 'monster')} looks very smug.
+            </p>
+          )}
+          <p class="muted">
+            {gritAll > 0
+              ? `You still put ${gritAll} mistake${gritAll > 1 ? 's' : ''} right — that sticks. Go again.`
+              : 'Every mistake makes your brain stronger. Try again — you have got this.'}
           </p>
-          <p class="muted">Every mistake makes your brain stronger. Try again — you've got this!</p>
-          <button class="btn gold big" onClick={() => onEnd({ won: false, wrong })}>
+          <button
+            class="btn gold big"
+            onClick={() => onEnd({ won: false, wrong: wrongAll, grit: gritAll })}
+          >
             Back to safety
           </button>
         </Modal>
@@ -732,14 +710,19 @@ export function EncounterScreen({
         <Modal onClose={() => setQuitAsk(false)}>
           <h2>Run away?</h2>
           <p>
-            You'll keep the XP you earned, but no loot. The {spec.monster?.name ?? 'monster'} will
-            call you a scaredy-cat.
+            You'll keep the XP you earned, but no loot.{' '}
+            {dark
+              ? 'Nobody will blame you. Nobody will forget, either.'
+              : `The ${spec.monster?.name ?? 'monster'} will call you a scaredy-cat.`}
           </p>
           <div class="row" style={{ justifyContent: 'center' }}>
             <button class="btn ghost" onClick={() => setQuitAsk(false)}>
               Keep fighting
             </button>
-            <button class="btn danger" onClick={() => onEnd({ won: false, wrong })}>
+            <button
+              class="btn danger"
+              onClick={() => onEnd({ won: false, wrong: wrongAll, grit: gritAll })}
+            >
               Run!
             </button>
           </div>
@@ -750,15 +733,11 @@ export function EncounterScreen({
 }
 
 /** Spec for a regular path encounter or boss node. */
-export function specFor(opts: {
-  title: string;
-  game: Game;
-  scene: string;
-  monster?: Monster;
-  rounds: Round[];
-  tier: number;
-  winReward?: Reward;
-  boss?: EncounterSpec['boss'];
-}): EncounterSpec {
-  return { ...opts, winReward: opts.winReward ?? {} };
+export function specFor(
+  opts: Omit<EncounterSpec, 'winReward' | 'tone'> & {
+    winReward?: Reward;
+    tone?: 'bright' | 'dark';
+  },
+): EncounterSpec {
+  return { ...opts, winReward: opts.winReward ?? {}, tone: opts.tone ?? 'bright' };
 }

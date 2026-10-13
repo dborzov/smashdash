@@ -6,10 +6,12 @@ import { useMemo, useState } from 'preact/hooks';
 import type { Beat, Lesson, Widget } from '../../content/schema';
 import type { Problem, Visual } from '../../skills/types';
 import { Rng, hashString } from '../../engine/rng';
-import { generate, levelFor } from '../../skills';
-import { effectiveMastery, recordAnswer, type Outcome } from '../../engine/mastery';
+import { generateFor } from '../../skills';
+import type { Outcome, Tier } from '../../engine/mastery';
 import { getProfile, update } from '../../engine/store';
-import { grant } from '../../engine/rewards';
+import { answerEffects } from '../../engine/play';
+import { applyResult, isOver, newRun, pickNext, type RunEvent } from '../../engine/adaptive';
+import { RunBar, RunNews } from '../components/RunBar';
 import { Scene } from '../../art/scenes';
 import { Dialogue, TypeText } from '../components/Dialogue';
 import { ProblemCard } from '../components/ProblemCard';
@@ -32,25 +34,58 @@ export interface LessonResult {
 }
 
 /** Widgets that work as a still picture next to a question. */
-const PICTURES = new Set(['boxes', 'balance', 'groups', 'area', 'plot', 'circuit']);
+const PICTURES = new Set([
+  'boxes',
+  'balance',
+  'groups',
+  'area',
+  'plot',
+  'circuit',
+  'placechart',
+  'numberline',
+  'decgrid',
+]);
 function asVisual(w: Widget | undefined): Visual | undefined {
   return w && PICTURES.has(w.kind) ? ({ ...w } as Visual) : undefined;
 }
 
 function beatToProblem(
-  b: Extract<Beat, { type: 'ask' | 'input' }>,
+  b: Extract<Beat, { type: 'ask' | 'input' | 'order' }>,
   skill: string,
   seed: number,
 ): Problem {
+  const atoms = b.atom ? [b.atom] : [];
   if (b.type === 'input') {
     return {
       skill,
+      atoms,
       prompt: b.text,
       math: b.math,
       visual: asVisual(b.widget),
       answer: { kind: 'number', value: b.answer },
+      entry: b.dials ? { kind: 'dials', int: b.dials.int, dec: b.dials.dec } : undefined,
       nudges: (b.nudges ?? []).map((n) => ({ match: n.value, text: n.text })),
       hint: b.hint,
+      explain: b.explain,
+    };
+  }
+  if (b.type === 'order') {
+    // Shuffle the items so they don't start in the right order.
+    const rng = new Rng(seed);
+    let perm = rng.shuffle(b.items.map((_, i) => i));
+    if (perm.every((x, i) => x === b.correct[i])) perm = perm.reverse();
+    const at = (orig: number) => perm.indexOf(orig);
+    return {
+      skill,
+      atoms,
+      prompt: b.text,
+      answer: {
+        kind: 'order',
+        items: perm.map((i) => b.items[i]),
+        correct: b.correct.map(at),
+        direction: b.direction,
+        traps: b.traps?.map((t) => ({ order: t.order.map(at), text: t.text })),
+      },
       explain: b.explain,
     };
   }
@@ -58,6 +93,7 @@ function beatToProblem(
   const order = new Rng(seed).shuffle(b.options.map((_, i) => i));
   return {
     skill,
+    atoms,
     prompt: b.text,
     math: b.math,
     visual: asVisual(b.widget),
@@ -125,39 +161,53 @@ function Continue({
   );
 }
 
+type OnAnswer = (
+  skill: string,
+  o: Outcome,
+  practice: boolean,
+  atoms: string[],
+  level?: Tier,
+  events?: RunEvent[],
+) => void;
+
+/** Generated practice inside a lesson: an adaptive run (mistakes add extra practice). */
 function PracticeBeat({
   beat,
   onAnswer,
   onDone,
+  tone,
 }: {
   beat: Extract<Beat, { type: 'practice' }>;
-  onAnswer: (skill: string, o: Outcome, practice: boolean) => void;
+  onAnswer: OnAnswer;
   onDone: () => void;
+  tone: 'bright' | 'dark';
 }) {
-  const [i, setI] = useState(0);
-  const [seed] = useState(() => Math.floor(Math.random() * 1e9));
-  const problem = useMemo(() => {
-    const p = getProfile();
-    const lvl = beat.level
-      ? (beat.level as 1 | 2 | 3)
-      : levelFor(effectiveMastery(p?.skills[beat.skill]));
-    return generate(beat.skill, lvl, new Rng(seed + i * 7919));
-  }, [i]);
+  const [rng] = useState(() => new Rng(Math.floor(Math.random() * 1e9)));
+  const [run] = useState(() => newRun(getProfile()!, [beat.skill], beat.count, rng));
+  const [n, setN] = useState(0);
+  const [events, setEvents] = useState<RunEvent[]>([]);
+  const q = useMemo(() => {
+    const nx = pickNext(getProfile()!, run, rng);
+    const level = (beat.level as Tier | undefined) ?? nx.level;
+    return { level, problem: generateFor(nx.skill, level, rng, nx.atom) };
+  }, [n]);
   return (
     <div>
-      <div class="row" style={{ marginBottom: '8px' }}>
-        <span class="chip">
-          🏋️ Practice {i + 1} / {beat.count}
-        </span>
-        {beat.text && i === 0 && <span class="muted">{beat.text}</span>}
+      <div class="row wrap" style={{ marginBottom: '8px' }}>
+        <RunBar run={run} icon="🏋️" />
+        {beat.text && n === 0 && <span class="muted">{beat.text}</span>}
       </div>
+      <RunNews events={events} dark={tone === 'dark'} />
       <ProblemCard
-        key={i}
-        problem={problem}
+        key={n}
+        tone={tone}
+        problem={q.problem}
         onResult={(o) => {
-          onAnswer(beat.skill, o, true);
-          if (i + 1 >= beat.count) onDone();
-          else setI(i + 1);
+          const ev = applyResult(getProfile()!, run, beat.skill, q.problem.atoms, o);
+          onAnswer(beat.skill, o, true, q.problem.atoms, q.level, ev);
+          setEvents(ev);
+          if (isOver(run)) onDone();
+          else setN(n + 1);
         }}
       />
     </div>
@@ -171,13 +221,15 @@ function BeatView({
   firstTime,
   onNext,
   onAnswer,
+  tone,
 }: {
   beat: Beat;
   index: number;
   lessonSkill?: string;
   firstTime: boolean;
   onNext: () => void;
-  onAnswer: (skill: string, o: Outcome, practice: boolean) => void;
+  onAnswer: OnAnswer;
+  tone: 'bright' | 'dark';
 }) {
   const [chosen, setChosen] = useState<number | null>(null);
   const [widgetDone, setWidgetDone] = useState(false);
@@ -212,7 +264,8 @@ function BeatView({
         </>
       );
     case 'ask':
-    case 'input': {
+    case 'input':
+    case 'order': {
       const problem = beatToProblem(
         beat,
         lessonSkill ?? 'lesson',
@@ -223,9 +276,10 @@ function BeatView({
           <Speaker who={beat.who} />
           <ProblemCard
             problem={problem}
+            tone={tone}
             hint={beat.type === 'input' && beat.hint ? 'free' : 'none'}
             onResult={(o) => {
-              onAnswer(lessonSkill ?? '', o, false);
+              onAnswer(lessonSkill ?? '', o, false, problem.atoms);
               onNext();
             }}
           />
@@ -288,7 +342,7 @@ function BeatView({
         </>
       );
     case 'practice':
-      return <PracticeBeat beat={beat} onAnswer={onAnswer} onDone={onNext} />;
+      return <PracticeBeat beat={beat} onAnswer={onAnswer} onDone={onNext} tone={tone} />;
     case 'reward':
       return (
         <>
@@ -319,10 +373,13 @@ export function LessonPlayer({
   onFinish,
   onQuit,
   dry,
+  tone = 'bright',
 }: {
   lesson: Lesson;
   scene: string;
   firstTime: boolean;
+  /** The campaign's voice (affects feedback lines). */
+  tone?: 'bright' | 'dark';
   /** Preview mode: nothing is saved. */
   dry?: boolean;
   onFinish: (r: LessonResult) => void;
@@ -333,14 +390,17 @@ export function LessonPlayer({
   const [quitAsk, setQuitAsk] = useState(false);
   const beat = lesson.beats[i];
 
-  const onAnswer = (skill: string, o: Outcome, practice: boolean) => {
+  const onAnswer: OnAnswer = (skill, o, practice, atoms, level, events) => {
     if (o === 'wrong') stats.wrong++;
     else stats.right++;
     if (dry) return;
-    update((p) => {
-      if (skill) recordAnswer(p, skill, o);
-      return grant(p, { xp: (practice ? PRACTICE_XP : CHECK_XP)[o] });
-    });
+    update((p) =>
+      answerEffects(p, skill, o, atoms, level, {
+        xp: practice ? PRACTICE_XP : CHECK_XP,
+        events,
+        dark: tone === 'dark',
+      }),
+    );
   };
 
   const next = () => {
@@ -399,6 +459,7 @@ export function LessonPlayer({
               firstTime={firstTime}
               onNext={next}
               onAnswer={onAnswer}
+              tone={tone}
             />
           </div>
         </div>

@@ -10,6 +10,8 @@ import type { Fx } from './rewards';
 import { rollDay, type DayRoll } from './daily';
 import { tickPet } from './pet';
 import { refreshWanderers } from './encounters';
+import { ensureQuests } from './quests';
+import { checkAchievements } from './achievements';
 
 let current: Profile | null = null;
 const subs = new Set<() => void>();
@@ -49,17 +51,20 @@ export function update(fn: (p: Profile) => Fx[] | void): Fx[] {
   return fx;
 }
 
-/** Brings time-based systems up to date (day roll, pet, wanderers). */
-function catchUp(p: Profile): void {
+/** Brings time-based systems up to date (day roll, pet, wanderers, bounties, trophies). */
+function catchUp(p: Profile): Fx[] {
   const roll = rollDay(p);
   if (roll.lost || roll.shieldsUsed) dayNews = roll;
   if (p.pet) tickPet(p.pet);
   refreshWanderers(p);
+  ensureQuests(p);
+  // Trophies earned by things that happened before they existed (or while away).
+  return checkAchievements(p);
 }
 
 export function activate(p: Profile): void {
   const next = structuredClone(p);
-  catchUp(next);
+  fxQueue.push(...catchUp(next));
   current = next;
   setCurrentId(next.id);
   saveProfile(next);

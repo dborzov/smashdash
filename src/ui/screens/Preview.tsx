@@ -14,6 +14,47 @@ import { MathBig, Rich, RichInline } from '../components/Rich';
 import { WidgetView } from '../widgets';
 import { go } from '../router';
 import { fmt } from '../../skills/util';
+import { group } from '../../skills/place';
+import type { Problem } from '../../skills/types';
+
+function AnswerPreview({ p }: { p: Problem }) {
+  const a = p.answer;
+  if (a.kind === 'number') return <>{group(a.value)}</>;
+  if (a.kind === 'line')
+    return (
+      <>
+        {group(a.value)} (± {group(a.tolerance)}) on the line
+      </>
+    );
+  if (a.kind === 'order')
+    return (
+      <>
+        {a.direction}:{' '}
+        {a.correct.map((i, k) => (
+          <span key={k}>
+            {k > 0 && ' → '}
+            <RichInline text={a.items[i]} />
+          </span>
+        ))}
+      </>
+    );
+  return (
+    <>
+      {a.options.map((o, i) => (
+        <span
+          key={i}
+          style={{
+            marginRight: '14px',
+            fontWeight: i === a.correct ? 800 : 400,
+            color: i === a.correct ? '#138a52' : undefined,
+          }}
+        >
+          {'ABCD'[i]}) <RichInline text={o} />
+        </span>
+      ))}
+    </>
+  );
+}
 
 export function Preview({ kind, id }: { kind?: string; id?: string }) {
   const [seed, setSeed] = useState(1);
@@ -65,30 +106,10 @@ export function Preview({ kind, id }: { kind?: string; id?: string }) {
                       {p.visual && <WidgetView w={p.visual} interactive={false} quiz />}
                       <div style={{ marginTop: '8px' }}>
                         <b>Answer: </b>
-                        {p.answer.kind === 'number' ? (
-                          fmt(p.answer.value)
-                        ) : (
-                          <>
-                            {p.answer.options.map((o, i) => (
-                              <span
-                                key={i}
-                                style={{
-                                  marginRight: '14px',
-                                  fontWeight:
-                                    i === (p.answer.kind === 'choice' ? p.answer.correct : -1)
-                                      ? 800
-                                      : 400,
-                                  color:
-                                    i === (p.answer.kind === 'choice' ? p.answer.correct : -1)
-                                      ? '#138a52'
-                                      : undefined,
-                                }}
-                              >
-                                {'ABCD'[i]}) <RichInline text={o} />
-                              </span>
-                            ))}
-                          </>
-                        )}
+                        <AnswerPreview p={p} />
+                      </div>
+                      <div style={{ fontSize: '.85rem', marginTop: '4px', color: '#6b4ab0' }}>
+                        Atoms: {p.atoms.join(', ') || '—'}
                       </div>
                       {(p.nudges ?? []).length > 0 && (
                         <div style={{ fontSize: '.9rem', marginTop: '6px', color: '#7a4a00' }}>

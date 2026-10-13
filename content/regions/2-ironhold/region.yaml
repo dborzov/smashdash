@@ -2,6 +2,9 @@ id: ironhold
 order: 2
 name: Ironhold
 tagline: The dwarven forge, where the Great Scale of Truth has gone wonky.
+campaign: kingdom
+topic: 'The balance: do the same to both sides of an equation'
+added: '2026-10-09'
 scene: forge
 map: { x: 44, y: 54 }
 requires: [bramblebottom]

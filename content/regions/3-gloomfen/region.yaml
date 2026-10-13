@@ -2,6 +2,9 @@ id: gloomfen
 order: 3
 name: Gloomfen Marsh
 tagline: A foggy swamp of glowing lily pads, bog-imps and one very rude toad.
+campaign: kingdom
+topic: 'One-step equations: solve $x + 8 = 15$ and $4x = 28$, and check answers'
+added: '2026-10-09'
 scene: swamp
 map: { x: 68, y: 72 }
 requires: [ironhold]

@@ -54,6 +54,7 @@ export const balanceRule: Generator = (rng, level) => {
     const bad = rng.pick(bads);
     return {
       skill: 'balance-rule',
+      atoms: ['tip'],
       prompt: `The scale is balanced. Which move will **tip** it?`,
       visual,
       ...choice(rng, bad.text, rng.shuffle(goods)),
@@ -67,6 +68,7 @@ export const balanceRule: Generator = (rng, level) => {
     const right = same ? add : add + rng.int(1, 3);
     return {
       skill: 'balance-rule',
+      atoms: ['equation'],
       prompt: `The equation $${eq}$ is balanced. A dwarf adds ${add} to the left side and ${right} to the right side. Is it still balanced?`,
       ...choice(rng, same ? 'Yes, still balanced' : 'No, it tips', [
         same ? 'No, it tips' : 'Yes, still balanced',
@@ -78,6 +80,7 @@ export const balanceRule: Generator = (rng, level) => {
   }
   return {
     skill: 'balance-rule',
+    atoms: ['keep'],
     prompt: `The scale is balanced. Which move keeps it balanced?`,
     visual,
     ...choice(rng, rng.pick(goods), bads),
@@ -155,10 +158,12 @@ export const bothSides: Generator = (rng, level) => {
         : op.kind === '/'
           ? cc * op.k
           : cc / op.k;
+  const fa = form === 'add' ? 'add-sub' : form === 'free' ? 'useless' : 'mul-div';
   const prompt = `Start with $${start}$ and ${opPhrase(op)}. What do you get?`;
   if (level >= 2 && rng.chance(0.4) && Number.isInteger(resRight)) {
     return {
       skill: 'both-sides',
+      atoms: [fa, 'right-side'],
       prompt: `$${start}$. If we ${opPhrase(op)}, the left side becomes $${resLeft}$. What does the **right** side become?`,
       ...numeric(resRight, [
         [wrongRight, `Check the operation: we ${opPhrase(op).replace(/\*/g, '')}.`],
@@ -168,6 +173,7 @@ export const bothSides: Generator = (rng, level) => {
   }
   return {
     skill: 'both-sides',
+    atoms: [fa],
     prompt,
     ...choice(rng, result, [
       {
@@ -191,6 +197,7 @@ export const inverseOps: Generator = (rng, level) => {
   const ops = [
     {
       did: `+ ${k}`,
+      atom: 'undo-add',
       undo: `- ${k}`,
       spell: `added ${k} to the box's number`,
       same: `add ${k}`,
@@ -198,6 +205,7 @@ export const inverseOps: Generator = (rng, level) => {
     },
     {
       did: `- ${k}`,
+      atom: 'undo-sub',
       undo: `+ ${k}`,
       spell: `took ${k} away from the box's number`,
       same: `take away ${k}`,
@@ -205,6 +213,7 @@ export const inverseOps: Generator = (rng, level) => {
     },
     {
       did: r`\times ${k}`,
+      atom: 'undo-mul',
       undo: r`\div ${k}`,
       spell: `multiplied the box's number by ${k}`,
       same: `multiply by ${k}`,
@@ -212,6 +221,7 @@ export const inverseOps: Generator = (rng, level) => {
     },
     {
       did: r`\div ${k}`,
+      atom: 'undo-div',
       undo: r`\times ${k}`,
       spell: `divided the box's number by ${k}`,
       same: `divide by ${k}`,
@@ -229,6 +239,7 @@ export const inverseOps: Generator = (rng, level) => {
       t === 'mul' ? `multiplied it by ${k}` : t === 'add' ? `added ${k}` : `took away ${k}`;
     return {
       skill: 'inverse-ops',
+      atoms: ['backwards'],
       prompt: `A goblin thinks of a number, ${what}, and gets $${n}$. Undo the spell: what was the number?`,
       ...numeric(before, [
         [
@@ -245,6 +256,7 @@ export const inverseOps: Generator = (rng, level) => {
   const same = words ? o.same : `$${o.did}$`;
   return {
     skill: 'inverse-ops',
+    atoms: [o.atom],
     prompt: words
       ? `A spell ${o.spell}. Which counter-spell undoes it?`
       : `Which move **undoes** $${o.did}$?`,
@@ -334,6 +346,7 @@ export const pickMove: Generator = (rng, level) => {
   }
   return {
     skill: 'pick-move',
+    atoms: [form],
     prompt: `Which move gets $x$ alone in $${eq}$?`,
     math: eq,
     ...choice(rng, right, wrong),

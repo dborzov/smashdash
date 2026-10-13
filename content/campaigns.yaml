@@ -1,0 +1,16 @@
+# Story arcs. Every region belongs to one (region.yaml `campaign:`). The adventure board
+# groups regions by campaign. `mood: dark` gives the campaign's cards and map a grimmer look.
+- id: kingdom
+  name: The Muddled Kingdom
+  tagline: The Muddler stuffed every number into a box. Unbox the kingdom, one spell at a time.
+  order: 1
+  mood: bright
+  icon: "🏰"
+- id: march
+  name: The Long Count
+  tagline: >-
+    The Hollow Host marches south, and the ledgers of the realm have burned. Count true, or
+    the North falls.
+  order: 2
+  mood: dark
+  icon: "⚔️"

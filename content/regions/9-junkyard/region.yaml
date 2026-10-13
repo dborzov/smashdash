@@ -2,6 +2,9 @@ id: junkyard
 order: 9
 name: Sparkwick Junkyard
 tagline: Scrap heaps, lightning, and a battlebot that runs on AA batteries and pure attitude.
+campaign: kingdom
+topic: 'Electricity: volts, amps, ohms, and Ohm''s law as an equation'
+added: '2026-10-11'
 scene: junkyard
 map: { x: 88, y: 55 }
 requires: [gloomfen]

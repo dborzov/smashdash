@@ -7,196 +7,692 @@
   region: bramblebottom
   icon: "🗣️"
   summary: "Read the language of boxes: 3x means 3 × x, x/4 means x split into 4."
+  requires: []
+  atoms:
+    - { id: times, name: '$3x$ means $3 \times x$ (an invisible times sign)' }
+    - { id: boxes, name: 'Boxes and coins → $ax + b$' }
+    - { id: repeat-add, name: '$x + x + x = 3x$, not $x^3$' }
+    - { id: divide, name: '$\frac{x}{4}$ means $x$ split into 4 (box on top)' }
+    - { id: parts, name: 'Spot the multiplier and the added number in $ax + b$' }
+    - { id: recipe, name: '"Multiply, then add" is $ax + b$, not $a(x + b)$' }
 - id: eval-one
   name: Box Opener
   region: bramblebottom
   icon: "📦"
   summary: "If x = 4, what is 3x? Swap the box for its number."
+  requires: [notation]
+  atoms:
+    - { id: add, name: '$x + a$: swap in the number and add' }
+    - { id: sub, name: '$x - a$: watch the minus' }
+    - { id: mul, name: '$ax$: multiply, never glue the digits' }
+    - { id: div, name: '$\frac{x}{a}$: the bar means divide' }
+    - { id: rsub, name: '$a - x$: order matters in subtraction' }
 - id: eval-two
   name: Double Lock
   region: bramblebottom
   icon: "🔐"
   summary: "If x = 4, what is 3x + 7? Multiply first, add last."
+  requires: [eval-one]
+  atoms:
+    - { id: axpb, name: '$ax + b$: multiply first, add last' }
+    - { id: axmb, name: '$ax - b$: multiply first, subtract last' }
+    - { id: bpax, name: '$b + ax$: still multiply first' }
+    - { id: divpb, name: '$\frac{x}{a} + b$: divide first' }
+    - { id: bmax, name: '$b - ax$: $ax$ is one chunk' }
 - id: eval-parens
   name: Bracket Breaker
   region: bramblebottom
   icon: "🧱"
   summary: "Brackets go first: 2(x + 3) is not 2x + 3."
+  requires: [eval-two]
+  atoms:
+    - { id: apxb, name: '$a(x + b)$: brackets first' }
+    - { id: apxmb, name: '$a(x - b)$: brackets first' }
+    - { id: fracbar, name: '$\frac{x + b}{a}$: the bar groups the whole top' }
+    - { id: compare, name: '$a(x + b)$ vs $ax + b$: not the same' }
 - id: words-to-expr
   name: Goblin Translator
   region: bramblebottom
   icon: "👺"
   summary: "Turn words into maths: '3 less than x' is x − 3."
+  requires: [notation]
+  atoms:
+    - { id: more, name: '"$n$ more than $x$" → $x + n$' }
+    - { id: less, name: '"$n$ less than $x$" → $x - n$ (not $n - x$)' }
+    - { id: twice, name: '"Twice $x$" → $2x$ (not $x + 2$)' }
+    - { id: times, name: '"$x$ times $n$" → $nx$' }
+    - { id: split, name: '"$x$ split into $n$" → $\frac{x}{n}$' }
+    - { id: two-step, name: 'Two steps in the right order: $3x + n$, $2x - n$' }
+    - { id: brackets, name: '"Add first, then multiply" needs brackets' }
 
 - id: balance-rule
   name: Scale Sense
   region: ironhold
   icon: "⚖️"
   summary: "Same thing to both sides keeps the balance."
+  requires: [eval-one]
+  atoms:
+    - { id: keep, name: 'Same move on both pans keeps the balance' }
+    - { id: tip, name: 'Spot the move that tips the scale' }
+    - { id: equation, name: 'An equation is a balance: same change on both sides' }
 - id: both-sides
   name: Ledger Keeper
   region: ironhold
   icon: "📒"
   summary: "Apply a move to both sides of an equation and write the result."
+  requires: [balance-rule]
+  atoms:
+    - { id: add-sub, name: 'Add or subtract on both sides' }
+    - { id: mul-div, name: 'Multiply or divide both sides' }
+    - { id: useless, name: 'A legal-but-useless move still keeps it true' }
+    - { id: right-side, name: 'Work out what the right side becomes' }
 - id: inverse-ops
   name: Undo Spell
   region: ironhold
   icon: "↩️"
   summary: "+ undoes −, × undoes ÷, and the other way round."
+  requires: [both-sides]
+  atoms:
+    - { id: undo-add, name: '$+$ is undone by $-$' }
+    - { id: undo-sub, name: '$-$ is undone by $+$' }
+    - { id: undo-mul, name: '$\times$ is undone by $\div$' }
+    - { id: undo-div, name: '$\div$ is undone by $\times$' }
+    - { id: backwards, name: 'Think backwards to find the starting number' }
 - id: pick-move
   name: Right Hammer
   region: ironhold
   icon: "🔨"
   summary: "Pick the move that gets x alone."
+  requires: [inverse-ops]
+  atoms:
+    - { id: add, name: '$x + k$: subtract $k$' }
+    - { id: sub, name: '$x - k$: add $k$' }
+    - { id: mul, name: '$kx$: divide by $k$' }
+    - { id: div, name: '$\frac{x}{k}$: multiply by $k$' }
+    - { id: flip, name: 'The box on the right side' }
 
 - id: one-step-add
   name: Lily Hopper
   region: gloomfen
   icon: "🪷"
   summary: "Solve x + 8 = 15 and x − 4 = 9."
+  requires: [pick-move]
+  atoms:
+    - { id: xpa, name: 'Solve $x + a = b$' }
+    - { id: xma, name: 'Solve $x - a = b$' }
+    - { id: apx, name: 'Solve $a + x = b$' }
+    - { id: flip, name: 'Solve $b = x + a$' }
 - id: one-step-mul
   name: Swarm Splitter
   region: gloomfen
   icon: "✨"
   summary: "Solve 4x = 28 and x/5 = 4."
+  requires: [one-step-add]
+  atoms:
+    - { id: ax, name: 'Solve $ax = b$' }
+    - { id: xda, name: 'Solve $\frac{x}{a} = b$' }
+    - { id: flip, name: 'Solve $b = ax$' }
 - id: check-solution
   name: Truth Seer
   region: gloomfen
   icon: "🔍"
   summary: "Check an answer by putting it back in the box."
+  requires: [one-step-mul, eval-two]
+  atoms:
+    - { id: plug, name: 'Plug a value into the left side' }
+    - { id: truth, name: 'Truth or trap: does the claim check out?' }
+    - { id: which, name: 'Test candidates to find the solution' }
 
 - id: undo-order
   name: Unwrapper
   region: dragonspine
   icon: "🎁"
   summary: "Last on, first off: which move comes first in a two-step equation."
+  requires: [one-step-mul]
+  atoms:
+    - { id: axpb, name: '$ax + b$: remove the $b$ first' }
+    - { id: axmb, name: '$ax - b$: add $b$ first' }
+    - { id: xdapb, name: '$\frac{x}{a} + b$: remove the $b$ first' }
+    - { id: bpax, name: '$b + ax$: the $b$ is still the outer layer' }
+    - { id: paren, name: '$a(x + b)$: divide first' }
+    - { id: fracparen, name: '$\frac{x + b}{a}$: multiply first' }
 - id: two-step
   name: Dragon Lock
   region: dragonspine
   icon: "🐉"
   summary: "Solve 3x + 5 = 20 in two moves."
+  requires: [undo-order]
+  atoms:
+    - { id: axpb, name: 'Solve $ax + b = c$' }
+    - { id: axmb, name: 'Solve $ax - b = c$' }
+    - { id: xdapb, name: 'Solve $\frac{x}{a} + b = c$' }
+    - { id: flip, name: 'Solve $c = ax + b$' }
+    - { id: paren, name: 'Solve $a(x + b) = c$' }
 
 - id: name-unknown
   name: Mystery Finder
   region: bazaar
   icon: "❓"
   summary: "In a story problem, decide what x stands for."
+  requires: [two-step]
+  atoms:
+    - { id: mul, name: 'Groups plus extras: $x$ is the number of groups' }
+    - { id: add, name: 'Found more: $x$ is what you had before' }
+    - { id: sub, name: 'Spent some: $x$ is what you had before' }
+    - { id: div, name: 'Shared out: $x$ is the whole pile' }
 - id: story-to-equation
   name: Riddle Writer
   region: bazaar
   icon: "📜"
   summary: "Turn a story into an equation."
+  requires: [name-unknown, words-to-expr]
+  atoms:
+    - { id: mul, name: 'Groups plus extras → $ax + b = c$' }
+    - { id: add, name: 'Found more → $x + b = c$' }
+    - { id: sub, name: 'Spent some → $x - b = c$' }
+    - { id: div, name: 'Shared out → $\frac{x}{a} = c$' }
 - id: story-solve
   name: Riddle Cracker
   region: bazaar
   icon: "🦁"
   summary: "Solve story problems and answer the real question."
+  requires: [story-to-equation]
+  atoms:
+    - { id: mul, name: 'Solve a groups-plus-extras story' }
+    - { id: add, name: 'Solve a found-more story' }
+    - { id: sub, name: 'Solve a spent-some story' }
+    - { id: div, name: 'Solve a shared-out story' }
 
 - id: power-meaning
   name: Repeat Spell
   region: tower
   icon: "🔁"
   summary: "2³ means 2 × 2 × 2, not 2 × 3."
+  requires: [eval-one]
+  atoms:
+    - { id: meaning, name: '$2^3 = 2 \times 2 \times 2$, not $2 \times 3$' }
+    - { id: value, name: 'Work out a small power like $3^4$' }
+    - { id: exponent, name: 'Find the missing exponent: $2^{?} = 16$' }
+    - { id: compare, name: '$2^5$ vs $5^2$: not the same' }
 - id: pow10-up
   name: Growing Potion
   region: tower
   icon: "🧪"
   summary: "10ⁿ is a 1 with n zeros."
+  requires: [power-meaning]
+  atoms:
+    - { id: e1, name: '$10^1 = 10$' }
+    - { id: e2, name: '$10^2 = 100$' }
+    - { id: e3, name: '$10^3 = 1{,}000$' }
+    - { id: e4, name: '$10^4 = 10{,}000$' }
+    - { id: e5, name: '$10^5 = 100{,}000$' }
+    - { id: e6, name: '$10^6 = 1{,}000{,}000$' }
+    - { id: e7, name: '$10^7 = 10{,}000{,}000$' }
+    - { id: reverse, name: 'Count the zeros to find the power: $1{,}000 = 10^{3}$' }
+    - { id: multiply, name: '$10^a \times 10^b = 10^{a+b}$: zeros stack up' }
 - id: pow10-down
   name: Shrinking Potion
   region: tower
   icon: "🔬"
   summary: "10⁻³ = 0.001: negative powers make things tiny, not negative."
+  requires: [pow10-up]
+  atoms:
+    - { id: zero, name: '$10^0 = 1$ (not 0)' }
+    - { id: m1, name: '$10^{-1} = 0.1$' }
+    - { id: m2, name: '$10^{-2} = 0.01$' }
+    - { id: m3, name: '$10^{-3} = 0.001$' }
+    - { id: m4, name: '$10^{-4} = 0.0001$' }
+    - { id: m5, name: '$10^{-5} = 0.00001$' }
+    - { id: reverse, name: '$0.001 = 10^{?}$: count the hops' }
+    - { id: fraction, name: '$10^{-n} = \frac{1}{10^n}$: tiny, not negative' }
+    - { id: compare, name: 'Bigger exponent, bigger number (even below zero)' }
 - id: times-pow10
   name: Decimal Hop
   region: tower
   icon: "🦘"
   summary: "3.2 × 10³: hop the decimal point."
+  requires: [pow10-down]
+  atoms:
+    - { id: up, name: 'Positive power: the point hops right' }
+    - { id: down, name: 'Negative power: the point hops left' }
+    - { id: pad, name: 'Hop past the digits: fill the gap with zeros' }
 - id: sci-notation
   name: Giant Scribe
   region: tower
   icon: "🔭"
   summary: "Read, write and compare numbers like 4.5 × 10⁶."
+  requires: [times-pow10]
+  atoms:
+    - { id: expand, name: '$4.5 \times 10^3$ → $4{,}500$' }
+    - { id: exponent, name: '$4{,}500{,}000 = 4.5 \times 10^{?}$' }
+    - { id: small, name: 'Tiny numbers: $0.003 = 3 \times 10^{-3}$' }
+    - { id: form, name: 'The front number must be from 1 up to 10' }
+    - { id: compare, name: 'Compare the powers first' }
 
 - id: copy-groups
   name: Copycat
   region: mirrors
   icon: "🪞"
   summary: "3(x + 2) means three copies of the whole parcel (x + 2)."
+  requires: [eval-parens]
+  atoms:
+    - { id: coins, name: 'Count the coins in $n$ copies of a parcel' }
+    - { id: boxes, name: 'Count the boxes in $n(x + c)$' }
+    - { id: copies, name: '$3(x + 2) = (x + 2) + (x + 2) + (x + 2)$' }
+    - { id: unpack, name: 'Unpack and sort: $3(x + 2) = 3x + 6$' }
 - id: expand
   name: Bracket Buster
   region: mirrors
   icon: "🧨"
   summary: "The number outside multiplies everything inside: 2(x + 3) = 2x + 6."
+  requires: [copy-groups]
+  atoms:
+    - { id: plus, name: '$a(x + b) = ax + ab$' }
+    - { id: minus, name: '$a(x - b) = ax - ab$: keep the minus' }
+    - { id: coef, name: '$a(kx + b)$: multiply the $kx$ too' }
 - id: expand-check
   name: Number Spy
   region: mirrors
   icon: "🕵️"
   summary: "Catch fake rules: put x = 1 into both sides and see if they match."
+  requires: [expand]
+  atoms:
+    - { id: spy, name: 'Work out both sides for a number' }
+    - { id: fake, name: 'Catch a fake rule' }
+    - { id: honest, name: 'Confirm a true rule' }
 - id: split-tens
   name: Mind Splitter
   region: mirrors
   icon: "🧠"
   summary: "7 × 12 = 7 × 10 + 7 × 2: split a number, multiply both bits."
+  requires: [expand]
+  atoms:
+    - { id: teens, name: '$7 \times 12 = 70 + 14$' }
+    - { id: tens, name: '$6 \times 34 = 180 + 24$' }
+    - { id: hundred, name: '$4 \times 103 = 400 + 12$' }
+    - { id: method, name: 'Choose the right split' }
 - id: round-down
   name: Nearly Ten
   region: mirrors
   icon: "🦇"
   summary: "7 × 9 = 7 × (10 − 1) = 70 − 7. Take off a whole copy, not just 1."
+  requires: [split-tens]
+  atoms:
+    - { id: nine, name: '$7 \times 9 = 70 - 7$' }
+    - { id: tens, name: '$4 \times 19 = 80 - 4$' }
+    - { id: big, name: '$3 \times 99 = 300 - 3$' }
+    - { id: method, name: 'Choose the right fix-up' }
 
 - id: read-point
   name: Sea Reader
   region: bay
   icon: "📍"
   summary: "(3, 5) means 3 along, then 5 up. Along first!"
+  requires: [eval-one]
+  atoms:
+    - { id: pair, name: 'Read $(x, y)$: along first, then up' }
+    - { id: one, name: 'Read just the $x$ or just the $y$' }
+    - { id: axis, name: 'A point on an axis has a 0' }
 - id: plot-point
   name: Laser Aim
   region: bay
   icon: "🎯"
   summary: "Find the spot (x, y) on the grid and fire."
+  requires: [read-point]
+  atoms:
+    - { id: find, name: 'Find the point $(a, b)$ on the grid' }
+    - { id: axis, name: 'Find a point on the up-axis $(0, b)$' }
 - id: table-rule
   name: Ship's Log
   region: bay
   icon: "📋"
   summary: "Fill a table for y = 2x + 3: x = 1 gives 5, x = 2 gives 7…"
+  requires: [plot-point, eval-two]
+  atoms:
+    - { id: plus, name: 'Fill a table for $y = mx + b$' }
+    - { id: minus, name: 'Fill a table for $y = mx - b$' }
+    - { id: zero, name: 'At $x = 0$, $y$ is the start' }
 - id: step-pattern
   name: Laser Stairs
   region: bay
   icon: "🪜"
   summary: "In y = 2x + 3, each step along climbs 2 — the 3 is where it starts."
+  requires: [table-rule]
+  atoms:
+    - { id: next, name: 'Spot the jump and find the next $y$' }
+    - { id: climb, name: 'The climb per step is the number on $x$' }
+    - { id: far, name: 'Step many times: $y$ far along' }
 - id: line-rule
   name: Beam Reader
   region: bay
   icon: "📈"
   summary: "Read a straight-line graph: start at x = 0, climb per step, and the rule."
+  requires: [step-pattern]
+  atoms:
+    - { id: start, name: 'Read where the line starts at $x = 0$' }
+    - { id: rule, name: 'Read the rule off a graph' }
+    - { id: on-line, name: 'Is a point on the line?' }
 
 - id: closed-loop
   name: Loop Sense
   region: junkyard
   icon: "🔁"
   summary: "Electrons need a complete loop from − round to + (no gaps!)."
+  requires: [one-step-add]
+  atoms:
+    - { id: loop, name: 'A complete loop lights the bulb' }
+    - { id: gap, name: 'A gap anywhere stops the flow' }
+    - { id: same-end, name: 'Both wires on one end: no loop' }
+    - { id: cancel, name: 'A backwards battery cancels a forwards one' }
+    - { id: net-push, name: 'Two forwards, one backwards: still some push' }
+    - { id: where, name: 'Electrons crawl from − round to +' }
+    - { id: break-anywhere, name: 'Why one far-away cut stops everything' }
+    - { id: switch, name: 'A switch is a drawbridge in the wire' }
 - id: volts
   name: Push Power
   region: junkyard
   icon: "🔋"
   summary: "Volts are push. An AA gives 1.5 V; nose-to-tail batteries add up."
+  requires: [closed-loop]
+  atoms:
+    - { id: stack, name: 'AAs nose to tail add up: $1.5\,\text{V}$ each' }
+    - { id: flip, name: 'Backwards cells cancel one forwards cell each' }
+    - { id: howmany, name: 'How many AAs for a given push' }
+    - { id: compare, name: 'More volts, more push' }
 - id: current
   name: Baby Counter
   region: junkyard
   icon: "👶"
   summary: "Amps count electrons passing per second — the same all round the loop."
+  requires: [volts]
+  atoms:
+    - { id: same, name: 'The same current flows all the way round' }
+    - { id: meaning, name: 'Amps count electrons per second' }
+    - { id: rate, name: 'Crowds ÷ seconds = amps' }
 - id: resistance
   name: Mud Tunnel
   region: junkyard
   icon: "🧱"
   summary: "Ohms are squeeze. More ohms, less flow; tunnels in a row add up."
+  requires: [current]
+  atoms:
+    - { id: sum, name: 'Resistors in a row add up' }
+    - { id: compare, name: 'More ohms, less flow' }
+    - { id: double, name: 'Double the squeeze, half the flow' }
+    - { id: meaning, name: 'A resistor squeezes; it doesn''t eat electrons' }
 - id: ohm-current
   name: Ohm's Law
   region: junkyard
   icon: "⚡"
   summary: "Current = push ÷ squeeze: I = V ÷ R."
+  requires: [resistance]
+  atoms:
+    - { id: law, name: '$I = V \div R$ (not $V \times R$)' }
+    - { id: calc, name: 'Work out the amps from volts and ohms' }
+    - { id: aa, name: 'Amps from a stack of AAs' }
 - id: ohm-solve
   name: Bot Tuner
   region: junkyard
   icon: "🤖"
   summary: "V = I × R: work out the volts, the ohms or the batteries a bot needs."
+  requires: [ohm-current, one-step-mul]
+  atoms:
+    - { id: volts, name: '$V = I \times R$: find the volts' }
+    - { id: ohms, name: 'Solve $V = I \times R$ for $R$' }
+    - { id: cells, name: 'How many AAs a motor needs' }
+    - { id: fuse, name: 'The most push before the fuse pops' }
+
+# ---------------------------------------------------------------------------
+# The Long Count — place value up to millions, rounding, decimals (regions 10–13)
+
+- id: pv-places
+  name: Place Names
+  region: greyhaven
+  icon: "🏛️"
+  summary: "Name every place from the ones to the millions — counting from the right."
+  requires: []
+  atoms:
+    - { id: ones-tens-hundreds, name: 'Ones, tens and hundreds' }
+    - { id: thousands, name: 'The thousands place' }
+    - { id: ten-thousands, name: 'The ten-thousands place' }
+    - { id: hundred-thousands, name: 'The hundred-thousands place' }
+    - { id: millions, name: 'The millions place' }
+    - { id: ten-millions, name: 'The ten-millions place' }
+    - { id: periods, name: 'Periods: ones, thousands, millions (groups of three)' }
+- id: pv-value
+  name: Digit Worth
+  region: greyhaven
+  icon: "💰"
+  summary: "The 7 in 4,372,519 is worth 70,000 — a digit's value depends on its place."
+  requires: [pv-places]
+  atoms:
+    - { id: small, name: 'Value of a digit in the tens or hundreds' }
+    - { id: thousands, name: 'Value of a digit in the thousands or ten-thousands' }
+    - { id: big, name: 'Value of a digit in the hundred-thousands or millions' }
+    - { id: zero, name: 'A zero holds a place open (it can''t be rubbed out)' }
+    - { id: same-digit, name: 'The same digit, two places: ×10 for every step left' }
+- id: pv-read
+  name: Herald's Voice
+  region: greyhaven
+  icon: "📯"
+  summary: "Commas group threes from the right; read each period as a little number."
+  requires: [pv-places]
+  atoms:
+    - { id: commas, name: 'Commas count off threes from the right' }
+    - { id: period-name, name: 'Read a period: 4,372,519 → "three hundred seventy-two thousand"' }
+    - { id: to-words, name: 'Read a big number aloud' }
+    - { id: zeros-words, name: 'Read a number with zeros inside (4,072,519)' }
+- id: pv-write
+  name: Scribe's Hand
+  region: greyhaven
+  icon: "✒️"
+  summary: "Words to digits: \"two million, forty thousand, six\" is 2,040,006 — zeros hold the gaps."
+  requires: [pv-read, pv-value]
+  atoms:
+    - { id: no-zeros, name: 'Write a number with no gaps' }
+    - { id: zero-inside, name: 'A zero inside: four thousand, seventy-two → 4,072' }
+    - { id: zero-tail, name: 'Zeros at the end: forty thousand, six hundred → 40,600' }
+    - { id: empty-period, name: 'A whole empty period: two million, six → 2,000,006' }
+    - { id: unit-form, name: '3 millions, 4 ten-thousands and 6 ones → 3,040,006' }
+- id: pv-expanded
+  name: Breakdown
+  region: greyhaven
+  icon: "🧮"
+  summary: "4,072,000 = 4,000,000 + 70,000 + 2,000. Break numbers up and put them back."
+  requires: [pv-write]
+  atoms:
+    - { id: to-standard, name: 'Put a breakdown back together' }
+    - { id: gaps, name: 'Breakdowns with missing places (zeros fill them)' }
+    - { id: shuffled, name: 'Breakdowns written out of order' }
+    - { id: missing-term, name: 'Find the missing part of a breakdown' }
+    - { id: from-standard, name: 'Pick the right breakdown of a number' }
+
+- id: pv-compare
+  name: Bigger Host
+  region: ashroad
+  icon: "⚔️"
+  summary: "Count the digits first, then compare from the left. 98,000 < 120,000."
+  requires: [pv-value]
+  atoms:
+    - { id: length, name: 'More digits means bigger (98,450 < 120,300)' }
+    - { id: nines, name: '99,999 < 100,000: don''t be fooled by nines' }
+    - { id: first-diff, name: 'Same length: the first place that differs decides' }
+    - { id: deep-diff, name: 'Same front digits: the difference is deep inside' }
+    - { id: symbol, name: 'Use < and > correctly' }
+    - { id: order, name: 'Put several numbers in order (not like words in a dictionary)' }
+- id: pv-times-ten
+  name: Tenfold
+  region: ashroad
+  icon: "🔟"
+  summary: "Each place is worth ten times the place to its right. ×10 slides every digit left."
+  requires: [pv-value]
+  atoms:
+    - { id: x10, name: '$\times 10$: every digit slides one place left' }
+    - { id: x100, name: '$\times 100$: two places left' }
+    - { id: x1000, name: '$\times 1{,}000$: three places left' }
+    - { id: div10, name: '$\div 10$: one place right' }
+    - { id: div100, name: '$\div 100$: two places right' }
+    - { id: div1000, name: '$\div 1{,}000$: three places right' }
+    - { id: relation, name: 'Moved two places left = 100 times as much' }
+- id: pv-regroup
+  name: Quartermaster
+  region: ashroad
+  icon: "📦"
+  summary: "34 hundreds = 3,400; 34,500 has 34 full thousands (not 4). A million is 1,000 thousands."
+  requires: [pv-times-ten]
+  atoms:
+    - { id: units-to-number, name: '34 hundreds → 3,400' }
+    - { id: count-units, name: 'How many full thousands in 34,500? (34, not 4)' }
+    - { id: leftover, name: 'What is left over after the full crates' }
+    - { id: trade, name: '3 thousands + 14 hundreds = 4,400 (trade ten for one)' }
+    - { id: million, name: 'A million is 1,000 thousands (not 100)' }
+- id: pv-shift
+  name: Supply Count
+  region: ashroad
+  icon: "🛒"
+  summary: "10,000 more than 3,995,000 is 4,005,000 — carries ripple through the nines."
+  requires: [pv-value]
+  atoms:
+    - { id: plain, name: '10, 100, 1,000… more (no carry)' }
+    - { id: less, name: '10, 100, 1,000… less (no borrow)' }
+    - { id: carry, name: 'More, with a carry (a 9 rolls over)' }
+    - { id: cascade, name: 'More, with a ripple through several 9s' }
+    - { id: borrow, name: 'Less, borrowing across a 0' }
+    - { id: which-place, name: 'Which amount was added? (the place that changed)' }
+- id: pv-numberline
+  name: Road Markers
+  region: ashroad
+  icon: "🚩"
+  summary: "Big numbers on a line: work out what one jump is worth, then count."
+  requires: [pv-compare]
+  atoms:
+    - { id: read-tick, name: 'Read the arrow at a big tick' }
+    - { id: between, name: 'Read the arrow between ticks' }
+    - { id: offset, name: 'A line that doesn''t start at 0' }
+    - { id: which-mark, name: 'Find the flag that marks a number' }
+    - { id: place, name: 'Plant a number on the line yourself' }
+
+- id: round-small
+  name: Rough Count
+  region: thornwall
+  icon: "🎯"
+  summary: "Round to the nearest 10, 100 or 1,000: the digit just after decides. 5 rounds up."
+  requires: [pv-numberline]
+  atoms:
+    - { id: r10, name: 'Round to the nearest ten' }
+    - { id: r100, name: 'Round to the nearest hundred' }
+    - { id: r1000, name: 'Round to the nearest thousand' }
+    - { id: half, name: 'Exactly halfway rounds up (4,350 → 4,400)' }
+    - { id: nines, name: 'The ripple: 9,960 → 10,000' }
+    - { id: between, name: 'Which two round numbers is it between?' }
+- id: round-big
+  name: Scout's Estimate
+  region: thornwall
+  icon: "🔭"
+  summary: "Round to the nearest 10,000, 100,000 or million."
+  requires: [round-small]
+  atoms:
+    - { id: r10k, name: 'Round to the nearest ten thousand' }
+    - { id: r100k, name: 'Round to the nearest hundred thousand' }
+    - { id: r1m, name: 'Round to the nearest million' }
+    - { id: half, name: 'Exactly halfway rounds up' }
+    - { id: nines, name: 'The ripple through 9s with big numbers' }
+    - { id: between, name: 'Between which two ten-thousands (or millions)?' }
+- id: round-range
+  name: What Could It Be?
+  region: thornwall
+  icon: "🕵️"
+  summary: "Rounded to 5,000 (nearest thousand)? The true number was 4,500 to 5,499."
+  requires: [round-small]
+  atoms:
+    - { id: could-be, name: 'Which true count fits a rounded report?' }
+    - { id: smallest, name: 'Smallest number that rounds to it (halfway counts)' }
+    - { id: largest, name: 'Largest number that rounds to it (halfway doesn''t)' }
+    - { id: place-used, name: 'Which place was it rounded to?' }
+- id: estimate
+  name: Quick Reckoning
+  region: thornwall
+  icon: "⚡"
+  summary: "Round first, then add or subtract — and use estimates to catch a slipped digit."
+  requires: [round-small]
+  atoms:
+    - { id: sum, name: 'Estimate a sum by rounding first' }
+    - { id: difference, name: 'Estimate a difference' }
+    - { id: check, name: 'Catch an answer that''s a whole place off' }
+    - { id: compare-est, name: 'Is the total more or less than…? (estimate decides)' }
+- id: pow10-places
+  name: Powers of the Count
+  region: thornwall
+  icon: "🗼"
+  summary: "Every place is a power of ten: ten-thousands = 10⁴, millions = 10⁶."
+  requires: [pv-times-ten]
+  atoms:
+    - { id: place-to-power, name: 'Ten-thousands = $10^4$' }
+    - { id: power-to-place, name: '$10^6$ is the millions place' }
+    - { id: zeros, name: 'Zeros in a million (6) or ten million (7)' }
+    - { id: digit-value, name: 'The 7 in 4,372,519 is $7 \times 10^4$' }
+    - { id: thousand-thousands, name: '$1{,}000 \times 1{,}000 = 10^6$: zeros add up' }
+
+- id: dec-places
+  name: Fine Weights
+  region: vaults
+  icon: "⚖️"
+  summary: "Tenths, hundredths, thousandths: places after the point keep shrinking by ten."
+  requires: [pv-times-ten]
+  atoms:
+    - { id: tenths, name: 'The tenths place' }
+    - { id: hundredths, name: 'The hundredths place' }
+    - { id: thousandths, name: 'The thousandths place' }
+    - { id: ths-vs-s, name: 'Tens vs tenths, hundreds vs hundredths' }
+    - { id: value, name: 'What a decimal digit is worth (the 7 in 3.472 is 0.07)' }
+    - { id: fraction, name: 'Decimal places as fractions: $0.07 = \frac{7}{100}$' }
+- id: dec-write
+  name: Weigh-Master's Ledger
+  region: vaults
+  icon: "📜"
+  summary: "Five hundredths is 0.05, not 0.5. Twenty-seven thousandths is 0.027."
+  requires: [dec-places]
+  atoms:
+    - { id: tenths, name: 'Three and four tenths → 3.4' }
+    - { id: hundredths-zero, name: 'Five hundredths → 0.05 (not 0.5)' }
+    - { id: thousandths, name: 'Twenty-seven thousandths → 0.027' }
+    - { id: fraction, name: '$\frac{43}{1000}$ → 0.043' }
+    - { id: mixed, name: '$4 + 0.3 + 0.007$ → 4.307' }
+- id: dec-compare
+  name: Heavier Vial
+  region: vaults
+  icon: "🧪"
+  summary: "Longer isn't bigger: 0.5 > 0.45. Trailing zeros change nothing: 0.3 = 0.30."
+  requires: [dec-places]
+  atoms:
+    - { id: longer-trap, name: '0.5 > 0.45: more digits isn''t bigger' }
+    - { id: trailing, name: '0.3 = 0.30: zeros at the end change nothing' }
+    - { id: whole-first, name: 'Compare the whole part first' }
+    - { id: deep, name: 'Same tenths: the hundredths decide' }
+    - { id: order, name: 'Put decimals in order' }
+- id: dec-shift
+  name: Alchemist's Scale
+  region: vaults
+  icon: "🔬"
+  summary: "×10 slides digits left past the point: 2.5 × 10 = 25 (not 2.50)."
+  requires: [dec-places, pv-times-ten]
+  atoms:
+    - { id: x10, name: '$\times 10$ with decimals' }
+    - { id: x100, name: '$\times 100$ with decimals' }
+    - { id: x1000, name: '$\times 1{,}000$ with decimals' }
+    - { id: div10, name: '$\div 10$ into tenths' }
+    - { id: div100, name: '$\div 100$ into hundredths' }
+    - { id: div1000, name: '$\div 1{,}000$ into thousandths' }
+    - { id: zero-trap, name: '"Just add a zero" fails: $2.5 \times 10 \ne 2.50$' }
+- id: dec-round
+  name: Fair Weight
+  region: vaults
+  icon: "🪙"
+  summary: "Round decimals to a whole, a tenth or a hundredth. 2.96 → 3.0; 2.45 → 2.5."
+  requires: [dec-compare, round-small]
+  atoms:
+    - { id: whole, name: 'Round to the nearest whole number' }
+    - { id: tenth, name: 'Round to the nearest tenth' }
+    - { id: hundredth, name: 'Round to the nearest hundredth' }
+    - { id: half, name: 'Exactly halfway rounds up (2.45 → 2.5)' }
+    - { id: nines, name: 'The ripple: 2.96 → 3.0' }

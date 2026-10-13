@@ -2,6 +2,9 @@ id: bay
 order: 8
 name: Beamhook Bay
 tagline: A pirate lighthouse with a laser, a parrot who can't aim, and a kraken with fog ships.
+campaign: kingdom
+topic: 'Coordinates, rule tables and straight-line graphs $y = mx + b$'
+added: '2026-10-11'
 scene: bay
 map: { x: 12, y: 58 }
 requires: [bramblebottom]

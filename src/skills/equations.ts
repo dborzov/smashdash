@@ -63,6 +63,7 @@ export const oneStepAdd: Generator = (rng, level) => {
         ]);
       return {
         skill: 'one-step-add',
+        atoms: ['xma'],
         prompt: `Solve for $x$:`,
         math: eq,
         ...numeric(x, nudges),
@@ -73,6 +74,7 @@ export const oneStepAdd: Generator = (rng, level) => {
   }
   return {
     skill: 'one-step-add',
+    atoms: [form],
     prompt: `Solve for $x$:`,
     math: eq,
     ...numeric(v, nudges),
@@ -92,6 +94,7 @@ export const oneStepMul: Generator = (rng, level) => {
     const b = v;
     return {
       skill: 'one-step-mul',
+      atoms: ['xda'],
       prompt: `Solve for $x$:`,
       math: r`\frac{x}{${a}} = ${b}`,
       ...numeric(a * b, [
@@ -111,6 +114,7 @@ export const oneStepMul: Generator = (rng, level) => {
   const eq = form === 'flip' ? `${b} = ${a}x` : `${a}x = ${b}`;
   return {
     skill: 'one-step-mul',
+    atoms: [form],
     prompt: `Solve for $x$:`,
     math: eq,
     ...numeric(v, [
@@ -153,6 +157,7 @@ export const checkSolution: Generator = (rng, level) => {
     );
     return {
       skill: 'check-solution',
+      atoms: ['which'],
       prompt: `Which value of $x$ makes $${e.tex}$ true? (Test them!)`,
       ...c,
       explain: `Plug in $x = ${e.v}$: $${e.a === 1 ? '' : `${e.a} \\times `}${e.v} ${e.b < 0 ? '-' : '+'} ${Math.abs(e.b)} = ${e.c}$ ✓`,
@@ -164,6 +169,7 @@ export const checkSolution: Generator = (rng, level) => {
   if (level >= 2 && rng.chance(0.4)) {
     return {
       skill: 'check-solution',
+      atoms: ['plug'],
       prompt: `Plug $x = ${k}$ into the left side of $${e.tex}$. What number do you get?`,
       ...numeric(lhs, [[e.a * (k + e.b), `Multiply first, then add or subtract.`]]),
       explain: `$${subst}$`,
@@ -172,6 +178,7 @@ export const checkSolution: Generator = (rng, level) => {
   const ok = k === e.v;
   return {
     skill: 'check-solution',
+    atoms: ['truth'],
     prompt: `A goblin claims $x = ${k}$ solves $${e.tex}$. Truth or trap?`,
     ...choice(rng, ok ? `Truth! Both sides match.` : `Trap! The sides don't match.`, [
       ok ? `Trap! The sides don't match.` : `Truth! Both sides match.`,
@@ -277,6 +284,7 @@ export const undoOrder: Generator = (rng, level) => {
   }
   return {
     skill: 'undo-order',
+    atoms: [form],
     prompt: `To solve this, what's the **first** move?`,
     math: eq,
     ...choice(rng, right, wrong),
@@ -306,6 +314,7 @@ export const twoStep: Generator = (rng, level) => {
       const eq = form === 'flip' ? `${c} = ${a}x + ${b}` : `${a}x + ${b} = ${c}`;
       return {
         skill: 'two-step',
+        atoms: [form],
         prompt:
           form === 'flip'
             ? `Solve for $x$ (the box is on the right — that's fine!):`
@@ -335,6 +344,7 @@ export const twoStep: Generator = (rng, level) => {
       const c = a * vv - b;
       return {
         skill: 'two-step',
+        atoms: ['axmb'],
         prompt: `Solve for $x$:`,
         math: `${a}x - ${b} = ${c}`,
         ...numeric(vv, [
@@ -354,6 +364,7 @@ export const twoStep: Generator = (rng, level) => {
       const c = v + b;
       return {
         skill: 'two-step',
+        atoms: ['xdapb'],
         prompt: `Solve for $x$:`,
         math: r`\frac{x}{${a}} + ${b} = ${c}`,
         ...numeric(x, [
@@ -372,6 +383,7 @@ export const twoStep: Generator = (rng, level) => {
       const c = a * (v + b);
       return {
         skill: 'two-step',
+        atoms: ['paren'],
         prompt: `Solve for $x$:`,
         math: `${a}(x + ${b}) = ${c}`,
         ...numeric(v, [

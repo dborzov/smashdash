@@ -80,6 +80,75 @@ export const Widget = z.discriminatedUnion('kind', [
     squeeze: z.number().int().min(1).max(4),
     target: z.number().positive().optional(),
   }),
+  /**
+   * Place-value chart (periods: millions, thousands, ones; decimals after the point).
+   * `hl` highlights a place (power of ten). With `tap`, the player taps columns to see what
+   * each digit is worth; the beat finishes after `tap` columns (or the highlighted one).
+   */
+  z.object({
+    kind: z.literal('placechart'),
+    value: z.number().min(0).optional(),
+    dec: z.number().int().min(0).max(3).optional(),
+    top: z.number().int().min(0).max(9).optional(),
+    hl: z.number().int().min(-3).max(9).optional(),
+    hide: z.boolean().optional(),
+    tap: z.number().int().min(1).max(10).optional(),
+  }),
+  /**
+   * The Reckoning Board: a counting table with one column of tokens per place. + and − per
+   * column; ten tokens in a column can be traded for one token in the next column left.
+   * With `target`, the beat finishes when the board shows exactly that number.
+   */
+  z.object({
+    kind: z.literal('abacus'),
+    places: z.number().int().min(2).max(7),
+    start: z.number().int().min(0).optional(),
+    target: z.number().int().min(0).optional(),
+    /** Trading mode: the target must be reached by trading, not by adding tokens. */
+    trade: z.boolean().optional(),
+  }),
+  /** A number line. With `target`, the player taps to place it (within `tolerance`). */
+  z.object({
+    kind: z.literal('numberline'),
+    min: z.number(),
+    max: z.number(),
+    step: z.number().positive(),
+    minor: z.number().positive().optional(),
+    labels: z.enum(['ends', 'all']).optional(),
+    arrow: z.number().optional(),
+    marks: z.array(z.object({ at: z.number(), label: z.string() })).optional(),
+    mid: z.boolean().optional(),
+    target: z.number().optional(),
+    tolerance: z.number().min(0).optional(),
+  }),
+  /**
+   * Log-scale line: every power of ten is one equal step (ones, tens, hundreds, …). Drag the
+   * marker; with `target`, place the number in the right stretch (between the right powers).
+   */
+  z.object({
+    kind: z.literal('logline'),
+    min: z.number().int().min(-3).max(0),
+    max: z.number().int().min(1).max(12),
+    target: z.number().positive().optional(),
+    /** Show a normal (linear) line underneath for comparison. */
+    linear: z.boolean().optional(),
+  }),
+  /** Rounding on a zoomed number line: pick the nearer round number. */
+  z.object({
+    kind: z.literal('rounder'),
+    value: z.number(),
+    /** Round to this place, as a power of ten (3 = nearest thousand, -1 = nearest tenth). */
+    place: z.number().int().min(-2).max(7),
+  }),
+  /** ×10 / ÷10 as digits sliding between fixed place columns (the point stays put). */
+  z.object({
+    kind: z.literal('shifter'),
+    value: z.number().min(0),
+    /** Number of ×10 steps (negative = ÷10 steps). */
+    times: z.number().int().min(-4).max(4),
+  }),
+  /** A grid of hundredths (or thousandths strip) with `value` shaded. */
+  z.object({ kind: z.literal('decgrid'), value: z.number().min(0).max(1) }),
 ]);
 export type Widget = z.infer<typeof Widget>;
 
@@ -98,6 +167,8 @@ export const Beat = z.discriminatedUnion('type', [
     explain: Rich,
     /** Nudges for specific wrong options, keyed by option index. */
     nudges: z.record(z.string(), Rich).optional(),
+    /** The atom (of the lesson's skill) this check is about. */
+    atom: z.string().optional(),
   }),
   z.object({
     type: z.literal('input'),
@@ -109,6 +180,21 @@ export const Beat = z.discriminatedUnion('type', [
     explain: Rich,
     hint: Rich.optional(),
     nudges: z.array(z.object({ value: z.number(), text: Rich })).optional(),
+    atom: z.string().optional(),
+    /** Enter the answer on place-value dials instead of the keypad. */
+    dials: z.object({ int: z.number().int().min(1).max(10), dec: z.number().int().min(0).max(3).optional() }).optional(),
+  }),
+  /** Put things in order (tap them one by one). `correct` lists item indices in order. */
+  z.object({
+    type: z.literal('order'),
+    who: z.string().optional(),
+    text: Rich,
+    items: z.array(Rich).min(2).max(6),
+    correct: z.array(z.number().int().min(0)),
+    direction: z.string(),
+    explain: Rich,
+    traps: z.array(z.object({ order: z.array(z.number().int()), text: Rich })).optional(),
+    atom: z.string().optional(),
   }),
   /** Choose-your-own-adventure flavour: every option is fine, each gets its own reply. */
   z.object({
@@ -141,11 +227,11 @@ export const Monster = z.object({
   hue: z.number().min(0).max(360).optional(),
   taunts: z.array(z.string()).optional(),
   /** Special hand-drawn art instead of the procedural monster. */
-  art: z.enum(['muddler']).optional(),
+  art: z.enum(['muddler', 'hollow', 'wraith', 'tallyman', 'forger', 'golem', 'rider']).optional(),
 });
 export type Monster = z.infer<typeof Monster>;
 
-export const Game = z.enum(['battle', 'chest', 'bridge']);
+export const Game = z.enum(['battle', 'chest', 'bridge', 'siege', 'vault']);
 export type Game = z.infer<typeof Game>;
 
 const NodeBase = { id: z.string(), title: z.string() };
@@ -176,6 +262,12 @@ export const Region = z.object({
   order: z.number().int(),
   name: z.string(),
   tagline: z.string(),
+  /** Campaign (story arc) the region belongs to: an id in content/campaigns.yaml. */
+  campaign: z.string().default('kingdom'),
+  /** What the region teaches, in plain words, for the adventure board. */
+  topic: z.string(),
+  /** When the region was added to the game (YYYY-MM-DD), for "NEW" markers. */
+  added: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   /** Key of the scene painter in src/art/scenes. */
   scene: z.string(),
   /** Position on the world map, in percent. */
@@ -189,12 +281,23 @@ export const Region = z.object({
 });
 export type Region = z.infer<typeof Region>;
 
+export const Atom = z.object({
+  id: z.string().regex(/^[a-z0-9-]+$/),
+  /** Rich text: what this one tiny idea is, e.g. "$10^2 = 100$". */
+  name: z.string(),
+});
+export type Atom = z.infer<typeof Atom>;
+
 export const Skill = z.object({
   id: z.string(),
   name: z.string(),
   region: z.string(),
   summary: z.string(),
   icon: z.string(),
+  /** Skills that must be understood first (edges of the skill graph). */
+  requires: z.array(z.string()).default([]),
+  /** Atomic sub-skills. Every generated problem is tagged with one or more of these. */
+  atoms: z.array(Atom).min(2),
 });
 export type Skill = z.infer<typeof Skill>;
 
@@ -209,12 +312,21 @@ export const ItemEffect = z.object({
   shield: z.boolean().optional(),
   egg: z.boolean().optional(),
   sound: z.string().optional(),
+  /** Battle: blocks the next lost heart. */
+  ward: z.boolean().optional(),
+  /** Battle: rules out two wrong options in a multiple-choice question. */
+  lens: z.boolean().optional(),
+  /** A timed boost: double XP or double gold from the next victory. */
+  boost: z.enum(['xp2', 'lucky']).optional(),
+  minutes: z.number().optional(),
+  /** Pet: bond points. */
+  bond: z.number().optional(),
 });
 
 export const Item = z.object({
   id: z.string(),
   name: z.string(),
-  kind: z.enum(['food', 'toy', 'care', 'potion', 'hat', 'cape', 'special']),
+  kind: z.enum(['food', 'toy', 'care', 'potion', 'hat', 'cape', 'special', 'decor']),
   icon: z.string(),
   price: z.number().int().min(0),
   desc: z.string(),
@@ -244,12 +356,51 @@ export type PetSpecies = z.infer<typeof PetSpecies>;
 
 export const CastMember = z.object({
   name: z.string(),
-  art: z.enum(['grimble', 'hero', 'muddler', 'monster', 'npc']),
+  art: z.enum(['grimble', 'hero', 'muddler', 'monster', 'npc', 'dark', 'foe']),
   color: z.string(),
   seed: z.number().int().optional(),
   hue: z.number().optional(),
+  /** For art: foe — which dark foe to draw. */
+  foe: z.enum(['hollow', 'wraith', 'tallyman', 'forger', 'golem', 'rider']).optional(),
 });
 export type CastMember = z.infer<typeof CastMember>;
+
+export const Campaign = z.object({
+  id: z.string(),
+  name: z.string(),
+  tagline: z.string(),
+  order: z.number().int(),
+  /** Visual mood of the campaign's map and cards. */
+  mood: z.enum(['bright', 'dark']),
+  icon: z.string(),
+});
+export type Campaign = z.infer<typeof Campaign>;
+
+export const Achievement = z.object({
+  id: z.string(),
+  name: z.string(),
+  icon: z.string(),
+  desc: z.string(),
+  /** A counter in Profile.counters, or a derived stat (see src/engine/achievements.ts). */
+  stat: z.string(),
+  goal: z.number().int().min(1),
+  gold: z.number().int().min(0).default(0),
+  item: z.string().optional(),
+  /** Unlocks a title the hero can wear. */
+  title: z.string().optional(),
+  /** Hidden until unlocked. */
+  secret: z.boolean().optional(),
+});
+export type Achievement = z.infer<typeof Achievement>;
+
+export const News = z.object({
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  title: z.string(),
+  text: z.string(),
+  region: z.string().optional(),
+  icon: z.string(),
+});
+export type News = z.infer<typeof News>;
 
 export const Classes = z.record(
   z.string(),

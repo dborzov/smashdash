@@ -7,6 +7,7 @@ import { levelFromXp } from './profile';
 import { addDailyXp } from './daily';
 import { petXpBonus } from './pet';
 import { itemById } from '../content';
+import { track } from './events';
 
 export type Fx =
   | { kind: 'xp'; amount: number }
@@ -14,7 +15,10 @@ export type Fx =
   | { kind: 'item'; item: string; count: number }
   | { kind: 'level'; level: number }
   | { kind: 'goal'; streak: number }
-  | { kind: 'egg' };
+  | { kind: 'egg' }
+  | { kind: 'ach'; id: string }
+  | { kind: 'quest'; id: string }
+  | { kind: 'tier'; skill: string; to: number };
 
 export interface Reward {
   xp?: number;
@@ -23,8 +27,13 @@ export interface Reward {
   egg?: boolean;
 }
 
-export function xpMultiplier(p: Profile): number {
-  return 1 + (p.hero.cls === 'bard' ? 0.15 : 0) + petXpBonus(p);
+/** Is a timed double-XP boost running? */
+export function xpBoostOn(p: Profile, now = Date.now()): boolean {
+  return (p.boosts?.xp2Until ?? 0) > now;
+}
+
+export function xpMultiplier(p: Profile, now = Date.now()): number {
+  return 1 + (p.hero.cls === 'bard' ? 0.15 : 0) + petXpBonus(p) + (xpBoostOn(p, now) ? 1 : 0);
 }
 
 export function goldMultiplier(p: Profile): number {
@@ -41,11 +50,13 @@ export function grant(p: Profile, r: Reward): Fx[] {
     const after = levelFromXp(p.hero.xp);
     if (after > before) fx.push({ kind: 'level', level: after });
     if (addDailyXp(p, xp)) fx.push({ kind: 'goal', streak: p.daily.streak });
+    fx.push(...track(p, 'xp', xp));
   }
   if (r.gold) {
     const gold = Math.round(r.gold * goldMultiplier(p));
     p.hero.gold += gold;
     fx.push({ kind: 'gold', amount: gold });
+    fx.push(...track(p, 'goldEarned', gold));
   }
   for (const [item, count] of Object.entries(r.items ?? {})) {
     const max = itemById[item]?.max ?? 99;
@@ -68,4 +79,8 @@ export const XP = {
   winBonus: 15,
   bossWin: 120,
   bossReplay: 40,
+  /** Putting a mistake right in the same run. */
+  grit: 4,
+  /** A skill moving up a tier. */
+  promote: 15,
 };

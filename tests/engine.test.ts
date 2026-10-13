@@ -11,7 +11,13 @@ import { HOUR, DAY, addDays } from '../src/engine/dates';
 import { Rng } from '../src/engine/rng';
 import type { Problem } from '../src/skills/types';
 
-const hero = () => newProfile({ name: 'Test', cls: 'wizard', look: { skin: 0, hair: 0, hairStyle: 0, outfit: 0 }, goal: 100 });
+const hero = () =>
+  newProfile({
+    name: 'Test',
+    cls: 'wizard',
+    look: { skin: 0, hair: 0, hairStyle: 0, outfit: 0 },
+    goal: 100,
+  });
 
 describe('levels', () => {
   it('xp curve is increasing and consistent', () => {
@@ -94,7 +100,14 @@ describe('pet', () => {
 });
 
 describe('answers', () => {
-  const num: Problem = { skill: 't', prompt: 'p', answer: { kind: 'number', value: 12 }, nudges: [{ match: 34, text: 'glued' }], explain: 'e' };
+  const num: Problem = {
+    skill: 't',
+    atoms: [],
+    prompt: 'p',
+    answer: { kind: 'number', value: 12 },
+    nudges: [{ match: 34, text: 'glued' }],
+    explain: 'e',
+  };
   it('parses keypad input', () => {
     expect(parseNumber('-3')).toBe(-3);
     expect(parseNumber('.5')).toBe(0.5);
