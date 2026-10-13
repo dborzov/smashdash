@@ -1,0 +1,53 @@
+id: fair-weight
+title: A Fair Weight
+skill: dec-round
+beats:
+  - type: say
+    who: warden
+    text: THE PHYLACTERY LOCK TAKES WEIGHTS TO THE NEAREST TENTH. ROUND.
+  - type: say
+    who: hobb
+    text: Same rule as on the wall. Find the place. Look at the very next digit. 5 or more, round up.
+  - type: play
+    who: hobb
+    text: Is 2.46 nearer 2.4 or 2.5?
+    widget: { kind: rounder, value: 2.46, place: -1 }
+    done: "The digit after the tenths is 6: round up to 2.5."
+  - type: input
+    who: warden
+    text: ROUND **3.62** TO THE NEAREST WHOLE GRAM.
+    answer: 4
+    atom: whole
+    nudges:
+      - { value: 3, text: "The digit after the ones is 6 — round up." }
+      - { value: 3.6, text: "That's the nearest tenth. We want a whole number." }
+    explain: "Ones digit 3, next digit 6 → up: **4**."
+  - type: input
+    who: warden
+    text: ROUND **7.248** TO THE NEAREST HUNDREDTH.
+    answer: 7.25
+    atom: hundredth
+    nudges:
+      - { value: 7.24, text: "The digit after the hundredths is 8 — round up." }
+      - { value: 7.2, text: "That's the nearest tenth. Hundredths: keep two places." }
+    explain: "Hundredths digit 4, next digit 8 → up: **7.25**."
+  - type: input
+    who: wren
+    text: Round **2.96** to the nearest tenth.
+    answer: 3
+    atom: nines
+    nudges:
+      - { value: 2, text: "9 tenths + 1 = 10 tenths = one whole. Carry it into the ones: 3.0." }
+      - { value: 2.9, text: "The next digit is 6 — round up." }
+    explain: "9 tenths rounds up to 10 tenths = 1 whole: **3.0**."
+  - type: input
+    who: hobb
+    text: Round **5.45** to the nearest tenth.
+    answer: 5.5
+    atom: half
+    nudges:
+      - { value: 5.4, text: "Exactly halfway rounds up — same rule as on the wall." }
+    explain: "Next digit 5 → up: **5.5**."
+  - type: practice
+    skill: dec-round
+    count: 4

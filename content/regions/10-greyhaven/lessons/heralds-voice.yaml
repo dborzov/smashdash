@@ -1,0 +1,76 @@
+id: heralds-voice
+title: The Herald's Voice
+skill: pv-read
+beats:
+  - type: narrate
+    text: >-
+      Every evening the counts are read out from the steps of the burned hall, so the whole town
+      knows how things stand. The herald fled. Tonight, the herald is you.
+  - type: say
+    who: hobb
+    text: >-
+      Commas are your friend. Count three digits from the right — comma — three more — comma.
+      Then read each group like a little number, and say its family name.
+  - type: show
+    who: hobb
+    text: "four **million**, three hundred seventy-two **thousand**, five hundred nineteen"
+    math: '4{,}372{,}519'
+  - type: ask
+    who: wren
+    text: I scratched **6045210** on the wall in a hurry. Where do the commas go?
+    options:
+      - '$6{,}045{,}210$'
+      - '$604{,}521{,}0$'
+      - '$60{,}452{,}10$'
+    correct: 0
+    atom: commas
+    nudges:
+      "1": "Commas count off threes from the **right** — from the ones end."
+    explain: "From the right: 210, then 045, then 6. So **6,045,210**."
+  - type: input
+    who: hobb
+    text: >-
+      The herald reads 6,045,210 as *"six million, ___ thousand, two hundred ten."* What number
+      goes in the gap?
+    answer: 45
+    atom: period-name
+    nudges:
+      - { value: 4, text: "That's one digit. Read the whole thousands period — the three digits between the commas: 045." }
+      - { value: 6045, text: "The millions are read on their own. Just the three digits between the commas." }
+    explain: "Between the commas: **045**, read as forty-five thousand."
+  - type: say
+    who: wren
+    text: >-
+      When a whole period is zeros, you just skip it out loud. 7,000,312 is "seven million, three
+      hundred twelve". No thousands to say — but on paper the zeros stay.
+  - type: ask
+    who: wren
+    text: How is **7,000,312** read?
+    options:
+      - seven million, three hundred twelve
+      - seven thousand, three hundred twelve
+      - seven million, three hundred twelve thousand
+      - seventy million, three hundred twelve
+    correct: 0
+    atom: zeros-words
+    nudges:
+      "1": "Count the commas: two of them. That 7 is in the **millions**."
+      "2": "The thousands period here is 000 — there are no thousands to read."
+    explain: "7 | 000 | 312 — seven million, (no thousands), three hundred twelve."
+  - type: ask
+    who: voss
+    text: Read me **2,408,090**. Carefully.
+    options:
+      - two million, four hundred eight thousand, ninety
+      - two million, four hundred eighty thousand, ninety
+      - two million, forty-eight thousand, nine hundred
+      - two hundred forty thousand, eight hundred ninety
+    correct: 0
+    atom: zeros-words
+    nudges:
+      "1": "The thousands period is 408 — four hundred **eight**, not eighty."
+      "3": "Count the digits: seven. That's millions."
+    explain: "2 | 408 | 090 — two million, four hundred eight thousand, ninety."
+  - type: practice
+    skill: pv-read
+    count: 4

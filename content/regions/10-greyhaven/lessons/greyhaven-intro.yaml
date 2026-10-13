@@ -1,0 +1,69 @@
+id: greyhaven-intro
+title: The Burned Ledger
+beats:
+  - type: narrate
+    text: >-
+      The letter arrives by a rider who doesn't get off his horse. Black wax, a stamped wolf, four
+      words in a hard, straight hand: *Greyhaven needs a Reckoner.* Signed: E. Voss, Marshal of the
+      March.
+  - type: narrate
+    text: >-
+      Three days north, the snow turns grey. Greyhaven is a stone town on a frozen river, and in
+      the middle of it, a building is still smoking.
+  - type: say
+    who: voss
+    text: >-
+      You're the one who unboxed the kingdom's numbers? Good. Ours aren't in boxes. They're in
+      ashes.
+  - type: say
+    who: voss
+    text: >-
+      Last night something burned the Ledger Hall. Every muster roll, every grain count, every
+      scouting report. And the clerks who could read them are gone with it.
+  - type: say
+    who: hobb
+    text: >-
+      Hobb Tallow, quartermaster. Forty years counting sacks. I can count to a thousand in my
+      sleep. Past that, I need the paper. And the paper is soot.
+  - type: say
+    who: wren
+    text: >-
+      I'm Wren. I count things from rooftops so the Marshal doesn't have to guess. Right now
+      there's something coming down from the March that I really, *really* need someone to count.
+  - type: choose
+    who: voss
+    text: Questions? Ask them now. Later there won't be time.
+    options:
+      - text: What's coming?
+        who: wren
+        reply: >-
+          The Hollow Host. Empty armour that walks. No faces, no hunger, no sleep. Just a
+          command: march. Last count I made was in the millions. Then my count burned.
+      - text: Who burned the Hall?
+        who: anselm
+        reply: >-
+          The Tallyman's people. They always burn the ledgers first. A town that can't count its
+          soldiers can't plan a defence. It just… panics. I'm Brother Anselm. That was my archive.
+  - type: say
+    who: anselm
+    text: >-
+      I saved a few pages. And the old way of reading numbers — place by place, starting from the
+      right. The clerks learned it as children. You'll learn it in a week.
+  - type: say
+    who: voss
+    text: >-
+      By the end of the week I want a Reckoner who can read, write and weigh a count of a million
+      without a slip. Out here, a slipped digit isn't a mark on a test. It's a gate left unguarded.
+  - type: ask
+    who: voss
+    text: >-
+      A scout reports **3,000** riders. A tired clerk copies it as **300**. Why does that matter?
+    options:
+      - "The Marshal would send ten times too few soldiers"
+      - "It doesn't — the digits are the same"
+      - "The Marshal would send ten times too many soldiers"
+    correct: 0
+    nudges:
+      "1": "Same digits, but 300 is a tenth of 3,000. One missing zero, one tenth of the army."
+      "2": "300 is smaller than 3,000, so the Marshal would think there are fewer riders."
+    explain: "3,000 is ten times 300. Lose one zero and you plan for a tenth of the danger."

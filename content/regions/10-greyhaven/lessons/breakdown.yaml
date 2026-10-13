@@ -1,0 +1,68 @@
+id: breakdown
+title: Breaking Down the Muster
+skill: pv-expanded
+beats:
+  - type: narrate
+    text: >-
+      Hobb's muster board hangs in the stables: chalk columns, one for each company, each count
+      broken into pieces.
+  - type: say
+    who: hobb
+    text: >-
+      A breakdown is how quartermasters think. 4,072,000 isn't a scary number. It's 4 millions,
+      7 ten-thousands and 2 thousands. Pieces you can carry.
+  - type: show
+    who: hobb
+    math: '4{,}072{,}000 = 4{,}000{,}000 + 70{,}000 + 2{,}000'
+  - type: ask
+    who: hobb
+    text: Which breakdown matches **305,060**?
+    options:
+      - '$300{,}000 + 5{,}000 + 60$'
+      - '$300{,}000 + 50{,}000 + 600$'
+      - '$30{,}000 + 500 + 6$'
+      - '$300{,}000 + 5{,}000 + 6$'
+    correct: 0
+    atom: from-standard
+    nudges:
+      "1": "Each part there is ten times too big. The 5 is in the thousands place, not the ten-thousands."
+      "3": "The 6 isn't in the ones — it's in the tens. It's worth 60."
+    explain: "3 hundred-thousands, 0 ten-thousands, 5 thousands, 0 hundreds, 6 tens, 0 ones."
+  - type: input
+    who: voss
+    text: Put it back together.
+    math: '6{,}000{,}000 + 20{,}000 + 900 + 4'
+    answer: 6020904
+    atom: gaps
+    nudges:
+      - { value: 6294, text: "Line the parts up in columns. Empty places get zeros." }
+      - { value: 620904, text: "One place short — 6,000,000 has seven digits." }
+    explain: "6,000,000 + 20,000 + 900 + 4 = **6,020,904**."
+  - type: input
+    who: hobb
+    text: "What's missing?"
+    math: '5{,}340{,}700 = 5{,}000{,}000 + 300{,}000 + \box + 700'
+    answer: 40000
+    atom: missing-term
+    nudges:
+      - { value: 4, text: "Not just the digit — what is the 4 worth? It's in the ten-thousands place." }
+      - { value: 400000, text: "One place off: the 4 is in the ten-thousands." }
+    explain: "The 4 is in the ten-thousands place: **40,000**."
+  - type: say
+    who: wren
+    text: >-
+      The Tallyman's forgers love a breakdown written out of order. 7 + 30,000 + 400 — read it
+      fast and you'll write 7,304. Sort the pieces by size first.
+  - type: input
+    who: wren
+    text: What's the total?
+    math: '7 + 30{,}000 + 400'
+    answer: 30407
+    atom: shuffled
+    nudges:
+      - { value: 7304, text: "You wrote the pieces in the order they came. Put each one in its own column." }
+      - { value: 734, text: "Each piece keeps its own place: 30,000 is in the ten-thousands." }
+    explain: "30,000 + 400 + 7 = **30,407**."
+  - type: practice
+    skill: pv-expanded
+    count: 4

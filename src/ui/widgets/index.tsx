@@ -8,6 +8,15 @@ import { UnwrapWidget } from './Unwrap';
 import { AreaWidget, GroupsWidget } from './Groups';
 import { PlotWidget } from './Plot';
 import { CircuitWidget, PipeWidget } from './Circuit';
+import {
+  Abacus,
+  DecGrid,
+  LogLine,
+  NumberLineWidget,
+  PlaceChart,
+  Rounder,
+  Shifter,
+} from './PlaceValue';
 
 export function WidgetView({
   w,
@@ -75,5 +84,51 @@ export function WidgetView({
       return <CircuitWidget {...w} interactive={interactive} quiz={quiz} onDone={onDone} />;
     case 'pipe':
       return <PipeWidget height={w.height} squeeze={w.squeeze} target={w.target} onDone={onDone} />;
+    case 'placechart':
+      return (
+        <PlaceChart
+          value={w.value}
+          dec={w.dec}
+          top={w.top}
+          hl={w.hl}
+          hide={w.hide}
+          tap={interactive && 'tap' in w ? w.tap : undefined}
+          onDone={onDone}
+        />
+      );
+    case 'abacus':
+      return (
+        <Abacus
+          places={w.places}
+          start={w.start}
+          target={interactive ? w.target : undefined}
+          onDone={onDone}
+        />
+      );
+    case 'numberline':
+      return (
+        <NumberLineWidget
+          {...w}
+          target={interactive && 'target' in w ? w.target : undefined}
+          tolerance={'tolerance' in w ? w.tolerance : undefined}
+          onDone={onDone}
+        />
+      );
+    case 'logline':
+      return (
+        <LogLine
+          min={w.min}
+          max={w.max}
+          target={interactive ? w.target : undefined}
+          linear={w.linear}
+          onDone={onDone}
+        />
+      );
+    case 'rounder':
+      return <Rounder value={w.value} place={w.place} onDone={onDone} />;
+    case 'shifter':
+      return <Shifter value={w.value} times={w.times} onDone={onDone} />;
+    case 'decgrid':
+      return <DecGrid value={w.value} />;
   }
 }

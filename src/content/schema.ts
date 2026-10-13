@@ -118,6 +118,8 @@ export const Widget = z.discriminatedUnion('kind', [
     arrow: z.number().optional(),
     marks: z.array(z.object({ at: z.number(), label: z.string() })).optional(),
     mid: z.boolean().optional(),
+    /** Shade the stretch from band[0] to band[1] (e.g. everything that rounds to a value). */
+    band: z.tuple([z.number(), z.number()]).optional(),
     target: z.number().optional(),
     tolerance: z.number().min(0).optional(),
   }),

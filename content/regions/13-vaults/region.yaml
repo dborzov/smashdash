@@ -1,0 +1,73 @@
+id: vaults
+order: 13
+name: The Glass Vaults
+tagline: Under the mountain, the alchemists weighed the realm's gold to the thousandth of a gram.
+campaign: march
+topic: 'Decimals: tenths, hundredths, thousandths; reading, comparing, ×/÷ by 10, 100, 1,000; rounding decimals'
+added: '2026-10-13'
+scene: vault
+map: { x: 86, y: 68 }
+requires: [thornwall]
+palette: { sky: ["#04121a", "#1e5a6e"], accent: "#a8e0ee", ground: "#0e2a33" }
+outro: vaults-outro
+monsters:
+  - { name: Glass Golem, seed: 41, hue: 190, art: golem, taunts: ["*tick* ...weight... incorrect... *tick*", "Point. Seven. Five. Exactly."] }
+  - { name: Vault Wraith, seed: 42, hue: 180, art: wraith, taunts: ["A hair's weight off, and the door stays shut."] }
+  - { name: Quicksilver Golem, seed: 43, hue: 210, art: golem, taunts: ["*clink* ...heavier... lighter... *clink*"] }
+path:
+  - id: intro
+    type: story
+    title: Under the Mountain
+    lesson: vaults-intro
+  - id: smaller-than-one
+    type: lesson
+    title: Smaller Than One
+    lesson: smaller-than-one
+  - id: weigh-words
+    type: lesson
+    title: The Weigh-Master's Words
+    lesson: weigh-words
+  - id: first-door
+    type: encounter
+    title: The First Door
+    game: vault
+    skills: [dec-places, dec-write]
+    count: 6
+  - id: longer-isnt-heavier
+    type: lesson
+    title: Longer Isn't Heavier
+    lesson: longer-isnt-heavier
+  - id: sliding-scale
+    type: lesson
+    title: The Sliding Scale
+    lesson: sliding-scale
+  - id: glass-golems
+    type: encounter
+    title: Glass Golems
+    game: battle
+    skills: [dec-compare, dec-shift]
+    count: 6
+    monster: { name: Glass Golem, seed: 41, hue: 190, art: golem, taunts: ["*tick* ...weight... incorrect... *tick*", "Point. Seven. Five. Exactly."] }
+  - id: fair-weight
+    type: lesson
+    title: A Fair Weight
+    lesson: fair-weight
+  - id: phylactery-lock
+    type: encounter
+    title: The Phylactery Lock
+    game: vault
+    skills: [dec-round, dec-compare, dec-shift]
+    count: 7
+  - id: boss
+    type: boss
+    title: The Tallyman
+    monster: { name: The Tallyman, seed: 1, hue: 190, art: tallyman }
+    intro:
+      - "*In the deepest vault, a skeleton in a reckoner's robes sits at a desk of black glass, writing in a ledger that never ends. He does not look up.*"
+      - "Aldous Crane. Royal Reckoner. That was my name, until the King struck it from his books to save a coin on my pension. A thing not counted does not exist, child. So I stopped existing. And then I started... subtracting."
+      - "Your realm lives on numbers it no longer knows how to read. I will take every one of them. Unless, of course, you can out-count me."
+    phases:
+      - { skills: [pv-value, pv-write, round-big], count: 3, taunt: "The old counts first. Millions. Do you still remember how?" }
+      - { skills: [dec-places, dec-compare], count: 3, taunt: "Smaller now. Tenths. Hundredths. The places where cheats hide their thumbs." }
+      - { skills: [dec-shift, dec-round], count: 3, taunt: "Slide the point. Round the weight. One slip and the ledger is MINE." }
+    defeat: "*The Tallyman's pen stops. He looks at the last page, where your name is written in a clean, correct hand.* 'Counted,' he whispers. 'I was counted.' *The bones settle, the blue light goes out, and the ledger closes by itself.*"

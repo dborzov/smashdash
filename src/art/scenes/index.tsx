@@ -8,6 +8,7 @@
 import type { ComponentType } from 'preact';
 import { hills, ridge, snowCap } from '../paint';
 import { Particles, type ParticleKind } from '../../ui/components/Particles';
+import { AshRoad, Muster, Siege, Vault } from './dark';
 
 const VB = '0 0 1200 800';
 
@@ -1294,6 +1295,10 @@ export const SCENES: Record<
   caves: { Art: Caves, particles: 'spark', count: 22 },
   bay: { Art: Bay, particles: 'star', count: 16 },
   junkyard: { Art: Junkyard, particles: 'ember', count: 30 },
+  muster: { Art: Muster, particles: 'snow', count: 40 },
+  ashroad: { Art: AshRoad, particles: 'ash', count: 40 },
+  siege: { Art: Siege, particles: 'ember', count: 34 },
+  vault: { Art: Vault, particles: 'mote', count: 30 },
 };
 
 export function Scene({ id, dim = 0 }: { id: string; dim?: number }) {

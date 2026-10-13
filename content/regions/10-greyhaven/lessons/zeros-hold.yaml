@@ -1,0 +1,61 @@
+id: zeros-hold
+title: Zeros Hold the Line
+skill: pv-write
+beats:
+  - type: say
+    who: voss
+    text: >-
+      Last night Wren shouted a count from the wall: "Two million, forty thousand and six!" The new
+      clerk wrote **2,406**. I very nearly sent a patrol of twelve.
+  - type: say
+    who: anselm
+    text: >-
+      Spoken numbers skip the empty places. Written numbers can't. Every period after the first
+      needs **exactly three digits**, even when some of them are zeros.
+  - type: show
+    who: anselm
+    text: "two million → **2**, forty thousand → **040**, six → **006**"
+    math: '2{,}\hl{0}40{,}\hl{00}6'
+  - type: play
+    who: hobb
+    text: >-
+      Put Wren's count on the Reckoning Board: **two million, forty thousand, six**. Tap + to add
+      tokens to a column.
+    widget: { kind: abacus, places: 7, target: 2040006 }
+    done: "See the empty columns? On paper, every empty column is a 0. That's what zeros are for."
+  - type: input
+    who: hobb
+    text: Set the ledger wheels to **"five million, three thousand, seventy"**.
+    answer: 5003070
+    atom: empty-period
+    dials: { int: 7 }
+    nudges:
+      - { value: 5370, text: "The zeros went missing. Every period after the millions needs three digits: 003 and 070." }
+      - { value: 503070, text: "One zero short — count the digits. A million has seven." }
+    explain: "5 | 003 | 070 → **5,003,070**."
+  - type: input
+    who: hobb
+    text: My tally marks say **4 millions, 6 ten-thousands and 8 tens**. Write the number.
+    answer: 4060080
+    atom: unit-form
+    dials: { int: 7 }
+    nudges:
+      - { value: 468, text: "Those digits need their places. Put each one in its own column, zeros everywhere else." }
+    explain: "4,000,000 + 60,000 + 80 = **4,060,080**."
+  - type: say
+    who: hobb
+    text: >-
+      Old quartermaster's trick: when you write a big number from words, draw the commas first:
+      _,___,___. Then fill each group from its right-hand end.
+  - type: input
+    who: wren
+    text: Write **"eighty thousand, four hundred five"** in digits.
+    answer: 80405
+    atom: zero-inside
+    nudges:
+      - { value: 8045, text: "You lost a zero. The ones period must be three digits: 405 — and the thousands is 80." }
+      - { value: 80000405, text: "You wrote 80,000 and then 405 after it. The 405 goes **inside** — into the zeros." }
+    explain: "80 | 405 → **80,405**."
+  - type: practice
+    skill: pv-write
+    count: 4

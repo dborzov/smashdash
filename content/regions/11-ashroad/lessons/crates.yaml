@@ -1,0 +1,74 @@
+id: crates
+title: The Quartermaster's Crates
+skill: pv-regroup
+beats:
+  - type: say
+    who: hobb
+    text: >-
+      Arrows travel in crates of a thousand. Somebody tell me how many full crates are in
+      **34,500** arrows. And if you say "four", I'm giving you a job shovelling the horses.
+  - type: say
+    who: hobb
+    text: >-
+      Four is the thousands **digit**. But the 3 in front is thousands too — 3 ten-thousands is
+      30 thousands. Cover up the last three digits and read what's left: **34**. That's your crates.
+  - type: show
+    who: hobb
+    text: "Cover the last three digits: 34 full thousands, and 500 left loose."
+    math: '34{,}\muted{500}'
+  - type: input
+    who: hobb
+    text: How many full crates of 1,000 can be packed from **58,240** arrows?
+    answer: 58
+    atom: count-units
+    nudges:
+      - { value: 8, text: "That's the thousands digit. The 5 in front is thousands too — 50 of them." }
+      - { value: 59, text: "Full crates only — 240 arrows don't fill a crate." }
+      - { value: 582, text: "That's how many **hundreds**. Crates hold a thousand." }
+    explain: "Cover the last three digits of 58,240: **58** full crates."
+  - type: input
+    who: hobb
+    text: And how many arrows are left loose?
+    answer: 240
+    atom: leftover
+    nudges:
+      - { value: 58, text: "That's the crates. How many arrows are left over?" }
+      - { value: 760, text: "That's how many you'd need to fill one more crate." }
+    explain: "58 crates hold 58,000. 58,240 − 58,000 = **240**."
+  - type: input
+    who: wren
+    text: Hobb's notes say **47 hundreds** of horseshoes. How many horseshoes is that?
+    answer: 4700
+    atom: units-to-number
+    nudges:
+      - { value: 470, text: "A hundred has two zeros. 47 hundreds = 47 × 100." }
+      - { value: 47000, text: "One zero too many — that would be 47 thousands." }
+    explain: "$47 \\times 100 = 4{,}700$."
+  - type: play
+    who: hobb
+    text: >-
+      A wagon brings 3 thousands and **14 hundreds** horseshoes. Put 14 tokens in the hundreds
+      column, then trade ten hundreds for one thousand.
+    widget: { kind: abacus, places: 5, start: 3000, target: 4400 }
+    done: "Ten hundreds make one thousand. 3 thousands and 14 hundreds is 4,400."
+  - type: input
+    who: hobb
+    text: Two ten-thousands and **15 thousands**. How many is that?
+    answer: 35000
+    atom: trade
+    nudges:
+      - { value: 215000, text: "15 thousands is more than ten: it's 15,000. Trade ten of them for one ten-thousand." }
+      - { value: 20015, text: "It's 15 **thousands**, not 15 ones." }
+    explain: "20,000 + 15,000 = **35,000**."
+  - type: ask
+    who: voss
+    text: How many thousands make one million?
+    options: ['1,000', '100', '10', '1,000,000']
+    correct: 0
+    atom: million
+    nudges:
+      "1": "100 thousands is only 100,000. A million has six zeros; a thousand has three."
+    explain: "$1{,}000{,}000 \\div 1{,}000 = 1{,}000$. A thousand thousands make a million."
+  - type: practice
+    skill: pv-regroup
+    count: 4

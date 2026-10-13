@@ -1,0 +1,72 @@
+id: ashroad
+order: 11
+name: The Ashen Road
+tagline: Sixty miles of burned country between Greyhaven and the fortress of Thornwall.
+campaign: march
+topic: 'Comparing and ordering big numbers, ×10 and ÷10, regrouping, adding 10,000 more, number lines'
+added: '2026-10-13'
+scene: ashroad
+map: { x: 44, y: 46 }
+requires: [greyhaven]
+palette: { sky: ["#140c0a", "#6a3a22"], accent: "#ff9a5a", ground: "#2a201a" }
+outro: ashroad-outro
+monsters:
+  - { name: Hollow Raider, seed: 21, hue: 25, art: hollow, taunts: ["We burn what we cannot count.", "Your wagons are lighter than you think."] }
+  - { name: Ash Rider, seed: 22, hue: 20, art: rider, taunts: ["Faster than your arithmetic.", "The road is ours."] }
+  - { name: Smoke Wraith, seed: 23, hue: 30, art: wraith, taunts: ["Smoke hides numbers. Smoke hides everything."] }
+path:
+  - id: intro
+    type: story
+    title: Burned Country
+    lesson: ashroad-intro
+  - id: bigger-host
+    type: lesson
+    title: Which Host Is Bigger?
+    lesson: bigger-host
+  - id: broken-bridge
+    type: encounter
+    title: The Broken Bridge
+    game: bridge
+    skills: [pv-compare, pv-value]
+    count: 6
+  - id: forgers-trick
+    type: lesson
+    title: The Forger's Trick
+    lesson: forgers-trick
+  - id: crates
+    type: lesson
+    title: The Quartermaster's Crates
+    lesson: crates
+  - id: strongbox
+    type: encounter
+    title: The Strongbox
+    game: vault
+    skills: [pv-times-ten, pv-regroup]
+    count: 6
+  - id: wagons
+    type: lesson
+    title: Wagons In, Wagons Out
+    lesson: wagons
+  - id: milestones
+    type: lesson
+    title: Milestones
+    lesson: milestones
+  - id: ford-ambush
+    type: encounter
+    title: Ambush at the Ford
+    game: battle
+    skills: [pv-shift, pv-numberline, pv-compare]
+    count: 7
+    monster: { name: Ash Rider, seed: 22, hue: 20, art: rider, taunts: ["Faster than your arithmetic.", "The road is ours."] }
+  - id: boss
+    type: boss
+    title: Maul Vane the Forger
+    monster: { name: Maul Vane the Forger, seed: 7, hue: 270, art: forger }
+    intro:
+      - "*A man in a clerk's coat steps out from behind a burned wagon, wiping ink from a quill as long as a knife.*"
+      - "Maul Vane, at your service. I don't kill anyone, Reckoner. I just move a digit. One little slide to the left, and your Marshal sends ten men where a hundred are needed. Ink does the rest."
+    phases:
+      - { skills: [pv-compare, pv-times-ten], count: 3, taunt: "Which report is bigger? Are you SURE? I wrote both." }
+      - { skills: [pv-regroup, pv-shift], count: 3, taunt: "Thirty-four thousand arrows. Or is it thirty-four hundred? So easy to confuse." }
+      - { skills: [pv-numberline, pv-compare], count: 3, taunt: "I moved the milestones, too. Did you notice? Nobody ever notices." }
+    defeat: "*Vane's quill snaps. He looks at the ledgers, at you, and shrugs.* 'Fine. You can count. That only makes you a better target.' *He is gone before the smoke clears.*"

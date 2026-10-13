@@ -1,0 +1,74 @@
+id: count-from-right
+title: Counting From the Right
+skill: pv-places
+beats:
+  - type: say
+    who: anselm
+    text: >-
+      Every digit in a number sits in a **place**, and every place has a name. The trick the old
+      clerks knew: you always name the places from the **right-hand end**.
+  - type: show
+    who: anselm
+    text: >-
+      Here's the last count Wren made before the fire: **4,372,519**. The right-hand end is the
+      **ones**. Step left: **tens**, **hundreds**. Then a comma, and the pattern starts again with
+      **thousands**.
+    widget: { kind: placechart, value: 4372519 }
+  - type: say
+    who: wren
+    text: >-
+      Start at the right. *Always.* People who start from the left get a different answer every
+      time the number gets longer.
+  - type: input
+    who: wren
+    text: In **4,372,519**, which digit is in the **hundreds** place?
+    answer: 5
+    atom: ones-tens-hundreds
+    nudges:
+      - { value: 7, text: "That's the third digit from the **left**. Start at the right: ones (9), tens (1), hundreds…" }
+      - { value: 1, text: "That's the tens. One more step left." }
+    hint: "Ones, tens, hundreds — counting leftwards from the 9."
+    explain: "From the right: ones $9$, tens $1$, hundreds $5$."
+  - type: play
+    who: anselm
+    text: Tap any three columns to hear their names and what their digit is worth.
+    widget: { kind: placechart, value: 4372519, tap: 3 }
+    done: "Every place is worth ten times the place to its right. That's the whole secret."
+  - type: say
+    who: anselm
+    text: >-
+      The names come in families of three: ones, tens, hundreds — then thousands, ten-thousands,
+      hundred-thousands — then millions. Each comma starts the next family. The clerks called the
+      families **periods**.
+  - type: ask
+    who: anselm
+    text: Which place is the **3** in, in **4,372,519**?
+    options:
+      - the hundred-thousands place
+      - the ten-thousands place
+      - the millions place
+      - the hundreds place
+    correct: 0
+    atom: hundred-thousands
+    nudges:
+      "1": "One place off. Count from the ones: ones, tens, hundreds, thousands, ten-thousands, hundred-thousands."
+      "3": "That's the second digit from the left — counted the wrong way. Start at the ones."
+    explain: "The 3 is the sixth place from the right: the **hundred-thousands**."
+  - type: ask
+    who: hobb
+    text: >-
+      In my day we called each group between commas a **period** — a family name. Which period
+      is the **7** in, in 4,372,519?
+    options:
+      - the thousands period
+      - the millions period
+      - the ones period
+    correct: 0
+    atom: periods
+    nudges:
+      "1": "The millions period is just the 4 at the front. The 7 is in the next group of three."
+      "2": "The ones period is the last three digits: 519."
+    explain: "4 | 372 | 519 — millions, thousands, ones. The 7 is in the **thousands** period."
+  - type: practice
+    skill: pv-places
+    count: 4

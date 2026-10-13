@@ -1,0 +1,54 @@
+id: sliding-scale
+title: The Sliding Scale
+skill: dec-shift
+beats:
+  - type: say
+    who: warden
+    text: >-
+      MULTIPLY BY TEN: EVERY DIGIT SLIDES ONE PLACE LEFT. THE POINT DOES NOT MOVE. DIVIDE BY TEN:
+      EVERY DIGIT SLIDES ONE PLACE RIGHT.
+  - type: say
+    who: wren
+    text: >-
+      Hobb taught me "to times by ten, just add a zero". Works on whole numbers. Watch what
+      happens with 2.5.
+  - type: play
+    who: wren
+    text: Multiply 2.5 by 10.
+    widget: { kind: shifter, value: 2.5, times: 1 }
+    done: "2.5 × 10 = 25. Adding a zero would give 2.50 — which is still 2.5! The digits have to move."
+  - type: input
+    who: hobb
+    text: All right, all right. What is $0.36 \times 100$?
+    answer: 36
+    atom: x100
+    nudges:
+      - { value: 0.36, text: "Adding zeros after the point changes nothing. The digits must slide two places left." }
+      - { value: 3.6, text: "Only one place. ×100 is two places." }
+    explain: "Two places left: **36**."
+  - type: play
+    who: warden
+    text: DIVIDE 46 BY 100.
+    widget: { kind: shifter, value: 46, times: -2 }
+    done: "46 ÷ 100 = 0.46. The digits slid two places right, past the point."
+  - type: input
+    who: warden
+    text: $4.5 \div 100 = $ ?
+    answer: 0.045
+    atom: div100
+    nudges:
+      - { value: 0.45, text: "Only one place. ÷100 slides two places right." }
+      - { value: 450, text: "That's multiplying. Dividing makes it smaller." }
+    explain: "Two places right: **0.045**."
+  - type: input
+    who: voss
+    text: One grain of gold dust weighs 0.004 g. What do 1,000 grains weigh?
+    answer: 4
+    atom: x1000
+    nudges:
+      - { value: 0.4, text: "1,000 has three zeros: slide three places, not two." }
+      - { value: 40, text: "One place too far." }
+    explain: "$0.004 \\times 1{,}000 = 4$ grams."
+  - type: practice
+    skill: dec-shift
+    count: 4

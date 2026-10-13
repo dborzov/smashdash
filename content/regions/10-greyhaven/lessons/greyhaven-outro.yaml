@@ -1,0 +1,28 @@
+id: greyhaven-outro
+title: Every Page Readable
+beats:
+  - type: narrate
+    text: >-
+      By dawn the ashes have been swept out of the Ledger Hall. On Anselm's desk sits a fresh stack
+      of pages, written in your hand. Every count on them can be read.
+  - type: say
+    who: voss
+    text: >-
+      Every number in this town is readable again. That's more than I had yesterday. More than I
+      expected, if I'm honest.
+  - type: say
+    who: wren
+    text: >-
+      I've been on the wall all night. The Host isn't coming here. It's turning south. Down the
+      Ashen Road. Towards Thornwall.
+  - type: say
+    who: hobb
+    text: >-
+      Thornwall has food for a month — if the supply wagons reach it. Sixty miles of burned
+      road, forty wagons, and every one of them needs counting in and out.
+  - type: say
+    who: voss
+    text: We ride with the wagons. Reckoner — you're with me.
+  - type: reward
+    gold: 60
+    text: The Marshal pays you a soldier's wage. Then she pays it again, "for the zeros".

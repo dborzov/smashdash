@@ -1,0 +1,56 @@
+id: forgers-trick
+title: The Forger's Trick
+skill: pv-times-ten
+beats:
+  - type: narrate
+    text: >-
+      A captured courier's bag holds two copies of the same report. One says 3,507 riders. The
+      other, in a neater hand, says 35,070.
+  - type: say
+    who: voss
+    text: >-
+      Vane's favourite trick. Slide every digit one place to the left. The enemy just grew ten
+      times bigger, and my soldiers run from a ghost army.
+  - type: say
+    who: hobb
+    text: >-
+      It works because every place is worth **ten times** the place to its right. Slide a number
+      one place left and it's ten times bigger. Two places, a hundred times.
+  - type: play
+    who: hobb
+    text: Slide 3,507 one place to the left.
+    widget: { kind: shifter, value: 3507, times: 1 }
+    done: "Every digit moved one place left, and a zero filled the empty ones place: 3,507 × 10 = 35,070."
+  - type: input
+    who: hobb
+    text: What is $4{,}260 \times 100$?
+    answer: 426000
+    atom: x100
+    nudges:
+      - { value: 42600, text: "Only one place. ×100 slides every digit **two** places left." }
+      - { value: 4260000, text: "One place too far. 100 has two zeros: two places." }
+    explain: "Two places left: $4{,}260 \\times 100 = 426{,}000$."
+  - type: input
+    who: voss
+    text: >-
+      Vane's version of a report says **52,000**. In the real one, every digit was one place to
+      the **right**. What did the real report say?
+    answer: 5200
+    atom: div10
+    nudges:
+      - { value: 520000, text: "That's sliding them left — the forger's direction. Undo it: slide right." }
+      - { value: 520, text: "Two places — only one place right." }
+    explain: "One place right is $\\div 10$: $52{,}000 \\div 10 = 5{,}200$."
+  - type: input
+    who: wren
+    text: The 6 in **60,000** is worth how many times the 6 in **600**?
+    answer: 100
+    atom: relation
+    nudges:
+      - { value: 2, text: "They're two places apart. But each place is ×10, so two places is ×10 ×10." }
+      - { value: 20, text: "Not ten plus ten — ten **times** ten." }
+      - { value: 59400, text: "That's how much more. How many **times** as much?" }
+    explain: "Two places left: $\\times 10 \\times 10 = \\times 100$."
+  - type: practice
+    skill: pv-times-ten
+    count: 4

@@ -1,0 +1,56 @@
+id: weigh-words
+title: The Weigh-Master's Words
+skill: dec-write
+beats:
+  - type: say
+    who: warden
+    text: THE NAME OF THE LAST PLACE TELLS YOU WHERE THE LAST DIGIT GOES.
+  - type: say
+    who: hobb
+    text: >-
+      "Five hundredths" means the 5 lives in the hundredths place: 0.05. The tenths place is
+      empty, so it gets a zero. Just like the empty places in Greyhaven's millions.
+  - type: input
+    who: hobb
+    text: Write **"five hundredths"** as a decimal.
+    answer: 0.05
+    atom: hundredths-zero
+    nudges:
+      - { value: 0.5, text: "That's five **tenths**. Hundredths is the second place after the point: the tenths place gets a 0." }
+      - { value: 0.005, text: "That's thousandths — one place too far." }
+    explain: "Hundredths is the 2nd place: **0.05**."
+  - type: say
+    who: wren
+    text: >-
+      And in decimals, "and" means the point. "Four **and** twenty-seven thousandths": four whole
+      grams, then the crumbs.
+  - type: input
+    who: warden
+    text: SET THE DIALS. **"FOUR AND TWENTY-SEVEN THOUSANDTHS."**
+    answer: 4.027
+    atom: thousandths
+    dials: { int: 1, dec: 3 }
+    nudges:
+      - { value: 4.27, text: "Twenty-seven **thousandths**: the 7 must land in the third place. Pad with a 0: .027" }
+      - { value: 4.0027, text: "Too many zeros — the last digit goes in the third place." }
+    explain: "Last digit in the thousandths (3rd) place: **4.027**."
+  - type: input
+    who: hobb
+    text: Write $\frac{43}{1000}$ as a decimal.
+    answer: 0.043
+    atom: fraction
+    nudges:
+      - { value: 0.43, text: "That's 43 hundredths. Thousandths means the last digit is three places after the point." }
+      - { value: 4.3, text: "Dividing by 1,000 slides the digits three places right." }
+    explain: "43 thousandths: **0.043**."
+  - type: input
+    who: voss
+    text: The alchemist's breakdown says $6 + 0.2 + 0.009$ grams. Write it as one decimal.
+    answer: 6.209
+    atom: mixed
+    nudges:
+      - { value: 6.29, text: "There are no hundredths — that place needs a 0." }
+    explain: "6 ones, 2 tenths, 0 hundredths, 9 thousandths: **6.209**."
+  - type: practice
+    skill: dec-write
+    count: 4

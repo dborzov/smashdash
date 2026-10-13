@@ -1,0 +1,47 @@
+id: thornwall-intro
+title: The Last Wall
+beats:
+  - type: narrate
+    text: >-
+      Thornwall: three walls, one gate, and a cliff at its back. Inside, soldiers, horses and
+      refugees packed shoulder to shoulder. Outside, the Hollow Host, as far as the eye can see.
+  - type: say
+    who: voss
+    text: >-
+      We can't count every soldier out there, and we don't need to. I need to know: is it about
+      forty thousand, or about four hundred thousand? Those are two very different battles.
+  - type: say
+    who: wren
+    text: >-
+      That's **rounding**. Not guessing — rounding. Every scout gets the same answer from the same
+      count. That's what makes it worth anything.
+  - type: narrate
+    text: >-
+      That night a voice drifts over the wall, dry as old paper: *"Count us, little Reckoner.
+      Count us all. You will run out of numbers before I run out of soldiers."*
+  - type: choose
+    who: hero
+    text: Who was that?
+    options:
+      - text: "...Was that him?"
+        who: voss
+        reply: >-
+          The Tallyman. He wants us frightened of how big the number is. Don't be. A big number
+          is still just a number. It's the *wrong* number that loses battles.
+      - text: We'll see about running out.
+        who: wren
+        reply: >-
+          Brave. Also correct — nothing's infinite, not even them. Come on. We've got counting to do.
+  - type: ask
+    who: voss
+    text: >-
+      Two scouts. One reports "about 40,000". The other reports "about 400,000". What's the
+      difference?
+    options:
+      - "The second is ten times as many — a different battle"
+      - "Hardly any — they're both about forty"
+      - "The first is ten times as many"
+    correct: 0
+    nudges:
+      "1": "Count the digits: 400,000 has one more place. That's ten times as many soldiers."
+    explain: "One extra place means ten times as many. Rounding must keep the places right."

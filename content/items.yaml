@@ -57,6 +57,34 @@
   effect: { hunger: 90, joy: 35, sound: eat }
   drop: 1
 
+- id: crickets
+  name: Crunchy Crickets
+  kind: food
+  icon: "🦗"
+  price: 7
+  desc: "A paper cone of roasted crickets. Your pet thinks you are a genius for buying these."
+  use: "*crunch crunch* Your pet looks at you like you invented food."
+  effect: { hunger: 25, joy: 5, bond: 3, sound: eat }
+  drop: 3
+- id: glowcaps
+  name: Glowcap Mushrooms
+  kind: food
+  icon: "🍄"
+  price: 9
+  desc: "They glow in the dark. So does your pet, for about an hour afterwards."
+  use: "Nom. Your pet starts glowing faintly green. It seems delighted."
+  effect: { hunger: 30, joy: 15, sound: eat }
+  drop: 2
+- id: bone-biscuit
+  name: Bone Biscuit
+  kind: food
+  icon: "🦴"
+  price: 10
+  desc: "Baked from oats and something crunchy. Pets go silly for them. Builds a strong bond."
+  use: "Your pet carries the biscuit to its bed, hides it, then eats it anyway. Bond +!"
+  effect: { hunger: 30, bond: 6, sound: eat }
+  drop: 2
+
 # --- Toys -------------------------------------------------------------
 - id: rubber-chicken
   name: Rubber Chicken
@@ -95,6 +123,34 @@
   effect: { joy: 20, sound: pop }
   drop: 3
 
+- id: squeaky-skull
+  name: Squeaky Skull
+  kind: toy
+  icon: "💀"
+  price: 14
+  desc: "Found on the Ashen Road. Squeaks. Nobody knows why it squeaks."
+  use: "SQUEAK. SQUEAK. SQUEEEAK. Your pet is having the time of its life."
+  effect: { joy: 30, sound: squawk }
+  drop: 2
+- id: feather-stick
+  name: Feather on a Stick
+  kind: toy
+  icon: "🪶"
+  price: 9
+  desc: "A crow feather tied to a twig. The best toy is the one you wave yourself."
+  use: "You wave it. Your pet pounces. You wave it again. This could go on all day. Bond +!"
+  effect: { joy: 25, bond: 4, sound: pop }
+  drop: 2
+- id: raggedy-bear
+  name: Raggedy Bear
+  kind: toy
+  icon: "🧸"
+  price: 20
+  desc: "One eye, one ear, all love. Pets who sleep with it trust you a lot more."
+  use: "Your pet hugs the bear and falls asleep on it. Bond ++!"
+  effect: { joy: 20, bond: 10, sound: pop }
+  drop: 1
+
 # --- Care ---------------------------------------------------------------
 - id: bubble-bath
   name: Bubble Bath
@@ -113,6 +169,16 @@
   desc: "Grimble's own recipe. Don't ask how it's made. (It's spit.)"
   use: "Your pet makes a face like it licked a battery. Health restored!"
   effect: { health: 45, sound: heal }
+  drop: 2
+
+- id: herbal-salve
+  name: Herbal Salve
+  kind: care
+  icon: "🧴"
+  price: 12
+  desc: "Smells of pine and old socks. Heals a little, soothes a lot."
+  use: "Rub, rub. Your pet purrs (even if it isn't the purring kind)."
+  effect: { health: 25, bond: 2, sound: heal }
   drop: 2
 
 # --- Battle items ---------------------------------------------------------
@@ -134,6 +200,45 @@
   effect: { hint: true }
   drop: 4
   max: 9
+- id: ward-rune
+  name: Ward Rune
+  kind: potion
+  icon: "🔰"
+  price: 30
+  desc: "Cold iron, carved with an old ward. Tap it in a fight and the next hit you take is blocked."
+  effect: { ward: true }
+  drop: 2
+  max: 3
+  level: 2
+- id: scout-lens
+  name: Scout's Lens
+  kind: potion
+  icon: "🔍"
+  price: 18
+  desc: "Look through it and two wrong answers in a multiple-choice question fade away."
+  effect: { lens: true }
+  drop: 2
+  max: 5
+- id: focus-tonic
+  name: Focus Tonic
+  kind: special
+  icon: "🧉"
+  price: 60
+  desc: "Tastes like cold tea and lightning. Double XP for 20 minutes. Use it from your bag."
+  use: "You drink the tonic. Everything gets very sharp and very loud. Double XP!"
+  effect: { boost: xp2, minutes: 20 }
+  max: 3
+  level: 3
+- id: lucky-coin
+  name: Lucky Crown
+  kind: special
+  icon: "🪙"
+  price: 40
+  desc: "An old coin with a hole in it. Flip it before a fight: your next victory pays double gold."
+  use: "Heads. Of course it's heads. Your next victory pays double!"
+  effect: { boost: lucky }
+  max: 3
+  level: 2
 - id: streak-shield
   name: Streak Shield
   kind: special
@@ -216,3 +321,135 @@
   price: 200
   desc: "Every colour at once. Unicorns are jealous."
   level: 7
+- id: ash-cloak
+  name: Ash Cloak
+  kind: cape
+  icon: "🌫️"
+  price: 70
+  desc: "Grey as Greyhaven. Smells faintly of smoke, which is either cool or worrying."
+  level: 3
+- id: march-mantle
+  name: Mantle of the March
+  kind: cape
+  icon: "🟦"
+  price: 160
+  desc: "Deep winter blue, lined with wolf-grey fur. Only Reckoners wear it."
+  level: 5
+- id: blood-moon
+  name: Blood-Moon Cape
+  kind: cape
+  icon: "🟥"
+  price: 220
+  desc: "The colour of the sky the night Thornwall held."
+  level: 7
+
+# --- More hats -----------------------------------------------------------
+- id: warden-helm
+  name: Warden's Helm
+  kind: hat
+  icon: "⛑️"
+  price: 80
+  desc: "Steel, dented, honest. Worn by the wall guards of Thornwall."
+  level: 3
+- id: raven-hood
+  name: Raven Hood
+  kind: hat
+  icon: "🐦"
+  price: 70
+  desc: "A scout's hood with a crow's beak brim. Wren says it makes you look 'almost competent'."
+  level: 2
+- id: tricorn
+  name: Tricorn Hat
+  kind: hat
+  icon: "🏴‍☠️"
+  price: 55
+  desc: "Three corners, zero manners."
+  drop: 1
+- id: antlers
+  name: Antlers
+  kind: hat
+  icon: "🦌"
+  price: 40
+  desc: "Grown, not bought. (They were bought.)"
+- id: jester-hat
+  name: Jester's Cap
+  kind: hat
+  icon: "🃏"
+  price: 50
+  desc: "Bells included. Dignity not included."
+  level: 2
+- id: iron-crown
+  name: Iron Crown of the March
+  kind: hat
+  icon: "⚜️"
+  price: 0
+  inShop: false
+  desc: "Given only to those who counted the Tallyman. Cold, heavy, and earned."
+
+# --- Den decorations (shown in the Pet Den; some make life easier) --------
+- id: rug
+  name: Rug of Questionable Origin
+  kind: decor
+  icon: "🧶"
+  price: 40
+  desc: "Very soft. Slightly crunchy in one corner. Don't look."
+- id: candles
+  name: Spooky Candles
+  kind: decor
+  icon: "🕯️"
+  price: 30
+  desc: "They never burn down. Nobody knows why. Atmosphere: excellent."
+- id: painting
+  name: Portrait of Grimble
+  kind: decor
+  icon: "🖼️"
+  price: 50
+  desc: "Oil on canvas. The eyes follow you. He insisted."
+- id: fish-tank
+  name: Fish Tank
+  kind: decor
+  icon: "🐠"
+  price: 70
+  desc: "One fish. Its name is Gerald. It has seen things."
+- id: banner
+  name: Banner of the March
+  kind: decor
+  icon: "🏴"
+  price: 60
+  desc: "The grey wolf of Greyhaven. Your pet stands a little straighter under it."
+  level: 3
+- id: disco-ball
+  name: Disco Ball
+  kind: decor
+  icon: "🪩"
+  price: 150
+  desc: "Your pet will dance. You cannot stop it. You will not want to."
+  level: 4
+- id: pet-bed
+  name: Tiny Four-Poster Bed
+  kind: decor
+  icon: "🛏️"
+  price: 80
+  desc: "A proper bed. Pets heal twice as fast when they're not starving or sick."
+- id: feeder
+  name: Self-Filling Bowl
+  kind: decor
+  icon: "🥣"
+  price: 120
+  desc: "Enchanted to refill a little on its own. Your pet gets hungry 25% slower."
+  level: 3
+- id: toy-chest
+  name: Toy Chest
+  kind: decor
+  icon: "🧰"
+  price: 100
+  desc: "Your pet entertains itself when you're away. Fun drains 25% slower."
+  level: 2
+- id: poop-bucket
+  name: Fancy Poop Bucket
+  kind: decor
+  icon: "🪣"
+  price: 90
+  desc: "Gold-trimmed. Poop makes your pet sick only half as fast."
+  level: 2
+

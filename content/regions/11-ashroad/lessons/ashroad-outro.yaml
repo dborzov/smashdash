@@ -1,0 +1,27 @@
+id: ashroad-outro
+title: Forty Wagons In
+beats:
+  - type: narrate
+    text: >-
+      Thornwall rises out of the smoke: a fortress on a cliff, its walls wrapped in black thorns.
+      The gate opens. Every wagon rolls through.
+  - type: say
+    who: hobb
+    text: >-
+      Forty wagons out, forty wagons in. First time in forty years my ledger balanced on the first
+      try. I may cry. Don't look.
+  - type: say
+    who: voss
+    text: >-
+      Vane will be back. But he's lost his best trick. We can read our own numbers now.
+  - type: say
+    who: wren
+    text: Marshal. On the cliff. You need to see this.
+  - type: narrate
+    text: >-
+      Below, across the whole plain, campfires. Thousands upon thousands, out to the horizon.
+      Wren starts counting under her breath, and stops. "We don't need the exact number," she
+      says quietly. "We need a good one. Fast."
+  - type: reward
+    gold: 70
+    text: Hobb pays you in arrows. Then remembers you can't spend arrows, and pays you in gold.

@@ -1,0 +1,69 @@
+id: digit-worth
+title: What a Digit Is Worth
+skill: pv-value
+beats:
+  - type: say
+    who: voss
+    text: >-
+      The report says 4,372,519. I ask you: how many is the 7? Don't say "seven". If you say
+      "seven", I will send seven soldiers.
+  - type: say
+    who: anselm
+    text: >-
+      A digit is only a mark. What it's **worth** depends on where it stands. The 7 stands in the
+      ten-thousands place — so it's seven ten-thousands.
+  - type: show
+    who: anselm
+    text: "Keep the digit. Turn everything to its right into zeros."
+    math: '7 \times 10{,}000 = 70{,}000'
+  - type: input
+    who: voss
+    text: In **4,372,519**, what is the **3** worth?
+    answer: 300000
+    atom: big
+    nudges:
+      - { value: 3, text: "That's the digit. It's in the hundred-thousands place, so it's worth three hundred thousand." }
+      - { value: 30000, text: "One place off. Count from the ones: the 3 is six places along." }
+      - { value: 4300000, text: "Just the 3, not everything to its left." }
+    hint: "Keep the 3; every digit to its right becomes 0."
+    explain: "$3 \\times 100{,}000 = 300{,}000$."
+  - type: say
+    who: wren
+    text: >-
+      True story. Two reports came in on the same morning: **5,500** riders and **5,050** riders.
+      Same digits, mostly. Very different afternoon.
+  - type: input
+    who: wren
+    text: In **5,500**, the left 5 is worth how many times as much as the right 5?
+    answer: 10
+    atom: same-digit
+    nudges:
+      - { value: 1, text: "Same digit, not the same worth! One is 5,000, the other 500." }
+      - { value: 4500, text: "That's how much **more**. How many **times** as much?" }
+    explain: "5,000 is ten times 500. One place to the left = ten times the worth."
+  - type: say
+    who: anselm
+    text: One step left, ten times the worth. Two steps, a hundred times. Three steps, a thousand.
+  - type: ask
+    who: hobb
+    text: >-
+      A tired clerk looks at **3,040,215** and says the **0** after the 3 doesn't matter, because
+      zero is worth nothing. What happens if he rubs it out?
+    options:
+      - "The number becomes 340,215 — every digit slides down a place"
+      - "Nothing — a zero is worth nothing"
+      - "The number becomes 3,400,215"
+    correct: 0
+    atom: zero
+    nudges:
+      "1": "The zero is worth nothing, but it holds the hundred-thousands place open. Take it away and the 4 drops into it."
+      "2": "Try it: write 3,040,215 without that 0. Count the digits."
+    explain: "The 0 keeps the 4 in the ten-thousands place. Without it, 3 million collapses to about 340 thousand."
+  - type: play
+    who: anselm
+    text: Tap the 0 to see what it's holding open.
+    widget: { kind: placechart, value: 3040215, hl: 5, tap: 2 }
+    done: "Zero is worth nothing — and it's the most important digit in the number."
+  - type: practice
+    skill: pv-value
+    count: 4

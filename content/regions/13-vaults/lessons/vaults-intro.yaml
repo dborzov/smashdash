@@ -1,0 +1,39 @@
+id: vaults-intro
+title: Under the Mountain
+beats:
+  - type: narrate
+    text: >-
+      Stairs cut into the mountain lead down to doors of thick green glass. Behind them, in cold
+      blue light, a thousand brass scales sit perfectly still.
+  - type: narrate
+    text: >-
+      Something tall steps out of an alcove: a figure of glass and brass, with a ticking heart and
+      no face at all.
+  - type: say
+    who: warden
+    text: HALT. WEIGHT, PLEASE. I AM THE WARDEN OF THE VAULTS. I OPEN FOR EXACT WEIGHTS ONLY. TO THE THOUSANDTH OF A GRAM.
+  - type: say
+    who: hobb
+    text: >-
+      An old alchemist's guardian. Doesn't care who you are, what you want, or whether the world
+      is ending. Only cares if your numbers are right.
+  - type: say
+    who: warden
+    text: >-
+      TWO SOLDIERS. ONE QUARTERMASTER. ONE SCOUT WITH A NOTEBOOK. THE TALLYMAN PASSED THIS DOOR
+      NINE HOURS AGO. HIS WEIGHT WAS… INCORRECT.
+  - type: say
+    who: voss
+    text: >-
+      Then we follow him. Reckoner: down here they count **below one**. Tenths, hundredths,
+      thousandths. Learn them fast.
+  - type: choose
+    who: warden
+    text: QUESTIONS WILL BE ANSWERED. BRIEFLY.
+    options:
+      - text: What comes after the decimal point?
+        reply: >-
+          THE SAME LADDER, CONTINUED DOWNWARDS. EACH STEP TEN TIMES SMALLER THAN THE ONE BEFORE.
+          TENTHS. HUNDREDTHS. THOUSANDTHS.
+      - text: Will you help us?
+        reply: I HELP EXACT WEIGHTS. BE EXACT.

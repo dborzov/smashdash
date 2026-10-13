@@ -1,0 +1,64 @@
+id: bigger-host
+title: Which Host Is Bigger?
+skill: pv-compare
+beats:
+  - type: say
+    who: wren
+    text: >-
+      98,000 against 120,000. Half the camp said 98,000 is bigger, "because nine beats one". Half
+      the camp is wrong.
+  - type: say
+    who: voss
+    text: >-
+      Rule one: **count the digits**. More digits wins, every time. Only when two numbers have the
+      same number of digits do you compare them, place by place, from the left.
+  - type: ask
+    who: voss
+    text: Which is the bigger host?
+    options:
+      - '$120{,}000$'
+      - '$98{,}000$'
+    correct: 0
+    atom: length
+    nudges:
+      "1": "Count the digits: 98,000 has five, 120,000 has six. Six digits wins, whatever the first digit is."
+    explain: "120,000 has six digits; 98,000 has five. More digits, bigger number."
+  - type: show
+    who: hobb
+    text: "All the nines in the world can't beat one more digit."
+    math: '99{,}999 < 100{,}000'
+  - type: ask
+    who: wren
+    text: Same number of digits this time. Which is bigger?
+    options:
+      - '$4{,}512{,}000$'
+      - '$4{,}489{,}999$'
+    correct: 0
+    atom: first-diff
+    nudges:
+      "1": "Don't be dazzled by the 9s. Compare from the left: 4 and 4 tie, then 5 beats 4. Done."
+    explain: "Left to right: 4 = 4, then 5 > 4. The first place that differs decides."
+  - type: order
+    who: voss
+    text: Four reports. Put them in order, smallest threat first.
+    items: ['$87{,}400$', '$102{,}300$', '$9{,}950$', '$100{,}450$']
+    correct: [2, 0, 3, 1]
+    direction: smallest → largest
+    atom: order
+    traps:
+      - order: [3, 1, 0, 2]
+        text: "That's sorted like words in a dictionary — by the first digit. Count digits first: the four-digit number is the smallest."
+    explain: "9,950 < 87,400 < 100,450 < 102,300. Count digits first, then compare from the left."
+  - type: ask
+    who: hobb
+    text: Which sign goes in the box?
+    math: '305{,}099 \;\box\; 305{,}909'
+    options: ['$<$', '$>$', '$=$']
+    correct: 0
+    atom: symbol
+    nudges:
+      "1": "The wide, open end faces the **bigger** number. Which is bigger? Compare the hundreds: 0 vs 9."
+    explain: "Same up to the thousands; then 0 hundreds < 9 hundreds. So $305{,}099 < 305{,}909$."
+  - type: practice
+    skill: pv-compare
+    count: 4

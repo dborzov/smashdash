@@ -1,0 +1,28 @@
+id: thornwall-outro
+title: The Wall Holds
+beats:
+  - type: narrate
+    text: >-
+      At dawn, the Host pulls back from the wall. Not beaten — withdrawing, all at once, as if
+      something far away had called them.
+  - type: say
+    who: wren
+    text: They're going north-east. Into the mountain. Into the old Glass Vaults.
+  - type: say
+    who: voss
+    text: >-
+      The alchemists' vaults, where the realm's gold was weighed. The Tallyman isn't running.
+      He's going for the treasury.
+  - type: say
+    who: hobb
+    text: >-
+      If he takes the vaults, he takes every coin and every weight in the realm. Nobody could
+      trade, or pay a soldier, or buy grain. He wouldn't need an army after that.
+  - type: say
+    who: voss
+    text: >-
+      Then we go in after him. Reckoner — everything so far has been whole numbers. Down there,
+      they weigh things smaller than one. Here. It saved my life once.
+  - type: reward
+    item: ward-rune
+    text: The Marshal presses a cold iron Ward Rune into your hand.

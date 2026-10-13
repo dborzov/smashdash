@@ -1,0 +1,40 @@
+id: vaults-outro
+title: Counted
+beats:
+  - type: narrate
+    text: >-
+      The deepest vault is silent. The Tallyman's ledger lies closed on the black glass desk. Far
+      above, the Hollow Host is coming apart: empty armour dropping where it stands, all across
+      the March.
+  - type: say
+    who: warden
+    text: WEIGHT OF THE LEDGER — ONE LIFE. COUNTED. CORRECT.
+  - type: say
+    who: voss
+    text: >-
+      Without him to count them, they don't exist. Strange way to win a war. I'll take it.
+  - type: say
+    who: hobb
+    text: All that, for a clerk who wanted his name put back in the books.
+  - type: choose
+    who: wren
+    text: >-
+      There's a blank line at the end of the realm's ledger. Do we write his name in? Aldous
+      Crane, Royal Reckoner?
+    options:
+      - text: Write it.
+        who: voss
+        reply: Good. Nobody should be left uncounted. That's how all this started.
+      - text: After everything he did?
+        who: wren
+        reply: >-
+          Maybe especially after. The next angry clerk won't be him. Write it anyway — so there
+          isn't a next one.
+  - type: say
+    who: voss
+    text: >-
+      Reckoner of the March. That's your title now — I've written it down, so it's true. When the
+      next count goes wrong, and it will, you know where we are.
+  - type: reward
+    gold: 150
+    text: The Warden weighs out your reward. Exactly. To the thousandth.

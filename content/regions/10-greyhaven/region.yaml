@@ -1,0 +1,73 @@
+id: greyhaven
+order: 10
+name: Greyhaven
+tagline: The last town before the frozen March. Its Ledger Hall burned last night.
+campaign: march
+topic: 'Place value up to the millions: place names, what each digit is worth, reading and writing big numbers, breakdowns'
+added: '2026-10-13'
+scene: muster
+map: { x: 18, y: 72 }
+requires: []
+palette: { sky: ["#0b0d16", "#3a4458"], accent: "#c9ced8", ground: "#2a2a30" }
+outro: greyhaven-outro
+monsters:
+  - { name: Hollow Sentry, seed: 11, hue: 190, art: hollow, taunts: ["...one... two... many...", "Your count is wrong. It is always wrong."] }
+  - { name: Ash Wraith, seed: 12, hue: 200, art: wraith, taunts: ["What burns is forgotten.", "Hhhhhh... the ledgers... are ash..."] }
+  - { name: Hollow Pikeman, seed: 13, hue: 170, art: hollow, taunts: ["Count us. You can't.", "We are more than you think."] }
+path:
+  - id: intro
+    type: story
+    title: The Burned Ledger
+    lesson: greyhaven-intro
+  - id: count-from-right
+    type: lesson
+    title: Counting From the Right
+    lesson: count-from-right
+  - id: digit-worth
+    type: lesson
+    title: What a Digit Is Worth
+    lesson: digit-worth
+  - id: night-watch
+    type: encounter
+    title: Night Watch
+    game: siege
+    skills: [pv-places, pv-value]
+    count: 6
+    monster: { name: Hollow Sentry, seed: 11, hue: 190, art: hollow }
+  - id: heralds-voice
+    type: lesson
+    title: The Herald's Voice
+    lesson: heralds-voice
+  - id: archive-lock
+    type: encounter
+    title: The Archive Lock
+    game: vault
+    skills: [pv-read, pv-value, pv-places]
+    count: 6
+  - id: zeros-hold
+    type: lesson
+    title: Zeros Hold the Line
+    lesson: zeros-hold
+  - id: breakdown
+    type: lesson
+    title: Breaking Down the Muster
+    lesson: breakdown
+  - id: ash-wraiths
+    type: encounter
+    title: Ash Wraiths
+    game: battle
+    skills: [pv-write, pv-expanded, pv-read]
+    count: 7
+    monster: { name: Ash Wraith, seed: 12, hue: 200, art: wraith, taunts: ["What burns is forgotten.", "Hhhhhh... the ledgers... are ash..."] }
+  - id: boss
+    type: boss
+    title: The Ledger Wraith
+    monster: { name: The Ledger Wraith, seed: 3, hue: 195, art: wraith }
+    intro:
+      - "*The ashes of the Ledger Hall lift off the floor and fold themselves into a shape. Burnt pages for skin. Two cold lights for eyes.*"
+      - "I AM EVERY COUNT YOU LOST. Every name, every sack, every soldier you can no longer number. Read me wrong, Reckoner, and I take them all."
+    phases:
+      - { skills: [pv-places, pv-value], count: 3, taunt: "Which place? Which worth? You squint at digits like a child at stars." }
+      - { skills: [pv-read, pv-write], count: 3, taunt: "Two million, forty thousand, six. Write it, if you can hold the zeros." }
+      - { skills: [pv-expanded, pv-write], count: 3, taunt: "Break me apart, then. Every piece. Miss one and I come back." }
+    defeat: "*The wraith comes apart page by page. Each page lands face up, and every number on it is readable again.*"

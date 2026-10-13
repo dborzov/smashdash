@@ -1,0 +1,69 @@
+id: longer-isnt-heavier
+title: Longer Isn't Heavier
+skill: dec-compare
+beats:
+  - type: narrate
+    text: Two vials sit on the Warden's scale. One is labelled **0.5 g**. The other, **0.45 g**.
+  - type: say
+    who: wren
+    text: 0.45 has more digits. So it's heavier. Obviously.
+  - type: say
+    who: warden
+    text: INCORRECT.
+  - type: say
+    who: hobb
+    text: >-
+      Compare place by place, starting at the point. Tenths first: 5 tenths against 4 tenths.
+      Done. The extra digit is only hundredths — crumbs. It can't make up a whole tenth.
+  - type: show
+    who: warden
+    text: 0.5 — FIFTY HUNDREDTHS.
+    widget: { kind: decgrid, value: 0.5 }
+  - type: show
+    who: warden
+    text: 0.45 — FORTY-FIVE HUNDREDTHS. LIGHTER.
+    widget: { kind: decgrid, value: 0.45 }
+  - type: ask
+    who: warden
+    text: WHICH IS HEAVIER?
+    options: ['$0.6$ g', '$0.58$ g', 'They weigh the same']
+    correct: 0
+    atom: longer-trap
+    nudges:
+      "1": "Tenths first: 6 tenths beats 5 tenths. More digits doesn't mean heavier."
+    explain: "0.6 = 0.60, and 60 hundredths > 58 hundredths."
+  - type: ask
+    who: wren
+    text: Are **0.3 g** and **0.30 g** the same weight?
+    options:
+      - Yes — 0.30 is 30 hundredths, which is 3 tenths
+      - No — 0.30 is heavier
+      - No — 0.3 is heavier
+    correct: 0
+    atom: trailing
+    nudges:
+      "1": "A zero at the very end adds nothing: it only says 'and no hundredths'."
+    explain: "0.30 = 0.3. A zero on the end of a decimal changes nothing."
+  - type: order
+    who: warden
+    text: ARRANGE THE VIALS. LIGHTEST TO HEAVIEST.
+    items: ['$0.5$', '$0.45$', '$0.405$', '$0.054$']
+    correct: [3, 2, 1, 0]
+    direction: lightest → heaviest
+    atom: order
+    traps:
+      - order: [0, 1, 3, 2]
+        text: "You read the digits as whole numbers (5, 45, 54, 405). Compare place by place from the point instead: tenths first."
+    explain: "Tenths first: 0.054 (0 tenths) < 0.405 < 0.45 < 0.5."
+  - type: ask
+    who: hobb
+    text: Which is heavier?
+    options: ['$0.47$ g', '$0.452$ g']
+    correct: 0
+    atom: deep
+    nudges:
+      "1": "Same tenths (4), so look at the hundredths: 7 beats 5. The extra 2 thousandths can't catch up."
+    explain: "Same tenths; hundredths 7 > 5. So 0.47 > 0.452."
+  - type: practice
+    skill: dec-compare
+    count: 4

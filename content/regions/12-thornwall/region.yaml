@@ -1,0 +1,74 @@
+id: thornwall
+order: 12
+name: The Siege of Thornwall
+tagline: A fortress on a cliff, a wall of black thorns, and the whole Hollow Host at the gate.
+campaign: march
+topic: 'Rounding to any place, reverse rounding, estimating sums, and places as powers of ten'
+added: '2026-10-13'
+scene: siege
+map: { x: 70, y: 30 }
+requires: [ashroad]
+palette: { sky: ["#07060c", "#4a1a2a"], accent: "#ff6b6b", ground: "#1c1418" }
+outro: thornwall-outro
+monsters:
+  - { name: Hollow Sapper, seed: 31, hue: 350, art: hollow, taunts: ["Dig. Count. Dig.", "Under your wall. Under your numbers."] }
+  - { name: Ash Rider, seed: 32, hue: 10, art: rider, taunts: ["About how many of us? MORE."] }
+  - { name: Siege Wraith, seed: 33, hue: 330, art: wraith, taunts: ["Close enough is never enough."] }
+path:
+  - id: intro
+    type: story
+    title: The Last Wall
+    lesson: thornwall-intro
+  - id: about-how-many
+    type: lesson
+    title: About How Many?
+    lesson: about-how-many
+  - id: first-assault
+    type: encounter
+    title: The First Assault
+    game: siege
+    skills: [round-small, pv-numberline]
+    count: 6
+    monster: { name: Hollow Sapper, seed: 31, hue: 350, art: hollow }
+  - id: lookouts-report
+    type: lesson
+    title: The Lookout's Report
+    lesson: lookouts-report
+  - id: what-could-it-be
+    type: lesson
+    title: What Could It Be?
+    lesson: what-could-it-be
+  - id: second-assault
+    type: encounter
+    title: The Second Assault
+    game: siege
+    skills: [round-big, round-range, round-small]
+    count: 7
+    monster: { name: Hollow Sapper, seed: 34, hue: 0, art: hollow }
+  - id: quick-reckoning
+    type: lesson
+    title: Quick Reckoning
+    lesson: quick-reckoning
+  - id: tower-of-places
+    type: lesson
+    title: The Tower of Places
+    lesson: tower-of-places
+  - id: sappers
+    type: encounter
+    title: Sappers in the Dark
+    game: battle
+    skills: [estimate, pow10-places, round-big]
+    count: 7
+    monster: { name: Siege Wraith, seed: 33, hue: 330, art: wraith, taunts: ["Close enough is never enough."] }
+  - id: boss
+    type: boss
+    title: Captain Sere of the Ash Riders
+    monster: { name: Captain Sere, seed: 9, hue: 15, art: rider }
+    intro:
+      - "*At midnight the horns go up. Out of the smoke rides a knight whose horse has a mane of embers.*"
+      - "I am Sere, captain of the Ash Riders. My master asked me to count your walls. I said: no need. 'About enough' will do. Will YOUR 'about' be good enough, little Reckoner?"
+    phases:
+      - { skills: [round-small, round-big], count: 3, taunt: "Round us up. Round us down. We are still at your gate." }
+      - { skills: [round-range, estimate], count: 3, taunt: "Your scout said 'about forty thousand'. How many could that BE?" }
+      - { skills: [pow10-places, estimate], count: 3, taunt: "Ten. A hundred. A thousand. Each rank ten times the last. Do you feel small yet?" }
+    defeat: "*Sere's horse rears, its mane guttering out like a wet torch. The Ash Riders turn and flee into the dark, and for the first time in a week, the wall is quiet.*"

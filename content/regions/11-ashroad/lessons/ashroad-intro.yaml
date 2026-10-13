@@ -1,0 +1,38 @@
+id: ashroad-intro
+title: Burned Country
+beats:
+  - type: narrate
+    text: >-
+      The road south is black on both sides. The trees stand like burned matches. Forty wagons
+      creak through the ash, and every driver keeps one hand near a spear.
+  - type: say
+    who: hobb
+    text: >-
+      Forty wagons. Grain, arrows, pitch, horseshoes. If you think that's a lot of counting, wait
+      until they start going missing.
+  - type: say
+    who: wren
+    text: >-
+      Two scouts came back. One says **98,000** Hollow at the ford. The other says **120,000** at
+      the old bridge. The Marshal wants to know which is the bigger threat. Before lunch.
+  - type: say
+    who: voss
+    text: >-
+      And there's worse. Someone is changing the reports. Same digits, wrong places. Yesterday a
+      count of 3,507 arrived as 35,070. I nearly turned the whole column around.
+  - type: say
+    who: voss
+    text: >-
+      His name is Maul Vane. He was a tax clerk once. Now he works for the Tallyman, and his
+      weapon is a quill.
+  - type: choose
+    who: voss
+    text: Anything else before we move?
+    options:
+      - text: Who is the Tallyman?
+        reply: >-
+          The one who commands the Host. Nobody's seen his face. In every town he takes, the
+          ledgers burn first. He wants us blind.
+      - text: Then let's move.
+        who: hobb
+        reply: That's the spirit. Mind the wheel ruts. They're full of things you don't want to step in.

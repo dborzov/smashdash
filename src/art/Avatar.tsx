@@ -42,6 +42,9 @@ const CAPES: Record<string, string> = {
   'purple-cape': '#5b2ea6',
   'gold-cape': '#f2b705',
   'rainbow-cape': 'url(#rainbow)',
+  'ash-cloak': '#4a4652',
+  'march-mantle': '#2f4a6a',
+  'blood-moon': '#7a1830',
 };
 
 function darker(hex: string, f = 0.7): string {
@@ -251,6 +254,63 @@ export function HatArt({ id, outfit }: { id: string; outfit: string }) {
           <path d="M87 8 L96 10 L87 13 Z" fill="#ffb020" stroke="#a86b00" stroke-width="1.5" />
           <circle cx="81" cy="4" r="2" fill="#222" />
           <path d="M40 16 Q32 12 30 22" fill="none" stroke="#8a7a60" stroke-width="2.5" />
+        </g>
+      );
+    case 'warden-helm':
+      return (
+        <g>
+          <path d="M26 40 Q24 4 60 2 Q96 4 94 40 Z" fill="#9aa4b5" stroke="#3a4250" stroke-width="2.5" />
+          <path d="M22 40 Q60 30 98 40 L98 46 Q60 38 22 46 Z" fill="#7a8494" stroke="#3a4250" stroke-width="2.5" />
+          <path d="M60 2 L60 40" stroke="#3a4250" stroke-width="3" />
+          <circle cx="44" cy="22" r="2.5" fill="#3a4250" />
+          <circle cx="76" cy="22" r="2.5" fill="#3a4250" />
+        </g>
+      );
+    case 'raven-hood':
+      return (
+        <g>
+          <path d="M22 58 Q18 10 60 6 Q102 10 98 58 Q90 30 60 28 Q30 30 22 58 Z" fill="#23202c" stroke="#0e0c14" stroke-width="2.5" />
+          <path d="M44 28 L60 44 L76 28 Q60 22 44 28 Z" fill="#3a3448" stroke="#0e0c14" stroke-width="2" />
+          <path d="M52 30 L60 44 L68 30" fill="#d9a83a" stroke="#6a4a10" stroke-width="1.5" />
+          <path d="M92 20 Q104 8 110 10 Q100 18 96 28 Z" fill="#14101c" />
+        </g>
+      );
+    case 'tricorn':
+      return (
+        <g>
+          <path d="M18 30 Q60 4 102 30 Q84 22 60 26 Q36 22 18 30 Z" fill="#2a1e1a" stroke="#120a08" stroke-width="2.5" />
+          <path d="M30 28 Q32 6 60 6 Q88 6 90 28 Q60 20 30 28 Z" fill="#3a2a22" stroke="#120a08" stroke-width="2.5" />
+          <path d="M18 30 Q60 40 102 30" fill="none" stroke="#d9a83a" stroke-width="3" />
+          <circle cx="60" cy="16" r="5" fill="#e8e0d0" stroke="#120a08" stroke-width="1.5" />
+        </g>
+      );
+    case 'antlers':
+      return (
+        <g stroke="#6b4a2b" stroke-width="5" stroke-linecap="round" fill="none">
+          <path d="M42 24 Q34 4 22 -6 M36 12 L24 12 M30 2 L36 -10" />
+          <path d="M78 24 Q86 4 98 -6 M84 12 L96 12 M90 2 L84 -10" />
+        </g>
+      );
+    case 'jester-hat':
+      return (
+        <g>
+          <path d="M30 34 Q30 14 60 12 Q90 14 90 34 Z" fill="#7a1fa2" stroke="#3a0a52" stroke-width="2.5" />
+          <path d="M34 22 Q14 4 10 22 Q22 18 36 30 Z" fill="#e0334d" stroke="#6a0a1a" stroke-width="2.5" />
+          <path d="M86 22 Q106 4 110 22 Q98 18 84 30 Z" fill="#ffd166" stroke="#7a5200" stroke-width="2.5" />
+          <path d="M60 12 Q60 -8 70 -12 Q66 4 64 14 Z" fill="#5ee6a8" stroke="#126a40" stroke-width="2" />
+          <circle cx="10" cy="22" r="5" fill="#ffd166" stroke="#7a5200" stroke-width="1.5" />
+          <circle cx="110" cy="22" r="5" fill="#ffd166" stroke="#7a5200" stroke-width="1.5" />
+          <circle cx="70" cy="-12" r="5" fill="#ffd166" stroke="#7a5200" stroke-width="1.5" />
+        </g>
+      );
+    case 'iron-crown':
+      return (
+        <g>
+          <path d="M34 34 L32 6 L44 16 L52 0 L60 14 L68 0 L76 16 L88 6 L86 34 Z" fill="#6a6f7d" stroke="#22252c" stroke-width="2.5" stroke-linejoin="round" />
+          <rect x="32" y="28" width="56" height="8" rx="3" fill="#4a4f5a" stroke="#22252c" stroke-width="2" />
+          <circle cx="60" cy="24" r="4" fill="#6ee7ff" />
+          <circle cx="45" cy="26" r="2.5" fill="#b3263a" />
+          <circle cx="75" cy="26" r="2.5" fill="#b3263a" />
         </g>
       );
     case 'wizard':

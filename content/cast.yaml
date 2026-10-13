@@ -125,3 +125,44 @@ clankenstein:
   color: "#ff9f43"
   seed: 808
   hue: 30
+
+# --- The Long Count -----------------------------------------------------------
+voss:
+  name: Marshal Edda Voss
+  art: dark
+  color: "#c9ced8"
+hobb:
+  name: Hobb Tallow, Quartermaster
+  art: dark
+  color: "#e0b070"
+wren:
+  name: Wren
+  art: dark
+  color: "#9fd88a"
+anselm:
+  name: Brother Anselm
+  art: dark
+  color: "#d9a46a"
+tallyman:
+  name: The Tallyman
+  art: dark
+  color: "#6ee7ff"
+vane:
+  name: Maul Vane
+  art: dark
+  color: "#b3a3c9"
+ashcaptain:
+  name: Captain Sere
+  art: dark
+  color: "#ff7a3d"
+warden:
+  name: The Glass Warden
+  art: dark
+  color: "#a8e0ee"
+ledgerwraith:
+  name: The Ledger Wraith
+  art: foe
+  foe: wraith
+  color: "#7dd3fc"
+  seed: 3
+  hue: 195

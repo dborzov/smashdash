@@ -1,0 +1,62 @@
+id: smaller-than-one
+title: Smaller Than One
+skill: dec-places
+beats:
+  - type: say
+    who: warden
+    text: >-
+      WHOLE PLACES GROW TO THE LEFT: ONES, TENS, HUNDREDS. AFTER THE POINT THEY SHRINK TO THE
+      RIGHT: TENTHS, HUNDREDTHS, THOUSANDTHS.
+  - type: show
+    who: warden
+    text: "**3.472** grams: 3 ones, 4 tenths, 7 hundredths, 2 thousandths."
+    widget: { kind: placechart, value: 3.472, dec: 3, top: 2 }
+  - type: input
+    who: hobb
+    text: In **3.472**, which digit is in the **hundredths** place?
+    answer: 7
+    atom: hundredths
+    nudges:
+      - { value: 4, text: "That's the tenths — the first place after the point. Hundredths is the second." }
+      - { value: 2, text: "That's the thousandths — third place. Hundredths is the second." }
+    explain: "After the point: tenths 4, hundredths **7**, thousandths 2."
+  - type: say
+    who: wren
+    text: >-
+      Careful with the names. **Tens** is left of the point. **Tenths** — with the "-ths" — is to
+      the right. Same trap with hundreds and hundredths. The "-ths" means "a piece of one".
+  - type: input
+    who: wren
+    text: In **52.86**, which digit is in the **tenths** place?
+    answer: 8
+    atom: ths-vs-s
+    nudges:
+      - { value: 5, text: "That's the **tens** digit — no -ths, so it's before the point. Tenths come right after the point." }
+    explain: "52.86: tens 5, ones 2, **tenths 8**, hundredths 6."
+  - type: show
+    who: warden
+    text: >-
+      ONE GRAM, CUT INTO A HUNDRED PIECES. **0.37** = 3 TENTHS (FULL COLUMNS) AND 7 HUNDREDTHS
+      (SINGLE SQUARES).
+    widget: { kind: decgrid, value: 0.37 }
+  - type: input
+    who: voss
+    text: In **3.472**, what is the **7** worth?
+    answer: 0.07
+    atom: value
+    nudges:
+      - { value: 7, text: "That's the digit. It's in the hundredths place: 7 hundredths." }
+      - { value: 0.7, text: "That would be in the tenths place. One place further." }
+    explain: "7 hundredths = **0.07**."
+  - type: ask
+    who: warden
+    text: 0.07 IS THE SAME AS…
+    options: ['$\frac{7}{100}$', '$\frac{7}{10}$', '$\frac{7}{1000}$', '$7$']
+    correct: 0
+    atom: fraction
+    nudges:
+      "1": "Tenths are one place after the point. 0.07 has its 7 in the second place — hundredths."
+    explain: "7 hundredths: $\\frac{7}{100} = 0.07$."
+  - type: practice
+    skill: dec-places
+    count: 4

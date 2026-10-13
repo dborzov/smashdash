@@ -1,0 +1,60 @@
+id: what-could-it-be
+title: What Could It Be?
+skill: round-range
+beats:
+  - type: say
+    who: voss
+    text: >-
+      A scout says "about 5,000", rounded to the nearest thousand. Before I plan, I need to know:
+      what could the **true** number be? How bad could it be?
+  - type: show
+    who: wren
+    text: >-
+      Everything in the green stretch rounds to 5,000. It starts exactly at the halfway mark,
+      4,500 (halfway rounds up), and stops just before 5,500 (which would round up to 6,000).
+    widget: { kind: numberline, min: 4000, max: 6000, step: 500, minor: 100, labels: all, band: [4500, 5499] }
+  - type: ask
+    who: wren
+    text: Which of these could be the true count?
+    options: ['$4{,}500$', '$4{,}480$', '$5{,}500$', '$6{,}050$']
+    correct: 0
+    atom: could-be
+    nudges:
+      "1": "4,480 is just below halfway — it rounds **down** to 4,000."
+      "2": "5,500 is exactly halfway to 6,000 — and halfway rounds up, to 6,000."
+    explain: "4,500 is exactly halfway, and halfway rounds up — to 5,000. It counts!"
+  - type: input
+    who: voss
+    text: What is the **smallest** whole number that rounds to 5,000 (nearest thousand)?
+    answer: 4500
+    atom: smallest
+    nudges:
+      - { value: 4501, text: "4,500 itself is exactly halfway — and halfway rounds up, to 5,000. So it counts." }
+      - { value: 4000, text: "4,000 rounds to itself, not to 5,000." }
+      - { value: 4499, text: "4,499 is just below halfway — it rounds down to 4,000." }
+    explain: "The smallest is the halfway point: **4,500**."
+  - type: input
+    who: voss
+    text: And the **largest**?
+    answer: 5499
+    atom: largest
+    nudges:
+      - { value: 5500, text: "5,500 is exactly halfway to 6,000 — it rounds up. Go one lower." }
+      - { value: 5999, text: "That's much nearer 6,000." }
+    explain: "One less than the next halfway point: **5,499**."
+  - type: ask
+    who: hobb
+    text: I rounded 38,472 to 38,000. To which place did I round?
+    options:
+      - the nearest thousand
+      - the nearest ten thousand
+      - the nearest hundred
+    correct: 0
+    atom: place-used
+    nudges:
+      "1": "To the nearest ten thousand, 38,472 would be 40,000."
+      "2": "To the nearest hundred, it would be 38,500."
+    explain: "38,000 keeps the thousands and zeros everything after: the nearest **thousand**."
+  - type: practice
+    skill: round-range
+    count: 4

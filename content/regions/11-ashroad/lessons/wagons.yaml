@@ -1,0 +1,50 @@
+id: wagons
+title: Wagons In, Wagons Out
+skill: pv-shift
+beats:
+  - type: narrate
+    text: >-
+      Every wagon that joins or leaves the column changes Hobb's ledger. He mutters the totals
+      under his breath like a prayer.
+  - type: say
+    who: hobb
+    text: >-
+      When a wagon of 10,000 arrows comes in, only one digit should change: the ten-thousands.
+      Unless that digit is a 9. Then it rolls over and carries, like a wheel.
+  - type: play
+    who: hobb
+    text: >-
+      The March's stores hold 3,995,000 arrows. A wagon brings 10,000 more. Add one token to the
+      ten-thousands, then trade until no column holds ten.
+    widget: { kind: abacus, places: 7, start: 3995000, target: 4005000 }
+    done: "9 + 1 made ten — so it carried. Then the hundred-thousands carried too. 4,005,000."
+  - type: input
+    who: hobb
+    text: What is 10,000 more than **6,293,000**?
+    answer: 6303000
+    atom: carry
+    nudges:
+      - { value: 6203000, text: "The 9 in the ten-thousands became 10 — that's one more hundred-thousand. Carry it!" }
+      - { value: 7293000, text: "That's a million more. Only 10,000." }
+      - { value: 6294000, text: "That's 1,000 more. Find the ten-thousands digit." }
+    explain: "9 ten-thousands + 1 = 10 ten-thousands = 1 hundred-thousand: **6,303,000**."
+  - type: input
+    who: wren
+    text: The Host burned 1,000 sacks. The store held **5,000,400**. How many are left?
+    answer: 4999400
+    atom: borrow
+    nudges:
+      - { value: 5009400, text: "The thousands digit was 0 — you can't take one away. Borrow from the left, all the way to the millions." }
+      - { value: 5001400, text: "That's adding. Burned means fewer." }
+    explain: "Borrow across the zeros: 5,000,400 − 1,000 = **4,999,400**."
+  - type: input
+    who: voss
+    text: The ledger went from **2,451,300** to **2,551,300**. How much came in?
+    answer: 100000
+    atom: which-place
+    nudges:
+      - { value: 1, text: "Only one digit went up by one — but it's in the hundred-thousands place." }
+    explain: "The hundred-thousands digit went from 4 to 5: **100,000** came in."
+  - type: practice
+    skill: pv-shift
+    count: 4

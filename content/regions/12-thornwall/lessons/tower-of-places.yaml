@@ -1,0 +1,63 @@
+id: tower-of-places
+title: The Tower of Places
+skill: pow10-places
+beats:
+  - type: narrate
+    text: >-
+      A letter from Greyhaven arrives by crow. Brother Anselm has drawn a tower: each floor ten
+      times wider than the one above it.
+  - type: say
+    who: anselm
+    text: >-
+      Every place is ten times the place to its right. So every place is a **power of ten**: ones
+      are $10^0$, tens $10^1$, hundreds $10^2$, thousands $10^3$… The power is just the number of
+      zeros.
+  - type: play
+    who: wren
+    text: >-
+      Here's how I see the Host: every step is ×10. A soldier, a squad, a company, a battalion, a
+      legion, an army, the Host. Drag the marker to where **47,000** lives.
+    widget: { kind: logline, min: 0, max: 7, target: 47000, linear: true }
+    done: "47,000 lives between 10,000 and 100,000: a five-digit number, in the ten-thousands."
+  - type: input
+    who: anselm
+    text: The ten-thousands place is worth 10,000. As a power of ten, that is $10^{?}$
+    answer: 4
+    atom: place-to-power
+    nudges:
+      - { value: 5, text: "Count only the zeros in 10,000 — not the 1." }
+    explain: "10,000 has four zeros: $10^4$."
+  - type: ask
+    who: anselm
+    text: $10^6$ is the value of one of which place?
+    options: [the millions, the hundred-thousands, the ten-millions]
+    correct: 0
+    atom: power-to-place
+    nudges:
+      "1": "$10^6$ has six zeros: 1,000,000."
+    explain: "$10^6 = 1{,}000{,}000$ — one million."
+  - type: input
+    who: voss
+    text: $1{,}000 \times 1{,}000 = 10^{?}$
+    answer: 6
+    atom: thousand-thousands
+    nudges:
+      - { value: 9, text: "Multiplying by a power of ten **adds** zeros: 3 zeros and 3 more." }
+    explain: "Three zeros and three more: $10^6$. A thousand thousands is a million."
+  - type: say
+    who: wren
+    text: >-
+      That's why I can shout "about $10^5$!" from the wall and the Marshal knows straight away:
+      an army, not a battalion. One step up the tower is a whole different fight.
+  - type: input
+    who: anselm
+    text: In 4,372,519 the 7 is worth $7 \times 10^{?}$
+    answer: 4
+    atom: digit-value
+    nudges:
+      - { value: 5, text: "Start counting at the ones with 0: ones are $10^0$." }
+      - { value: 70000, text: "That's its value. We want the power: how many zeros in 70,000?" }
+    explain: "The 7 is in the ten-thousands place: $7 \\times 10^4 = 70{,}000$."
+  - type: practice
+    skill: pow10-places
+    count: 4
