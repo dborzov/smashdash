@@ -239,10 +239,12 @@ describe('old saves with the new regions', () => {
     expect(regionUnlocked(p, regionById.junkyard)).toBe(false);
   });
 
-  it('a brand-new player still starts in Bramblebottom with everything else locked', () => {
+  it('a brand-new player starts in Bramblebottom; only the two campaign gates are open', () => {
     const p = migrate(v1Save([], []));
     expect(currentRegion(p).id).toBe('bramblebottom');
-    for (const r of regions) expect(regionUnlocked(p, r), r.id).toBe(r.id === 'bramblebottom');
+    // Each campaign has its own first region (Greyhaven opens the Long Count from day one).
+    const open = new Set(['bramblebottom', 'greyhaven']);
+    for (const r of regions) expect(regionUnlocked(p, r), r.id).toBe(open.has(r.id));
   });
 
   it('an exported v1 save imports, and spaced review keeps working', () => {

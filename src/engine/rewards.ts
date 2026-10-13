@@ -18,7 +18,7 @@ export type Fx =
   | { kind: 'egg' }
   | { kind: 'ach'; id: string }
   | { kind: 'quest'; id: string }
-  | { kind: 'tier'; skill: string; to: number };
+  | { kind: 'tier'; skill: string; to: number; up: boolean };
 
 export interface Reward {
   xp?: number;

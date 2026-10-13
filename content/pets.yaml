@@ -52,3 +52,29 @@
   epitaphs:
     - "Gave the best hugs. Also the most painful."
     - "Hoo will we hug now?"
+- id: bonepup
+  name: Bone Pup
+  desc: "A puppy made of old bones and loyalty, found wandering the March. Its eyes glow when it's pleased with you."
+  color: "#e8e0d0"
+  favorite: bone-biscuit
+  lines:
+    - "*clatter clatter* (that's a happy clatter)"
+    - "*buries a rib in the corner. It was its own rib.*"
+    - "Arf! *jaw falls off* ...*puts it back on*"
+    - "*wags so hard its tail flies across the room*"
+  epitaphs:
+    - "Was already mostly skeleton. Now entirely."
+    - "A good boy. Bones and all."
+- id: mimic
+  name: Mimic Chest
+  desc: "A tiny treasure chest with teeth. Will try to eat your coins. Loves you anyway."
+  color: "#c98a3c"
+  favorite: crickets
+  lines:
+    - "*CHOMP* (that was your sock)"
+    - "*pretends to be furniture until you look away*"
+    - "*rattles its coins at you hopefully*"
+    - "*tongue out, panting, like a dog made of wood*"
+  epitaphs:
+    - "Finally just a chest."
+    - "Lid closed for the last time. Still had your sock inside."

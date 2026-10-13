@@ -5,11 +5,48 @@
 import { useEffect, useState } from 'preact/hooks';
 import { fxQueue, dayNews, clearDayNews, useProfile } from '../../engine/store';
 import type { Fx } from '../../engine/rewards';
-import { itemById } from '../../content';
+import { achievementById, itemById, skillById } from '../../content';
+import { getProfile } from '../../engine/store';
+import { questById } from '../../engine/quests';
+import { TIER_NAMES, type Tier } from '../../engine/mastery';
+
+function AchCard({ id }: { id: string }) {
+  const a = achievementById[id];
+  if (!a) return null;
+  return (
+    <>
+      <div style={{ fontSize: '4rem' }} class="anim-wobble">
+        {a.icon}
+      </div>
+      <div class="muted" style={{ letterSpacing: '.1em', fontSize: '.8rem' }}>
+        TROPHY EARNED
+      </div>
+      <h2>{a.name}</h2>
+      <p>{a.desc}</p>
+      <div class="row wrap" style={{ justifyContent: 'center' }}>
+        {a.gold > 0 && <span class="chip gold">🪙 +{a.gold}</span>}
+        {a.item && (
+          <span class="chip">
+            {itemById[a.item]?.icon} {itemById[a.item]?.name}
+          </span>
+        )}
+        {a.title && <span class="chip">🏷️ New title: "{a.title}"</span>}
+      </div>
+    </>
+  );
+}
 import { titleFor } from '../../engine/profile';
 import { Modal } from './Bits';
 import { Confetti } from './Confetti';
 import { sfx } from '../../audio/sfx';
+
+type BigFx = Fx | { kind: 'achMany'; ids: string[] };
+
+function questText(id: string): string {
+  const q = getProfile()?.quests?.list.find((x) => x.id === id);
+  const def = questById[id];
+  return def ? def.text(q?.goal ?? 1) : id;
+}
 
 interface Toast {
   id: number;
@@ -20,7 +57,7 @@ let nextId = 1;
 export function FxLayer() {
   const p = useProfile();
   const [toasts, setToasts] = useState<Toast[]>([]);
-  const [big, setBig] = useState<Fx[]>([]);
+  const [big, setBig] = useState<BigFx[]>([]);
   const [news, setNews] = useState(dayNews);
 
   useEffect(() => {
@@ -36,10 +73,31 @@ export function FxLayer() {
           text: `${itemById[f.item]?.icon ?? '🎁'} +${f.count} ${itemById[f.item]?.name ?? f.item}`,
         });
       if (f.kind === 'egg') t.push({ id: nextId++, text: '🥚 A mysterious egg!' });
+      if (f.kind === 'quest')
+        t.push({ id: nextId++, text: `📜 Bounty done: ${questText(f.id)} — claim it on the board!` });
+      if (f.kind === 'tier') {
+        const sk = skillById[f.skill];
+        if (sk)
+          t.push({
+            id: nextId++,
+            text:
+              f.to >= 2 && f.up
+                ? `⬆️ ${sk.icon} ${sk.name}: ${TIER_NAMES[f.to as Tier]}! Harder problems unlocked.`
+                : `🔁 ${sk.icon} ${sk.name}: a step back to firm it up.`,
+          });
+      }
     }
     if (t.length) {
       setToasts((old) => [...old, ...t]);
       setTimeout(() => setToasts((old) => old.filter((x) => !t.includes(x))), 2800);
+    }
+    const achs = fx.filter((f): f is Extract<Fx, { kind: 'ach' }> => f.kind === 'ach');
+    if (achs.length >= 3) {
+      setBig((old) => [...old, { kind: 'achMany', ids: achs.map((a) => a.id) } as BigFx]);
+      sfx('goal');
+    } else if (achs.length) {
+      setBig((old) => [...old, ...achs]);
+      sfx('goal');
     }
     const b = fx.filter((f) => f.kind === 'level' || f.kind === 'goal');
     if (b.length) {
@@ -76,6 +134,22 @@ export function FxLayer() {
                 <p>❤️ You gained an extra heart in battle!</p>
               )}
               <p class="muted">New items may be waiting in the shop.</p>
+            </>
+          ) : shown.kind === 'ach' ? (
+            <AchCard id={shown.id} />
+          ) : shown.kind === 'achMany' ? (
+            <>
+              <div style={{ fontSize: '4rem' }}>🏆</div>
+              <h2>{shown.ids.length} trophies earned!</h2>
+              <p class="muted">Your past deeds have been written down.</p>
+              <div class="row wrap" style={{ justifyContent: 'center' }}>
+                {shown.ids.map((id) => (
+                  <span key={id} class="chip">
+                    {achievementById[id]?.icon} {achievementById[id]?.name}
+                  </span>
+                ))}
+              </div>
+              <p class="muted">See them all on the Hero screen.</p>
             </>
           ) : shown.kind === 'goal' ? (
             <>

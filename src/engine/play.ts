@@ -44,7 +44,7 @@ export function answerEffects(
     }
   }
   if (change) {
-    fx.push({ kind: 'tier', skill: change.skill, to: change.to });
+    fx.push({ kind: 'tier', skill: change.skill, to: change.to, up: change.to > change.from });
     if (change.to > change.from) {
       xp += XP.promote;
       fx.push(...track(p, 'promote', 1, now));

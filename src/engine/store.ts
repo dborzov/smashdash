@@ -55,7 +55,7 @@ export function update(fn: (p: Profile) => Fx[] | void): Fx[] {
 function catchUp(p: Profile): Fx[] {
   const roll = rollDay(p);
   if (roll.lost || roll.shieldsUsed) dayNews = roll;
-  if (p.pet) tickPet(p.pet);
+  if (p.pet) tickPet(p.pet, Date.now(), p.den);
   refreshWanderers(p);
   ensureQuests(p);
   // Trophies earned by things that happened before they existed (or while away).

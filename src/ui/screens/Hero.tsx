@@ -3,17 +3,24 @@ import { useState } from 'preact/hooks';
 import type { Profile } from '../../engine/profile';
 import { levelFromXp, maxHearts, titleFor, xpForLevel } from '../../engine/profile';
 import { Avatar } from '../../art/Avatar';
-import { classes, itemById, regions, skills } from '../../content';
-import { masteryStars } from '../../engine/mastery';
-import { Bar, Modal, Stars } from '../components/Bits';
+import { achievementById, achievements, classes, itemById } from '../../content';
+import { achProgress, earnedTitles } from '../../engine/achievements';
+import { summary } from '../../engine/skillTree';
+import { xpBoostOn } from '../../engine/rewards';
+import { Bar, Modal } from '../components/Bits';
 import { update, logout } from '../../engine/store';
-import { equip } from '../../engine/items';
+import { equip, useBoost, type UseResult } from '../../engine/items';
 import { exportProfile } from '../../engine/save';
 import { go } from '../router';
 import { sfx } from '../../audio/sfx';
 
 export function HeroScreen({ p }: { p: Profile }) {
   const [confirmSwitch, setConfirmSwitch] = useState(false);
+  const [pickTitle, setPickTitle] = useState(false);
+  const [note, setNote] = useState('');
+  const sum = summary(p);
+  const titles = earnedTitles(p);
+  const earned = achievements.filter((a) => p.ach[a.id]).length;
   const level = levelFromXp(p.hero.xp);
   const lo = xpForLevel(level);
   const hi = xpForLevel(level + 1);
@@ -55,6 +62,16 @@ export function HeroScreen({ p }: { p: Profile }) {
                 Level {level} {titleFor(level)} · {classes[p.hero.cls]?.icon}{' '}
                 {classes[p.hero.cls]?.name}
               </div>
+              <div class="row" style={{ gap: '6px', margin: '2px 0' }}>
+                <span class="hero-title">
+                  {p.title && achievementById[p.title]?.title ? `"${p.hero.name} ${achievementById[p.title].title}"` : 'No title worn'}
+                </span>
+                {titles.length > 0 && (
+                  <button class="btn small ghost" onClick={() => setPickTitle(true)}>
+                    Titles ({titles.length})
+                  </button>
+                )}
+              </div>
               <div class="muted" style={{ fontSize: '.9rem', margin: '4px 0 10px' }}>
                 Perk: {classes[p.hero.cls]?.perk}
               </div>
@@ -68,68 +85,69 @@ export function HeroScreen({ p }: { p: Profile }) {
                 <span class="chip">⚔️ {p.stats.wins} wins</span>
                 <span class="chip">💀 {p.stats.bosses} bosses</span>
                 <span class="chip fire">🔥 best streak {p.daily.best}</span>
+                {xpBoostOn(p) && (
+                  <span class="chip gold">
+                    🧉 Double XP until{' '}
+                    {new Date(p.boosts.xp2Until!).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                )}
+                {(p.boosts.lucky ?? 0) > 0 && <span class="chip gold">🪙 Lucky ×{p.boosts.lucky}</span>}
               </div>
             </div>
           </div>
 
-          <div class="section-title">📖 Spellbook</div>
-          <div class="stack">
-            {regions.map((r) => {
-              const rs = skills.filter((s) => s.region === r.id);
-              return (
-                <div key={r.id} class="panel">
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontWeight: 600,
-                      color: r.palette.accent,
-                      marginBottom: '6px',
-                    }}
-                  >
-                    {r.name}
-                  </div>
-                  <div
-                    class="grid-cards"
-                    style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))' }}
-                  >
-                    {rs.map((s) => {
-                      const st = p.skills[s.id];
-                      return st ? (
-                        <button
-                          key={s.id}
-                          class="pick"
-                          style={{ color: 'inherit', textAlign: 'left' }}
-                          onClick={() => go(`/practice/${s.id}`)}
-                        >
-                          <div class="row">
-                            <span style={{ fontSize: '1.8rem' }}>{s.icon}</span>
-                            <div>
-                              <b>{s.name}</b>
-                              <div>
-                                <Stars n={masteryStars(st)} of={5} />
-                              </div>
-                            </div>
-                          </div>
-                          <div class="muted" style={{ fontSize: '.85rem', marginTop: '4px' }}>
-                            {s.summary}
-                          </div>
-                        </button>
-                      ) : (
-                        <div key={s.id} class="pick" style={{ opacity: 0.45, textAlign: 'left' }}>
-                          <div class="row">
-                            <span style={{ fontSize: '1.8rem' }}>❔</span>
-                            <b>Unknown spell</b>
-                          </div>
-                          <div class="muted" style={{ fontSize: '.85rem' }}>
-                            Learn it in {r.name}.
-                          </div>
+          <div class="section-title">🌳 Skills</div>
+          <div class="panel row wrap" style={{ justifyContent: 'space-between' }}>
+            <div>
+              <b>
+                {sum.skillsLearned}/{sum.skillsTotal}
+              </b>{' '}
+              skills learned · <b>{sum.masters}</b> at Master tier ·{' '}
+              <b>
+                {sum.atomsSolid + sum.atomsMastered}/{sum.atomsTotal}
+              </b>{' '}
+              tiny skills solid
+            </div>
+            <button class="btn small gold" onClick={() => go('/skills')}>
+              Open the Skill Tree
+            </button>
+          </div>
+
+          <div class="section-title">
+            🏆 Trophies{' '}
+            <span class="muted" style={{ fontSize: '.9rem' }}>
+              {earned}/{achievements.length}
+            </span>
+          </div>
+          <div class="panel">
+            <div class="trophies">
+              {achievements.map((a) => {
+                const got = !!p.ach[a.id];
+                const hidden = a.secret && !got;
+                const prog = achProgress(p, a.id);
+                return (
+                  <div key={a.id} class={`trophy ${got ? 'got' : ''}`} title={hidden ? 'A secret trophy' : a.desc}>
+                    <div class="trophy-icon">{hidden ? '❔' : a.icon}</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <b>{hidden ? '???' : a.name}</b>
+                      <div class="muted" style={{ fontSize: '.8rem' }}>
+                        {hidden ? 'Keep playing to find out.' : a.desc}
+                      </div>
+                      {!got && !hidden && (
+                        <div class="bar good" style={{ marginTop: '4px', height: '6px' }}>
+                          <i style={{ width: `${prog * 100}%` }} />
                         </div>
-                      );
-                    })}
+                      )}
+                      {(a.gold > 0 || a.title) && !hidden && (
+                        <div class="muted" style={{ fontSize: '.75rem', marginTop: '2px' }}>
+                          {a.gold > 0 && `🪙 ${a.gold}`} {a.title && `· title: "${a.title}"`}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
 
           <div class="section-title">🎒 Bag</div>
@@ -165,6 +183,22 @@ export function HeroScreen({ p }: { p: Profile }) {
                         Use it in the Pet Den
                       </div>
                     )}
+                    {it.effect.boost && (
+                      <button
+                        class="btn small gold"
+                        style={{ marginTop: '6px' }}
+                        onClick={() => {
+                          let res = { ok: false, why: '' } as UseResult;
+                          update((q) => {
+                            res = useBoost(q, id);
+                          });
+                          if (res.ok) sfx('level');
+                          setNote(res.ok ? (res.line ?? 'Done!') : res.why);
+                        }}
+                      >
+                        Use
+                      </button>
+                    )}
                     {it.kind === 'potion' && (
                       <div class="muted" style={{ fontSize: '.8rem', marginTop: '4px' }}>
                         Use it during fights
@@ -175,6 +209,12 @@ export function HeroScreen({ p }: { p: Profile }) {
               })}
             </div>
           </div>
+
+          {note && (
+            <div class="panel" style={{ marginTop: '10px' }}>
+              {note}
+            </div>
+          )}
 
           <div class="section-title">⚙️ Settings</div>
           <div class="panel stack">
@@ -202,6 +242,34 @@ export function HeroScreen({ p }: { p: Profile }) {
           <div style={{ height: '20px' }} />
         </div>
       </div>
+      {pickTitle && (
+        <Modal onClose={() => setPickTitle(false)}>
+          <h2>Choose a title</h2>
+          <div class="stack">
+            <button
+              class={`btn ${!p.title ? 'gold' : 'ghost'} wide`}
+              onClick={() => {
+                update((q) => void (q.title = undefined));
+                setPickTitle(false);
+              }}
+            >
+              No title
+            </button>
+            {titles.map((t) => (
+              <button
+                key={t.id}
+                class={`btn ${p.title === t.id ? 'gold' : 'ghost'} wide`}
+                onClick={() => {
+                  update((q) => void (q.title = t.id));
+                  setPickTitle(false);
+                }}
+              >
+                {p.hero.name} {t.title}
+              </button>
+            ))}
+          </div>
+        </Modal>
+      )}
       {confirmSwitch && (
         <Modal onClose={() => setConfirmSwitch(false)}>
           <h2>Switch hero?</h2>

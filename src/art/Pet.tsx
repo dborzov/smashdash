@@ -9,6 +9,7 @@ function Eyes({
   y,
   r = 9,
   dark = '#1b1033',
+  sleep,
 }: {
   mood: Mood;
   x1: number;
@@ -16,7 +17,15 @@ function Eyes({
   y: number;
   r?: number;
   dark?: string;
+  sleep?: boolean;
 }) {
+  if (sleep && mood !== 'dead')
+    return (
+      <g fill="none" stroke={dark} stroke-width="3.5" stroke-linecap="round">
+        <path d={`M${x1 - r} ${y} Q${x1} ${y + r * 0.8} ${x1 + r} ${y}`} />
+        <path d={`M${x2 - r} ${y} Q${x2} ${y + r * 0.8} ${x2 + r} ${y}`} />
+      </g>
+    );
   if (mood === 'dead')
     return (
       <g stroke={dark} stroke-width="4" stroke-linecap="round">
@@ -146,11 +155,14 @@ export function PetArt({
   species,
   mood,
   hat,
+  sleep,
   class: cls,
 }: {
   species: string;
   mood: Mood;
   hat?: string;
+  /** Eyes shut, little Zzz. */
+  sleep?: boolean;
   class?: string;
 }) {
   const sick = mood === 'sick';
@@ -210,7 +222,7 @@ export function PetArt({
           <ellipse cx="80" cy="88" rx="16" ry="10" fill="#ff8a7a" />
           <circle cx="74" cy="86" r="2" fill="#6b1010" />
           <circle cx="86" cy="86" r="2" fill="#6b1010" />
-          <Eyes mood={mood} x1={67} x2={93} y={72} r={8} />
+          <Eyes mood={mood} sleep={sleep} x1={67} x2={93} y={72} r={8} />
           <Mouth mood={mood} x={80} y={96} />
           <ellipse
             cx="62"
@@ -270,7 +282,7 @@ export function PetArt({
           <circle cx="92" cy="44" r="13" fill="#fff" opacity=".9" />
           <circle cx="122" cy="66" r="8" fill="#fff" opacity=".9" />
           <circle cx="72" cy="72" r="6" fill="#fff" opacity=".9" />
-          <Eyes mood={mood} x1={68} x2={92} y={110} r={7} />
+          <Eyes mood={mood} sleep={sleep} x1={68} x2={92} y={110} r={7} />
           <Mouth mood={mood} x={80} y={128} />
           <ellipse cx="60" cy="122" rx="5" ry="3" fill="#ff7a9a" opacity=".5" />
           <ellipse cx="100" cy="122" rx="5" ry="3" fill="#ff7a9a" opacity=".5" />
@@ -321,7 +333,7 @@ export function PetArt({
             stroke="#3a2210"
             stroke-width="2.5"
           />
-          <Eyes mood={mood} x1={62} x2={98} y={80} r={12} />
+          <Eyes mood={mood} sleep={sleep} x1={62} x2={98} y={80} r={12} />
           <path
             d="M72 92 L88 92 L80 106 Z"
             fill="#ffb020"
@@ -353,6 +365,46 @@ export function PetArt({
         </g>
       );
       break;
+    case 'bonepup':
+      body = (
+        <g>
+          <path d="M118 112 Q146 100 150 80" fill="none" stroke="#e8e0d0" stroke-width="7" stroke-linecap="round" style={{ transformOrigin: '118px 112px', animation: mood === 'happy' && !sleep ? 'wag .35s ease-in-out infinite alternate' : undefined }} />
+          <path d="M118 112 Q146 100 150 80" fill="none" stroke="#3a3448" stroke-width="2" stroke-dasharray="4 6" />
+          <ellipse cx="82" cy="114" rx="40" ry="28" fill="#e8e0d0" stroke="#3a3448" stroke-width="3.5" />
+          <path d="M66 100 v24 M78 98 v28 M90 98 v28 M102 100 v24" stroke="#b8b0a4" stroke-width="3" stroke-linecap="round" />
+          {[56, 74, 92, 110].map((x) => (
+            <rect key={x} x={x - 5} y="130" width="10" height="18" rx="5" fill="#e8e0d0" stroke="#3a3448" stroke-width="3" />
+          ))}
+          <path d="M36 50 Q24 50 22 74 Q32 72 40 64 Z M108 50 Q120 50 122 74 Q112 72 104 64 Z" fill="#3a3448" stroke="#1a1626" stroke-width="3" />
+          <path d="M40 74 Q40 40 72 38 Q104 40 104 74 Q104 92 92 98 L60 98 Q40 92 40 74 Z" fill="#f2ece2" stroke="#3a3448" stroke-width="3.5" />
+          <ellipse cx="72" cy="90" rx="16" ry="10" fill="#e0d8cc" stroke="#3a3448" stroke-width="2.5" />
+          <ellipse cx="72" cy="84" rx="5" ry="4" fill="#1a1626" />
+          <g>
+            <circle cx="58" cy="66" r="11" fill="#1a1626" />
+            <circle cx="86" cy="66" r="11" fill="#1a1626" />
+            <Eyes mood={mood} sleep={sleep} x1={58} x2={86} y={66} r={6} dark="#6ee7ff" />
+          </g>
+          {mood !== 'happy' && <Mouth mood={mood} x={72} y={98} />}
+        </g>
+      );
+      break;
+    case 'mimic':
+      body = (
+        <g>
+          <rect x="30" y="96" width="100" height="50" rx="6" fill="#a0602b" stroke="#4a2a10" stroke-width="3.5" />
+          <rect x="30" y="112" width="100" height="8" fill="#ffd166" opacity=".85" />
+          <rect x="74" y="108" width="12" height="16" rx="3" fill="#ffd166" stroke="#7a4a00" stroke-width="2" />
+          <path d="M30 96 L40 104 L50 96 L60 104 L70 96 L80 104 L90 96 L100 104 L110 96 L120 104 L130 96" fill="#fff" stroke="#4a2a10" stroke-width="2" />
+          {!sleep && mood !== 'dead' && <path d="M62 96 Q80 128 98 96" fill="#e0475b" stroke="#7a1020" stroke-width="2.5" />}
+          <g style={{ transformOrigin: '30px 92px', animation: mood === 'happy' && !sleep ? 'chomp 1.6s ease-in-out infinite' : undefined }}>
+            <path d="M30 92 Q30 50 80 50 Q130 50 130 92 Z" fill="#b8733a" stroke="#4a2a10" stroke-width="3.5" />
+            <path d="M30 92 Q30 50 80 50 Q130 50 130 92" fill="none" stroke="#ffd166" stroke-width="6" opacity=".85" />
+            <path d="M30 92 L40 84 L50 92 L60 84 L70 92 L80 84 L90 92 L100 84 L110 92 L120 84 L130 92" fill="#fff" stroke="#4a2a10" stroke-width="2" />
+            <Eyes mood={mood} sleep={sleep} x1={64} x2={96} y={68} r={9} />
+          </g>
+        </g>
+      );
+      break;
     default:
       // blorp, the slime
       body = (
@@ -374,7 +426,7 @@ export function PetArt({
           />
           <circle cx="112" cy="122" r="6" fill="#a8f5a0" opacity=".7" />
           <circle cx="46" cy="126" r="4" fill="#a8f5a0" opacity=".7" />
-          <Eyes mood={mood} x1={64} x2={96} y={100} r={11} />
+          <Eyes mood={mood} sleep={sleep} x1={64} x2={96} y={100} r={11} />
           <Mouth mood={mood} x={80} y={122} />
         </g>
       );
@@ -389,6 +441,19 @@ export function PetArt({
     >
       <ellipse cx="80" cy="152" rx="56" ry="8" fill="rgba(0,0,0,.25)" />
       <g transform={dead ? 'rotate(170 80 100) translate(0 -30)' : undefined}>{body}</g>
+      {sleep && !dead && (
+        <g class="zzz" font-family="Fredoka" font-weight="700" fill="#c6b8ff">
+          <text x="120" y="40" font-size="22">
+            Z
+          </text>
+          <text x="136" y="22" font-size="16">
+            z
+          </text>
+          <text x="148" y="8" font-size="12">
+            z
+          </text>
+        </g>
+      )}
       {hat && !dead && (
         <g transform="translate(36 -2) scale(0.75)">
           <HatArt id={hat} outfit="#9b7bff" />

@@ -5,6 +5,7 @@ import { levelFromXp } from '../../engine/profile';
 import { items } from '../../content';
 import { buy, canBuy } from '../../engine/items';
 import { update } from '../../engine/store';
+import { track } from '../../engine/events';
 import { Portrait } from '../../art/Portrait';
 import { sfx } from '../../audio/sfx';
 
@@ -13,6 +14,7 @@ const TABS = [
   { id: 'fun', label: '🧸 Toys & care', kinds: ['toy', 'care'] },
   { id: 'battle', label: '⚔️ Battle', kinds: ['potion', 'special'] },
   { id: 'style', label: '👑 Style', kinds: ['hat', 'cape'] },
+  { id: 'den', label: '🏠 Den', kinds: ['decor'] },
 ];
 
 const QUIPS = [
@@ -21,6 +23,9 @@ const QUIPS = [
   'That cheese? Very rare. Very suspicious. Very good.',
   'No refunds. Especially not on the Mystery Meat.',
   'Ah, a customer with gold! My favourite kind.',
+  'New stock from the North! Slightly frostbitten. Still works.',
+  'A ward rune? Excellent choice. Mostly un-cursed.',
+  'Decorate the den! Pets with a bed live longer. Probably.',
 ];
 
 export function ShopScreen({ p }: { p: Profile }) {
@@ -97,6 +102,8 @@ export function ShopScreen({ p }: { p: Profile }) {
                       let err: string | null = null;
                       update((q) => {
                         err = buy(q, it.id);
+                        if (err) return;
+                        return [...track(q, 'buy'), ...track(q, 'goldSpent', it.price)];
                       });
                       if (!err) {
                         sfx('coin');
