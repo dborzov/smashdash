@@ -41,7 +41,14 @@ describe('circuits', () => {
   });
 });
 
-import { boardValue, breakToken, logPos, logValue, shiftDigits, trade } from '../src/ui/widgets/PlaceValue';
+import {
+  boardValue,
+  breakToken,
+  logPos,
+  logValue,
+  shiftDigits,
+  trade,
+} from '../src/ui/widgets/PlaceValue';
 import { decimalWords, digitAt, group, roundTo, topPlace, words } from '../src/skills/place';
 import { judge } from '../src/engine/answer';
 import type { Problem } from '../src/skills/types';
@@ -91,7 +98,9 @@ describe('place helpers', () => {
   });
   it('number words', () => {
     expect(words(2040006)).toBe('two million, forty thousand, six');
-    expect(words(4372519)).toBe('four million, three hundred seventy-two thousand, five hundred nineteen');
+    expect(words(4372519)).toBe(
+      'four million, three hundred seventy-two thousand, five hundred nineteen',
+    );
     expect(words(100000)).toBe('one hundred thousand');
     expect(decimalWords(4.027)).toBe('four and twenty-seven thousandths');
     expect(decimalWords(0.05)).toBe('five hundredths');
@@ -105,7 +114,13 @@ describe('new answer formats', () => {
     atoms: [],
     prompt: 'p',
     explain: 'e',
-    answer: { kind: 'order', items: ['a', 'b', 'c'], correct: [2, 0, 1], direction: 'small → big', traps: [{ order: [0, 1, 2], text: 'trap' }] },
+    answer: {
+      kind: 'order',
+      items: ['a', 'b', 'c'],
+      correct: [2, 0, 1],
+      direction: 'small → big',
+      traps: [{ order: [0, 1, 2], text: 'trap' }],
+    },
   };
   it('orders: right, trap nudge, reversed nudge, wrong', () => {
     expect(judge(order, [2, 0, 1], false).kind).toBe('right');

@@ -7,8 +7,10 @@ keep it organised, tested and documented.
 ## Read before changing things
 
 - `docs/vision.md` — the owner's intent and tone. **Funny, alive, a bit naughty; never dry.**
-- `docs/learning-design.md` — the skill graph, stumbling blocks and mastery model.
-- `docs/game-design.md` — loop, economy, pet, streaks.
+  (The Long Count campaign is the grown-up, darker voice — still never dry, never "maths is fun".)
+- `docs/learning-design.md` — the skill graph, atoms, stumbling blocks, mastery/tiers and
+  adaptive runs.
+- `docs/game-design.md` — campaigns, loop, economy, trophies, bounties, pet, streaks.
 - `docs/architecture.md` — code layout, state, routing, commands.
 - `docs/content-guide.md` — how to write lessons, skills, regions (YAML gotchas!).
 - `docs/decisions.md` — why things are the way they are. Add entries for new decisions.
@@ -19,8 +21,9 @@ keep it organised, tested and documented.
    text in components.
 2. **Run the checks.** `npm run ci` (typecheck + content validation + tests + build) must pass
    before you push. `npm run validate` after any content edit.
-3. **Atomic skills.** One idea per skill. Every skill: an entry in `content/skills.yaml`, a
-   generator in `src/skills/`, exactly one teaching lesson, and nudges for its classic mistakes.
+3. **Atomic skills.** One idea per skill. Every skill: an entry in `content/skills.yaml` (with
+   its atoms), a generator in `src/skills/` that tags every problem with its atoms, exactly
+   one teaching lesson, and nudges for its classic mistakes.
    Never practise a skill before it is taught (tests enforce this).
 4. **Maths rendering.** Always `$…$` LaTeX in content. Check new LaTeX renders (tests do).
 5. **Saves are sacred.** If you change `Profile`, bump `SAVE_VERSION` and add a migration in
@@ -35,4 +38,5 @@ keep it organised, tested and documented.
 
 - `npm run dev` then open http://localhost:5173/smashdash/
 - `#/preview` — play any lesson without saving, sample any generator.
+- `#/skills` — the Skill Tree: every skill and atom, with the player's state.
 - Deploys automatically from `master` via `.github/workflows/deploy.yml`.

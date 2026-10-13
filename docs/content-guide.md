@@ -4,8 +4,12 @@ Everything here is checked by `npm run validate` — run it after every content 
 
 ## Writing style (read first)
 
-- Funny, warm, a bit naughty. Grimble is sarcastic but kind. Poop, burps and farts are welcome;
-  meanness, scary gore and anything adult are not.
+- **The Muddled Kingdom** (regions 1–9): funny, warm, a bit naughty. Grimble is sarcastic but
+  kind. Poop, burps and farts are welcome; meanness, scary gore and anything adult are not.
+- **The Long Count** (regions 10–13): grown-up and grim, but kid-safe. Tired soldiers, dry
+  humour, real stakes (a misread number sends the wrong patrol). No "maths is fun", no
+  wizards hiding numbers in boxes. The *mistake* is the villain. Death is offstage; nobody
+  is gory. Keep the beats just as short.
 - Short beats. One idea per beat, one or two sentences. **A check every 2–3 beats.**
 - Explain with the story's objects: boxes, coins, scales, layers of wrapping, potions.
 - Every wrong option in a check should be a *real* misconception with a nudge explaining it.
@@ -18,49 +22,73 @@ Everything here is checked by `npm run validate` — run it after every content 
 - Inside **double** quotes, backslashes must be doubled: `"$3 \\times 4$"`. Inside single quotes
   or block scalars, write LaTeX normally: `'\frac{x}{2}'`.
 - Nudges for `ask` beats are keyed by option index as strings: `"1": "…"`.
+- Atom ids like `true`, `no`, `on` parse as booleans — pick another word (`honest`).
+- Big numbers in maths: write `$4{,}372{,}519$` (the braces stop KaTeX adding a space after
+  the comma). In plain text, `4,372,519` is fine.
 
 ## Lesson beats
 
 ```yaml
-id: my-lesson          # unique across the game
+id: my-lesson # unique across the game
 title: My Lesson
-skill: eval-one        # the skill this lesson teaches (omit for pure story)
+skill: eval-one # the skill this lesson teaches (omit for pure story)
 beats:
-  - type: say          # speech with portrait; `who` is a key in content/cast.yaml
+  - type: say # speech with portrait; `who` is a key in content/cast.yaml
     who: grimble
     text: Hello!
-  - type: narrate      # italic narration
+  - type: narrate # italic narration
     text: The fog rolls in.
-  - type: show         # explanation panel: text and/or big maths and/or a static widget
-    text: "Subtract 5 from both sides:"
+  - type: show # explanation panel: text and/or big maths and/or a static widget
+    text: 'Subtract 5 from both sides:'
     math: '\begin{aligned} x + 5 \hl{\,- 5} &= 12 \hl{\,- 5} \\ x &= 7 \end{aligned}'
-  - type: ask          # multiple choice check (options are shuffled at runtime)
+  - type: ask # multiple choice check (options are shuffled at runtime)
     text: What does $5x$ mean?
-    options: ["$5 + x$", "$5 \\times x$"]
+    options: ['$5 + x$', "$5 \\times x$"]
     correct: 1
-    nudges: { "0": "There's an invisible **times**, not a plus." }
+    nudges: { '0': "There's an invisible **times**, not a plus." }
     explain: "$5x = 5 \\times x$."
-  - type: input        # number answer with keypad
+  - type: input # number answer with keypad
     text: If $x = 5$, what is $2x$?
     answer: 10
     nudges: [{ value: 25, text: "Don't glue the digits!" }]
     hint: Swap the box for 5.
     explain: "$2 \\times 5 = 10$."
-  - type: choose       # choose-your-own-adventure flavour; every option is fine
+  - type: choose # choose-your-own-adventure flavour; every option is fine
     who: nettle
     text: Tea?
     options:
       - { text: Yes please!, reply: "It's mostly mud." }
-      - { text: No thanks., reply: "Smart." }
-  - type: play         # interactive widget the player must complete
+      - { text: No thanks., reply: 'Smart.' }
+  - type: play # interactive widget the player must complete
     text: Get the box alone!
-    widget: { kind: balance, left: { x: 1, c: 4 }, right: { x: 0, c: 9 }, value: 5, goal: isolate, tools: [both] }
-    done: "So $x = 5$!"
-  - type: practice     # generated problems from a skill's generator
-    skill: eval-one
+    widget:
+      {
+        kind: balance,
+        left: { x: 1, c: 4 },
+        right: { x: 0, c: 9 },
+        value: 5,
+        goal: isolate,
+        tools: [both],
+      }
+    done: 'So $x = 5$!'
+  - type: input # number entered on place-value dials instead of the keypad
+    text: Write two million, forty thousand and six.
+    answer: 2040006
+    dials: { int: 7 } # 7 whole-number dials (add `dec: 3` for decimals)
+    atom: zero-inside # optional: which atom of the lesson's skill this check exercises
+    explain: 'Zeros hold the empty places.'
+  - type: order # tap items into order; traps are predicted wrong orders with a nudge
+    text: Smallest threat first.
+    items: ['$87{,}400$', '$102{,}300$', '$9{,}950$']
+    correct: [2, 0, 1]
+    direction: smallest → largest
+    traps: [{ order: [1, 0, 2], text: 'You sorted by the first digit. Count the digits first!' }]
+    explain: 'Fewer digits means smaller.'
+  - type: practice # generated problems from a skill's generator (an adaptive run:
+    skill: eval-one # misses add problems, see docs/learning-design.md)
     count: 4
-  - type: reward       # given only the first time the lesson is finished
-    egg: true          # or gold: 15, or item: cheese
+  - type: reward # given only the first time the lesson is finished
+    egg: true # or gold: 15, or item: cheese
     text: You found an egg!
 ```
 
@@ -79,17 +107,30 @@ beats:
 | `plot` | `size?`, `points?`, `line?`, `rule?` + `targets?`, `aim?` | coordinate grid; `aim` = fire at given points; `rule` + `targets` = work out each y, then fire |
 | `circuit` | `cells`, `flipped?`, `load?`, `ohms?`, `mud?`, `mudOhms?`, `gap?`, `sameEnd?`, `readout?`, `tools?`, `goal?`, `target?`, `fuse?` | battery loop; `tools`: `cells`/`mud`/`flip`/`close`; `goal`: `close`/`volts`/`amps` |
 | `pipe` | `height`, `squeeze`, `target?` | water analogy: flow = height ÷ squeeze |
+| `placechart` | `value?`, `dec?`, `top?`, `hl?`, `hide?`, `tap?` | place-value columns; `hl` highlights a place (power of ten); `tap` = tap that many columns to see their worth |
+| `abacus` | `places`, `start?`, `target?` | the Reckoning Board: tokens per place, trade ten for one / break one into ten; done when it shows `target` with no column over 9 |
+| `numberline` | `min`, `max`, `step`, `minor?`, `labels?` (`ends`/`all`), `arrow?`, `marks?`, `band?`, `target?`, `tolerance?` | `band` shades a range (what rounds to a value); with `target`, tap to place it |
+| `logline` | `min`, `max` (powers of ten), `target?`, `linear?` | log scale: every ×10 is one step; drag `target` into its stretch; `linear` adds a normal line underneath |
+| `rounder` | `value`, `place` (power of ten, −2…7) | pick the nearer round number on a zoomed line |
+| `shifter` | `value`, `times` (−4…4) | ×10 / ÷10 as digits sliding past a fixed point |
+| `decgrid` | `value` (0–1) | tenths/hundredths shaded on a grid |
 
 `boxes`, `balance`, `groups`, `area`, `plot` and `circuit` also work as still pictures in `ask`
 and `input` beats. Tests check that every interactive goal can actually be reached (plot
-targets on the grid, circuit and pipe targets reachable with the tools given).
+targets on the grid, circuit and pipe targets reachable with the tools given, abacus targets
+that fit the board, number-line and log-line targets on the line and not already solved).
 
 ## Adding a skill
 
-1. Add the entry to `content/skills.yaml` (id, name, region, icon, summary).
+1. Add the entry to `content/skills.yaml` (id, name, region, icon, summary, `requires` — the
+   skills it builds on, drawn as the Skill Tree graph — and `atoms`: 2–7 tiny skills, each
+   `{ id, name }` where `name` is rich text with an example, e.g. `'$10^2 = 100$'`).
 2. Write a generator in `src/skills/<topic>.ts`: `(rng, level) => Problem`. Use `choice()` and
-   `numeric()` from `src/skills/util.ts`; give every predicted mistake a nudge; keep answers
-   clean (integers or short decimals); add a hint and a worked `explain`.
+   `numeric()` from `src/skills/util.ts` (or an `order` / `line` answer — see
+   `src/skills/placevalue.ts`); give every predicted mistake a
+   nudge; keep answers clean (integers or short decimals); add a hint and a worked `explain`.
+   Set `atoms` on every problem to the atom ids it exercises. Tests check every atom used is
+   declared, and that every declared atom actually comes up.
 3. Register it in `src/skills/index.ts`.
 4. Write exactly one lesson that teaches it (`skill: <id>`), and use it in encounters after that.
 5. Add a row to the table in `docs/learning-design.md`.
@@ -102,4 +143,24 @@ targets on the grid, circuit and pipe targets reachable with the tools given).
 2. Path: start with a `story` node, alternate lessons and encounters, end with a `boss`.
 3. Write the intro/outro stories and the lessons in `lessons/`.
 4. Add speakers to `content/cast.yaml` (and a portrait in `src/art/Portrait.tsx` if needed).
-5. `requires:` the region(s) that must be finished first. Position it on the map with `map`.
+5. `requires:` the region(s) that must be finished first (same campaign). Position it on the
+   campaign's atlas with `map`.
+6. Set `campaign:` (`kingdom` or `march`, or add one in `content/campaigns.yaml`), `topic:`
+   (one line of what it teaches — shown on its card) and `added:` (the date it ships; it is
+   marked NEW on the adventure board for a while and until visited).
+7. Add a dispatch to `content/news.yaml` so players notice it.
+8. Never insert nodes into an existing region's path (it would re-lock bosses for existing
+   players); add a new region instead. See `docs/decisions.md`.
+
+## Achievements, bounties, items
+
+- Trophies live in `content/achievements.yaml`: `{ id, name, icon, desc, stat, goal, gold,
+item?, title?, secret? }`. `stat` is an event counter (see `GameEvent` in
+  `src/engine/events.ts`), a derived stat (`statValue` in `src/engine/achievements.ts`), or
+  `region:<id>` / `campaign:<id>`. Tests reject unknown stats and trophies a new hero would
+  already have.
+- Bounties are code (`QUESTS` in `src/engine/quests.ts`) because their goals and conditions
+  are logic.
+- Items: `kind` is `food`, `toy`, `care`, `potion`, `hat`, `cape`, `special` or `decor`
+  (decor goes in the pet den, one of each).
+  Effects include `ward`, `lens`, `boost` (`xp2`/`lucky` + `minutes`), `bond`.

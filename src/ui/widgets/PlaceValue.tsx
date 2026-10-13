@@ -726,8 +726,9 @@ export function DecGrid({ value }: { value: number }) {
     <div class="decgrid-wrap">
       <div class="decgrid" role="img" aria-label={`${fmt(value)} of the square shaded`}>
         {Array.from({ length: 100 }, (_, i) => {
-          const col = i % 10;
-          const row = Math.floor(i / 10);
+          // The grid flows column by column (CSS grid-auto-flow: column).
+          const col = Math.floor(i / 10);
+          const row = i % 10;
           const on = col < tenths || (col === tenths && row < hund);
           return <i key={i} class={on ? (col < tenths ? 'on' : 'on2') : ''} />;
         })}

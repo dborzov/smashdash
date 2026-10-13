@@ -17,15 +17,33 @@
 - 16 new skills (38 total), 5 new widgets (`groups`, `area`, `plot`, `circuit`, `pipe`).
 - Old saves keep all progress; no migration needed.
 
+## v2 — The Long Count (place value), adaptive practice, the Skill Tree
+
+- A second, darker campaign: **Greyhaven**, **The Ashen Road**, **The Siege of Thornwall**,
+  **The Glass Vaults** — 20 new skills from place names to the millions through rounding
+  and decimals, 28 lessons and stories, 4 bosses, new foes and scenes.
+- Place-value applets: place chart, Reckoning Board (abacus), number lines, a log-scale line,
+  rounder, digit shifter, decimal grid. New answer formats: place-value dials, put-in-order,
+  tap-the-number-line. New games: Hold the Wall (siege) and Crack the Vault.
+- Adaptive runs (struggle adds practice, success trims it), tiers, 273 named atoms, and the
+  **Skill Tree** page (tree, graph, report, drills).
+- Adventure board as the home screen: continue, bounties, dispatches, filters, time and
+  accuracy per region. Per-campaign atlases.
+- ~50 trophies with titles; daily bounties and chests; new battle items (ward rune, scout's
+  lens, focus tonic, lucky coin), hats, capes and den decor; pet bond, tricks, sleep, bug
+  hunt, companions; two new species (Bone Pup, Mimic).
+- Save version 2 with a migration; all old progress kept.
+
 ## Next ideas (roughly in priority order)
 
 - **Variables on both sides** region (balance with boxes on both pans).
 - **Negative numbers** mini-arc, then equations with negative solutions.
 - More mini-game patterns: timed "speed run" (optional), "match pairs", "sort into piles",
   "build the equation" drag-and-drop.
-- Pet evolution visuals per stage, pet tricks unlocked by levels, more species.
-- Achievements / badges ("Flawless boss", "7-day streak", "Fed 50 bugs").
-- Parent page: per-skill mastery, common mistakes, time played (read-only, from the profile).
+- Pet evolution visuals per stage.
+- The Long Count, part two: multiplying/dividing by multiples of ten, negative numbers,
+  fractions ↔ decimals, long multiplication with estimates as the check.
+- Parent view of the Skill Tree report (printable; per-week trends).
 - Optional music per region; PWA/offline install for iPad home screen.
 - Painted background art layered into scenes.
 - Custom domain on `borzov.ca`.

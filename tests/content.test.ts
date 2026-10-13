@@ -15,7 +15,13 @@ import {
   petSpecies,
   itemById,
   classes,
+  campaigns,
+  achievements,
+  news,
 } from '../src/content';
+import { statValue } from '../src/engine/achievements';
+import { newProfile } from '../src/engine/profile';
+import { QUESTS } from '../src/engine/quests';
 import { generators } from '../src/skills';
 import { renderMath } from '../src/ui/math';
 import { circuitState } from '../src/skills/electricity';
@@ -61,6 +67,11 @@ describe('content schema', () => {
     check(z.array(S.PetSpecies), raw.petsYaml, 'pets.yaml');
     check(z.record(z.string(), S.CastMember), raw.castYaml, 'cast.yaml');
     check(S.Classes, raw.classesYaml, 'classes.yaml');
+  });
+  it('campaigns, achievements, news', () => {
+    check(z.array(S.Campaign), raw.campaignsYaml, 'campaigns.yaml');
+    check(z.array(S.Achievement), raw.achievementsYaml, 'achievements.yaml');
+    check(z.array(S.News), raw.newsYaml, 'news.yaml');
   });
 });
 
@@ -160,6 +171,29 @@ describe('content references', () => {
             expect(n.value, `${where}: nudge equals answer`).not.toBe(b.answer);
         if (b.type === 'practice')
           expect(generators[b.skill], `${where}: skill ${b.skill}`).toBeDefined();
+        if ((b.type === 'ask' || b.type === 'input' || b.type === 'order') && b.atom) {
+          const sk = skills.find((x) => x.id === l.skill);
+          expect(
+            sk?.atoms.some((a) => a.id === b.atom),
+            `${where}: atom ${b.atom} isn't an atom of ${l.skill}`,
+          ).toBe(true);
+        }
+        if (b.type === 'input' && b.dials) {
+          const [int, dec = ''] = String(Math.abs(b.answer)).split('.');
+          expect(int.length, `${where}: answer too long for the dials`).toBeLessThanOrEqual(
+            b.dials.int,
+          );
+          expect(dec.length, `${where}: too many decimals for the dials`).toBeLessThanOrEqual(
+            b.dials.dec ?? 0,
+          );
+        }
+        if (b.type === 'order') {
+          expect([...b.correct].sort(), `${where}: correct must use every item once`).toEqual(
+            b.items.map((_, k) => k),
+          );
+          for (const t of b.traps ?? [])
+            expect(t.order.join(), `${where}: a trap equals the answer`).not.toBe(b.correct.join());
+        }
         if (b.type === 'reward' && b.item)
           expect(itemById[b.item], `${where}: item ${b.item}`).toBeDefined();
         if (
@@ -188,6 +222,8 @@ describe('content references', () => {
           texts.push(b.explain, b.hint, ...(b.nudges ?? []).map((n) => n.text));
         if (b.type === 'choose') texts.push(...b.options.flatMap((o) => [o.text, o.reply]));
         if (b.type === 'play') texts.push(b.done);
+        if (b.type === 'order')
+          texts.push(b.explain, ...b.items, ...(b.traps ?? []).map((t) => t.text));
         for (const t of texts) checkRich(t, where);
         if ('math' in b && b.math) renderMath(b.math, true, true);
       });
@@ -242,6 +278,29 @@ describe('content references', () => {
               }
           expect(reachable, `${where}: goal can't be reached with the tools`).toBe(true);
         }
+        if (w.kind === 'abacus') {
+          const cap = 10 ** w.places;
+          expect(w.start ?? 0, `${where}: abacus start doesn't fit`).toBeLessThan(cap);
+          if (w.target !== undefined) {
+            expect(w.target, `${where}: abacus target doesn't fit`).toBeLessThan(cap);
+            expect(w.target, `${where}: abacus already solved`).not.toBe(w.start ?? 0);
+          }
+        }
+        if (w.kind === 'numberline') {
+          expect(w.min, `${where}: numberline range`).toBeLessThan(w.max);
+          const pts = [w.target, w.arrow, ...(w.marks ?? []).map((m) => m.at), ...(w.band ?? [])];
+          for (const x of pts)
+            if (x !== undefined)
+              expect(x >= w.min && x <= w.max, `${where}: ${x} off the numberline`).toBe(true);
+        }
+        if (w.kind === 'logline' && w.target !== undefined) {
+          const d = Math.floor(Math.log10(w.target) + 1e-9);
+          expect(d >= w.min && d < w.max, `${where}: logline target off the scale`).toBe(true);
+          // The marker starts in the lowest stretch.
+          expect(d, `${where}: logline already solved`).not.toBe(w.min);
+        }
+        if (w.kind === 'placechart' && w.hl !== undefined && w.top !== undefined)
+          expect(w.hl, `${where}: highlighted place not on the chart`).toBeLessThanOrEqual(w.top);
         if (w.kind === 'pipe' && w.target !== undefined) {
           expect(w.height / w.squeeze, `${where}: already solved`).not.toBe(w.target);
           let ok = false;
@@ -250,6 +309,101 @@ describe('content references', () => {
           expect(ok, `${where}: pipe target unreachable`).toBe(true);
         }
       });
+    }
+  });
+
+  it('campaigns, regions and news line up', () => {
+    const campaignIds = new Set(campaigns.map((c) => c.id));
+    for (const r of regions) {
+      expect(campaignIds.has(r.campaign), `${r.id} campaign ${r.campaign}`).toBe(true);
+      checkRich(r.topic, `${r.id} topic`);
+      // A region only requires regions from its own campaign.
+      for (const req of r.requires)
+        expect(regions.find((x) => x.id === req)!.campaign, `${r.id} requires ${req}`).toBe(
+          r.campaign,
+        );
+    }
+    for (const c of campaigns)
+      expect(
+        regions.filter((r) => r.campaign === c.id && r.requires.length === 0).length,
+        `${c.id} has exactly one starting region`,
+      ).toBe(1);
+    for (const n of news) {
+      if (n.region) expect(regionIds.has(n.region), `news ${n.title}`).toBe(true);
+      checkRich(n.text, `news ${n.title}`);
+    }
+  });
+
+  it('achievements point at real stats and items', () => {
+    const ids = new Set(achievements.map((a) => a.id));
+    expect(ids.size).toBe(achievements.length);
+    const events = new Set([
+      ...QUESTS.map((q) => q.ev as string),
+      'right',
+      'clean',
+      'wrong',
+      'nudged',
+      'grit',
+      'combo5',
+      'combo10',
+      'lesson',
+      'win',
+      'flawless',
+      'boss',
+      'wander',
+      'comeback',
+      'promote',
+      'master',
+      'drill',
+      'feed',
+      'scoop',
+      'pat',
+      'trick',
+      'bugs',
+      'hatch',
+      'funeral',
+      'buy',
+      'goldEarned',
+      'goldSpent',
+      'quest',
+      'xp',
+      'dark',
+    ]);
+    const derived = new Set([
+      'level',
+      'streak',
+      'regions',
+      'skills',
+      'masters',
+      'atomsMastered',
+      'atomsSolid',
+      'bosses',
+      'wins',
+      'graves',
+      'petAge',
+      'bond',
+      'gold',
+      'hats',
+      'decor',
+      'hours',
+    ]);
+    const fresh = newProfile(
+      { name: 'T', cls: 'knight', look: { skin: 0, hair: 0, hairStyle: 0, outfit: 0 }, goal: 100 },
+      0,
+    );
+    for (const a of achievements) {
+      if (a.item) expect(itemById[a.item], `${a.id} item ${a.item}`).toBeDefined();
+      const st = a.stat;
+      if (st.startsWith('campaign:'))
+        expect(
+          campaigns.some((c) => `campaign:${c.id}` === st),
+          `${a.id}: ${st}`,
+        ).toBe(true);
+      else if (st.startsWith('region:'))
+        expect(regionIds.has(st.slice(7)), `${a.id}: ${st}`).toBe(true);
+      else expect(events.has(st) || derived.has(st), `${a.id}: unknown stat ${st}`).toBe(true);
+      // Nothing is unlocked for a brand-new hero.
+      expect(statValue(fresh, st, 0) < a.goal, `${a.id} unlocked from the start`).toBe(true);
     }
   });
 

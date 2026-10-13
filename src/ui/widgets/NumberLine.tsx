@@ -51,7 +51,16 @@ export function NumberLineSvg(props: NumberLineProps) {
   if (minor)
     for (let v = min, i = 0; v <= max + 1e-9 && i < 400; v = clean(v + minor), i++)
       if (!majors.some((m) => Math.abs(m - v) < minor! / 2)) minors.push(v);
-  const many = majors.length > 11;
+  // Label every `stride`-th major tick, so long labels (1,000,000) never overlap.
+  const last = majors.length - 1;
+  const gap = (W - 2 * PAD) / Math.max(1, last);
+  const longest = Math.max(...majors.map((v) => group(v).length));
+  const fs = longest * 0.58 * 26 + 12 <= gap ? 26 : 22;
+  const stride = Math.max(1, Math.ceil((longest * 0.58 * fs + 12) / gap));
+  const labelled = (i: number) =>
+    labels === 'all'
+      ? i === last || (i % stride === 0 && last - i >= stride)
+      : i === 0 || i === last;
   const svg = useRef<SVGSVGElement>(null);
   const [drag, setDrag] = useState(false);
 
@@ -70,7 +79,6 @@ export function NumberLineSvg(props: NumberLineProps) {
     props.onPick(v);
   };
 
-  const fs = many ? 22 : 26;
   return (
     <svg
       ref={svg}
@@ -107,9 +115,7 @@ export function NumberLineSvg(props: NumberLineProps) {
       {majors.map((v, i) => (
         <g key={`M${v}`}>
           <line class="nl-major" x1={x(v)} y1="74" x2={x(v)} y2="112" />
-          {(labels === 'all'
-            ? !many || i % 2 === 0 || i === majors.length - 1
-            : i === 0 || i === majors.length - 1) && (
+          {labelled(i) && (
             <text class="nl-label" x={x(v)} y="145" text-anchor="middle" font-size={fs}>
               {group(v)}
             </text>

@@ -67,7 +67,15 @@ const DECOR_SPOTS: Record<string, { left: string; top?: string; bottom?: string;
   'poop-bucket': { left: '6%', bottom: '8%', size: '2rem' },
 };
 
-function Den({ den, children, night }: { den: string[]; children: preact.ComponentChildren; night: boolean }) {
+function Den({
+  den,
+  children,
+  night,
+}: {
+  den: string[];
+  children: preact.ComponentChildren;
+  night: boolean;
+}) {
   return (
     <div class={`den ${night ? 'night' : ''}`}>
       <div class="den-window">
@@ -273,7 +281,8 @@ export function PetScreen({ p }: { p: Profile }) {
       // A few bond points a day from pats, so it can't be farmed.
       const day = dayKey();
       const pd = (q.counters[`patday:${day}`] ?? 0) + 1;
-      for (const k of Object.keys(q.counters)) if (k.startsWith('patday:') && k !== `patday:${day}`) delete q.counters[k];
+      for (const k of Object.keys(q.counters))
+        if (k.startsWith('patday:') && k !== `patday:${day}`) delete q.counters[k];
       q.counters[`patday:${day}`] = pd;
       if (pd <= 20) addBond(q.pet, 0.5);
       return track(q, 'pat');
@@ -317,11 +326,17 @@ export function PetScreen({ p }: { p: Profile }) {
       return n > 0 ? track(q, 'bugs', n) : [];
     });
     sfx(n > 0 ? 'eat' : 'wrong');
-    say(n > 0 ? `${pet?.name} crunches all ${n} bugs. Delicious. Disgusting. Delicious.` : `They all got away. ${pet?.name} looks at you, disappointed.`);
+    say(
+      n > 0
+        ? `${pet?.name} crunches all ${n} bugs. Delicious. Disgusting. Delicious.`
+        : `They all got away. ${pet?.name} looks at you, disappointed.`,
+    );
     if (n > 0) play('eat');
   };
 
-  const usable = items.filter((i) => ['food', 'toy', 'care', 'hat'].includes(i.kind) && (p.inv[i.id] ?? 0) > 0);
+  const usable = items.filter(
+    (i) => ['food', 'toy', 'care', 'hat'].includes(i.kind) && (p.inv[i.id] ?? 0) > 0,
+  );
   const mood = pet ? petMood(pet) : 'ok';
   const ageDays = pet ? Math.floor(((pet.dead?.at ?? now) - pet.born) / DAY) : 0;
   const bond = Math.floor(pet?.bond ?? 0);
@@ -330,23 +345,34 @@ export function PetScreen({ p }: { p: Profile }) {
   const dancing = p.den.includes('disco-ball') && mood === 'happy' && !sleeping;
 
   return (
-    <div class="screen" style={{ background: 'radial-gradient(ellipse at 50% 0%, #4a2a6e, #140a2e 70%)' }}>
+    <div
+      class="screen"
+      style={{ background: 'radial-gradient(ellipse at 50% 0%, #4a2a6e, #140a2e 70%)' }}
+    >
       <div class="screen-scroll">
         <div class="content-col stack">
           <div class="panel">
             <h2 style={{ margin: 0 }}>🐾 Pet Den</h2>
             {!pet && p.eggs === 0 && (
-              <p>No pet yet. Pets hatch from eggs — you'll find one in Bramblebottom, or buy a Mystery Egg in the shop.</p>
+              <p>
+                No pet yet. Pets hatch from eggs — you'll find one in Bramblebottom, or buy a
+                Mystery Egg in the shop.
+              </p>
             )}
-            {!pet && p.eggs > 0 && <p>You have {p.eggs === 1 ? 'an egg' : `${p.eggs} eggs`}! Tap it to help it hatch.</p>}
+            {!pet && p.eggs > 0 && (
+              <p>You have {p.eggs === 1 ? 'an egg' : `${p.eggs} eggs`}! Tap it to help it hatch.</p>
+            )}
             {pet && (
               <p style={{ margin: '4px 0 0' }}>
                 <b>{pet.name}</b> the {petById[pet.species]?.name ?? 'creature'}{' '}
-                {sleeping ? 'is fast asleep. Pets sleep from 9 at night to 7 in the morning.' : MOOD_TEXT[mood]}
+                {sleeping
+                  ? 'is fast asleep. Pets sleep from 9 at night to 7 in the morning.'
+                  : MOOD_TEXT[mood]}
                 {!pet.dead && (
                   <span class="muted">
                     {' '}
-                    · {petStage(pet)}, {ageDays} day{ageDays === 1 ? '' : 's'} old · {bondName(bond)}
+                    · {petStage(pet)}, {ageDays} day{ageDays === 1 ? '' : 's'} old ·{' '}
+                    {bondName(bond)}
                   </span>
                 )}
               </p>
@@ -381,7 +407,10 @@ export function PetScreen({ p }: { p: Profile }) {
                       onClick={clean}
                       title="Clean it up"
                       class="den-poop"
-                      style={{ bottom: `${6 + (i % 2) * 8}%`, left: `${[12, 74, 20, 80, 8, 66][i]}%` }}
+                      style={{
+                        bottom: `${6 + (i % 2) * 8}%`,
+                        left: `${[12, 74, 20, 80, 8, 66][i]}%`,
+                      }}
                     >
                       <Poop size={52} />
                       <Flies n={2} size={50} />
@@ -426,10 +455,15 @@ export function PetScreen({ p }: { p: Profile }) {
                   {bondName(bond)}
                 </span>
               </div>
-              {pet.poops > 0 && <div class="muted">💩 Tap the poop to clean it up. Three or more poops make pets sick!</div>}
+              {pet.poops > 0 && (
+                <div class="muted">
+                  💩 Tap the poop to clean it up. Three or more poops make pets sick!
+                </div>
+              )}
               <div class="muted" style={{ fontSize: '.85rem' }}>
-                Bond grows with pats (a few a day), treats like 🦴 and 🧸, tricks and bug hunts. A pet with a bond of 30+
-                follows you into fights — and sometimes sniffs out extra gold.
+                Bond grows with pats (a few a day), treats like 🦴 and 🧸, tricks and bug hunts. A
+                pet with a bond of 30+ follows you into fights — and sometimes sniffs out extra
+                gold.
               </div>
 
               <div class="section-title" style={{ margin: '6px 0 0' }}>
@@ -466,14 +500,17 @@ export function PetScreen({ p }: { p: Profile }) {
                     sfx('whoosh');
                     setHunt(true);
                     setLine('');
-                    document.querySelector('.den')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    document
+                      .querySelector('.den')
+                      ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                   }}
                 >
                   🦟 Bug hunt!
                 </button>
                 {!bugsReady(pet, now) && (
                   <span class="muted" style={{ fontSize: '.85rem' }}>
-                    More bugs in {Math.ceil((BUG_COOLDOWN - (now - (pet.bugsAt ?? 0))) / 60000)} min.
+                    More bugs in {Math.ceil((BUG_COOLDOWN - (now - (pet.bugsAt ?? 0))) / 60000)}{' '}
+                    min.
                   </span>
                 )}
               </div>
@@ -492,7 +529,12 @@ export function PetScreen({ p }: { p: Profile }) {
               )}
               <div class="row wrap">
                 {usable.map((i) => (
-                  <button key={i.id} class="btn small ghost" onClick={() => useItem(i.id)} title={i.desc}>
+                  <button
+                    key={i.id}
+                    class="btn small ghost"
+                    onClick={() => useItem(i.id)}
+                    title={i.desc}
+                  >
                     {i.icon} {i.name} ×{p.inv[i.id]}
                   </button>
                 ))}
@@ -504,7 +546,10 @@ export function PetScreen({ p }: { p: Profile }) {
             <div class="panel center">
               <h3>💀 {pet.name} has died.</h3>
               <p>Cause of death: {causeText(pet.dead.cause)}</p>
-              <p class="muted">The flies are having a party. Grimble has prepared a short, tasteful speech: "Ribbit."</p>
+              <p class="muted">
+                The flies are having a party. Grimble has prepared a short, tasteful speech:
+                "Ribbit."
+              </p>
               <button class="btn" onClick={bury}>
                 ⚰️ Hold a funeral
               </button>
@@ -514,7 +559,9 @@ export function PetScreen({ p }: { p: Profile }) {
           {p.den.length === 0 && pet && !pet.dead && (
             <div class="panel">
               <b>🏠 Your den is bare.</b>{' '}
-              <span class="muted">Decorations from the shop make it cosier — and some make pet care easier.</span>{' '}
+              <span class="muted">
+                Decorations from the shop make it cosier — and some make pet care easier.
+              </span>{' '}
               <button class="btn small ghost" onClick={() => go('/shop')}>
                 Visit the shop
               </button>

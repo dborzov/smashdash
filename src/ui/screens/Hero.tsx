@@ -64,7 +64,9 @@ export function HeroScreen({ p }: { p: Profile }) {
               </div>
               <div class="row" style={{ gap: '6px', margin: '2px 0' }}>
                 <span class="hero-title">
-                  {p.title && achievementById[p.title]?.title ? `"${p.hero.name} ${achievementById[p.title].title}"` : 'No title worn'}
+                  {p.title && achievementById[p.title]?.title
+                    ? `"${p.hero.name} ${achievementById[p.title].title}"`
+                    : 'No title worn'}
                 </span>
                 {titles.length > 0 && (
                   <button class="btn small ghost" onClick={() => setPickTitle(true)}>
@@ -88,10 +90,15 @@ export function HeroScreen({ p }: { p: Profile }) {
                 {xpBoostOn(p) && (
                   <span class="chip gold">
                     🧉 Double XP until{' '}
-                    {new Date(p.boosts.xp2Until!).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {new Date(p.boosts.xp2Until!).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
                   </span>
                 )}
-                {(p.boosts.lucky ?? 0) > 0 && <span class="chip gold">🪙 Lucky ×{p.boosts.lucky}</span>}
+                {(p.boosts.lucky ?? 0) > 0 && (
+                  <span class="chip gold">🪙 Lucky ×{p.boosts.lucky}</span>
+                )}
               </div>
             </div>
           </div>
@@ -126,7 +133,11 @@ export function HeroScreen({ p }: { p: Profile }) {
                 const hidden = a.secret && !got;
                 const prog = achProgress(p, a.id);
                 return (
-                  <div key={a.id} class={`trophy ${got ? 'got' : ''}`} title={hidden ? 'A secret trophy' : a.desc}>
+                  <div
+                    key={a.id}
+                    class={`trophy ${got ? 'got' : ''}`}
+                    title={hidden ? 'A secret trophy' : a.desc}
+                  >
                     <div class="trophy-icon">{hidden ? '❔' : a.icon}</div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <b>{hidden ? '???' : a.name}</b>

@@ -1807,9 +1807,10 @@ button {
 }
 .companion {
   position: absolute;
-  left: -38%;
+  right: -34%;
   bottom: 0;
-  width: 55%;
+  width: 50%;
+  z-index: 1;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
   animation: bob 2.4s ease-in-out infinite;
 }

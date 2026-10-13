@@ -14,19 +14,28 @@
 - Fonts: **Fredoka** (headings, buttons, numbers) and **Nunito** (body), bundled via
   `@fontsource` (no external requests).
 - Emojis are used for item and node icons — bright, free and consistent on iPads.
+- **The Long Count** uses the same rendering but a colder, darker palette: night skies, ash
+  and drifting motes instead of fireflies, desaturated stone, torchlight as the only warm
+  colour. Foes are hooded and faceless (glowing eyes), never gory. Screens in this campaign
+  get `.dark-mode` (darker panels; the maths cards stay cream for legibility).
 
 ## Where the art lives
 
 | File | What |
 | --- | --- |
-| `src/art/scenes/index.tsx` | The six region backdrops + `SCENES` registry |
+| `src/art/scenes/index.tsx` | The Kingdom backdrops + `SCENES` registry |
+| `src/art/scenes/dark.tsx` | Long Count backdrops: muster, ashroad, siege, vault |
+| `src/art/Dark.tsx` | Long Count foes (Hollow, Wraith, Tallyman, Forger, Golem, Rider) and portraits |
+| `src/art/Foe.tsx` | Picks procedural monster vs. dark foe art |
 | `src/art/paint.ts` | Procedural helpers: smooth hills, jagged ridges, snow caps, blobs |
 | `src/art/Avatar.tsx` | The hero (skin, hair, style, outfit, class gear, hats, capes) |
 | `src/art/Monster.tsx` | Procedural monsters from a seed + hue |
 | `src/art/Portrait.tsx` | Grimble, the Muddler, NPC heads |
-| `src/art/Pet.tsx` | Pets (4 species × moods), egg, poop, flies, tombstone |
-| `src/ui/screens/WorldMap.tsx` | The island map and region landmarks |
-| `src/ui/widgets/*` | Interactive maths: boxes, balance, unwrap, tower, powers, hop |
+| `src/art/Pet.tsx` | Pets (6 species × moods, asleep), egg, poop, flies, tombstone |
+| `src/ui/screens/Pet.tsx` | The den: decor, disco, tricks, bug hunt |
+| `src/ui/screens/WorldMap.tsx` | The per-campaign atlases and region landmarks |
+| `src/ui/screens/GameArt.tsx` | Encounter props: chest, bridge, siege wall, vault door |
+| `src/ui/widgets/*` | Interactive maths: boxes, balance, unwrap, tower, powers, hop, groups, area, plot, circuit, pipe, place chart, Reckoning Board, number lines, log line, rounder, shifter, decimal grid |
 
 Painted images can be dropped in later (e.g. AI-generated backgrounds in `public/art/`): a scene
 component can render an `<image>` as its far layer and keep the SVG foreground and particles.

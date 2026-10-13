@@ -430,6 +430,16 @@ function unpadded(v: number): number {
   );
 }
 
+/** Which zero gotcha a number exercises, judged from its digits. */
+function writeAtom(v: number): string {
+  const d = group(v).split(',');
+  if (d.slice(1).some((p) => p === '000')) return 'empty-period';
+  const s = String(v);
+  if (/0[1-9]/.test(s)) return 'zero-inside';
+  if (s.endsWith('0')) return 'zero-tail';
+  return 'no-zeros';
+}
+
 export const pvWrite: Generator = (rng, level) => {
   const kinds =
     level === 1
@@ -440,9 +450,13 @@ export const pvWrite: Generator = (rng, level) => {
   const kind = rng.pick(kinds);
   let v: number;
   if (kind === 'plain') v = makeNum(rng, rng.int(4, 5), { distinct: true });
-  else if (kind === 'inside')
-    v = makeNum(rng, level === 1 ? rng.int(4, 5) : rng.int(6, 7), { distinct: true, zeros: 1 });
-  else if (kind === 'tail') {
+  else if (kind === 'inside') {
+    // A zero with a non-zero digit somewhere to its right (not just a trailing zero).
+    let tries = 0;
+    do v = makeNum(rng, level === 1 ? rng.int(4, 5) : rng.int(6, 7), { distinct: true, zeros: 1 });
+    while (!/0[1-9]/.test(String(v)) && ++tries < 30);
+    if (!/0[1-9]/.test(String(v))) v = withDigit(v + (v % 10 === 0 ? 1 : 0), 1, 0);
+  } else if (kind === 'tail') {
     v = makeNum(rng, level === 1 ? 5 : 6, { distinct: true });
     v = Math.floor(v / 100) * 100;
     if (rng.chance(0.5)) v = withDigit(v, 3, 0);
@@ -496,15 +510,7 @@ export const pvWrite: Generator = (rng, level) => {
   const dial = level >= 2 && rng.chance(0.5);
   return {
     skill: 'pv-write',
-    atoms: [
-      kind === 'plain'
-        ? 'no-zeros'
-        : kind === 'inside'
-          ? 'zero-inside'
-          : kind === 'tail'
-            ? 'zero-tail'
-            : 'empty-period',
-    ],
+    atoms: [writeAtom(v)],
     prompt: dial
       ? `Set the ledger wheels to Wren's count: **"${words(v)}"**.`
       : `Wren's report, in words: **"${words(v)}."** Write it in digits.`,

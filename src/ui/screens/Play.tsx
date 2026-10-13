@@ -110,6 +110,7 @@ export function PlayNode({ regionId, nodeId }: { regionId: string; nodeId: strin
   if (stage === 'outro') {
     return (
       <LessonPlayer
+        key={region.outro}
         lesson={lessons[region.outro]}
         scene={region.scene}
         tone={tone}
@@ -127,6 +128,7 @@ export function PlayNode({ regionId, nodeId }: { regionId: string; nodeId: strin
     const lesson = lessons[node.lesson];
     return (
       <LessonPlayer
+        key={`${region.id}/${node.id}`}
         lesson={lesson}
         scene={region.scene}
         tone={tone}
@@ -202,6 +204,7 @@ export function PlayNode({ regionId, nodeId }: { regionId: string; nodeId: strin
   });
   return (
     <EncounterScreen
+      key={`${region.id}/${node.id}`}
       spec={spec}
       onEnd={(res) => {
         if (!res.won) {
@@ -301,5 +304,14 @@ export function PlayStory({ id }: { id: string }) {
     });
     go('/map', true);
   };
-  return <LessonPlayer lesson={lesson} scene="village" firstTime onQuit={done} onFinish={done} />;
+  return (
+    <LessonPlayer
+      key={lesson.id}
+      lesson={lesson}
+      scene="village"
+      firstTime
+      onQuit={done}
+      onFinish={done}
+    />
+  );
 }

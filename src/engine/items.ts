@@ -84,12 +84,14 @@ export function consume(p: Profile, id: string): boolean {
 /** Use a timed boost from the bag (Focus Tonic: double XP; Lucky Crown: double gold next win). */
 export function useBoost(p: Profile, id: string, now = Date.now()): UseResult {
   const it = itemById[id];
-  if (!it || !(p.inv[id] > 0) || !it.effect.boost) return { ok: false, why: "You can't use that here." };
+  if (!it || !(p.inv[id] > 0) || !it.effect.boost)
+    return { ok: false, why: "You can't use that here." };
   if (it.effect.boost === 'xp2') {
     const from = Math.max(now, p.boosts.xp2Until ?? 0);
     p.boosts.xp2Until = from + (it.effect.minutes ?? 20) * 60_000;
   } else {
-    if ((p.boosts.lucky ?? 0) >= 3) return { ok: false, why: 'Your luck is already as good as it gets (3 lucky wins queued).' };
+    if ((p.boosts.lucky ?? 0) >= 3)
+      return { ok: false, why: 'Your luck is already as good as it gets (3 lucky wins queued).' };
     p.boosts.lucky = (p.boosts.lucky ?? 0) + 1;
   }
   take(p, id);

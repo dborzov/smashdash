@@ -66,6 +66,7 @@ export function Preview({ kind, id }: { kind?: string; id?: string }) {
     );
     return (
       <LessonPlayer
+        key={id}
         lesson={lessons[id]}
         scene={region?.scene ?? 'village'}
         firstTime

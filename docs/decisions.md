@@ -38,3 +38,36 @@ contributor might want to reverse.
 18. **Halfcopy the Imp personifies the distributive misconception** ($a(x + b) = ax + b$), and
     the same mistake is reused for mental maths ($7 \times 9 = 70 - 1$), so one nudge voice
     covers both.
+19. **Save version 2 (the place-value release).** Atoms, tiers, trophies, bounties, time
+    tracking and the pet den needed new `Profile` fields, so `SAVE_VERSION` went to 2.
+    `migrate()` only adds fields, and derives each skill's tier from its old mastery
+    (< 0.35 → Novice, < 0.7 → Adept, else Master) so nobody is sent back to easy problems.
+    Regions with progress count as visited, so old players don't see them as NEW. Trophies an
+    old save already deserves are awarded on first load, in one summary card.
+20. **A second, darker campaign instead of more Kingdom regions.** The owner asked for a
+    grown-up D&D tone for older kids, without "maths is fun" or numbers hiding in boxes. The
+    Long Count is its own campaign with its own voice (`tone: dark` in feedback), and the
+    villains are mistakes (eating zeros, shifting digits). It is open from day one: it needs
+    nothing from the algebra arc, and a 6th grader shouldn't have to clear Bramblebottom first.
+21. **Adaptive runs: struggle adds practice; success skips it.** Fixed-length units either
+    bored strong kids or moved struggling ones on too early. Now a miss adds a problem on the
+    same atom one tier easier, and the unit can't end with a missed atom un-fixed (within a
+    cap, so a bad day can't trap a kid). Tiers rise only after 4 clean in a row with no shaky
+    atom; 3 clean on a mastered skill trims the unit. Struggle is rewarded (Grit XP, Rally
+    hearts, extra pips shown as "training", never as failure), because a kid who struggles
+    and keeps going is learning the most.
+22. **Atoms are declared in content, tagged in code.** Every skill lists its tiny skills in
+    `skills.yaml`; every generated problem lists the atoms it uses. Tests check both ways
+    (no undeclared atoms; every declared atom actually comes up), so the Skill Tree can't
+    drift from what is really practised.
+23. **The adventure board replaced the map as home.** With 13 regions and more coming, a
+    painted map no longer answered "where was I, what is this about, what's new?". The
+    board (continue card, bounties, dispatches, region cards with topic, status, time and
+    accuracy, filters) is the home screen; the painted maps live on as per-campaign atlases.
+    New regions carry an `added` date and a dispatch in `news.yaml`.
+24. **Place-value maths uses `{,}` in LaTeX** (`$4{,}372{,}519$`) so KaTeX doesn't add a
+    space after the comma, and `words()` writes US-style number names without "and"
+    ("two million forty thousand six"), matching most grade 5–6 curricula.
+25. **Bond can't be farmed.** Pats give a few bond points a day; feeding, play and the bug
+    hunt give the rest. Tricks and the fight companion are rewards for looking after the
+    pet over days, not for tapping it a hundred times.

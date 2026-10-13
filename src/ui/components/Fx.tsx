@@ -74,7 +74,10 @@ export function FxLayer() {
         });
       if (f.kind === 'egg') t.push({ id: nextId++, text: '🥚 A mysterious egg!' });
       if (f.kind === 'quest')
-        t.push({ id: nextId++, text: `📜 Bounty done: ${questText(f.id)} — claim it on the board!` });
+        t.push({
+          id: nextId++,
+          text: `📜 Bounty done: ${questText(f.id)} — claim it on the board!`,
+        });
       if (f.kind === 'tier') {
         const sk = skillById[f.skill];
         if (sk)

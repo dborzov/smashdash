@@ -368,16 +368,74 @@ export function PetArt({
     case 'bonepup':
       body = (
         <g>
-          <path d="M118 112 Q146 100 150 80" fill="none" stroke="#e8e0d0" stroke-width="7" stroke-linecap="round" style={{ transformOrigin: '118px 112px', animation: mood === 'happy' && !sleep ? 'wag .35s ease-in-out infinite alternate' : undefined }} />
-          <path d="M118 112 Q146 100 150 80" fill="none" stroke="#3a3448" stroke-width="2" stroke-dasharray="4 6" />
-          <ellipse cx="82" cy="114" rx="40" ry="28" fill="#e8e0d0" stroke="#3a3448" stroke-width="3.5" />
-          <path d="M66 100 v24 M78 98 v28 M90 98 v28 M102 100 v24" stroke="#b8b0a4" stroke-width="3" stroke-linecap="round" />
+          <path
+            d="M118 112 Q146 100 150 80"
+            fill="none"
+            stroke="#e8e0d0"
+            stroke-width="7"
+            stroke-linecap="round"
+            style={{
+              transformOrigin: '118px 112px',
+              animation:
+                mood === 'happy' && !sleep ? 'wag .35s ease-in-out infinite alternate' : undefined,
+            }}
+          />
+          <path
+            d="M118 112 Q146 100 150 80"
+            fill="none"
+            stroke="#3a3448"
+            stroke-width="2"
+            stroke-dasharray="4 6"
+          />
+          <ellipse
+            cx="82"
+            cy="114"
+            rx="40"
+            ry="28"
+            fill="#e8e0d0"
+            stroke="#3a3448"
+            stroke-width="3.5"
+          />
+          <path
+            d="M66 100 v24 M78 98 v28 M90 98 v28 M102 100 v24"
+            stroke="#b8b0a4"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
           {[56, 74, 92, 110].map((x) => (
-            <rect key={x} x={x - 5} y="130" width="10" height="18" rx="5" fill="#e8e0d0" stroke="#3a3448" stroke-width="3" />
+            <rect
+              key={x}
+              x={x - 5}
+              y="130"
+              width="10"
+              height="18"
+              rx="5"
+              fill="#e8e0d0"
+              stroke="#3a3448"
+              stroke-width="3"
+            />
           ))}
-          <path d="M36 50 Q24 50 22 74 Q32 72 40 64 Z M108 50 Q120 50 122 74 Q112 72 104 64 Z" fill="#3a3448" stroke="#1a1626" stroke-width="3" />
-          <path d="M40 74 Q40 40 72 38 Q104 40 104 74 Q104 92 92 98 L60 98 Q40 92 40 74 Z" fill="#f2ece2" stroke="#3a3448" stroke-width="3.5" />
-          <ellipse cx="72" cy="90" rx="16" ry="10" fill="#e0d8cc" stroke="#3a3448" stroke-width="2.5" />
+          <path
+            d="M36 50 Q24 50 22 74 Q32 72 40 64 Z M108 50 Q120 50 122 74 Q112 72 104 64 Z"
+            fill="#3a3448"
+            stroke="#1a1626"
+            stroke-width="3"
+          />
+          <path
+            d="M40 74 Q40 40 72 38 Q104 40 104 74 Q104 92 92 98 L60 98 Q40 92 40 74 Z"
+            fill="#f2ece2"
+            stroke="#3a3448"
+            stroke-width="3.5"
+          />
+          <ellipse
+            cx="72"
+            cy="90"
+            rx="16"
+            ry="10"
+            fill="#e0d8cc"
+            stroke="#3a3448"
+            stroke-width="2.5"
+          />
           <ellipse cx="72" cy="84" rx="5" ry="4" fill="#1a1626" />
           <g>
             <circle cx="58" cy="66" r="11" fill="#1a1626" />
@@ -391,15 +449,61 @@ export function PetArt({
     case 'mimic':
       body = (
         <g>
-          <rect x="30" y="96" width="100" height="50" rx="6" fill="#a0602b" stroke="#4a2a10" stroke-width="3.5" />
+          <rect
+            x="30"
+            y="96"
+            width="100"
+            height="50"
+            rx="6"
+            fill="#a0602b"
+            stroke="#4a2a10"
+            stroke-width="3.5"
+          />
           <rect x="30" y="112" width="100" height="8" fill="#ffd166" opacity=".85" />
-          <rect x="74" y="108" width="12" height="16" rx="3" fill="#ffd166" stroke="#7a4a00" stroke-width="2" />
-          <path d="M30 96 L40 104 L50 96 L60 104 L70 96 L80 104 L90 96 L100 104 L110 96 L120 104 L130 96" fill="#fff" stroke="#4a2a10" stroke-width="2" />
-          {!sleep && mood !== 'dead' && <path d="M62 96 Q80 128 98 96" fill="#e0475b" stroke="#7a1020" stroke-width="2.5" />}
-          <g style={{ transformOrigin: '30px 92px', animation: mood === 'happy' && !sleep ? 'chomp 1.6s ease-in-out infinite' : undefined }}>
-            <path d="M30 92 Q30 50 80 50 Q130 50 130 92 Z" fill="#b8733a" stroke="#4a2a10" stroke-width="3.5" />
-            <path d="M30 92 Q30 50 80 50 Q130 50 130 92" fill="none" stroke="#ffd166" stroke-width="6" opacity=".85" />
-            <path d="M30 92 L40 84 L50 92 L60 84 L70 92 L80 84 L90 92 L100 84 L110 92 L120 84 L130 92" fill="#fff" stroke="#4a2a10" stroke-width="2" />
+          <rect
+            x="74"
+            y="108"
+            width="12"
+            height="16"
+            rx="3"
+            fill="#ffd166"
+            stroke="#7a4a00"
+            stroke-width="2"
+          />
+          <path
+            d="M30 96 L40 104 L50 96 L60 104 L70 96 L80 104 L90 96 L100 104 L110 96 L120 104 L130 96"
+            fill="#fff"
+            stroke="#4a2a10"
+            stroke-width="2"
+          />
+          {!sleep && mood !== 'dead' && (
+            <path d="M62 96 Q80 128 98 96" fill="#e0475b" stroke="#7a1020" stroke-width="2.5" />
+          )}
+          <g
+            style={{
+              transformOrigin: '30px 92px',
+              animation: mood === 'happy' && !sleep ? 'chomp 1.6s ease-in-out infinite' : undefined,
+            }}
+          >
+            <path
+              d="M30 92 Q30 50 80 50 Q130 50 130 92 Z"
+              fill="#b8733a"
+              stroke="#4a2a10"
+              stroke-width="3.5"
+            />
+            <path
+              d="M30 92 Q30 50 80 50 Q130 50 130 92"
+              fill="none"
+              stroke="#ffd166"
+              stroke-width="6"
+              opacity=".85"
+            />
+            <path
+              d="M30 92 L40 84 L50 92 L60 84 L70 92 L80 84 L90 92 L100 84 L110 92 L120 84 L130 92"
+              fill="#fff"
+              stroke="#4a2a10"
+              stroke-width="2"
+            />
             <Eyes mood={mood} sleep={sleep} x1={64} x2={96} y={68} r={9} />
           </g>
         </g>
