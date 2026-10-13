@@ -17,7 +17,12 @@ export function Particles({
     const rng = new Rng(hashString(seed));
     return Array.from({ length: count }, () => ({
       left: rng.int(0, 100),
-      top: kind === 'snow' || kind === 'ash' ? rng.int(-20, 0) : kind === 'ember' ? rng.int(80, 110) : rng.int(0, 95),
+      top:
+        kind === 'snow' || kind === 'ash'
+          ? rng.int(-20, 0)
+          : kind === 'ember'
+            ? rng.int(80, 110)
+            : rng.int(0, 95),
       delay: -rng.next() * 9,
       dur: 0.7 + rng.next() * 0.8,
       size: 0.6 + rng.next() * 0.9,

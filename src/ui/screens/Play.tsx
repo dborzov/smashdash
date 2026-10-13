@@ -3,7 +3,7 @@
  * a wandering monster, a spell practice fight, an atom drill, or a standalone story.
  * Handles progress, rewards and what comes next.
  */
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import type { Region } from '../../content/schema';
 import { campaignById, lessons, regionById, skillById, regions } from '../../content';
 import { getProfile, update } from '../../engine/store';
@@ -84,6 +84,13 @@ export function PlayNode({ regionId, nodeId }: { regionId: string; nodeId: strin
   const p = getProfile();
   useTimeTracker(node && (node.type === 'lesson' || node.type === 'story') ? regionId : undefined);
   const [first] = useState(() => !!(p && region && node && !nodeDone(p, region.id, node.id)));
+  useEffect(() => {
+    if (region)
+      update((q) => {
+        q.lastAt[region.id] = Date.now();
+        q.visited[region.id] ??= Date.now();
+      });
+  }, []);
   const [stage, setStage] = useState<'play' | 'summary' | 'outro'>('play');
   const [summary, setSummary] = useState<{ title: string; stars?: number; lines: string[] }>({
     title: '',

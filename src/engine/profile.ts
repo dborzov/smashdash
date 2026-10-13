@@ -151,6 +151,8 @@ export interface Profile {
   time: Record<string, number>;
   /** First time each region was opened (for "NEW" markers). */
   visited: Record<string, number>;
+  /** Last time each region was played (for "recently played"). */
+  lastAt: Record<string, number>;
   /** Today's bounties. */
   quests: QuestDay | null;
   /** Displayed title (an achievement id), if chosen. */
@@ -204,6 +206,7 @@ export function newProfile(
     counters: {},
     time: {},
     visited: {},
+    lastAt: {},
     quests: null,
     boosts: {},
     den: [],

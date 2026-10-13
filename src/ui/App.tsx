@@ -9,6 +9,9 @@ import { FxLayer } from './components/Fx';
 import { Title } from './screens/Title';
 import { CreateHero } from './screens/CreateHero';
 import { WorldMap } from './screens/WorldMap';
+import { Adventures } from './screens/Adventures';
+import { SkillTree } from './screens/SkillTree';
+import { campaignById } from '../content';
 import { RegionScreen } from './screens/Region';
 import { HeroScreen } from './screens/Hero';
 import { PetScreen } from './screens/Pet';
@@ -62,7 +65,12 @@ export function App() {
   let screen;
   let tab = 'map';
   if (a === 'region' && b && regionById[b]) screen = <RegionScreen p={p} region={regionById[b]} />;
-  else if (a === 'hero') {
+  else if (a === 'atlas')
+    screen = <WorldMap p={p} campaign={b && campaignById[b] ? b : 'kingdom'} />;
+  else if (a === 'skills') {
+    screen = <SkillTree p={p} />;
+    tab = 'skills';
+  } else if (a === 'hero') {
     screen = <HeroScreen p={p} />;
     tab = 'hero';
   } else if (a === 'pet') {
@@ -71,7 +79,7 @@ export function App() {
   } else if (a === 'shop') {
     screen = <ShopScreen p={p} />;
     tab = 'shop';
-  } else screen = <WorldMap p={p} />;
+  } else screen = <Adventures p={p} />;
 
   return (
     <div class="app">

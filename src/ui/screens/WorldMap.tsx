@@ -4,11 +4,17 @@
  */
 import type { Region } from '../../content/schema';
 import type { Profile } from '../../engine/profile';
-import { regions, regionById, skillById } from '../../content';
+import {
+  regions as allRegions,
+  regionById,
+  skillById,
+  campaignById,
+  campaigns,
+} from '../../content';
 import { currentRegion, regionDone, regionUnlocked } from '../../engine/progress';
 import { blob } from '../../art/paint';
 import { Avatar } from '../../art/Avatar';
-import { MonsterArt } from '../../art/Monster';
+import { FoeArt } from '../../art/Foe';
 import { Particles } from '../components/Particles';
 import { go } from '../router';
 import { sfx } from '../../audio/sfx';
@@ -27,9 +33,13 @@ const BIOME: Record<string, string> = {
   caves: '#5a4aa8',
   bay: '#e8d49a',
   junkyard: '#8a7a6a',
+  muster: '#9aa4b4',
+  ashroad: '#5a3a2a',
+  siege: '#4a2a32',
+  vault: '#2a6a7a',
 };
 
-function Landmark({ scene }: { scene: string }) {
+export function Landmark({ scene }: { scene: string }) {
   switch (scene) {
     case 'village':
       return (
@@ -338,6 +348,178 @@ function Landmark({ scene }: { scene: string }) {
           />
         </g>
       );
+    case 'muster':
+      return (
+        <g>
+          <rect
+            x="-70"
+            y="-36"
+            width="140"
+            height="36"
+            fill="#5a6070"
+            stroke="#1a1c24"
+            stroke-width="3"
+          />
+          {[-60, -30, 0, 30, 60].map((x) => (
+            <rect
+              key={x}
+              x={x - 8}
+              y="-46"
+              width="14"
+              height="12"
+              fill="#5a6070"
+              stroke="#1a1c24"
+              stroke-width="2.5"
+            />
+          ))}
+          <rect
+            x="-16"
+            y="-96"
+            width="32"
+            height="60"
+            fill="#6a7080"
+            stroke="#1a1c24"
+            stroke-width="3"
+          />
+          <path d="M-22 -94 L0 -124 L22 -94 Z" fill="#3a3e4a" stroke="#1a1c24" stroke-width="3" />
+          <rect x="-4" y="-80" width="8" height="12" rx="4" fill="#ffd27a" />
+          <circle
+            cx="44"
+            cy="-58"
+            r="10"
+            fill="#4a4652"
+            opacity=".7"
+            style={{
+              animation: 'smoke 4s ease-out infinite',
+              transformBox: 'fill-box',
+              transformOrigin: 'center',
+            }}
+          />
+        </g>
+      );
+    case 'ashroad':
+      return (
+        <g>
+          <path
+            d="M-80 0 Q-20 -20 20 -6 Q60 6 80 -10"
+            fill="none"
+            stroke="#7a5a3a"
+            stroke-width="10"
+            stroke-linecap="round"
+          />
+          {[-60, -30, 40, 66].map((x, i) => (
+            <path
+              key={x}
+              d={`M${x} -4 L${x + (i % 2 ? 4 : -4)} -46 M${x} -28 l-12 -12 M${x} -34 l10 -10`}
+              stroke="#1a100a"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+          ))}
+          <g transform="translate(6 -14)">
+            <path d="M-18 -10 Q0 -30 18 -10 Z" fill="#c9b48a" stroke="#1a100a" stroke-width="2.5" />
+            <rect
+              x="-19"
+              y="-11"
+              width="38"
+              height="12"
+              fill="#5a3a22"
+              stroke="#1a100a"
+              stroke-width="2.5"
+            />
+          </g>
+          <circle
+            cx="-40"
+            cy="-60"
+            r="6"
+            fill="#ff7a3d"
+            style={{ animation: 'flicker 1.4s infinite' }}
+          />
+        </g>
+      );
+    case 'siege':
+      return (
+        <g>
+          <path
+            d="M-80 0 L-60 -40 L-30 -50 L30 -50 L60 -40 L80 0 Z"
+            fill="#3a2a30"
+            stroke="#0a0608"
+            stroke-width="3"
+          />
+          <rect
+            x="-50"
+            y="-90"
+            width="100"
+            height="44"
+            fill="#4a3a44"
+            stroke="#0a0608"
+            stroke-width="3"
+          />
+          {[-40, 0, 40].map((x) => (
+            <g key={x}>
+              <rect
+                x={x - 10}
+                y="-120"
+                width="20"
+                height="34"
+                fill="#5a4a54"
+                stroke="#0a0608"
+                stroke-width="3"
+              />
+              <path
+                d={`M${x - 14} -118 L${x} -136 L${x + 14} -118 Z`}
+                fill="#2a2028"
+                stroke="#0a0608"
+                stroke-width="2.5"
+              />
+            </g>
+          ))}
+          <path d="M-3 -136 v-20 l18 6 l-18 6" fill="#b3263a" stroke="#0a0608" stroke-width="2" />
+          {[-70, -50, 60, 76].map((x) => (
+            <circle
+              key={x}
+              cx={x}
+              cy={-4}
+              r="3"
+              fill="#ffb347"
+              style={{ animation: 'flicker 1.1s infinite' }}
+            />
+          ))}
+        </g>
+      );
+    case 'vault':
+      return (
+        <g>
+          <path
+            d="M-80 0 L-40 -70 L0 -40 L40 -96 L80 0 Z"
+            fill="#3a4a54"
+            stroke="#0a1a20"
+            stroke-width="3"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M-20 0 L-20 -30 Q0 -50 20 -30 L20 0 Z"
+            fill="#0a1a20"
+            stroke="#a8e0ee"
+            stroke-width="3"
+          />
+          {[
+            [-50, -6],
+            [52, -4],
+            [10, -60],
+          ].map(([x, y], i) => (
+            <path
+              key={i}
+              d="M0 0 L-7 -20 L0 -36 L7 -20 Z"
+              transform={`translate(${x} ${y})`}
+              fill="#a8e0ee"
+              stroke="#0a1a20"
+              stroke-width="2"
+              style={{ animation: `flicker ${2 + i * 0.6}s ease-in-out infinite` }}
+            />
+          ))}
+        </g>
+      );
     default:
       return null;
   }
@@ -370,15 +552,24 @@ function road(a: Region, b: Region): string {
   return `M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}`;
 }
 
-export function WorldMap({ p }: { p: Profile }) {
-  const here = currentRegion(p);
+export function WorldMap({ p, campaign = 'kingdom' }: { p: Profile; campaign?: string }) {
+  const regions = allRegions.filter((r) => r.campaign === campaign);
+  const dark = campaignById[campaign]?.mood === 'dark';
+  const cur = currentRegion(p);
+  const here = regions.includes(cur)
+    ? cur
+    : (regions.find((r) => regionUnlocked(p, r) && !regionDone(p, r)) ?? regions[0]);
   const island = blob(7, 500, 370, 450, 300, 4, 0.07, 22);
   const beach = blob(7, 500, 372, 466, 314, 4, 0.07, 22);
   const hasSkills = learnedSkills(p).length > 0;
   return (
     <div
       class="screen"
-      style={{ background: 'radial-gradient(ellipse at 50% 45%, #2a74b8, #0b1f4a 75%)' }}
+      style={{
+        background: dark
+          ? 'radial-gradient(ellipse at 50% 45%, #2a3446, #07090f 75%)'
+          : 'radial-gradient(ellipse at 50% 45%, #2a74b8, #0b1f4a 75%)',
+      }}
     >
       <Particles kind="star" count={20} />
       <div
@@ -426,8 +617,8 @@ export function WorldMap({ p }: { p: Profile }) {
                 />
               );
             })}
-            <path d={beach} fill="#f6dfa0" />
-            <path d={island} fill="#8fd16a" />
+            <path d={beach} fill={dark ? '#c8ccd4' : '#f6dfa0'} />
+            <path d={island} fill={dark ? '#4a5262' : '#8fd16a'} />
             <g clip-path="url(#island-clip)">
               {regions.map((r) => (
                 <path
@@ -442,22 +633,24 @@ export function WorldMap({ p }: { p: Profile }) {
             <path d={island} fill="none" stroke="#5a9a4a" stroke-width="4" opacity=".6" />
             {/* roads */}
             {regions.flatMap((r) =>
-              r.requires.map((req) => {
-                const from = regionById[req];
-                const open = regionUnlocked(p, r);
-                return (
-                  <path
-                    key={`${req}-${r.id}`}
-                    d={road(from, r)}
-                    fill="none"
-                    stroke={open ? '#fff4dc' : '#9a8aa8'}
-                    stroke-width="6"
-                    stroke-dasharray="2 14"
-                    stroke-linecap="round"
-                    opacity=".9"
-                  />
-                );
-              }),
+              r.requires
+                .filter((req) => regions.includes(regionById[req]))
+                .map((req) => {
+                  const from = regionById[req];
+                  const open = regionUnlocked(p, r);
+                  return (
+                    <path
+                      key={`${req}-${r.id}`}
+                      d={road(from, r)}
+                      fill="none"
+                      stroke={open ? '#fff4dc' : '#9a8aa8'}
+                      stroke-width="6"
+                      stroke-dasharray="2 14"
+                      stroke-linecap="round"
+                      opacity=".9"
+                    />
+                  );
+                }),
             )}
             {/* landmarks */}
             {regions.map((r) => (
@@ -567,88 +760,81 @@ export function WorldMap({ p }: { p: Profile }) {
             <Avatar look={p.hero.look} cls={p.hero.cls} hat={p.hero.hat} cape={p.hero.cape} />
           </div>
           {/* wandering monsters */}
-          {p.wanderers.map((w) => (
-            <button
-              key={w.id}
-              onClick={() => {
-                sfx('whoosh');
-                go(`/wander/${w.id}`);
-              }}
-              title={`${w.monster.name}: practise ${w.skills.map((s) => skillById[s]?.name).join(', ')}`}
-              style={{
-                position: 'absolute',
-                left: `${w.x}%`,
-                top: `${w.y}%`,
-                width: '6.5%',
-                transform: 'translate(-50%, -50%)',
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                cursor: 'pointer',
-                zIndex: 4,
-              }}
-              class="anim-bob"
-            >
-              <MonsterArt seed={w.monster.seed} hue={w.monster.hue} />
-              <span
+          {p.wanderers
+            .filter((w) => regions.some((r) => r.id === w.region))
+            .map((w) => (
+              <button
+                key={w.id}
+                onClick={() => {
+                  sfx('whoosh');
+                  go(`/wander/${w.id}`);
+                }}
+                title={`${w.monster.name}: practise ${w.skills.map((s) => skillById[s]?.name).join(', ')}`}
                 style={{
                   position: 'absolute',
-                  top: '-28%',
-                  right: '-20%',
-                  background: '#ff5f5f',
-                  color: '#fff',
-                  borderRadius: '50%',
-                  width: '1.6em',
-                  height: '1.6em',
-                  display: 'grid',
-                  placeItems: 'center',
-                  fontWeight: 800,
-                  fontSize: 'clamp(.7rem, 1.4vw, .95rem)',
-                  boxShadow: '0 2px 6px rgba(0,0,0,.4)',
-                  animation: 'pulse 1.2s infinite',
+                  left: `${w.x}%`,
+                  top: `${w.y}%`,
+                  width: '6.5%',
+                  transform: 'translate(-50%, -50%)',
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'pointer',
+                  zIndex: 4,
                 }}
+                class="anim-bob"
               >
-                !
-              </span>
-            </button>
-          ))}
+                <FoeArt m={w.monster} />
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: '-28%',
+                    right: '-20%',
+                    background: '#ff5f5f',
+                    color: '#fff',
+                    borderRadius: '50%',
+                    width: '1.6em',
+                    height: '1.6em',
+                    display: 'grid',
+                    placeItems: 'center',
+                    fontWeight: 800,
+                    fontSize: 'clamp(.7rem, 1.4vw, .95rem)',
+                    boxShadow: '0 2px 6px rgba(0,0,0,.4)',
+                    animation: 'pulse 1.2s infinite',
+                  }}
+                >
+                  !
+                </span>
+              </button>
+            ))}
         </div>
 
-        <div
-          class="panel row wrap"
-          style={{
-            marginTop: '10px',
-            width: '100%',
-            maxWidth: '920px',
-            justifyContent: 'space-between',
-            position: 'sticky',
-            bottom: 0,
-            zIndex: 5,
-          }}
-        >
-          <div>
-            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 600 }}>
-              🎯 Today: {Math.min(p.daily.xp, p.daily.goal)} / {p.daily.goal} XP{' '}
-              {p.daily.xp >= p.daily.goal ? '— goal smashed! 🔥' : ''}
-            </div>
-            <div class="muted" style={{ fontSize: '.9rem' }}>
-              {p.wanderers.length > 0
-                ? `${p.wanderers.length} monster${p.wanderers.length > 1 ? 's are' : ' is'} wandering the land. Defeat them to keep your spells sharp!`
-                : hasSkills
-                  ? 'All quiet… for now. Monsters wander in every couple of hours.'
-                  : `Head to ${here.name} to start your adventure!`}
-            </div>
-          </div>
-          <div class="row">
-            {hasSkills && (
-              <button class="btn" onClick={() => go('/wander/seek')}>
-                👹 Seek trouble
+        <div class="panel row wrap atlas-bar">
+          <button class="btn small ghost" onClick={() => go('/map')}>
+            ← Adventures
+          </button>
+          <div class="row wrap" style={{ gap: '6px' }}>
+            {campaigns.map((c) => (
+              <button
+                key={c.id}
+                class={`btn small ${c.id === campaign ? 'gold' : 'ghost'}`}
+                onClick={() => go(`/atlas/${c.id}`, true)}
+              >
+                {c.icon} {c.name}
               </button>
-            )}
-            <button class="btn gold" onClick={() => go(`/region/${here.id}`)}>
-              ▶ Continue: {here.name}
-            </button>
+            ))}
           </div>
+          <div class="spacer" />
+          {hasSkills && (
+            <button class="btn small" onClick={() => go('/wander/seek')}>
+              👹 Seek trouble
+            </button>
+          )}
+          {here && (
+            <button class="btn small gold" onClick={() => go(`/region/${here.id}`)}>
+              ▶ {here.name}
+            </button>
+          )}
         </div>
       </div>
     </div>

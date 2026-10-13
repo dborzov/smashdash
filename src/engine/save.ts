@@ -98,6 +98,7 @@ export function migrate(p: Profile): Profile {
   p.counters ??= {};
   p.time ??= {};
   p.visited ??= {};
+  p.lastAt ??= {};
   p.quests ??= null;
   p.boosts ??= {};
   p.den ??= [];
