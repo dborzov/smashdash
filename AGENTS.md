@@ -33,10 +33,19 @@ keep it organised, tested and documented.
 7. **Randomness goes through `Rng`** (`src/engine/rng.ts`) so problems are reproducible.
 8. **Tone check.** Read new text out loud. If it sounds like a textbook, rewrite it.
 9. **Update the docs** when you change behaviour, numbers, or structure.
+10. **Teach the steps, don't quiz the answer.** Multi-step work (writing an equation, solving
+    it) happens on the **EQcanvas** (`src/ui/eqcanvas/`, logic in `src/engine/eqcanvas.ts`),
+    with feedback on every step — never a multiple-choice or keypad question about the final
+    answer. Hints must be about the kid's current step, never generic ("use $x$"). New
+    topics that involve equations should use or extend the slate. See `docs/vision.md`
+    (*Teach, don't quiz*).
 
 ## Handy
 
 - `npm run dev` then open http://localhost:5173/smashdash/
 - `#/preview` — play any lesson without saving, sample any generator.
 - `#/skills` — the Skill Tree: every skill and atom, with the player's state.
+- To try a change in a real browser (or with Playwright), see *Trying it in a browser* in
+  `docs/architecture.md` — it explains how to skip the prologue and unlock skills for drills.
+- Touch matters: anything draggable must work with a finger on an iPad, not only a mouse.
 - Deploys automatically from `master` via `.github/workflows/deploy.yml`.

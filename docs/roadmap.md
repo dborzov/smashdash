@@ -40,6 +40,9 @@
   numbers into an equation that is read back in words, get told which pieces are wrong,
   then solve it move by move on both sides (bad moves shown honestly, with undo), work out
   the sums, and check the answer. Worked examples play on the same slate in lessons.
+- **To check:** dragging tiles with a finger on a real iPad (tested with a mouse and with
+  emulated touch taps only). Watch whether 4–5 taps per one-step equation feels slow at the
+  Master tier; if so, consider letting some Master problems skip the slate.
 
 ## Next ideas (roughly in priority order)
 

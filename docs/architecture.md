@@ -98,6 +98,24 @@ docs/        you are here
 `/smashdash/` (see `vite.config.ts`); for a custom domain set `base: '/'` and add
 `public/CNAME`.
 
+## Trying it in a browser
+
+`npm run dev`, then open http://localhost:5173/smashdash/. Useful routes:
+`#/preview/lesson/<id>` (any lesson, nothing saved), `#/preview/skill/<id>` (samples from a
+generator), `#/drill/<skill>` (a practice fight on one skill).
+
+For scripted checks (Playwright; Chromium is preinstalled in cloud sessions):
+- Make a hero through `#/new` (fill *Type a name…*, click *Next →* until *Begin the
+  adventure!*).
+- New heroes are sent to the prologue first, and drills only open for skills the hero has
+  been taught. To skip both, edit the saved profile in `localStorage` and reload: push
+  `'prologue'` into `seen`, and give each skill to drill an entry in `skills`
+  (`{ m: 0.2, seen: 1, right: 1, last: Date.now(), tier: 2 }`; `tier` 1–3 picks the level).
+- Use `hasTouch: true` and try tablet (768 × 1024, 1024 × 768) and phone (390 × 844) sizes.
+- KaTeX writes hidden MathML next to what you see, so `textContent` of maths repeats
+  itself (`44` for a rendered `4`): select by element or position, not by maths text.
+- Emulated touch isn't a real iPad: drag-and-drop still needs checking on a device.
+
 ## Content preview (for authors)
 
 Open `#/preview` (with any hero loaded) to play any lesson without saving progress, or to see

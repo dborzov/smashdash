@@ -18,6 +18,11 @@ decimals — where the realm's ledgers have burned and a misread digit costs a b
 - 58 skills broken into 273 named "tiny skills" (atoms), each skill with a story lesson,
   interactive checks and a problem generator that predicts common mistakes and nudges
   instead of punishing. A **Skill Tree** page shows the state of every atom.
+- **Show your work on the EQcanvas**: story problems and equations are never a multiple-choice
+  question about the answer. Kids drag the story's numbers onto a slate to write the
+  equation (it reads their equation back in words and marks the pieces that don't fit),
+  then solve it one move at a time on both sides, with feedback, undo and a check on every
+  step. Lessons play worked examples on the same slate first.
 - Adaptive practice: struggle with something and you get more of exactly that, a bit easier,
   until it holds; breeze through and you move up faster.
 - Visual applets: place-value chart, a counting board, number lines, a log-scale line,
@@ -35,7 +40,7 @@ decimals — where the realm's ledgers have burned and a misread digit costs a b
 ```bash
 npm install
 npm run dev        # http://localhost:5173/smashdash/
-npm test           # generators, content, engine, adaptive and save-compat tests
+npm test           # generators, content, engine, EQcanvas, adaptive and save-compat tests
 npm run ci         # what CI runs
 ```
 

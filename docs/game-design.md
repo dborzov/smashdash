@@ -88,6 +88,11 @@ Forger, Golem, Rider), scenes in `src/art/scenes/dark.tsx`, with ash and mote pa
 - In lessons, mistakes cost nothing (but show the worked solution).
 - In encounters, a final wrong answer costs a heart.
 - Hint scrolls (items) reveal a hint; wizards get one free hint per fight.
+- **On the EQcanvas** (equations and story problems) every step is judged on its own: a wrong
+  equation, a move that doesn't help, or a wrong sum gets an explanation and a fix-it, as
+  often as needed. Fixed slips count as *nudged*; "Show me" counts as wrong (a heart in a
+  fight). In a fight, the first hint on a problem uses a hint scroll; the step-by-step
+  feedback is always free. See `learning-design.md`.
 
 ## Progression & economy (`src/engine/rewards.ts`, `src/engine/profile.ts`)
 

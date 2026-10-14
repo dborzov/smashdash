@@ -40,6 +40,36 @@ kingdom where every number has been stuffed into a box.
 10. **Depth over breadth**: "be selective… choose some specific interconnected concepts and
     skills that tend to be hard for kids, and do that specific job well."
 
+## Teach, don't quiz (owner feedback, October 2026)
+
+The owner's verdict on the first version of story problems: the app presented multi-step
+problems "as an idiotic multiple choice question for the final answer", the hint was a
+"helpful" *use x*, and the app "never ever even visualizes, shows as an example and lets the
+kid give a try at the key learning material": **the intermediate steps** — writing the
+equation, finding out whether it is right or wrong, then doing transformations to both sides
+to solve it. "Is the kid supposed to do everything in his head? How is the app even helping
+and guiding and teaching the kid… about both how to approach the problem, and the *show your
+work* skills?"
+
+What the owner wants instead, and what every future change should keep:
+
+- **"Interactive and visually rich functionality for every little step"**, guiding the kid,
+  with **feedback on every step**; when something is wrong, **show where they went wrong and
+  how to make it work**.
+- **"The point is to teach, to explain, to provide intuition and intuitive understanding…
+  so much more than just a multiple choice maths quiz."**
+- **Show it as an example, then let the kid try** — the same tool for both.
+- The tool is the **EQcanvas**: drag the operators, $x$ and the story's numbers onto a canvas
+  with instant feedback and a text reflection of what was built; once the equation is right,
+  apply tools to it (subtract a number or $x$ from both sides, divide both sides, …) and
+  tweak them. It should be "adjusted and adapted for each side" (each place it is used) and
+  **"adopted and implemented across this tutorial website"** — not a one-off for story
+  problems.
+
+So: never ask only for the final answer of a multi-step problem; never give a generic hint;
+make every step visible, checkable and undoable. How this is built: `learning-design.md`
+(*EQcanvas*), `decisions.md` (26–27).
+
 ## Tone — this matters a lot
 
 - **Playful, humorous, a bit risqué.** Poop jokes, farts, burps, a sarcastic frog mentor,
