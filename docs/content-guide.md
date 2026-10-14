@@ -114,6 +114,42 @@ beats:
 | `rounder` | `value`, `place` (power of ten, −2…7) | pick the nearer round number on a zoomed line |
 | `shifter` | `value`, `times` (−4…4) | ×10 / ÷10 as digits sliding past a fixed point |
 | `decgrid` | `value` (0–1) | tenths/hundredths shaded on a grid |
+| `eqcanvas` | `mode` (`build`/`solve`/`full`/`move`), `equation`, `story?`, `question?`, `unknown?`, `unit?`, `words?`, `scaffold?`, `traps?`, `hints?`, `demo?` | the equation slate (see below) |
+
+### The EQcanvas slate
+
+Use it wherever a kid writes or solves an equation — never ask for just the final number of
+a multi-step problem. `equation` is plain text: `'8x+3=51'`, `'x/4=6'`, `'3(x+2)=21'`,
+`'12=x+3'`. `x` is worked out from it.
+
+```yaml
+  - type: play
+    who: pib
+    text: Watch me crack it. Tap **Next step**.
+    widget:
+      kind: eqcanvas
+      mode: full          # build: write it · solve: solve it · full: both + answer · move: first move only
+      demo: true          # plays itself (a worked example); leave out to let the kid do it
+      equation: '6x+2=20'
+      story: >-
+        I sell apples in bags of [[6|apples in each bag]]. The troll bought some bags plus
+        [[2|loose apples]] loose ones — [[20|apples in all]] apples.
+      question: How many bags did the troll buy?
+      unknown: the number of bags
+      unit: bags
+      words: apples in the bags + loose apples = all the apples
+      scaffold: true      # show `words` from the start (else after the first miss)
+      traps:              # predicted wrong equations, each with a nudge
+        - { eq: '2x+6=20', text: "Swapped! **Each** bag holds 6, so the 6 goes with $x$." }
+      hints: ["Say it in words first: …", "$x$ bags of 6 is $6x$.", "…"]
+```
+
+- Every number of the story is a tile: `[[value|what it means]]`. Write the meaning so it
+  reads after the number ("legs on each spider", "gold in total") — the slate reads the
+  kid's equation back with it. `[[4|cousins|decoy]]` is a number the question doesn't need.
+- Tests check that the equation can be built from the story's tiles, every non-decoy tile
+  is used, traps really are wrong, and the equation can be solved by peeling layers.
+- Generators return `answer: { kind: 'canvas', … }` with the same fields (`src/skills/words.ts`).
 
 `boxes`, `balance`, `groups`, `area`, `plot` and `circuit` also work as still pictures in `ask`
 and `input` beats. Tests check that every interactive goal can actually be reached (plot

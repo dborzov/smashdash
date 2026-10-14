@@ -7,7 +7,7 @@
  *  - x on the right-hand side (20 = 3x + 5) looks "wrong" to many kids.
  *  - checking a solution by substituting it back (links back to Region 1).
  */
-import type { Generator } from './types';
+import type { CanvasAnswer, Generator } from './types';
 import { choice, numeric } from './util';
 import { lin } from './balance';
 
@@ -20,6 +20,15 @@ export function steps(rows: [string, string][]): string {
 
 // ---------------------------------------------------------------------------
 
+/** Solve on the EQcanvas: every move shown on both sides, every result worked out. */
+export function solveOnSlate(
+  equation: string,
+  x: number,
+  mode: 'solve' | 'move' = 'solve',
+): CanvasAnswer {
+  return { kind: 'canvas', mode, equation, x };
+}
+
 export const oneStepAdd: Generator = (rng, level) => {
   const forms =
     level === 1 ? ['xpa'] : level === 2 ? ['xpa', 'xma', 'apx'] : ['xma', 'apx', 'flip', 'xpa'];
@@ -27,59 +36,45 @@ export const oneStepAdd: Generator = (rng, level) => {
   const big = level === 3;
   const a = rng.int(1, big ? 30 : 12);
   const v = rng.int(form === 'xma' ? 1 : 0, big ? 40 : 15);
-  let eq: string, nudges: [number, string][], explain: string;
-  switch (form) {
-    case 'xpa':
-    case 'apx':
-    case 'flip': {
-      const b = v + a;
-      eq =
-        form === 'xpa' ? `x + ${a} = ${b}` : form === 'apx' ? `${a} + x = ${b}` : `${b} = x + ${a}`;
-      nudges = [[b + a, `You added ${a} — but to undo $+ ${a}$ we **subtract** it!`]];
-      explain =
-        form === 'flip'
-          ? `The box is on the right this time — no problem! Subtract ${a} from both sides:` +
-            steps([
-              [`${b} - ${a}`, `x + ${a} - ${a}`],
-              [`${v}`, 'x'],
-            ])
-          : `Subtract ${a} from both sides:` +
-            steps([
-              [`${form === 'xpa' ? `x + ${a}` : `${a} + x`} - ${a}`, `${b} - ${a}`],
-              ['x', `${v}`],
-            ]);
-      break;
-    }
-    default: {
-      const b = v;
-      const x = b + a;
-      eq = `x - ${a} = ${b}`;
-      nudges = [[b - a, `You subtracted — but to undo $- ${a}$ we **add** it back!`]];
-      explain =
+  if (form === 'xma') {
+    const x = v + a;
+    return {
+      skill: 'one-step-add',
+      atoms: ['xma'],
+      prompt: `Solve for $x$ — show each move:`,
+      answer: solveOnSlate(`x-${a}=${v}`, x),
+      hint: `What is stuck to the box? Undo it on both sides.`,
+      explain:
         `Add ${a} to both sides:` +
         steps([
-          [`x - ${a} + ${a}`, `${b} + ${a}`],
+          [`x - ${a} + ${a}`, `${v} + ${a}`],
           ['x', `${x}`],
-        ]);
-      return {
-        skill: 'one-step-add',
-        atoms: ['xma'],
-        prompt: `Solve for $x$:`,
-        math: eq,
-        ...numeric(x, nudges),
-        hint: `What is stuck to the box? Undo it on both sides.`,
-        explain,
-      };
-    }
+        ]),
+    };
   }
+  const b = v + a;
+  const text = form === 'xpa' ? `x+${a}=${b}` : form === 'apx' ? `${a}+x=${b}` : `${b}=x+${a}`;
   return {
     skill: 'one-step-add',
     atoms: [form],
-    prompt: `Solve for $x$:`,
-    math: eq,
-    ...numeric(v, nudges),
+    prompt:
+      form === 'flip'
+        ? `Solve for $x$ — the box is on the right this time, no problem:`
+        : `Solve for $x$ — show each move:`,
+    answer: solveOnSlate(text, v),
     hint: `What is stuck to the box? Undo it on both sides.`,
-    explain,
+    explain:
+      form === 'flip'
+        ? `Subtract ${a} from both sides:` +
+          steps([
+            [`${b} - ${a}`, `x + ${a} - ${a}`],
+            [`${v}`, 'x'],
+          ])
+        : `Subtract ${a} from both sides:` +
+          steps([
+            [`${form === 'xpa' ? `x + ${a}` : `${a} + x`} - ${a}`, `${b} - ${a}`],
+            ['x', `${v}`],
+          ]),
   };
 };
 
@@ -95,12 +90,8 @@ export const oneStepMul: Generator = (rng, level) => {
     return {
       skill: 'one-step-mul',
       atoms: ['xda'],
-      prompt: `Solve for $x$:`,
-      math: r`\frac{x}{${a}} = ${b}`,
-      ...numeric(a * b, [
-        [b / a, `The box is already being divided. To undo dividing we **multiply**!`],
-        [a + b, `Undo dividing with multiplying, not adding.`],
-      ]),
+      prompt: `Solve for $x$ — show each move:`,
+      answer: solveOnSlate(`x/${a}=${b}`, a * b),
       hint: `The box is split into ${a} piles. Undo the split!`,
       explain:
         `Multiply both sides by ${a}:` +
@@ -111,16 +102,11 @@ export const oneStepMul: Generator = (rng, level) => {
     };
   }
   const b = a * v;
-  const eq = form === 'flip' ? `${b} = ${a}x` : `${a}x = ${b}`;
   return {
     skill: 'one-step-mul',
     atoms: [form],
-    prompt: `Solve for $x$:`,
-    math: eq,
-    ...numeric(v, [
-      [b - a, r`$${a}x$ is $${a} \times x$, so undo it by **dividing**, not subtracting.`],
-      [b * a, `That's multiplying again! Undo times with divide.`],
-    ]),
+    prompt: `Solve for $x$ — show each move:`,
+    answer: solveOnSlate(form === 'flip' ? `${b}=${a}x` : `${a}x=${b}`, v),
     hint: `${a} boxes weigh ${b}. How much is one box?`,
     explain:
       `Divide both sides by ${a}:` +
@@ -201,93 +187,42 @@ export const undoOrder: Generator = (rng, level) => {
         : ['xdapb', 'bpax', 'paren', 'fracparen'];
   const form = rng.pick(forms);
   const a = rng.int(2, 6);
-  const b = rng.int(1, 12);
-  const v = rng.int(1, 10);
-  const sub = `**Subtract** $${b}$ from both sides`;
-  const add = `**Add** $${b}$ to both sides`;
-  const div = `**Divide** both sides by $${a}$`;
-  const mul = `**Multiply** both sides by $${a}$`;
-  let eq: string, right: string, wrong: (string | { text: string; nudge: string })[], why: string;
-  const lastOn = `Last on, first off! The $${b}$ was added last, so peel it off first.`;
+  // b doesn't share out evenly, so dividing first really is messy.
+  const b = rng.intExcept(1, 12, [a, 2 * a, 3 * a, 4 * a, 5 * a, 6 * a]);
+  // Keep every number positive: negative numbers aren't taught yet.
+  const v = Math.max(rng.int(1, 10), Math.ceil((b + 1) / a));
+  let text: string, why: string;
   switch (form) {
     case 'axpb':
-      eq = `${a}x + ${b} = ${a * v + b}`;
-      right = sub;
-      wrong = [
-        { text: div, nudge: `You'd have to divide the ${b} too — messy! ${lastOn}` },
-        add,
-        `**Subtract** $${a}$ from both sides`,
-      ];
+      text = `${a}x+${b}=${a * v + b}`;
       why = `To build $${a}x + ${b}$ you multiply by ${a}, then add ${b}. Undo in reverse: subtract ${b} first.`;
       break;
     case 'axmb':
-      eq = `${a}x - ${b} = ${a * v - b}`;
-      right = add;
-      wrong = [
-        {
-          text: div,
-          nudge: `Dividing first means dividing the ${b} too. Undo the $- ${b}$ first!`,
-        },
-        sub,
-        mul,
-      ];
+      text = `${a}x-${b}=${a * v - b}`;
       why = `Undo the last step first: the $- ${b}$. Add ${b} to both sides.`;
       break;
     case 'xdapb':
-      eq = r`\frac{x}{${a}} + ${b} = ${v + b}`;
-      right = sub;
-      wrong = [
-        { text: mul, nudge: `Multiplying first would multiply the ${b} too. ${lastOn}` },
-        div,
-        add,
-      ];
+      text = `x/${a}+${b}=${v + b}`;
       why = `The $+ ${b}$ was the last thing done to the box, so undo it first.`;
       break;
     case 'bpax':
-      eq = `${b} + ${a}x = ${a * v + b}`;
-      right = sub;
-      wrong = [
-        {
-          text: div,
-          nudge: `Even though the ${b} is written first, it's still added after multiplying. Remove it first!`,
-        },
-        add,
-        mul,
-      ];
+      text = `${b}+${a}x=${a * v + b}`;
       why = `Multiplication happens before addition, so the ${b} is the outer layer. Subtract it first.`;
       break;
     case 'paren':
-      eq = `${a}(x + ${b}) = ${a * (v + b)}`;
-      right = div;
-      wrong = [
-        {
-          text: sub,
-          nudge: `The brackets protect the ${b}! The ×${a} is the outer layer this time.`,
-        },
-        mul,
-        add,
-      ];
+      text = `${a}(x+${b})=${a * (v + b)}`;
       why = `Inside the brackets happens first, so the ×${a} is done last. Undo it first: divide by ${a}.`;
       break;
     default:
-      eq = r`\frac{x + ${b}}{${a}} = ${v + b}`;
-      right = mul;
-      wrong = [
-        {
-          text: sub,
-          nudge: `The ${b} is trapped under the fraction bar. Undo the dividing first!`,
-        },
-        div,
-        add,
-      ];
+      text = `(x+${b})/${a}=${v + b}`; // x + b = a(v + b)
       why = `The whole top is divided by ${a} last, so multiply by ${a} first.`;
   }
+  const x = form === 'xdapb' ? a * v : form === 'fracparen' ? a * (v + b) - b : v;
   return {
     skill: 'undo-order',
     atoms: [form],
-    prompt: `To solve this, what's the **first** move?`,
-    math: eq,
-    ...choice(rng, right, wrong),
+    prompt: `Make the **first** move on both sides. Which layer comes off first?`,
+    answer: solveOnSlate(text, x, 'move'),
     hint: `Think about the order the box was wrapped in. Unwrap it in reverse.`,
     explain: why,
   };
@@ -304,28 +239,21 @@ export const twoStep: Generator = (rng, level) => {
         : ['axmb', 'xdapb', 'flip', 'paren'];
   const form = rng.pick(forms);
   const a = rng.int(2, level === 1 ? 5 : 9);
-  const b = rng.int(1, level === 1 ? 10 : 20);
+  const b = rng.intExcept(1, level === 1 ? 10 : 20, [a, 2 * a, 3 * a, 4 * a]);
   const v = rng.int(1, level === 1 ? 10 : 12);
-  const wrongOrder = `Close! It looks like you divided before peeling off the ${b}. Last on, first off!`;
+  const prompt = `Solve for $x$ — one move at a time, on both sides:`;
+  const hint = `Last on, first off: peel the outside layer first.`;
   switch (form) {
     case 'axpb':
     case 'flip': {
       const c = a * v + b;
-      const eq = form === 'flip' ? `${c} = ${a}x + ${b}` : `${a}x + ${b} = ${c}`;
       return {
         skill: 'two-step',
         atoms: [form],
         prompt:
-          form === 'flip'
-            ? `Solve for $x$ (the box is on the right — that's fine!):`
-            : `Solve for $x$:`,
-        math: eq,
-        ...numeric(v, [
-          [c / a - b, wrongOrder],
-          [(c + b) / a, `Check the sign: to undo $+ ${b}$ we subtract.`],
-          [c - b, `Nearly! That's $${a}x$. Now one more step: divide by ${a}.`],
-        ]),
-        hint: `First get rid of the $+ ${b}$, then split into ${a} equal parts.`,
+          form === 'flip' ? `Solve for $x$ (the box is on the right — that's fine!):` : prompt,
+        answer: solveOnSlate(form === 'flip' ? `${c}=${a}x+${b}` : `${a}x+${b}=${c}`, v),
+        hint,
         explain:
           form === 'flip'
             ? steps([
@@ -345,14 +273,9 @@ export const twoStep: Generator = (rng, level) => {
       return {
         skill: 'two-step',
         atoms: ['axmb'],
-        prompt: `Solve for $x$:`,
-        math: `${a}x - ${b} = ${c}`,
-        ...numeric(vv, [
-          [(c - b) / a, `Check the sign: to undo $- ${b}$ we **add**.`],
-          [c / a + b, wrongOrder],
-          [c + b, `Nearly! That's $${a}x$. Now divide by ${a}.`],
-        ]),
-        hint: `First undo the $- ${b}$, then divide.`,
+        prompt,
+        answer: solveOnSlate(`${a}x-${b}=${c}`, vv),
+        hint,
         explain: steps([
           [`${a}x`, `${c} + ${b} = ${c + b}`],
           ['x', r`\frac{${c + b}}{${a}} = ${vv}`],
@@ -365,14 +288,9 @@ export const twoStep: Generator = (rng, level) => {
       return {
         skill: 'two-step',
         atoms: ['xdapb'],
-        prompt: `Solve for $x$:`,
-        math: r`\frac{x}{${a}} + ${b} = ${c}`,
-        ...numeric(x, [
-          [c * a - b, `Peel off the $+ ${b}$ before multiplying!`],
-          [v, `Nearly! That's $\\frac{x}{${a}}$. One more step: multiply by ${a}.`],
-          [(c - b) / a, `To undo dividing, **multiply**.`],
-        ]),
-        hint: `First subtract ${b}, then undo the dividing.`,
+        prompt,
+        answer: solveOnSlate(`x/${a}+${b}=${c}`, x),
+        hint,
         explain: steps([
           [r`\frac{x}{${a}}`, `${c} - ${b} = ${v}`],
           ['x', r`${v} \times ${a} = ${x}`],
@@ -384,16 +302,8 @@ export const twoStep: Generator = (rng, level) => {
       return {
         skill: 'two-step',
         atoms: ['paren'],
-        prompt: `Solve for $x$:`,
-        math: `${a}(x + ${b}) = ${c}`,
-        ...numeric(v, [
-          [c - b / a, `The brackets change the order — divide first!`],
-          [c / a, `Nearly! That's $x + ${b}$. Now subtract ${b}.`],
-          [
-            (c - b) / a,
-            `The bracket is a VIP room: divide by ${a} first, then deal with the ${b}.`,
-          ],
-        ]),
+        prompt,
+        answer: solveOnSlate(`${a}(x+${b})=${c}`, v),
         hint: `Brackets first means ×${a} was done last — undo it first.`,
         explain: steps([
           [`x + ${b}`, r`\frac{${c}}{${a}} = ${v + b}`],

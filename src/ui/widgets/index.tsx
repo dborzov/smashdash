@@ -17,6 +17,8 @@ import {
   Rounder,
   Shifter,
 } from './PlaceValue';
+import { EqCanvas } from '../eqcanvas/EqCanvas';
+import { eqFrom, fVal, solutionOf } from '../../engine/eqcanvas';
 
 export function WidgetView({
   w,
@@ -130,5 +132,17 @@ export function WidgetView({
       return <Shifter value={w.value} times={w.times} onDone={onDone} />;
     case 'decgrid':
       return <DecGrid value={w.value} />;
+    case 'eqcanvas': {
+      const { demo, ...spec } = w;
+      return (
+        <div class="card eqc-card">
+          <EqCanvas
+            spec={{ ...spec, kind: 'canvas', x: fVal(solutionOf(eqFrom(w.equation))!) }}
+            demo={demo}
+            onComplete={() => onDone?.()}
+          />
+        </div>
+      );
+    }
   }
 }

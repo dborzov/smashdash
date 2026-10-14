@@ -19,6 +19,7 @@ src/
   content/   schema.ts (zod schemas = the content contract), index.ts (loads YAML via Vite)
   skills/    problem generators, one file per topic, registry in index.ts
   engine/    pure game logic: profile, save, store, mastery (tiers, atoms), adaptive (runs),
+             eqcanvas (equations: parse, check, read aloud, moves on both sides, tidy),
              play (what an answer does), events + achievements + quests (bounties), daily,
              pet, rewards, encounters, progress, regionStats, skillTree, items, answer
              checking, rng, dates
@@ -26,13 +27,14 @@ src/
              useTimeTracker.ts (time spent per region),
              components/ (ProblemCard, RunBar, Bounties, Dialogue, Hud, Fx, …),
              widgets/ (interactive maths; PlaceValue.tsx and NumberLine.tsx for place value),
+             eqcanvas/EqCanvas.tsx (the equation slate: write it, solve it, answer it),
              screens/ (Title, CreateHero, Adventures, WorldMap (the atlas), Region, SkillTree,
              Lesson, Encounter, Play, Hero, Pet, Shop, Preview)
   art/       procedural SVG art: Avatar, Monster, Dark (Long Count foes and portraits), Foe,
              Pet, Portrait, scenes/ (scenes/dark.tsx for the Long Count), paint.ts helpers
   audio/     sfx.ts — WebAudio-synthesised sound effects (no audio files)
   styles/    main.css — design tokens + all styles
-tests/       vitest: generators, content validation, engine, widget logic, save compatibility
+tests/       vitest: generators, content validation, engine, EQcanvas, widget logic, save compatibility
 docs/        you are here
 ```
 
@@ -45,7 +47,8 @@ docs/        you are here
   Zod is only used in tests, so it never ships to players.
 - **Generators are code.** `src/skills/*.ts` export `(rng, level) => Problem`. A `Problem` has a
   prompt (rich text), optional big maths and picture, an answer (number, choice, `order` —
-  tap items into order, or `line` — tap a point on a number line), an optional `entry`
+  tap items into order, `line` — tap a point on a number line, or `canvas` — write and/or
+  solve an equation step by step on the EQcanvas), an optional `entry`
   (place-value dials instead of the keypad), the `atoms` it exercises, predicted mistakes
   with **nudges**, a hint, and a worked explanation. `generateFor(skill, level, rng, atom?)`
   can aim at one atom (rejection sampling). `tests/generators.test.ts` runs every generator

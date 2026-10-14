@@ -42,6 +42,18 @@ beats:
     nudges:
       "1": "The box is already being divided. Undo it with the opposite!"
     explain: "The box is divided by 2, so multiply both sides by 2."
+  - type: play
+    who: grimble
+    text: >-
+      From now on we work on a **slate**, like proper equation-smiths. Watch: pick a move, it
+      gets written into **both** sides, then we tidy up. Tap **Next step**.
+    widget: { kind: eqcanvas, mode: solve, equation: 'x+4=9', demo: true }
+    done: "Every move written down. Nothing done in your head that you can't see."
+  - type: play
+    who: brokka
+    text: "Your hammer. Pick the one move that gets $x$ alone in $x - 3 = 5$."
+    widget: { kind: eqcanvas, mode: move, equation: 'x-3=5' }
+    done: "The $-3$ is undone by a $+3$ — on both sides."
   - type: practice
     skill: pick-move
     count: 4

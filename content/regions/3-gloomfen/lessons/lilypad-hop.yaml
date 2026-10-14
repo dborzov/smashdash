@@ -11,38 +11,41 @@ beats:
     who: grimble
     text: "The box has $+8$ stuck to it. Subtract 8 from both sides:"
     math: '\begin{aligned} x + 8 &= 15 \\ x + 8 \hl{\,- 8} &= 15 \hl{\,- 8} \\ x &= 7 \end{aligned}'
-  - type: input
+  - type: play
+    who: grimble
+    text: >-
+      Now on my slate, so you can see every move. Keep tapping **Next step**. Watch the move
+      get written into **both** sides — and watch the $+8$ and $-8$ cancel. Poof.
+    widget: { kind: eqcanvas, mode: solve, equation: 'x+8=15', demo: true }
+    done: "That's the whole trick: same move on both sides, then tidy up. Every line written down."
+  - type: say
+    who: grimble
+    text: >-
+      Your turn. Pick a move (**+ − × ÷**), pick a number, and do it to both sides. Then work
+      out the sums. If you pick a silly move, the slate will tell you — and let you undo it.
+  - type: play
     who: nettle
     text: "This lily pad says: solve $x + 6 = 11$."
-    math: x + 6 = 11
-    answer: 5
-    nudges:
-      - { value: 17, text: "You added 6! To undo $+6$ we **subtract** 6." }
-    explain: "Subtract 6 from both sides: $x = 11 - 6 = 5$."
+    widget: { kind: eqcanvas, mode: solve, equation: 'x+6=11' }
+    done: "Five! Gerald the tadpole nods. He doesn't have a neck, so it's more of a wobble."
   - type: say
     who: grimble
     text: When the box has a **minus** stuck to it, we **add** to undo it.
-  - type: input
+  - type: play
     who: nettle
     text: "Next pad: solve $x - 4 = 9$."
-    math: x - 4 = 9
-    answer: 13
-    nudges:
-      - { value: 5, text: "You subtracted. But to undo $-4$, we **add** 4!" }
-    explain: "Add 4 to both sides: $x = 9 + 4 = 13$."
+    widget: { kind: eqcanvas, mode: solve, equation: 'x-4=9' }
+    done: "Thirteen. The $-4$ and $+4$ cancelled, and the box stood alone."
   - type: say
     who: grimble
     text: >-
       One more trick. The box doesn't have to be on the left. $12 = x + 3$ is the same scale,
       just looked at from the other side of the swamp.
-  - type: input
+  - type: play
     who: nettle
     text: "Last pad: solve $12 = x + 3$."
-    math: 12 = x + 3
-    answer: 9
-    nudges:
-      - { value: 15, text: "Undo the $+3$ with a $-3$, on both sides." }
-    explain: "Subtract 3 from both sides: $9 = x$. So $x = 9$."
+    widget: { kind: eqcanvas, mode: solve, equation: '12=x+3' }
+    done: "$9 = x$ is the same as $x = 9$. The scale doesn't care which pan the box sits on."
   - type: practice
     skill: one-step-add
     count: 4

@@ -280,76 +280,40 @@ export const pickMove: Generator = (rng, level) => {
   const form = rng.pick(forms);
   const k = rng.int(2, 9);
   const v = rng.int(1, 12);
-  let eq: string, right: string, wrong: (string | { text: string; nudge: string })[], why: string;
+  let text: string, x: number, why: string;
   switch (form) {
     case 'add':
-    case 'flip': {
-      eq =
+    case 'flip':
+      text =
         form === 'flip'
-          ? `${v + k} = x + ${k}`
+          ? `${v + k}=x+${k}`
           : rng.chance(0.5)
-            ? `x + ${k} = ${v + k}`
-            : `${k} + x = ${v + k}`;
-      right = `**Subtract** $${k}$ from both sides`;
-      wrong = [
-        {
-          text: `**Add** $${k}$ to both sides`,
-          nudge: `Adding ${k} more buries the box deeper! We want to get rid of the $+ ${k}$.`,
-        },
-        {
-          text: `**Subtract** $${v + k}$ from both sides`,
-          nudge: `Look at what's stuck to the box — that's what to get rid of.`,
-        },
-        `**Divide** both sides by $${k}$`,
-      ];
+            ? `x+${k}=${v + k}`
+            : `${k}+x=${v + k}`;
+      x = v;
       why = `The box has $+ ${k}$ stuck to it. Subtracting $${k}$ from both sides leaves the box alone.`;
       break;
-    }
     case 'sub':
-      eq = `x - ${k} = ${v}`;
-      right = `**Add** $${k}$ to both sides`;
-      wrong = [
-        {
-          text: `**Subtract** $${k}$ from both sides`,
-          nudge: `That makes it $x - ${2 * k}$ — worse! Undo a minus with a plus.`,
-        },
-        `**Add** $${v}$ to both sides`,
-        `**Multiply** both sides by $${k}$`,
-      ];
+      text = `x-${k}=${v}`;
+      x = v + k;
       why = `Undo $- ${k}$ with $+ ${k}$ on both sides.`;
       break;
     case 'mul':
-      eq = `${k}x = ${k * v}`;
-      right = `**Divide** both sides by $${k}$`;
-      wrong = [
-        {
-          text: `**Subtract** $${k}$ from both sides`,
-          nudge: `$${k}x$ means $${k} \\times x$ — undo a times with a divide.`,
-        },
-        `**Multiply** both sides by $${k}$`,
-        `**Divide** both sides by $${k * v}$`,
-      ];
+      text = `${k}x=${k * v}`;
+      x = v;
       why = `$${k}x$ means ${k} times the box; dividing both sides by $${k}$ leaves one box.`;
       break;
     default:
-      eq = r`\frac{x}{${k}} = ${v}`;
-      right = `**Multiply** both sides by $${k}$`;
-      wrong = [
-        {
-          text: `**Divide** both sides by $${k}$`,
-          nudge: `The box is already being divided — undo that with the opposite.`,
-        },
-        `**Subtract** $${k}$ from both sides`,
-        `**Add** $${k}$ to both sides`,
-      ];
+      text = `x/${k}=${v}`;
+      x = k * v;
       why = `The box is divided by $${k}$; multiplying both sides by $${k}$ undoes it.`;
   }
   return {
     skill: 'pick-move',
     atoms: [form],
-    prompt: `Which move gets $x$ alone in $${eq}$?`,
-    math: eq,
-    ...choice(rng, right, wrong),
+    prompt: `Pick the move that gets $x$ alone, and do it to both sides:`,
+    answer: { kind: 'canvas', mode: 'move', equation: text, x },
+    hint: `What is stuck to $x$? Do the opposite.`,
     explain: why,
   };
 };

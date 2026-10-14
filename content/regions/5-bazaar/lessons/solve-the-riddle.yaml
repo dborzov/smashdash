@@ -7,37 +7,91 @@ beats:
     text: >-
       Step three: **solve it.** Step four: **answer the question that was asked.** You'd be
       amazed how many heroes solve the equation and then shout the wrong number.
-  - type: show
+  - type: say
+    who: grimble
+    text: >-
+      And we do NOT do it all in our heads, like show-offs. We write it down, one line at a
+      time, so when something goes wrong we can see exactly **where**.
+  - type: play
     who: pib
-    math: '\begin{aligned} 6x + 2 &= 20 \\ 6x &= 18 \\ x &= 3 \end{aligned}'
-    text: "So the troll bought **3 bags**. (And then ate them, bags included.)"
-  - type: input
+    text: >-
+      Watch me crack my own riddle on the slate. Tap **Next step** — every number comes out of
+      the story, and every move goes on **both** sides.
+    widget:
+      kind: eqcanvas
+      mode: full
+      demo: true
+      equation: '6x+2=20'
+      story: >-
+        I sell apples in bags of [[6|apples in each bag]]. The troll bought some bags plus
+        [[2|loose apples]] loose ones — [[20|apples in all]] apples.
+      question: How many bags did the troll buy?
+      unknown: the number of bags
+      unit: bags
+      words: apples in the bags + loose apples = all the apples
+    done: "So the troll bought **3 bags**. (And then ate them, bags included.)"
+  - type: say
+    who: grimble
+    text: >-
+      See the pattern? **Words first** (apples in the bags + loose apples = all the apples),
+      then swap each part for its number or $x$. Then peel $x$ free, one layer at a time.
+  - type: play
     who: ptolemeow
     text: >-
-      I ate the same number of mice each day for 4 days, plus 2 mice for dessert. 22 mice in
-      all. **How many mice per day?**
-    answer: 5
-    nudges:
-      - { value: 20, text: "That's how many in the 4 days. How many is that **per day**?" }
-      - { value: 22, text: "That's the total. The riddle asks for mice per day." }
-    hint: "Let $x$ be mice per day: $4x + 2 = 22$."
-    explain: "$4x + 2 = 22$, so $4x = 20$ and $x = 5$ mice per day."
+      Your turn, mortal. Drag the numbers from my riddle onto the slate — or tap them — and
+      add $x$ and the signs.
+    widget:
+      kind: eqcanvas
+      mode: full
+      equation: '4x+2=22'
+      story: >-
+        I ate the same number of mice each day for [[4|days]] days, plus [[2|mice for dessert]]
+        mice for dessert. [[22|mice in all]] mice in all.
+      question: How many mice per day?
+      unknown: the number of mice per day
+      unit: mice per day
+      words: mice on the 4 days + dessert mice = all the mice
+      scaffold: true
+      traps:
+        - eq: '2x+4=22'
+          text: "Swapped! The mice per day ($x$) were eaten on **each** of the 4 days, so it's $4x$."
+        - eq: 'x+4+2=22'
+          text: "$x$ mice a day for 4 days isn't $x + 4$ — it's 4 **lots** of $x$: $4x$."
+      hints:
+        - "Say it in words first: **mice on the 4 days + dessert mice = all the mice**."
+        - "$x$ mice a day, for 4 days: that's $4x$ mice."
+        - "So: $4x$, plus the dessert mice, is the same as all the mice."
+    done: "Five mice a day. Ptolemeow licks a paw, deeply satisfied."
   - type: say
     who: grimble
     text: >-
       Now the Sphinx's next riddle has BIG numbers. Try guessing this one. I'll wait. …No,
       actually, let's use algebra. It's faster.
-  - type: input
+  - type: play
     who: ptolemeow
-    text: >-
-      Circus tickets cost 12 gold each. A troll family buys some tickets and an 18-gold bucket
-      of popcorn. They pay 138 gold. **How many tickets?**
-    answer: 10
-    nudges:
-      - { value: 120, text: "That's what the tickets cost altogether. How many tickets is that?" }
-      - { value: 138, text: "That's the total. The riddle asks how many tickets." }
-    hint: "Let $x$ be the number of tickets: $12x + 18 = 138$."
-    explain: "$12x + 18 = 138$, so $12x = 120$ and $x = 10$ tickets."
+    text: Circus riddle. Write it, solve it, answer it.
+    widget:
+      kind: eqcanvas
+      mode: full
+      equation: '12x+18=138'
+      story: >-
+        Circus tickets cost [[12|gold for each ticket]] gold each. A troll family buys some
+        tickets and an [[18|gold for the popcorn]]-gold bucket of popcorn. They pay
+        [[138|gold in total]] gold.
+      question: How many tickets?
+      unknown: the number of tickets
+      unit: tickets
+      words: cost of the tickets + cost of the popcorn = what they paid
+      traps:
+        - eq: '18x+12=138'
+          text: "Swapped! The **tickets** cost 12 each — so the 12 goes with $x$."
+        - eq: 'x+12+18=138'
+          text: "Each ticket costs 12, so $x$ tickets cost 12 **times** $x$: $12x$."
+      hints:
+        - "Say it in words first: **cost of the tickets + cost of the popcorn = what they paid**."
+        - "$x$ tickets at 12 gold each cost $12x$ gold."
+        - "So: $12x$, plus the popcorn, is the same as what they paid."
+    done: "Ten tickets. Guessing would still be going. Algebra: done."
   - type: practice
     skill: story-solve
     count: 4

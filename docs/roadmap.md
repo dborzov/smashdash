@@ -34,12 +34,20 @@
   hunt, companions; two new species (Bone Pup, Mimic).
 - Save version 2 with a migration; all old progress kept.
 
+## v2.1 — the EQcanvas
+
+- Story problems and equations are worked on a slate instead of answered: drag the story's
+  numbers into an equation that is read back in words, get told which pieces are wrong,
+  then solve it move by move on both sides (bad moves shown honestly, with undo), work out
+  the sums, and check the answer. Worked examples play on the same slate in lessons.
+
 ## Next ideas (roughly in priority order)
 
 - **Variables on both sides** region (balance with boxes on both pans).
 - **Negative numbers** mini-arc, then equations with negative solutions.
-- More mini-game patterns: timed "speed run" (optional), "match pairs", "sort into piles",
-  "build the equation" drag-and-drop.
+- More mini-game patterns: timed "speed run" (optional), "match pairs", "sort into piles".
+- EQcanvas everywhere it fits: Ohm's law ($V = I \times R$ for $R$), variables on both sides
+  (the engine already handles subtracting $x$), and `both-sides` drills.
 - Pet evolution visuals per stage.
 - The Long Count, part two: multiplying/dividing by multiples of ten, negative numbers,
   fractions ↔ decimals, long multiplication with estimates as the check.

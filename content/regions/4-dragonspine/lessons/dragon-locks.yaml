@@ -11,36 +11,33 @@ beats:
   - type: show
     math: '\begin{aligned} 4x + 3 &= 23 \\ 4x + 3 \hl{\,- 3} &= 23 \hl{\,- 3} \\ 4x &= 20 \\ \frac{4x}{\hl{4}} &= \frac{20}{\hl{4}} \\ x &= 5 \end{aligned}'
     text: "Peel off the $+3$, then split into 4."
+  - type: play
+    who: grimble
+    text: >-
+      Same lock, on my slate. Tap **Next step** and watch which layer comes off first — and
+      what happens to **both** sides each time.
+    widget: { kind: eqcanvas, mode: solve, equation: '4x+3=23', demo: true }
+    done: "And the slate checks it for us: $4 \\times 5 + 3 = 23$ ✓. Dragon-proof."
   - type: say
     who: grimble
-    text: "And then we CHECK, because we're not imps: $4 \\times 5 + 3 = 23$ ✓. Dragon-proof."
-  - type: input
+    text: >-
+      Now you. Try dividing first if you're feeling brave — the slate will show you exactly
+      why that's a mess. Then undo it and do it properly.
+  - type: play
     who: snowbert
     text: "This gate says: solve $2x + 5 = 17$."
-    math: 2x + 5 = 17
-    answer: 6
-    nudges:
-      - { value: 12, text: "Nearly! That's $2x$. One more step: divide by 2." }
-      - { value: 11, text: "Check the sign: to undo $+5$, subtract 5." }
-    explain: "$2x = 17 - 5 = 12$, so $x = 12 \\div 2 = 6$."
-  - type: input
+    widget: { kind: eqcanvas, mode: solve, equation: '2x+5=17' }
+    done: "Click-clunk. The gate swings open."
+  - type: play
     who: snowbert
     text: "This one: solve $3x - 4 = 11$."
-    math: 3x - 4 = 11
-    answer: 5
-    nudges:
-      - { value: 15, text: "Nearly! That's $3x$. Now divide by 3." }
-      - { value: 7, text: "Check the sign: to undo $-4$, we **add** 4." }
-    explain: "$3x = 11 + 4 = 15$, so $x = 15 \\div 3 = 5$."
-  - type: input
+    widget: { kind: eqcanvas, mode: solve, equation: '3x-4=11' }
+    done: "The $-4$ came off with a $+4$, then three boxes split three ways."
+  - type: play
     who: snowbert
     text: "And my cave door: solve $\\frac{x}{3} + 2 = 6$."
-    math: '\frac{x}{3} + 2 = 6'
-    answer: 12
-    nudges:
-      - { value: 4, text: "Nearly! That's $\\frac{x}{3}$. Now multiply by 3." }
-      - { value: 16, text: "Peel off the $+2$ first, then multiply." }
-    explain: "$\\frac{x}{3} = 6 - 2 = 4$, so $x = 4 \\times 3 = 12$."
+    widget: { kind: eqcanvas, mode: solve, equation: 'x/3+2=6' }
+    done: "Peel off the $+2$, then glue the thirds back together: $x = 12$."
   - type: say
     who: snowbert
     text: My cave! My beautiful cave! I can finally sleep in my own bed! It's also made of snow, but it's MY snow.

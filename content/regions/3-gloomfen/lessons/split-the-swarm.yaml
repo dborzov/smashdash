@@ -15,29 +15,21 @@ beats:
   - type: show
     math: '\begin{aligned} 4x &= 28 \\ \frac{4x}{\hl{4}} &= \frac{28}{\hl{4}} \\ x &= 7 \end{aligned}'
     text: "Seven fireflies per swarm."
-  - type: input
+  - type: play
     who: grimble
-    text: Solve $3x = 21$.
-    math: 3x = 21
-    answer: 7
-    nudges:
-      - { value: 18, text: "$3x$ means 3 **times** $x$. Undo times with **divide**, not minus." }
-      - { value: 63, text: "That's multiplying again! Divide both sides by 3." }
-    explain: "Divide both sides by 3: $x = 21 \\div 3 = 7$."
+    text: "Solve $3x = 21$ on the slate. Three boxes… what undoes **times** 3?"
+    widget: { kind: eqcanvas, mode: solve, equation: '3x=21' }
+    done: "$\\frac{3x}{3}$ is one box, and $\\frac{21}{3} = 7$. Divide undoes times."
   - type: say
     who: grimble
     text: >-
       And if the box is being **divided**, multiply to undo. $\frac{x}{5} = 4$ means "a fifth
       of the box is 4", so the whole box is $4 \times 5 = 20$.
-  - type: input
+  - type: play
     who: nettle
-    text: Solve $\frac{x}{2} = 9$.
-    math: '\frac{x}{2} = 9'
-    answer: 18
-    nudges:
-      - { value: 4.5, text: "The box is already divided by 2. Undo it by **multiplying** by 2." }
-      - { value: 11, text: "Undo dividing with multiplying, not adding." }
-    explain: "Multiply both sides by 2: $x = 9 \\times 2 = 18$."
+    text: "Solve $\\frac{x}{2} = 9$. The box is cut in half. Glue it back together!"
+    widget: { kind: eqcanvas, mode: solve, equation: 'x/2=9' }
+    done: "Half the box is 9, so the whole box is 18. Times undoes divide."
   - type: practice
     skill: one-step-mul
     count: 4

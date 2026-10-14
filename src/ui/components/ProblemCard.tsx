@@ -1,8 +1,8 @@
 /**
  * The universal problem card used by lessons, battles, chests, bridges, sieges and vaults.
  *
- * Answer formats: multiple choice, number (keypad, or place-value dials), put-in-order, and
- * tap-on-the-number-line.
+ * Answer formats: multiple choice, number (keypad, or place-value dials), put-in-order,
+ * tap-on-the-number-line, and the EQcanvas slate (write and solve an equation step by step).
  *
  * Flow: answer → right (celebrate, auto-continue) | nudge (a "close, check this" hint, try
  * again, no penalty) | wrong (show the worked explanation, then continue).
@@ -17,6 +17,7 @@ import { WidgetView } from '../widgets';
 import { NumberLineSvg } from '../widgets/NumberLine';
 import { sfx } from '../../audio/sfx';
 import { group, PLACE_SHORT, pow10 } from '../../skills/place';
+import { EqCanvas } from '../eqcanvas/EqCanvas';
 
 const PRAISE_BRIGHT = [
   'Boom!',
@@ -174,9 +175,9 @@ export function ProblemCard({
     }
   };
 
-  // Auto-advance after a right answer.
+  // Auto-advance after a right answer (not on the slate: the player should see their work).
   useEffect(() => {
-    if (phase !== 'right') return;
+    if (phase !== 'right' || a.kind === 'canvas') return;
     const t = setTimeout(finish, 1300);
     return () => clearTimeout(t);
   }, [phase]);
@@ -228,6 +229,7 @@ export function ProblemCard({
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement) return;
+      if (a.kind === 'canvas' && !done) return;
       if (done) {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -272,8 +274,23 @@ export function ProblemCard({
 
   return (
     <div class="card problem-card" style={{ animation: 'pop-in .25s ease-out' }}>
-      <Rich text={problem.prompt} class="problem-prompt" />
+      {/* The slate shows a story itself, with its numbers as tiles. */}
+      {!(a.kind === 'canvas' && a.story) && <Rich text={problem.prompt} class="problem-prompt" />}
       {problem.math && <MathBig tex={problem.math} />}
+      {a.kind === 'canvas' && (
+        <EqCanvas
+          spec={a}
+          hint={hint}
+          onHint={onHint}
+          hintLabel={hintLabel}
+          onComplete={(o) => {
+            setNudged(o === 'nudged');
+            const v: Verdict = o === 'wrong' ? { kind: 'wrong' } : { kind: 'right' };
+            onVerdict?.(v);
+            setPhase(o === 'wrong' ? 'wrong' : 'right');
+          }}
+        />
+      )}
       {problem.visual && (
         <div style={{ margin: '6px 0' }}>
           <WidgetView w={problem.visual} interactive={false} quiz />
@@ -489,7 +506,13 @@ export function ProblemCard({
           {nudged && <div>Good save!</div>}
         </div>
       )}
-      {phase === 'wrong' && (
+      {phase === 'wrong' && a.kind === 'canvas' && (
+        <div class="feedback wrong">
+          <div class="title">You got there — with a little help.</div>
+          <div>Look back over the steps above: next time, they're yours.</div>
+        </div>
+      )}
+      {phase === 'wrong' && a.kind !== 'canvas' && (
         <div class="feedback wrong">
           <div class="title">
             {oops}
@@ -505,7 +528,7 @@ export function ProblemCard({
       )}
 
       <div class="row" style={{ marginTop: '12px', justifyContent: 'flex-end' }}>
-        {!done && hint !== 'none' && problem.hint && !showHint && (
+        {!done && hint !== 'none' && problem.hint && !showHint && a.kind !== 'canvas' && (
           <button
             class="btn small ghost"
             style={{ color: 'var(--card-ink)', background: '#efe4c6' }}

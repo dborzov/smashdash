@@ -3,18 +3,25 @@
  *
  * Split into three atomic skills:
  *  - name-unknown:      in this story, what IS the mystery number?
- *  - story-to-equation: which equation tells this story?
- *  - story-solve:       solve it (and answer the question that was asked, not the total).
+ *  - story-to-equation: write the equation that tells the story, on the EQcanvas slate.
+ *  - story-solve:       write it, solve it move by move, and answer the question asked.
+ *
+ * Story numbers are marked as tiles ([[51|legs in all]]) so they can be dragged onto the slate,
+ * and each one knows what it means — the slate reads the player's equation back in words.
  */
 import type { Rng } from '../engine/rng';
-import type { Generator, Level } from './types';
-import { choice, numeric } from './util';
+import type { CanvasAnswer, Generator, Level } from './types';
+import { choice } from './util';
+import { plainStory } from '../engine/eqcanvas';
 import { lin } from './balance';
 import { steps } from './equations';
 
 const r = String.raw;
 
 export interface Story {
+  /** The story with its numbers marked as EQcanvas tiles: 'bags of [[6|apples in each bag]]'. */
+  story: string;
+  /** The same story as plain text. */
   text: string;
   /** What x stands for, e.g. "the number of bags". */
   unknown: string;
@@ -22,6 +29,12 @@ export interface Story {
   others: string[];
   /** The question as asked, e.g. "How many bags?" */
   question: string;
+  /** Unit of the answer: "bags". */
+  unit: string;
+  /** The equation in words: "apples in the bags + loose apples = all the apples". */
+  words: string;
+  /** How x turns into the first piece of the equation: "$x$ bags of 6 apples is $6x$ apples." */
+  build: string;
   a: number;
   b: number;
   c: number;
@@ -30,7 +43,11 @@ export interface Story {
   x: number;
 }
 
-type Template = (rng: Rng, level: Level) => Story;
+type Template = (rng: Rng, level: Level) => Omit<Story, 'text'> & { decoy: (d: number) => string };
+
+/** A tile marker for the EQcanvas: the number, then what it means in the story. */
+const t = (v: number, means: string) => `[[${v}|${means}]]`;
+const decoyTile = (v: number, means: string) => `[[${v}|${means}|decoy]]`;
 
 const templates: Template[] = [
   (rng) => {
@@ -38,9 +55,13 @@ const templates: Template[] = [
       x = rng.int(2, 9),
       b = rng.int(1, a - 1);
     return {
-      text: `Merchant Pib sells apples in bags of ${a}. A hungry troll buys some bags plus ${b} loose apples — ${a * x + b} apples in total.`,
+      story: `Merchant Pib sells apples in bags of ${t(a, 'apples in each bag')}. A hungry troll buys some bags plus ${t(b, 'loose apples')} — ${t(a * x + b, 'apples in total')}.`,
+      decoy: (d) => ` Pib has ${decoyTile(d, 'cousins')} cousins, all called Pib.`,
       question: 'How many bags did the troll buy?',
       unknown: 'the number of bags',
+      unit: 'bags',
+      words: 'apples in the bags + loose apples = all the apples',
+      build: `$x$ bags of ${a} apples is $${a}x$ apples.`,
       others: [
         'the total number of apples',
         'the number of apples in each bag',
@@ -56,11 +77,15 @@ const templates: Template[] = [
   (rng) => {
     const a = rng.int(3, 9),
       x = rng.int(2, 8),
-      b = rng.int(2, 15);
+      b = rng.intExcept(2, 15, [a, x]);
     return {
-      text: `The ogre Burpington burps ${a} times every hour. After a few hours of feasting, plus ${b} bonus burps at dessert, he has burped ${a * x + b} times.`,
+      story: `The ogre Burpington burps ${t(a, 'burps every hour')} times every hour. After a few hours of feasting, plus ${t(b, 'bonus burps')} bonus burps at dessert, he has burped ${t(a * x + b, 'burps altogether')} times.`,
+      decoy: (d) => ` His ${decoyTile(d, 'pet rats')} pet rats are unimpressed.`,
       question: 'How many hours did he feast?',
       unknown: 'the number of hours',
+      unit: 'hours',
+      words: 'burps from feasting + dessert burps = all the burps',
+      build: `$x$ hours of ${a} burps is $${a}x$ burps.`,
       others: ['the total number of burps', 'the burps per hour', 'the bonus burps'],
       a,
       b,
@@ -73,9 +98,13 @@ const templates: Template[] = [
     const x = rng.int(5, 40),
       b = rng.int(3, 25);
     return {
-      text: `A goblin had some gold coins. He found ${b} more in a smelly sock. Now he has ${x + b}.`,
+      story: `A goblin had some gold coins. He found ${t(b, 'coins in the sock')} more in a smelly sock. Now he has ${t(x + b, 'coins now')}.`,
+      decoy: (d) => ` The sock had ${decoyTile(d, 'holes in it')} holes in it.`,
       question: 'How many coins did he have at the start?',
       unknown: 'the coins he had at the start',
+      unit: 'coins',
+      words: 'coins at the start + coins from the sock = coins now',
+      build: `He started with $x$ and found ${b} more: $x + ${b}$.`,
       others: ['the coins in the sock', 'the coins he has now', 'the number of socks'],
       a: 1,
       b,
@@ -88,9 +117,13 @@ const templates: Template[] = [
     const b = rng.int(3, 20),
       c = rng.int(2, 25);
     return {
-      text: `You had some gold. You spent ${b} on a suspicious cheese, and now you have ${c} left.`,
+      story: `You had some gold. You spent ${t(b, 'gold on the cheese')} on a suspicious cheese, and now you have ${t(c, 'gold left')} left.`,
+      decoy: (d) => ` The cheese had ${decoyTile(d, 'flies on it')} flies on it. Bargain.`,
       question: 'How much gold did you have before the cheese?',
       unknown: 'the gold you had before',
+      unit: 'gold',
+      words: 'gold before − price of the cheese = gold left',
+      build: `Start with $x$ gold and take ${b} away: $x - ${b}$.`,
       others: ['the price of the cheese', 'the gold you have left', 'the number of cheeses'],
       a: 1,
       b,
@@ -103,9 +136,13 @@ const templates: Template[] = [
     const a = rng.int(2, 6),
       c = rng.int(3, 12);
     return {
-      text: `A dragon's hoard of gems is shared equally between ${a} baby dragons. Each baby gets ${c} gems.`,
+      story: `A dragon's hoard of gems is shared equally between ${t(a, 'baby dragons')} baby dragons. Each baby gets ${t(c, 'gems for each baby')} gems.`,
+      decoy: (d) => ` The babies are ${decoyTile(d, 'days old')} days old and already bite.`,
       question: 'How many gems were in the hoard?',
       unknown: 'the number of gems in the hoard',
+      unit: 'gems',
+      words: 'the whole hoard ÷ number of babies = gems for each baby',
+      build: `The hoard, $x$, shared between ${a} babies: $x \\div ${a}$, which we write $\\frac{x}{${a}}$.`,
       others: ['the number of baby dragons', 'the gems each baby gets', 'the number of hoards'],
       a,
       b: 0,
@@ -117,11 +154,15 @@ const templates: Template[] = [
   (rng) => {
     const a = rng.int(4, 9),
       x = rng.int(2, 9),
-      b = rng.int(2, 9);
+      b = rng.intExcept(2, 9, [a]);
     return {
-      text: `Tickets to the Great Sock Circus cost ${a} gold each. A family buys some tickets and one ${b}-gold bucket of popcorn. They pay ${a * x + b} gold.`,
+      story: `Tickets to the Great Sock Circus cost ${t(a, 'gold for each ticket')} gold each. A family buys some tickets and one ${t(b, 'gold for the popcorn')}-gold bucket of popcorn. They pay ${t(a * x + b, 'gold in total')} gold.`,
+      decoy: (d) => ` The clown juggles ${decoyTile(d, 'socks')} socks.`,
       question: 'How many tickets did they buy?',
       unknown: 'the number of tickets',
+      unit: 'tickets',
+      words: 'cost of the tickets + cost of the popcorn = what they paid',
+      build: `$x$ tickets at ${a} gold each cost $${a}x$ gold.`,
       others: ['the price of one ticket', 'the total they paid', 'the price of the popcorn'],
       a,
       b,
@@ -134,9 +175,13 @@ const templates: Template[] = [
     const x = rng.int(2, 9),
       b = 3;
     return {
-      text: `In a creepy cave there are some spiders (8 legs each) and one wobbly ${b}-legged stool. Counting everything, there are ${8 * x + b} legs.`,
+      story: `In a creepy cave there are some spiders (${t(8, 'legs on each spider')} legs each) and one wobbly ${t(b, 'legs on the stool')}-legged stool. Counting everything, there are ${t(8 * x + b, 'legs in all')} legs.`,
+      decoy: (d) => ` Also ${decoyTile(d, 'bats')} bats, but bats don't have legs worth counting.`,
       question: 'How many spiders are there?',
       unknown: 'the number of spiders',
+      unit: 'spiders',
+      words: 'spider legs + stool legs = all the legs',
+      build: `$x$ spiders with 8 legs each have $8x$ legs.`,
       others: ['the total number of legs', 'the legs on each spider', 'the legs on the stool'],
       a: 8,
       b,
@@ -148,11 +193,15 @@ const templates: Template[] = [
   (rng) => {
     const a = rng.int(2, 4),
       x = rng.int(3, 12),
-      b = rng.int(1, 10);
+      b = rng.intExcept(1, 10, [a]);
     return {
-      text: `The wizard Glimmerbeard is ${a} times as old as his apprentice, plus ${b} years. The wizard is ${a * x + b}.`,
+      story: `The wizard Glimmerbeard is ${t(a, 'times as old')} times as old as his apprentice, plus ${t(b, 'extra years')} years. The wizard is ${t(a * x + b, "years old (the wizard's age)")}.`,
+      decoy: (d) => ` He owns ${decoyTile(d, 'pointy hats')} pointy hats.`,
       question: 'How old is the apprentice?',
       unknown: "the apprentice's age",
+      unit: 'years old',
+      words: `${a} × the apprentice's age + extra years = the wizard's age`,
+      build: `${a} times the apprentice's age is $${a}x$.`,
       others: ["the wizard's age", 'how many times older the wizard is', 'the extra years'],
       a,
       b,
@@ -163,9 +212,28 @@ const templates: Template[] = [
   },
 ];
 
-export function makeStory(rng: Rng, level: Level): Story {
+/** A random story. At level 3 it may carry a decoy number the question doesn't need. */
+export function makeStory(rng: Rng, level: Level, decoys = false): Story {
   const pool = level === 1 ? templates.filter((_, i) => [2, 3, 4].includes(i)) : templates;
-  return rng.pick(pool)(rng, level);
+  const { decoy, ...s } = rng.pick(pool)(rng, level);
+  const nums = [s.a, s.b, s.c];
+  const story =
+    decoys && level === 3 && rng.chance(0.5) ? s.story + decoy(rng.intExcept(2, 9, nums)) : s.story;
+  return { ...s, story, text: plainStory(story) };
+}
+
+/** The equation as EQcanvas text: '6x+2=20', 'x/4=6'. */
+export function storyEqText(s: Story): string {
+  switch (s.shape) {
+    case 'mul':
+      return `${s.a}x+${s.b}=${s.c}`;
+    case 'add':
+      return `x+${s.b}=${s.c}`;
+    case 'sub':
+      return `x-${s.b}=${s.c}`;
+    default:
+      return `x/${s.a}=${s.c}`;
+  }
 }
 
 export function storyEquation(s: Story): string {
@@ -181,46 +249,85 @@ export function storyEquation(s: Story): string {
   }
 }
 
-function wrongEquations(s: Story): { text: string; nudge?: string }[] {
+/** Predicted wrong equations (as EQcanvas text) and what to say about each. */
+function storyTraps(s: Story): { eq: string; text: string }[] {
   switch (s.shape) {
     case 'mul':
       return [
         {
-          text: `$${lin(s.b, s.a)} = ${s.c}$`,
-          nudge: `Swapped! Which number goes with each bag/hour/ticket — that one multiplies $x$.`,
+          eq: `${s.b}x+${s.a}=${s.c}`,
+          text: `Swapped! Which number comes with **each one**? That one multiplies $x$: ${s.build}`,
         },
-        { text: `$${lin(s.a, -s.b)} = ${s.c}$` },
-        { text: `$${s.a}x = ${s.c} + ${s.b}$` },
         {
-          text: `$x + ${s.a} + ${s.b} = ${s.c}$`,
-          nudge: `Each one comes with ${s.a} — that's multiplying, not adding ${s.a} once.`,
+          eq: `x+${s.a}+${s.b}=${s.c}`,
+          text: `Each one comes with ${s.a} — that's ${s.a} **times** $x$, not $+ ${s.a}$ just once.`,
+        },
+        {
+          eq: `${s.a}x-${s.b}=${s.c}`,
+          text: `The ${s.b} is **extra** — added on top. That's $+ ${s.b}$.`,
+        },
+        {
+          eq: `${s.a}+${s.b}x=${s.c}`,
+          text: `Which number comes with **each one**? That one multiplies $x$: ${s.build}`,
         },
       ];
     case 'add':
       return [
+        { eq: `x-${s.b}=${s.c}`, text: `He **found** more — the pile got bigger. That's adding.` },
         {
-          text: `$x - ${s.b} = ${s.c}$`,
-          nudge: `He **found** more — the pile got bigger. That's adding.`,
+          eq: `${s.b}x=${s.c}`,
+          text: `Finding ${s.b} coins **adds** them on. No multiplying here.`,
         },
-        { text: `$${s.b}x = ${s.c}$` },
-        { text: `$x + ${s.c} = ${s.b}$` },
       ];
     case 'sub':
       return [
         {
-          text: `$x + ${s.b} = ${s.c}$`,
-          nudge: `You **spent** gold — the pile got smaller. That's subtracting.`,
+          eq: `x+${s.b}=${s.c}`,
+          text: `You **spent** gold — the pile got smaller. That's subtracting.`,
         },
-        { text: `$${s.b} - x = ${s.c}$` },
-        { text: `$${s.b}x = ${s.c}$` },
+        {
+          eq: `${s.b}-x=${s.c}`,
+          text: `Start with what you had, $x$, then take ${s.b} away: $x - ${s.b}$.`,
+        },
       ];
     default:
       return [
-        { text: `$${s.a}x = ${s.c}$`, nudge: `Sharing out means **dividing** the hoard.` },
-        { text: r`$\frac{${s.a}}{x} = ${s.c}$` },
-        { text: `$x - ${s.a} = ${s.c}$` },
+        {
+          eq: `${s.a}x=${s.c}`,
+          text: `Sharing out means **dividing** the hoard, not multiplying it.`,
+        },
+        {
+          eq: `x-${s.a}=${s.c}`,
+          text: `Sharing between ${s.a} babies isn't taking ${s.a} away — it's **dividing** by ${s.a}.`,
+        },
+        {
+          eq: `${s.c}/${s.a}=x`,
+          text: `That shares out the ${s.c}. But ${s.c} is what **each baby** got — the hoard $x$ is what was shared.`,
+        },
       ];
   }
+}
+
+/** The EQcanvas answer for a story: build it (and solve it, in 'full' mode). */
+function storyCanvas(s: Story, mode: 'build' | 'full', level: Level): CanvasAnswer {
+  return {
+    kind: 'canvas',
+    mode,
+    equation: storyEqText(s),
+    x: s.x,
+    story: s.story,
+    question: s.question,
+    unknown: s.unknown,
+    unit: s.unit,
+    words: s.words,
+    scaffold: level === 1,
+    traps: storyTraps(s),
+    hints: [
+      `Say it in words first: **${s.words}**.`,
+      `$x$ is ${s.unknown}. ${s.build}`,
+      `Put the pieces together so they say: **${s.words}**. The total sits alone on one side of the $=$.`,
+    ],
+  };
 }
 
 function solution(s: Story): string {
@@ -268,38 +375,27 @@ export const nameUnknown: Generator = (rng, level) => {
 };
 
 export const storyToEquation: Generator = (rng, level) => {
-  const s = makeStory(rng, level);
+  const s = makeStory(rng, level, true);
+  const answer = storyCanvas(s, 'build', level);
   return {
     skill: 'story-to-equation',
     atoms: [s.shape],
-    prompt: `${s.text}\n\nLet $x$ be ${s.unknown}. Which equation tells this story?`,
-    ...choice(rng, `$${storyEquation(s)}$`, wrongEquations(s)),
-    explain: `$x$ is ${s.unknown}, so the story says $${storyEquation(s)}$.`,
+    prompt: `${s.text}\n\nLet $x$ be ${s.unknown}. Write the equation that tells this story.`,
+    answer,
+    hint: answer.hints![0],
+    explain: `$x$ is ${s.unknown}. In words: ${s.words}. So the story says $${storyEquation(s)}$.`,
   };
 };
 
 export const storySolve: Generator = (rng, level) => {
-  const s = makeStory(rng, level);
-  const nudges: [number, string][] = [
-    [s.c, `That's a number from the story. The question asks for ${s.unknown}!`],
-  ];
-  if (s.shape === 'mul') {
-    nudges.push([
-      s.c - s.b,
-      `So close! That's how many come in the full groups. Now divide by ${s.a}.`,
-    ]);
-    nudges.push([(s.c + s.b) / s.a, `The extra ${s.b} needs to be taken away, not added.`]);
-  }
-  if (s.shape === 'add') nudges.push([s.c + s.b, `He **found** coins, so he had fewer before.`]);
-  if (s.shape === 'sub') nudges.push([s.c - s.b, `You **spent** gold, so you had more before!`]);
-  if (s.shape === 'div')
-    nudges.push([s.c / s.a, `Shared out means the hoard was bigger than each share!`]);
+  const s = makeStory(rng, level, true);
+  const answer = storyCanvas(s, 'full', level);
   return {
     skill: 'story-solve',
     atoms: [s.shape],
     prompt: `${s.text} **${s.question}**`,
-    ...numeric(s.x, nudges),
-    hint: `Write the equation first: let $x$ be ${s.unknown}.`,
-    explain: solution(s),
+    answer,
+    hint: answer.hints![0],
+    explain: `In words: ${s.words}. With $x$ as ${s.unknown}: ` + solution(s),
   };
 };

@@ -2,6 +2,16 @@
  * Validates everything under content/: schema, cross-references and LaTeX.
  * `npm run validate` runs just this file.
  */
+import {
+  bestMove,
+  checkBuild,
+  eqFrom,
+  parseStory,
+  sameEquation,
+  solutionOf,
+  solveSteps,
+  tokensFor,
+} from '../src/engine/eqcanvas';
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import * as S from '../src/content/schema';
@@ -307,6 +317,31 @@ describe('content references', () => {
           for (let h = 1; h <= 6; h++)
             for (let s = 1; s <= 4; s++) if (h / s === w.target) ok = true;
           expect(ok, `${where}: pipe target unreachable`).toBe(true);
+        }
+        if (w.kind === 'eqcanvas') {
+          // The slate must be solvable by peeling layers, and a story must hold every number.
+          const eq = eqFrom(w.equation);
+          expect(solutionOf(eq), `${where}: no solution`).toBeTruthy();
+          if (w.mode === 'move') expect(bestMove(eq), `${where}: no first move`).toBeTruthy();
+          else if (w.mode !== 'build')
+            expect(solveSteps(eq), `${where}: can't be solved`).toBeTruthy();
+          if (w.mode === 'build' || w.mode === 'full') {
+            expect(w.story && w.unknown, `${where}: needs a story and unknown`).toBeTruthy();
+            const { tiles } = parseStory(w.story!);
+            const toks = tokensFor(w.equation, tiles);
+            expect(checkBuild(toks, { target: eq, tiles, unknown: w.unknown! }).kind, where).toBe(
+              'right',
+            );
+            for (const t of w.traps ?? [])
+              expect(sameEquation(eqFrom(t.eq), eq), where).toBe(false);
+            for (const t of [
+              w.story!,
+              w.words ?? '',
+              ...(w.hints ?? []),
+              ...(w.traps ?? []).map((t) => t.text),
+            ])
+              checkRich(t, where);
+          }
         }
       });
     }

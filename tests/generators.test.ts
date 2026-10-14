@@ -4,6 +4,65 @@ import { Rng } from '../src/engine/rng';
 import type { Level } from '../src/skills/types';
 import { renderMath } from '../src/ui/math';
 import { skillById } from '../src/content';
+import {
+  applyMove,
+  assessMove,
+  bestMove,
+  checkBuild,
+  eqFrom,
+  fInt,
+  frac,
+  fEq,
+  parseStory,
+  sameEquation,
+  solutionOf,
+  solveSteps,
+  tidyEq,
+  tokensFor,
+  type Expr,
+} from '../src/engine/eqcanvas';
+import type { CanvasAnswer } from '../src/skills/types';
+
+const nums = (e: Expr): ReturnType<typeof frac>[] =>
+  e.t === 'num' ? [e.v] : e.t === 'x' ? [] : [...nums(e.a), ...nums(e.b)];
+
+/** A canvas problem must be buildable from its tiles and solvable in friendly whole numbers. */
+function checkCanvas(a: CanvasAnswer, ctx: string) {
+  const eq = eqFrom(a.equation);
+  expect(fEq(solutionOf(eq)!, frac(a.x)), `${ctx}: x solves it`).toBe(true);
+  if (a.mode === 'build' || a.mode === 'full') {
+    expect(a.story && a.unknown && a.question, ctx).toBeTruthy();
+    const { tiles } = parseStory(a.story!);
+    const toks = tokensFor(a.equation, tiles);
+    for (const t of toks)
+      if (t.k === 'num') expect(t.tile, `${ctx}: ${t.v} is a tile in the story`).toBeDefined();
+    const used = new Set(toks.flatMap((t) => (t.k === 'num' ? [t.tile] : [])));
+    tiles.forEach((t, i) =>
+      expect(used.has(i), `${ctx}: tile ${t.v} ${t.decoy ? 'is a decoy' : 'is used'}`).toBe(
+        !t.decoy,
+      ),
+    );
+    const v = checkBuild(toks, { target: eq, tiles, unknown: a.unknown! });
+    expect(v.kind, ctx).toBe('right');
+    for (const t of a.traps ?? [])
+      expect(sameEquation(eqFrom(t.eq), eq), `${ctx}: trap ${t.eq}`).toBe(false);
+  }
+  if (a.mode === 'move') {
+    const m = bestMove(eq)!;
+    expect(m, ctx).toBeTruthy();
+    expect(['good', 'solved'], ctx).toContain(assessMove(eq, m).kind);
+  } else {
+    const moves = solveSteps(eq)!;
+    expect(moves, `${ctx}: solvable by peeling layers`).toBeTruthy();
+    expect(moves.length, ctx).toBeLessThanOrEqual(3);
+    let cur = eq;
+    for (const m of moves) {
+      cur = tidyEq(applyMove(cur, m));
+      for (const n of [...nums(cur.l), ...nums(cur.r)])
+        expect(fInt(n), `${ctx}: whole numbers`).toBe(true);
+    }
+  }
+}
 
 const LEVELS: Level[] = [1, 2, 3];
 const SEEDS = 400;
@@ -57,6 +116,8 @@ describe.each(Object.keys(generators))('generator %s', (id) => {
         expect(new Set(a.items).size, ctx).toBe(a.items.length);
         expect([...a.correct].sort(), ctx).toEqual(a.items.map((_, i) => i));
         for (const t of a.traps ?? []) expect(t.order, ctx).not.toEqual(a.correct);
+      } else if (a.kind === 'canvas') {
+        checkCanvas(a, ctx);
       } else {
         const { options, correct } = a;
         expect(options.length, ctx).toBeGreaterThanOrEqual(2);
@@ -74,6 +135,15 @@ describe.each(Object.keys(generators))('generator %s', (id) => {
         ...(p.answer.kind === 'choice' ? p.answer.options : []),
         ...(p.answer.kind === 'order' ? p.answer.items : []),
         ...(p.answer.kind === 'order' ? (p.answer.traps ?? []).map((t) => t.text) : []),
+        ...(p.answer.kind === 'canvas'
+          ? [
+              ...(p.answer.traps ?? []).map((t) => t.text),
+              ...(p.answer.hints ?? []),
+              p.answer.words ?? '',
+              p.answer.story ?? '',
+              ...parseStory(p.answer.story ?? '').tiles.map((t) => t.means),
+            ]
+          : []),
       ];
       for (const n of p.nudges ?? []) texts.push(n.text);
       for (const t of texts) for (const m of mathBits(t)) renderMath(m, false, true);

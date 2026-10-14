@@ -12,20 +12,49 @@ beats:
       Bags of 6, and $x$ bags: that's $6x$ apples. Plus 2 loose ones: $6x + 2$. And the total
       is 20. So the riddle is just…
     math: 6x + 2 = 20
-  - type: ask
+  - type: play
+    who: pib
+    text: >-
+      Here's how I build it on the slate. Tap **Next step**. Each piece I put down, the slate
+      reads back in words — so I can check it still tells my story.
+    widget:
+      kind: eqcanvas
+      mode: build
+      demo: true
+      equation: '6x+2=20'
+      story: >-
+        Bags of [[6|apples in each bag]] apples. The troll bought some bags plus
+        [[2|loose apples]] loose ones — [[20|apples in all]] apples.
+      question: How many bags?
+      unknown: the number of bags
+      words: apples in the bags + loose apples = all the apples
+    done: "Every number from the story has a job, and the equation **says** the story."
+  - type: play
     who: ptolemeow
     text: >-
-      My naps last 3 hours each. I took $x$ naps plus a 2-hour bonus snooze, 14 hours in all.
-      Which equation tells my story?
-    options:
-      - "$3x + 2 = 14$"
-      - "$2x + 3 = 14$"
-      - "$3 + 2 + x = 14$"
-    correct: 0
-    nudges:
-      "1": "Swapped! Each nap is 3 hours, so the 3 goes with $x$."
-      "2": "Each nap is 3 hours — that's $3$ times the number of naps."
-    explain: "$x$ naps of 3 hours is $3x$; plus 2 hours: $3x + 2 = 14$."
+      My turn to riddle. Build the equation on the slate, then tap **Check it**. If it doesn't
+      tell my story, I'll show you which bits are wrong. Mrrow.
+    widget:
+      kind: eqcanvas
+      mode: build
+      equation: '3x+2=14'
+      story: >-
+        My naps last [[3|hours each nap]] hours each. I took some naps, plus a
+        [[2|hours of bonus snooze]]-hour bonus snooze — [[14|hours of sleep in all]] hours in all.
+      question: How many naps did I take?
+      unknown: the number of naps
+      words: hours in the naps + bonus snooze = all the sleep
+      scaffold: true
+      traps:
+        - eq: '2x+3=14'
+          text: "Swapped! **Each** nap is 3 hours, so the 3 goes with $x$: $3x$."
+        - eq: 'x+3+2=14'
+          text: "Each nap is 3 hours — that's 3 **times** the number of naps, not $+3$ once."
+      hints:
+        - "Say it in words first: **hours in the naps + bonus snooze = all the sleep**."
+        - "$x$ naps of 3 hours each is $3x$ hours."
+        - "So: $3x$, plus the bonus snooze, is the same as all the sleep."
+    done: "$3x + 2 = 14$. A cat's whole day, in one line."
   - type: ask
     who: ptolemeow
     text: You had some gold. You spent 7 on fish (good choice) and have 10 left. Which equation?

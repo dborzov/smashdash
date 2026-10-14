@@ -4,6 +4,7 @@
  *   #/preview/lesson/<id>     play any lesson without saving progress
  *   #/preview/skill/<id>      sample problems from a generator at every level
  */
+import { eqFrom, eqTex } from '../../engine/eqcanvas';
 import { useState } from 'preact/hooks';
 import { lessons, regions, skills, skillById } from '../../content';
 import { generate } from '../../skills';
@@ -36,6 +37,13 @@ function AnswerPreview({ p }: { p: Problem }) {
             <RichInline text={a.items[i]} />
           </span>
         ))}
+      </>
+    );
+  if (a.kind === 'canvas')
+    return (
+      <>
+        <RichInline text={`$${eqTex(eqFrom(a.equation))}$, so $x = ${a.x}$`} />{' '}
+        <span class="muted">(EQcanvas: {a.mode})</span>
       </>
     );
   return (

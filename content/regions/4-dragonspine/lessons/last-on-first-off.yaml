@@ -60,6 +60,13 @@ beats:
     nudges:
       "1": "The brackets protect the $-2$! The $\\times 5$ is outside, so undo it first."
     explain: "The $\\times 5$ is outside the brackets. Divide by 5: $x - 2 = 3$. Then add 2: $x = 5$."
+  - type: play
+    who: snowbert
+    text: >-
+      Now make the first move yourself, on the slate. Just **one** move: the one that peels the
+      outside layer off $3x + 4 = 19$. (Go on, try dividing first. I dare you.)
+    widget: { kind: eqcanvas, mode: move, equation: '3x+4=19' }
+    done: "Last on, first off. The $+4$ was the outside layer."
   - type: practice
     skill: undo-order
     count: 4

@@ -151,6 +151,26 @@ export const Widget = z.discriminatedUnion('kind', [
   }),
   /** A grid of hundredths (or thousandths strip) with `value` shaded. */
   z.object({ kind: z.literal('decgrid'), value: z.number().min(0).max(1) }),
+  /**
+   * The EQcanvas slate: write an equation from story tiles and/or solve it move by move on both
+   * sides. `story` marks its numbers as tiles: '[[51|legs in all]]' ('[[4|bats|decoy]]' for a
+   * number the question doesn't need). With `demo`, it plays itself one "Next step" at a time.
+   */
+  z.object({
+    kind: z.literal('eqcanvas'),
+    mode: z.enum(['build', 'solve', 'full', 'move']),
+    /** As text: '8x+3=51', 'x/4=6', '3(x+2)=21'. */
+    equation: z.string().regex(/^[0-9x+\-*/()=.]+$/),
+    story: z.string().optional(),
+    question: z.string().optional(),
+    unknown: z.string().optional(),
+    unit: z.string().optional(),
+    words: z.string().optional(),
+    scaffold: z.boolean().optional(),
+    traps: z.array(z.object({ eq: z.string(), text: Rich })).optional(),
+    hints: z.array(Rich).optional(),
+    demo: z.boolean().optional(),
+  }),
 ]);
 export type Widget = z.infer<typeof Widget>;
 

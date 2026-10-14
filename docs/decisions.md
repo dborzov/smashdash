@@ -71,3 +71,16 @@ contributor might want to reverse.
 25. **Bond can't be farmed.** Pats give a few bond points a day; feeding, play and the bug
     hunt give the rest. Tricks and the fight companion are rewards for looking after the
     pet over days, not for tapping it a hundred times.
+26. **Multi-step problems are worked on the EQcanvas, not answered.** The owner: story
+    problems ended in "an idiotic multiple choice question for the final answer", the hint
+    was "use x", and the app never showed or let the kid try the intermediate steps — writing
+    the equation, checking it, then the moves on both sides. Now `story-to-equation`,
+    `story-solve`, the one- and two-step solves, `pick-move` and `undo-order` happen on a
+    slate with feedback on every step, and lessons show a worked example on the same slate
+    before the kid tries. Bad moves are allowed and shown honestly (with undo) rather than
+    blocked, because seeing $\frac{8x + 3}{8}$ teaches "last on, first off" better than being
+    told. Any equivalent equation is accepted. "Show me" counts as a miss (it costs a heart
+    in a battle); fixed slips count as *nudged*, like the old one-retry nudge.
+27. **Equation logic uses exact fractions and a small expression tree** (`src/engine/eqcanvas.ts`),
+    not floats or a CAS. It only needs linear equations, it must show honest fractions after
+    a bad move, and it has to say *why* in kid words — a general algebra library can't.

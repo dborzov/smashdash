@@ -17,7 +17,41 @@ export type Answer =
   | { kind: 'number'; value: number }
   | { kind: 'choice'; options: string[]; correct: number }
   | OrderAnswer
-  | LineAnswer;
+  | LineAnswer
+  | CanvasAnswer;
+
+/**
+ * Worked on the EQcanvas slate (src/ui/eqcanvas): build an equation from story tiles, then
+ * solve it one move at a time on both sides, with feedback on every step.
+ *  - build: write the equation that tells the story;
+ *  - solve: solve a given equation, showing each move;
+ *  - full:  build it, solve it, then answer the question that was asked;
+ *  - move:  make just the first move (which move frees x?).
+ */
+export interface CanvasAnswer {
+  kind: 'canvas';
+  mode: 'build' | 'solve' | 'full' | 'move';
+  /** The equation to build, or the one to solve, as text: '8x+3=51', 'x/4=6', '3(x+2)=21'. */
+  equation: string;
+  /** The value of x. */
+  x: number;
+  /** build/full: the story, numbers marked as tiles: 'bags of [[6|apples in each bag]]'. */
+  story?: string;
+  /** The question the story asks, shown in bold after it. */
+  question?: string;
+  /** What x stands for: 'the number of bags'. */
+  unknown?: string;
+  /** The answer's unit, for the final line: 'bags'. */
+  unit?: string;
+  /** The equation in words, offered as a pattern to follow. */
+  words?: string;
+  /** Show the words pattern from the start (otherwise after the first miss). */
+  scaffold?: boolean;
+  /** Predicted wrong equations, each with a nudge. */
+  traps?: { eq: string; text: string }[];
+  /** Hints for writing the equation, gentlest first. */
+  hints?: string[];
+}
 
 /**
  * Put the items in order (tap them one by one). `correct` lists item indices in the right

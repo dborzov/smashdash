@@ -31,7 +31,10 @@ The maths core of Smashdash. Read this before adding or changing skills, lessons
    `pow10-up/zeros` "$10^n$ has $n$ zeros", `round-small/nines` "rounding 9,960 to the nearest
    hundred carries"). Every generated problem says which atoms it exercises, and the player's
    record is kept per atom. The Skill Tree page (`#/skills`) shows all of them.
-9. **Show why algebra is worth it.** The Bazaar explicitly contrasts guessing (fine for small
+9. **Show your work — on the slate.** Multi-step problems are never a multiple-choice
+   question about the final answer. Writing the equation and solving it happen on the
+   **EQcanvas** (see below), where every step gets its own feedback.
+10. **Show why algebra is worth it.** The Bazaar explicitly contrasts guessing (fine for small
    numbers) with equations (fast for big ones), and Truth-or-Trap shows that you can always
    *check* an answer.
 
@@ -78,8 +81,8 @@ Bazaar of Whispers (story problems)
 | Dragonspine | `undo-order` | First move in two-step | dividing first; brackets flip the order |
 |  | `two-step` | Full two-step solve | wrong order ($c/a - b$); stopping at $ax$ |
 | Bazaar | `name-unknown` | What is x in a story | picking a known number |
-|  | `story-to-equation` | Story → equation | swapped coefficients; + vs − (found vs spent) |
-|  | `story-solve` | Solve and answer the question | answering the total; stopping before dividing |
+|  | `story-to-equation` | Story → equation, built on the EQcanvas | swapped coefficients; $x + 8$ for $8x$; + vs − (found vs spent); unused or decoy numbers; the total on the wrong side |
+|  | `story-solve` | Write, solve and answer, on the EQcanvas | all of the above; dividing first; answering the total |
 | Tower | `power-meaning` | $a^n$ = repeated multiplication | $2^3 = 6$ |
 |  | `pow10-up` | $10^n$, counting zeros | $10^3 = 30$; off-by-one zeros |
 |  | `pow10-down` | $10^0$, $10^{-n}$ | $10^{-3} = -1000$; $10^0 = 0$ |
@@ -176,6 +179,67 @@ and `decgrid` (tenths and hundredths shaded on a grid).
   into a battlebot workshop: add AAs and "mud tunnels" until Nugget gets exactly the right
   amps without blowing the fuse. (Honest physics note: electrons really do flow from − to +
   outside the battery; "conventional current" arrows point the other way — we skip that.)
+
+## EQcanvas: show your work, one step at a time
+
+Before, a story problem asked for the final number (keypad) or for one of four equations
+(multiple choice), and the hint said "write the equation first". The kid had to do the
+actual learning — writing the equation, deciding the moves, doing them to both sides — in
+their head, with no help. The EQcanvas (`src/ui/eqcanvas/EqCanvas.tsx`, logic in
+`src/engine/eqcanvas.ts`) puts every one of those steps on screen.
+
+**1. Write it** (`build`, `full`). The story's numbers are tiles, marked in the story text
+(`[[51|legs in all]]`). The kid drags them (or taps them) onto a chalk slate together with
+$x$ and the signs, and drags tiles around to fix them. As the equation grows the slate:
+- draws it ("Looks like $8x + 3 = 51$");
+- **reads it back in words**, using what each number means ("**8** legs on each spider ×
+  **$x$** (the number of spiders) + **3** legs on the stool **is the same as** **51** legs in
+  all") — so the kid can hear whether it tells the story;
+- warns straight away about tiles that can never work (two numbers side by side read as one).
+
+On **Check it**: any honest form is accepted ($51 = 3 + 8x$ is as good as $8x + 3 = 51$).
+Otherwise the slate says what's wrong and marks the tiles in red: a predicted trap (swapped
+numbers, $x + 8$ instead of $8x$, found vs spent), a decoy number used, a number not used
+("every number in this story has a job"), the total on the wrong side of the $=$, or the
+pieces that don't match the story. After a miss the **word equation** appears as a pattern
+("spider legs + stool legs = all the legs"). Hints climb from that pattern to the first
+piece ("$x$ spiders with 8 legs each have $8x$ legs"); after two misses "Show me" builds it.
+
+**2. Solve it** (`solve`, `full`). The kid picks a move (+ − × ÷) and an amount (numbers
+on the slate, $x$, or any number) and sees it written into **both** sides before doing it.
+Each move is judged by how many layers it takes off $x$:
+- *good*: "The $+3$ is gone — one layer off $x$!";
+- *legal but useless or worse*, shown honestly — dividing $8x + 3 = 51$ by 8 first gives
+  $\frac{8x + 3}{8} = \frac{51}{8}$ with "dividing hits the 3 too… **last on, first off**";
+  adding 3 instead of subtracting: "that's adding **again**, $x$ is buried deeper" — with
+  **↩ Undo** or "keep going anyway";
+- impossible (÷0, ×0, ×x) is refused with a reason.
+
+Then the kid works out the numbers themselves ($51 - 3 = ?$; the opposite sum gets its own
+nudge), while the slate shows what cancels ("$+3$ and $-3$ cancel out — poof!", "8 lots of
+$x$ shared into 8 piles: one $x$ each"). Every line stays on the slate, lined up on the $=$,
+with the move written beside it: a worked solution, written by the kid. Hints are about
+*this* equation ("What's stuck to $x$ on the outside? The $+3$…", then the move itself),
+then "Show me" does the move.
+
+**3. Answer it** (`full`). $x = 6$ → **6 spiders**, "x was the number of spiders, so that
+answers *How many spiders?*", and the check: $8 \times 6 + 3 = 51$ ✓.
+
+**First move only** (`move`): for `pick-move` and `undo-order`, the kid makes just the first
+move; a bad one shows where it leads, then they try again.
+
+**Scoring.** Right first time at every step → *right*; slips the kid fixed (a wrong check, a
+bad move, a wrong sum) → *nudged*; "Show me" → *wrong* (in a battle, that costs a heart).
+In battles the first hint of a problem uses a hint scroll; the step feedback is always free.
+
+**Worked examples.** In lessons the slate can play itself (`demo: true`): the kid taps
+**Next step** and watches each piece go down with what it means, each move, each tidy-up
+and the check — then does the next one on the same slate.
+
+**Where it's used.** `story-to-equation` (write it), `story-solve` (write, solve, answer),
+`one-step-add`, `one-step-mul`, `two-step` (solve), `pick-move`, `undo-order` (first move),
+and lessons in Ironhold, Gloomfen, Dragonspine and the Bazaar. Master-tier stories may carry
+a **decoy** number the question doesn't need.
 
 ## Pacing inside a region
 
