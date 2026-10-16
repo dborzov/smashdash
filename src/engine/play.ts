@@ -8,6 +8,8 @@ import { recordAnswer, type Outcome, type Tier } from './mastery';
 import { grant, XP, type Fx } from './rewards';
 import { track } from './events';
 import { comboBonus, type RunEvent } from './adaptive';
+import { recordFacts } from './facts';
+import { collectCards } from './cards';
 
 export interface AnswerOpts {
   /** XP for a right answer / after a nudge (lesson checks give less). */
@@ -16,6 +18,9 @@ export interface AnswerOpts {
   events?: RunEvent[];
   /** The problem is from the Long Count campaign. */
   dark?: boolean;
+  /** Times-table facts and size cards the problem was about. */
+  facts?: [number, number][];
+  cards?: string[];
   now?: number;
 }
 
@@ -30,6 +35,8 @@ export function answerEffects(
   const now = opts.now ?? Date.now();
   const fx: Fx[] = [];
   const change = skill ? recordAnswer(p, skill, outcome, now, atoms, level) : null;
+  recordFacts(p, opts.facts, outcome, now);
+  if (outcome !== 'wrong') fx.push(...collectCards(p, opts.cards, now));
   const base = opts.xp ?? { right: XP.right, nudged: XP.nudged };
   let xp = outcome === 'right' ? base.right : outcome === 'nudged' ? base.nudged : 0;
   for (const e of opts.events ?? []) {

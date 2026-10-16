@@ -1,3 +1,4 @@
+import { validateGame } from '../src/games';
 import { describe, expect, it } from 'vitest';
 import { generators } from '../src/skills';
 import { Rng } from '../src/engine/rng';
@@ -118,6 +119,8 @@ describe.each(Object.keys(generators))('generator %s', (id) => {
         for (const t of a.traps ?? []) expect(t.order, ctx).not.toEqual(a.correct);
       } else if (a.kind === 'canvas') {
         checkCanvas(a, ctx);
+      } else if (a.kind === 'game') {
+        expect(validateGame(a.game), ctx).toBeNull();
       } else {
         const { options, correct } = a;
         expect(options.length, ctx).toBeGreaterThanOrEqual(2);

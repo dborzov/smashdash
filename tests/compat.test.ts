@@ -19,6 +19,7 @@ import {
 import { learnedSkills, recordAnswer } from '../src/engine/mastery';
 import { planProblems, refreshWanderers } from '../src/engine/encounters';
 import { regionById, regions, skillById } from '../src/content';
+import { nextRank, rankOf, rankReady } from '../src/engine/ranks';
 import { generate } from '../src/skills';
 import { Rng } from '../src/engine/rng';
 
@@ -169,7 +170,7 @@ describe('v1 ids are still there', () => {
   });
   it('the save version is known, and v1 saves migrate to it', () => {
     // Bumping SAVE_VERSION needs a migration step in save.ts and a test here.
-    expect(SAVE_VERSION).toBe(2);
+    expect(SAVE_VERSION).toBe(3);
   });
 });
 
@@ -239,11 +240,11 @@ describe('old saves with the new regions', () => {
     expect(regionUnlocked(p, regionById.junkyard)).toBe(false);
   });
 
-  it('a brand-new player starts in Bramblebottom; only the two campaign gates are open', () => {
+  it('a brand-new player starts in Bramblebottom; only the campaign gates are open', () => {
     const p = migrate(v1Save([], []));
     expect(currentRegion(p).id).toBe('bramblebottom');
-    // Each campaign has its own first region (Greyhaven opens the Long Count from day one).
-    const open = new Set(['bramblebottom', 'greyhaven']);
+    // Each campaign has its own first region; the sequel waits for the Kingdom.
+    const open = new Set(['bramblebottom', 'greyhaven', 'tavern', 'hq']);
     for (const r of regions) expect(regionUnlocked(p, r), r.id).toBe(open.has(r.id));
   });
 
@@ -259,5 +260,83 @@ describe('old saves with the new regions', () => {
     // New skills can be planned even with no mastery recorded yet.
     const plan = planProblems(p, ['expand', 'volts', 'table-rule'], 5, new Rng(2));
     expect(plan.every((q) => q.level === 1)).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Save v2 → v3 (ranks, relics, the times-table fact map, size cards)
+
+/** A v2 save as it sits in localStorage (October 2026), before ranks existed. */
+function v2Save(done: string[]): Profile {
+  const p = newProfile({ name: 'Second Wave', cls: 'wizard', look, goal: 200 }, 1_760_000_000_000);
+  for (const r of done) for (const n of regionById[r].path) markNode(p, r, n.id, 2);
+  recordAnswer(p, 'notation', 'right', 1_760_000_000_000, ['times'], 1);
+  p.seen = ['prologue'];
+  p.hero.gold = 77;
+  p.ach['first-steps'] = 1_760_000_000_000;
+  p.counters.right = 40;
+  p.pet = {
+    species: 'mimic',
+    name: 'Chompy',
+    born: 1_760_000_000_000,
+    tick: 1_760_000_000_000,
+    hunger: 80,
+    joy: 80,
+    health: 100,
+    poops: 0,
+    nextPoop: null,
+    bond: 33,
+    hat: 'party-hat',
+  };
+  const old = JSON.parse(JSON.stringify(p));
+  old.v = 2;
+  for (const k of ['ranks', 'relics', 'facts', 'cards']) delete old[k];
+  return old;
+}
+
+describe('save v2 → v3 migration', () => {
+  it('adds ranks, relics, facts and cards and keeps everything else', () => {
+    const old = v2Save(['bramblebottom', 'greyhaven']);
+    const p = migrate(JSON.parse(JSON.stringify(old)));
+    expect(p.v).toBe(3);
+    expect(p.relics).toEqual([]);
+    expect(p.facts).toEqual({});
+    expect(p.cards).toEqual({});
+    expect(p.hero.gold).toBe(77);
+    expect(p.ach['first-steps']).toBeDefined();
+    expect(p.pet?.bond).toBe(33);
+    expect(p.pet?.hat).toBe('party-hat');
+    expect(p.skills.notation.tier).toBe(1);
+  });
+  it('finished regions count as rank 1, and their Heroic rank is open right away', () => {
+    const p = migrate(v2Save(['bramblebottom']));
+    expect(p.ranks.bramblebottom).toEqual({ r: 1, at: 0, run: {} });
+    expect(rankOf(p, regionById.bramblebottom)).toBe(1);
+    expect(nextRank(p, regionById.bramblebottom)).toBe(2);
+    expect(rankReady(p, regionById.bramblebottom, 1_760_000_000_000)).toBe(true);
+    // Unfinished regions have no rank yet.
+    expect(p.ranks.ironhold).toBeUndefined();
+    expect(nextRank(p, regionById.ironhold)).toBeNull();
+  });
+  it('is idempotent and survives export/import', () => {
+    const once = migrate(v2Save(['bramblebottom']));
+    const twice = migrate(JSON.parse(JSON.stringify(once)));
+    expect(twice).toEqual(once);
+    const imported = importProfile(exportProfile(v2Save(['bramblebottom'])));
+    expect(imported.ranks.bramblebottom.r).toBe(1);
+  });
+  it('a v1 save goes all the way to v3', () => {
+    const p = migrate(v1Save(Object.keys(V1_NODES), V1_SKILLS));
+    expect(p.v).toBe(3);
+    for (const rid of Object.keys(V1_NODES)) expect(p.ranks[rid]?.r, rid).toBe(1);
+  });
+  it('the sequel opens only after the Bazaar and the Mirrormaze', () => {
+    const sub = regions.find((r) => r.campaign === 'sequel' && r.requires.length === 0)!;
+    const p = migrate(v1Save(['bramblebottom'], []));
+    expect(regionUnlocked(p, sub)).toBe(false);
+    const q = migrate(v1Save(Object.keys(V1_NODES), V1_SKILLS));
+    expect(regionUnlocked(q, sub)).toBe(false);
+    for (const n of regionById.mirrors.path) markNode(q, 'mirrors', n.id, 3);
+    expect(regionUnlocked(q, sub)).toBe(true);
   });
 });

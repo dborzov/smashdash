@@ -6,6 +6,8 @@
  */
 import type { Profile } from './profile';
 import { SAVE_VERSION, levelFromXp } from './profile';
+import { regions } from '../content';
+import { regionDone } from './progress';
 
 const INDEX = 'smashdash:index';
 const CURRENT = 'smashdash:current';
@@ -103,6 +105,17 @@ export function migrate(p: Profile): Profile {
   p.boosts ??= {};
   p.den ??= [];
   p.newsSeen ??= '';
+  if ((p.v ?? 1) < 3) {
+    // v3: ranks. A region finished before ranks existed counts as rank 1, cleared "long ago",
+    // so its Heroic run is open straight away.
+    p.ranks ??= {};
+    for (const r of regions)
+      if (regionDone(p, r)) p.ranks[r.id] ??= { r: 1, at: 0, run: {} };
+  }
+  p.ranks ??= {};
+  p.relics ??= [];
+  p.facts ??= {};
+  p.cards ??= {};
   p.v = SAVE_VERSION;
   return p;
 }

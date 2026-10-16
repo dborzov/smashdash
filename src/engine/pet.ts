@@ -55,6 +55,11 @@ export function tickPet(pet: Pet, now = Date.now(), den: string[] = []): void {
   // Never simulate more than two weeks (and never backwards).
   let t = Math.max(pet.tick, now - 14 * DAY);
   while (t < now && !pet.dead) {
+    // Away on an expedition: it feeds and amuses itself until it's back.
+    if (pet.away && t < pet.away.until) {
+      t = Math.min(now, pet.away.until);
+      continue;
+    }
     const step = Math.min(HOUR, now - t);
     const h = step / HOUR;
     t += step;
@@ -208,8 +213,109 @@ export const TRICKS: Trick[] = [
   },
 ];
 
-export function knownTricks(pet: Pet): Trick[] {
-  return TRICKS.filter((t) => (pet.bond ?? 0) >= t.bond);
+/**
+ * Tricks a pet picks up by watching the hero clear a region's Heroic rank (bond 0 needed).
+ * `bond` is unused for these; `region` says where they are learned.
+ */
+export const REGION_TRICKS: (Trick & { region: string })[] = [
+  {
+    id: 'unbox',
+    region: 'bramblebottom',
+    name: 'Unbox itself',
+    icon: '📦',
+    bond: 0,
+    line: 'hides in a box. Pops out. "Ta-daaa!" It has learned nothing about variables, but it is proud.',
+    sound: 'pop',
+    anim: 'trick-jump',
+  },
+  {
+    id: 'salute',
+    region: 'greyhaven',
+    name: 'Salute the Marshal',
+    icon: '🫡',
+    bond: 0,
+    line: 'stands to attention and salutes. With the wrong paw. Voss would sigh, then salute back.',
+    sound: 'step',
+    anim: 'trick-sit',
+  },
+  {
+    id: 'nat20',
+    region: 'tavern',
+    name: 'Roll a natural 20',
+    icon: '🎲',
+    bond: 0,
+    line: 'rolls a d20 with its nose. It lands on 20. The Dungeon Master demands a re-roll. Denied.',
+    sound: 'coin',
+    anim: 'trick-spin',
+  },
+  {
+    id: 'hydra',
+    region: 'doubling',
+    name: 'Double spin',
+    icon: '🌀',
+    bond: 0,
+    line: 'spins once… then twice as fast… then twice as fast again. ×2 ×2 ×2. It is now a blur.',
+    sound: 'whoosh',
+    anim: 'trick-flip',
+  },
+  {
+    id: 'zoom',
+    region: 'hq',
+    name: 'Tiny-huge',
+    icon: '🔬',
+    bond: 0,
+    line: 'shrinks ten times smaller… then grows ten times bigger. Captain Tenfold would be SO proud.',
+    sound: 'whoosh',
+    anim: 'trick-zoom',
+  },
+  {
+    id: 'float',
+    region: 'subzero',
+    name: 'Float',
+    icon: '🎈',
+    bond: 0,
+    line: 'drops an imaginary sandbag and floats up. Minus a minus! It knows. It KNOWS.',
+    sound: 'pop',
+    anim: 'trick-float',
+  },
+];
+
+export function knownTricks(pet: Pet, ranks: Record<string, { r: number }> = {}): Trick[] {
+  return [
+    ...TRICKS.filter((t) => (pet.bond ?? 0) >= t.bond),
+    ...REGION_TRICKS.filter((t) => (ranks[t.region]?.r ?? 0) >= 2),
+  ];
+}
+
+// ---------------------------------------------------------------------------
+// Bond perks in fights
+
+export interface PetPerks {
+  /** Follows you into fights (cheers, digs up gold). */
+  companion: boolean;
+  /** Once per fight: sniffs out a hint for free. */
+  sniff: boolean;
+  /** Once per fight: jumps in front of a hit. */
+  guard: boolean;
+  /** Chance to dig up gold after a win. */
+  findChance: number;
+}
+
+export const PERK_BOND = { companion: 30, sniff: 50, guard: 75, treasure: 90 };
+
+export function petPerks(pet: Pet | null | undefined, relicPet = false): PetPerks {
+  const b = pet && !pet.dead && !isAway(pet) ? (pet.bond ?? 0) : -1;
+  return {
+    companion: b >= PERK_BOND.companion,
+    sniff: b >= PERK_BOND.sniff,
+    guard: b >= PERK_BOND.guard,
+    findChance: b < PERK_BOND.companion ? 0 : b >= PERK_BOND.treasure || relicPet ? 0.6 : 0.35,
+  };
+}
+
+/** Out on an expedition right now (not back yet). */
+export function isAway(pet: Pet, now = Date.now()): boolean {
+  return !!pet.away && now < pet.away.until;
 }
 
 /** Pets sleep at night (local time), 21:00–07:00. */

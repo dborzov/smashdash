@@ -29,7 +29,7 @@ function useSpring(target: number): number {
   return v;
 }
 
-type Tool = 'both' | 'left' | 'right' | 'divide';
+type Tool = 'both' | 'left' | 'right' | 'divide' | 'boxes';
 type Goal = 'isolate' | 'tip' | 'none';
 
 function side(p: Pan): string {

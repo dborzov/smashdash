@@ -28,10 +28,13 @@ import {
   campaigns,
   achievements,
   news,
+  sizes,
 } from '../src/content';
-import { statValue } from '../src/engine/achievements';
+import { DERIVED_STATS, STAT_PREFIXES, statValue } from '../src/engine/achievements';
+import { GAME_EVENTS } from '../src/engine/events';
+import { validateGame } from '../src/games';
+import { rankPath } from '../src/engine/ranks';
 import { newProfile } from '../src/engine/profile';
-import { QUESTS } from '../src/engine/quests';
 import { generators } from '../src/skills';
 import { renderMath } from '../src/ui/math';
 import { circuitState } from '../src/skills/electricity';
@@ -82,6 +85,7 @@ describe('content schema', () => {
     check(z.array(S.Campaign), raw.campaignsYaml, 'campaigns.yaml');
     check(z.array(S.Achievement), raw.achievementsYaml, 'achievements.yaml');
     check(z.array(S.News), raw.newsYaml, 'news.yaml');
+    check(z.array(S.SizeCard), raw.sizesYaml, 'sizes.yaml');
   });
 });
 
@@ -139,10 +143,12 @@ describe('content references', () => {
       const addRegion = (id: string) => {
         const reg = regions.find((x) => x.id === id)!;
         reg.requires.forEach(addRegion);
+        campaigns.find((c) => c.id === reg.campaign)?.requires.forEach(addRegion);
         for (const n of reg.path)
           if (n.type === 'lesson' && lessons[n.lesson].skill) taught.add(lessons[n.lesson].skill!);
       };
       r.requires.forEach(addRegion);
+      campaigns.find((c) => c.id === r.campaign)?.requires.forEach(addRegion);
       for (const n of r.path) {
         const where = `${r.id}/${n.id}`;
         if (n.type === 'lesson') {
@@ -318,6 +324,13 @@ describe('content references', () => {
             for (let s = 1; s <= 4; s++) if (h / s === w.target) ok = true;
           expect(ok, `${where}: pipe target unreachable`).toBe(true);
         }
+        expect(validateGame(w), where).toBeNull();
+        if (w.kind === 'chain')
+          for (const st of w.steps) {
+            renderMath(st.tex.replace(/\\box/g, '\\square'), true, true);
+            for (const t of [st.say, st.hint, st.note, ...(st.options ?? []), ...(st.nudges ?? []).map((n) => n.text)])
+              checkRich(t, where);
+          }
         if (w.kind === 'eqcanvas') {
           // The slate must be solvable by peeling layers, and a story must hold every number.
           const eq = eqFrom(w.equation);
@@ -358,11 +371,16 @@ describe('content references', () => {
           r.campaign,
         );
     }
-    for (const c of campaigns)
+    for (const c of campaigns) {
       expect(
         regions.filter((r) => r.campaign === c.id && r.requires.length === 0).length,
         `${c.id} has exactly one starting region`,
       ).toBe(1);
+      for (const id of c.requires) {
+        expect(regionIds.has(id), `${c.id} requires ${id}`).toBe(true);
+        expect(regions.find((x) => x.id === id)!.campaign, `${c.id} requires its own region`).not.toBe(c.id);
+      }
+    }
     for (const n of news) {
       if (n.region) expect(regionIds.has(n.region), `news ${n.title}`).toBe(true);
       checkRich(n.text, `news ${n.title}`);
@@ -372,56 +390,8 @@ describe('content references', () => {
   it('achievements point at real stats and items', () => {
     const ids = new Set(achievements.map((a) => a.id));
     expect(ids.size).toBe(achievements.length);
-    const events = new Set([
-      ...QUESTS.map((q) => q.ev as string),
-      'right',
-      'clean',
-      'wrong',
-      'nudged',
-      'grit',
-      'combo5',
-      'combo10',
-      'lesson',
-      'win',
-      'flawless',
-      'boss',
-      'wander',
-      'comeback',
-      'promote',
-      'master',
-      'drill',
-      'feed',
-      'scoop',
-      'pat',
-      'trick',
-      'bugs',
-      'hatch',
-      'funeral',
-      'buy',
-      'goldEarned',
-      'goldSpent',
-      'quest',
-      'xp',
-      'dark',
-    ]);
-    const derived = new Set([
-      'level',
-      'streak',
-      'regions',
-      'skills',
-      'masters',
-      'atomsMastered',
-      'atomsSolid',
-      'bosses',
-      'wins',
-      'graves',
-      'petAge',
-      'bond',
-      'gold',
-      'hats',
-      'decor',
-      'hours',
-    ]);
+    const events = new Set<string>(GAME_EVENTS);
+    const derived = new Set<string>(DERIVED_STATS);
     const fresh = newProfile(
       { name: 'T', cls: 'knight', look: { skin: 0, hair: 0, hairStyle: 0, outfit: 0 }, goal: 100 },
       0,
@@ -434,12 +404,53 @@ describe('content references', () => {
           campaigns.some((c) => `campaign:${c.id}` === st),
           `${a.id}: ${st}`,
         ).toBe(true);
-      else if (st.startsWith('region:'))
-        expect(regionIds.has(st.slice(7)), `${a.id}: ${st}`).toBe(true);
+      else if (STAT_PREFIXES.some((x) => st.startsWith(`${x}:`)))
+        expect(regionIds.has(st.slice(st.indexOf(':') + 1)), `${a.id}: ${st}`).toBe(true);
       else expect(events.has(st) || derived.has(st), `${a.id}: unknown stat ${st}`).toBe(true);
+      if (a.region) expect(regionIds.has(a.region), `${a.id}: region ${a.region}`).toBe(true);
       // Nothing is unlocked for a brand-new hero.
       expect(statValue(fresh, st, 0) < a.goal, `${a.id} unlocked from the start`).toBe(true);
     }
+  });
+
+  it('ranks and treasures', () => {
+    for (const r of regions) {
+      const taught = new Set(skills.filter((x) => x.region === r.id).map((x) => x.id));
+      for (const d of r.ranks) {
+        const where = `${r.id} rank ${d.rank}`;
+        if (d.story) expect(lessons[d.story], `${where} story ${d.story}`).toBeDefined();
+        for (const n of d.nodes ?? []) {
+          expect(['story', 'hunt', 'boss'], `${where}: node id ${n.id} is reserved`).not.toContain(n.id);
+          expect(r.path.some((x) => x.id === n.id), `${where}: node id ${n.id} clashes`).toBe(false);
+          for (const sk of n.skills) expect(taught.has(sk), `${where}: ${sk} isn't from ${r.id}`).toBe(true);
+        }
+        if (d.boss?.taunts) {
+          const boss = r.path.find((x) => x.type === 'boss');
+          expect(d.boss.taunts.length, `${where}: one taunt per phase + 1`).toBe(
+            boss && boss.type === 'boss' ? boss.phases.length + 1 : 0,
+          );
+        }
+      }
+      expect(new Set(r.ranks.map((d) => d.rank)).size, `${r.id}: duplicate rank`).toBe(r.ranks.length);
+      for (let k = 2; k <= 5; k++) {
+        const path = rankPath(r, k);
+        expect(path[path.length - 1].type, `${r.id} rank ${k} ends with a boss`).toBe('boss');
+        expect(new Set(path.map((n) => n.id)).size, `${r.id} rank ${k} ids`).toBe(path.length);
+      }
+      for (const t of r.treasures) {
+        expect(itemById[t.item], `${r.id} treasure ${t.item}`).toBeDefined();
+        expect(!!t.rank !== !!t.flawless, `${r.id} ${t.item}: rank OR flawless`).toBe(true);
+      }
+    }
+    // A treasure belongs to one region only.
+    const all = regions.flatMap((r) => r.treasures.map((t) => t.item));
+    expect(new Set(all).size, 'treasures are unique').toBe(all.length);
+    for (const it of items) {
+      if (it.kind === 'relic') expect(it.relic, `${it.id} relic effect`).toBeDefined();
+      if (it.relic?.campaign) expect(campaigns.some((c) => c.id === it.relic!.campaign), it.id).toBe(true);
+      if (it.from) expect(regionIds.has(it.from), `${it.id} from ${it.from}`).toBe(true);
+    }
+    for (const c of sizes) expect(c.m > 0, c.id).toBe(true);
   });
 
   it('pets and classes', () => {

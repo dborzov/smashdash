@@ -10,6 +10,41 @@ import { regionDone } from './progress';
 import { atomStatus } from './mastery';
 import { levelFromXp } from './profile';
 import { DAY } from './dates';
+import { factsKnown, rowKnown } from './facts';
+import { cardsCollected } from './cards';
+
+/** Stats worked out from the profile (everything else is a counter, see GAME_EVENTS). */
+export const DERIVED_STATS = [
+  'level',
+  'streak',
+  'regions',
+  'skills',
+  'masters',
+  'atomsMastered',
+  'atomsSolid',
+  'bosses',
+  'wins',
+  'graves',
+  'petAge',
+  'bond',
+  'gold',
+  'hats',
+  'decor',
+  'hours',
+  'heroics',
+  'legendaries',
+  'mythics',
+  'facts',
+  'rows',
+  'cards',
+  'relics',
+] as const;
+
+/** Stat prefixes that take an id: `region:<id>`, `campaign:<id>`, `rank:<region>`, … */
+export const STAT_PREFIXES = ['region', 'campaign', 'rank', 'win', 'flawless', 'boss'] as const;
+
+const rankAtLeast = (p: Profile, n: number) =>
+  regions.filter((r) => Math.max(p.ranks?.[r.id]?.r ?? 0, regionDone(p, r) ? 1 : 0) >= n).length;
 
 /** Value of a stat for a player: derived stats first, then counters. */
 export function statValue(p: Profile, stat: string, now = Date.now()): number {
@@ -49,6 +84,27 @@ export function statValue(p: Profile, stat: string, now = Date.now()): number {
       return p.den.length;
     case 'hours':
       return Math.floor(Object.values(p.time).reduce((a, b) => a + b, 0) / 3_600_000);
+    case 'heroics':
+      return rankAtLeast(p, 2);
+    case 'legendaries':
+      return rankAtLeast(p, 3);
+    case 'mythics':
+      return rankAtLeast(p, 4);
+    case 'facts':
+      return factsKnown(p);
+    case 'rows': {
+      let n = 0;
+      for (let k = 1; k <= 12; k++) if (rowKnown(p, k)) n++;
+      return n;
+    }
+    case 'cards':
+      return cardsCollected(p);
+    case 'relics':
+      return Object.keys(p.inv).filter((id) => itemById[id]?.kind === 'relic').length;
+  }
+  if (stat.startsWith('rank:')) {
+    const r = regions.find((x) => x.id === stat.slice(5));
+    return r ? Math.max(p.ranks?.[r.id]?.r ?? 0, regionDone(p, r) ? 1 : 0) : 0;
   }
   if (stat.startsWith('campaign:')) {
     const c = stat.slice(9);

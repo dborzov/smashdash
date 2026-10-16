@@ -1,0 +1,297 @@
+/* ==========================================================================
+   Smashdash — global styles.
+   Look: "storybook neon". Deep night-blue UI panels with warm gold accents,
+   bright saturated scenes behind, and cream parchment cards for maths so the
+   equations are always dark-on-light and easy to read.
+   ========================================================================== */
+
+:root {
+  --ink: #160f2e;
+  --ink-2: #241a4a;
+  --panel: rgba(22, 15, 50, 0.86);
+  --panel-solid: #1d1540;
+  --panel-edge: rgba(255, 255, 255, 0.14);
+  --text: #f6f1ff;
+  --text-dim: #b9b0d9;
+  --gold: #ffd166;
+  --gold-deep: #e0a526;
+  --pink: #ff5fa2;
+  --mint: #5ee6a8;
+  --mint-deep: #23b77a;
+  --sky: #7dd3fc;
+  --danger: #ff6b6b;
+  --danger-deep: #d43c4c;
+  --violet: #9b7bff;
+  --violet-deep: #6c4ce0;
+
+  /* Parchment cards for maths */
+  --card: #fff8e8;
+  --card-ink: #2a1c10;
+  --card-edge: #ecd9ae;
+  /* The colour of the unknown x everywhere */
+  --var-on-card: #d81b72;
+  --var-on-dark: #ff8ac4;
+
+  --radius: 20px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --font-display: 'Fredoka', 'Nunito', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+  --hud-h: 64px;
+  --tabs-h: 72px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0 0 0.4em;
+  line-height: 1.15;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* ---------- KaTeX tweaks ---------- */
+.katex {
+  font-size: 1.15em;
+}
+.card .katex,
+.choice .katex {
+  font-size: 1.22em;
+}
+.problem-prompt {
+  font-size: 1.3rem;
+  line-height: 1.6;
+}
+.katex .var {
+  color: var(--var-on-dark);
+  font-weight: 600;
+}
+.card .katex .var,
+.light .katex .var {
+  color: var(--var-on-card);
+}
+.katex .hl {
+  color: var(--gold);
+}
+.card .katex .hl,
+.light .katex .hl {
+  color: #d9480f;
+}
+.katex .good {
+  color: var(--mint);
+}
+.card .katex .good {
+  color: #138a52;
+}
+.katex .muted {
+  opacity: 0.55;
+}
+.math-big {
+  font-size: clamp(1.6rem, 4.2vw, 2.6rem);
+  text-align: center;
+  margin: 0.3em 0 0.2em;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.15em 0;
+}
+.math-big .katex-display {
+  margin: 0;
+}
+.rich p {
+  margin: 0 0 0.6em;
+}
+.rich p:last-child {
+  margin-bottom: 0;
+}
+.rich .katex-display {
+  margin: 0.5em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* ---------- Layout shell ---------- */
+.app {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.screen-scroll {
+  position: absolute;
+  inset: var(--hud-h) 0 var(--tabs-h) 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px;
+}
+
+.scene-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.scene-bg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.content-col {
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+/* ---------- Panels & cards ---------- */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-edge);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 18px;
+}
+
+.card {
+  background: var(--card);
+  color: var(--card-ink);
+  border-radius: var(--radius);
+  border: 3px solid var(--card-edge);
+  box-shadow:
+    0 6px 0 #d9c18a,
+    var(--shadow);
+  padding: 18px 20px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  --b: var(--violet);
+  --bd: var(--violet-deep);
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  padding: 12px 22px;
+  border-radius: 16px;
+  background: var(--b);
+  color: #fff;
+  box-shadow:
+    0 5px 0 var(--bd),
+    0 8px 16px rgba(0, 0, 0, 0.25);
+  transform: translateY(0);
+  transition:
+    transform 0.08s,
+    box-shadow 0.08s,
+    filter 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+.btn:hover {
+  filter: brightness(1.08);
+}
+.btn:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 1px 0 var(--bd),
+    0 3px 8px rgba(0, 0, 0, 0.25);
+}
+.btn:disabled {
+  filter: grayscale(0.8) brightness(0.8);
+  cursor: default;
+}
+.btn.gold {
+  --b: var(--gold);
+  --bd: var(--gold-deep);
+  color: #4a2a00;
+  text-shadow: none;
+}
+.btn.mint {
+  --b: var(--mint);
+  --bd: var(--mint-deep);
+  color: #053a24;
+  text-shadow: none;
+}
+.btn.danger {
+  --b: var(--danger);
+  --bd: var(--danger-deep);
+}
+.btn.ghost {
+  --b: rgba(255, 255, 255, 0.12);
+  --bd: rgba(0, 0, 0, 0.35);
+  box-shadow: 0 4px 0 var(--bd);
+}
+.btn.small {
+  min-height: 40px;
+  padding: 8px 14px;
+  font-size: 0.95rem;
+  border-radius: 12px;
+}
+.btn.big {
+  min-height: 64px;
+  font-size: 1.3rem;
+  padding: 14px 30px;
+}
+.btn.wide {
+  width: 100%;
+}
+
+.icon-btn {
+  appearance: none;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: inline-grid;
+  place-items: center;
+}
+.icon-btn:active {
+  transform: scale(0.94);
+}

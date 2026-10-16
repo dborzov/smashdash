@@ -445,3 +445,70 @@ export function VaultArt({
     </svg>
   );
 }
+
+/**
+ * Rescue (The Order of Magnitude): people stuck in a tower Doctor Exactly set on fire. Each
+ * right answer flies one of them down to the safety net; a wrong one and his ray zaps the net.
+ */
+export function RescueArt({
+  total,
+  done,
+  zap,
+}: {
+  total: number;
+  done: number;
+  zap: boolean;
+}) {
+  const rows = Math.ceil(total / 2);
+  const winH = Math.min(30, 150 / Math.max(1, rows));
+  const left = total - done;
+  const all = left <= 0;
+  const faces = ['#ffd5b0', '#e8b48a', '#c98e62', '#8d5a3a'];
+  return (
+    <svg viewBox="0 0 220 210" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+      <ellipse cx="110" cy="204" rx="96" ry="6" fill="rgba(0,0,0,.35)" />
+      {!all && (
+        <g class="flames">
+          <path d="M70 22 Q76 0 88 14 Q92 -6 104 10 Q112 -10 122 8 Q132 -4 140 16 Q146 4 150 22 Z" fill="#ff8a3d" />
+          <path d="M84 22 Q90 8 98 16 Q104 2 112 14 Q120 4 128 18 L136 22 Z" fill="#ffd166" />
+        </g>
+      )}
+      <rect x="64" y="22" width="92" height="160" rx="4" fill="#5a6378" stroke="#1d2233" stroke-width="4" />
+      {Array.from({ length: rows * 2 }, (_, i) => {
+        const col = i % 2;
+        const row = Math.floor(i / 2);
+        const x = 74 + col * 40;
+        const y = 30 + row * (winH + 4);
+        const person = i < left;
+        return (
+          <g key={i}>
+            <rect x={x} y={y} width="32" height={winH} rx="3" fill={person ? '#ffcf7a' : '#2a3044'} stroke="#1d2233" stroke-width="2" />
+            {person && (
+              <g>
+                <circle cx={x + 16} cy={y + winH * 0.45} r={Math.min(7, winH * 0.28)} fill={faces[i % 4]} stroke="#3a2210" stroke-width="1.5" />
+                <path d={`M${x + 25} ${y + winH * 0.5} l6 -${winH * 0.3}`} stroke={faces[i % 4]} stroke-width="3" stroke-linecap="round" class="wave" />
+              </g>
+            )}
+          </g>
+        );
+      })}
+      <path
+        d="M20 190 Q110 206 200 190"
+        fill="none"
+        stroke={zap ? '#ff5fa2' : '#7dd3fc'}
+        stroke-width="5"
+        stroke-dasharray={zap ? '4 6' : undefined}
+      />
+      <rect x="18" y="186" width="6" height="16" fill="#9aa4b5" />
+      <rect x="196" y="186" width="6" height="16" fill="#9aa4b5" />
+      {Array.from({ length: Math.min(done, 12) }, (_, i) => (
+        <circle key={i} cx={36 + i * 13} cy="184" r="5" fill={faces[i % 4]} stroke="#3a2210" stroke-width="1.5" />
+      ))}
+      {all && (
+        <text x="110" y="16" text-anchor="middle" font-size="22">
+          🎉
+        </text>
+      )}
+    </svg>
+  );
+}

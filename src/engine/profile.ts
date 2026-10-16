@@ -4,7 +4,7 @@
  */
 import type { Game, Monster } from '../content/schema';
 
-export const SAVE_VERSION = 2;
+export const SAVE_VERSION = 3;
 
 export interface Look {
   skin: number;
@@ -67,6 +67,30 @@ export interface Pet {
   bond?: number;
   /** Last time the bug-catching game was played. (v2) */
   bugsAt?: number;
+  /** Off on an expedition to a region the hero has cleared (v3). */
+  away?: Expedition;
+}
+
+/** A pet's trip to a region; it comes back with loot from there (see src/engine/expeditions.ts). */
+export interface Expedition {
+  region: string;
+  /** Rank the hero has cleared there when the pet set off (better loot at higher ranks). */
+  rank: number;
+  started: number;
+  until: number;
+}
+
+/**
+ * Ranks of a region beyond its story path (v3). Rank 1 is the story path itself; after each
+ * rank there is a cooldown of two days before the next one opens (see src/engine/ranks.ts).
+ */
+export interface RankState {
+  /** Highest rank cleared (1 = the story path). */
+  r: number;
+  /** When it was cleared (0 = long ago: the next rank is open). */
+  at: number;
+  /** Progress through the next rank's path: node id → best stars. */
+  run: Record<string, number>;
 }
 
 export interface Grave {
@@ -163,6 +187,16 @@ export interface Profile {
   den: string[];
   /** Newest news item the player has seen (date string). */
   newsSeen: string;
+
+  // ---- added in save v3 ----
+  /** Region ranks: Heroic, Legendary… runs after the story path. */
+  ranks: Record<string, RankState>;
+  /** Relics worn (item ids of kind `relic`), at most RELIC_SLOTS. */
+  relics: string[];
+  /** Times-table facts, keyed `a×b` with a ≤ b (same shape as atoms). */
+  facts: Record<string, AtomState>;
+  /** Size cards collected for the Scale Museum: card id → when. */
+  cards: Record<string, number>;
 }
 
 export interface Quest {
@@ -211,6 +245,10 @@ export function newProfile(
     boosts: {},
     den: [],
     newsSeen: '',
+    ranks: {},
+    relics: [],
+    facts: {},
+    cards: {},
   };
 }
 

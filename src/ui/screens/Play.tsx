@@ -5,16 +5,30 @@
  */
 import { useEffect, useState } from 'preact/hooks';
 import type { Region } from '../../content/schema';
-import { campaignById, lessons, regionById, skillById, regions } from '../../content';
+import { campaignById, itemById, lessons, regionById, skillById, regions } from '../../content';
 import { getProfile, update } from '../../engine/store';
 import { markNode, nodeDone, nodeUnlocked, starsFor } from '../../engine/progress';
+import {
+  clearRank,
+  clearStory,
+  COOLDOWN_DAYS,
+  markRankNode,
+  nextRank,
+  rankGold,
+  rankInfo,
+  rankNodeOpen,
+  rankPath,
+  rankXp,
+  reviewSkills,
+} from '../../engine/ranks';
 import { grant, XP } from '../../engine/rewards';
 import { skillState } from '../../engine/mastery';
 import { makeWanderer } from '../../engine/encounters';
 import { track } from '../../engine/events';
 import { Rng } from '../../engine/rng';
-import { LessonPlayer, type LessonResult } from './Lesson';
-import { EncounterScreen, specFor } from './Encounter';
+import { fillLesson, LessonPlayer, type LessonResult } from './Lesson';
+import { EncounterScreen } from '../encounter/EncounterScreen';
+import { specFor } from '../encounter/spec';
 import { useTimeTracker } from '../useTimeTracker';
 import { Scene } from '../../art/scenes';
 import { Stars } from '../components/Bits';
@@ -201,6 +215,7 @@ export function PlayNode({ regionId, nodeId }: { regionId: string; nodeId: strin
       : undefined,
     tone,
     region: region.id,
+    campaign: region.campaign,
   });
   return (
     <EncounterScreen
@@ -213,13 +228,123 @@ export function PlayNode({ regionId, nodeId }: { regionId: string; nodeId: strin
         }
         update((q) => {
           markNode(q, region.id, node.id, starsFor(res.wrong));
-          if (isBoss && first) {
-            q.stats.bosses++;
-            return track(q, 'boss');
+          if (isBoss) {
+            const fx = track(q, 'boss', 1, Date.now(), region.id);
+            if (first) {
+              q.stats.bosses++;
+              clearStory(q, region);
+            }
+            return fx;
           }
         });
         if (isBoss && first) setStage('outro');
         else backToRegion();
+      }}
+    />
+  );
+}
+
+/**
+ * A node of a region's next rank (Heroic, Legendary, …): a twist story, a harder fight, a
+ * Mistake Hunt, or the boss — whose defeat clears the rank (src/engine/ranks.ts).
+ */
+export function PlayRank({ regionId, nodeId }: { regionId: string; nodeId: string }) {
+  const region = regionById[regionId];
+  const p = getProfile();
+  const [rank] = useState(() => (p && region ? nextRank(p, region) : null));
+  const path = region && rank ? rankPath(region, rank) : [];
+  const index = path.findIndex((n) => n.id === nodeId);
+  const node = path[index];
+  const [summary, setSummary] = useState<{ title: string; lines: string[] } | null>(null);
+  const [monster] = useState(() =>
+    region && node?.type === 'encounter' ? (node.monster ?? new Rng().pick(region.monsters)) : undefined,
+  );
+  const [review] = useState(() => {
+    if (!p || !region || !node || node.type === 'story' || !node.review) return [];
+    return new Rng().shuffle(reviewSkills(p, region)).slice(0, 2);
+  });
+  useTimeTracker(node?.type === 'story' ? regionId : undefined);
+  if (summary && region) return <Summary scene={region.scene} {...summary} onDone={() => go(`/region/${region.id}`, true)} />;
+  if (!p || !region || !rank || !node || !rankNodeOpen(p, region, path, index))
+    return <Redirect to={region ? `/region/${region.id}` : '/map'} />;
+  const back = () => go(`/region/${region.id}`, true);
+  const tone = toneOf(region);
+  const camp = campaignById[region.campaign];
+  const info = rankInfo(rank);
+  const boss = path.find((n) => n.type === 'boss');
+
+  if (node.type === 'story') {
+    const lesson = fillLesson(lessons[node.lesson], {
+      region: region.name,
+      boss: boss?.type === 'boss' ? boss.monster.name : 'the boss',
+      rank: info.name,
+    });
+    return (
+      <LessonPlayer
+        key={node.id}
+        lesson={lesson}
+        scene={region.scene}
+        tone={tone}
+        firstTime
+        onQuit={back}
+        onFinish={() => {
+          update((q) => markRankNode(q, region, node.id, 3));
+          back();
+        }}
+      />
+    );
+  }
+  const isBoss = node.type === 'boss';
+  const spec = specFor({
+    title: node.title,
+    game: isBoss ? 'battle' : node.game,
+    scene: region.scene,
+    monster: isBoss ? node.monster : monster,
+    phases: isBoss
+      ? node.phases.map((ph, i) => ({
+          skills: i === node.phases.length - 1 ? [...ph.skills, ...review] : ph.skills,
+          count: ph.count,
+        }))
+      : [{ skills: [...node.skills, ...review], count: node.count }],
+    tier: isBoss ? 3 : 2,
+    winReward: isBoss ? { xp: XP.bossReplay } : {},
+    boss: isBoss
+      ? { intro: node.intro, taunts: node.phases.map((ph) => ph.taunt), defeat: node.defeat }
+      : undefined,
+    tone,
+    region: region.id,
+    campaign: region.campaign,
+    floor: node.floor as 1 | 2 | 3,
+    rank,
+    critic: node.type === 'encounter' && node.twist === 'critic' ? camp?.critic : undefined,
+  });
+  return (
+    <EncounterScreen
+      key={`${region.id}/r${rank}/${node.id}`}
+      spec={spec}
+      onEnd={(res) => {
+        if (!res.won) return back();
+        let gave: string[] = [];
+        update((q) => {
+          markRankNode(q, region, node.id, starsFor(res.wrong));
+          if (!isBoss) return;
+          const fx = [...track(q, 'boss', 1, Date.now(), region.id), ...clearRank(q, region, rank)];
+          gave = fx.filter((f) => f.kind === 'item').map((f) => (f.kind === 'item' ? f.item : ''));
+          return fx;
+        });
+        if (!isBoss) return back();
+        sfx('level');
+        const next = rank < 5 ? rankInfo(rank + 1) : null;
+        setSummary({
+          title: `${info.icon} ${info.name} rank cleared!`,
+          lines: [
+            `${region.name} is yours — at ${info.name} level. +${rankXp(rank)} XP, +${rankGold(rank)} gold.`,
+            ...gave.map((id) => `Treasure: ${itemById[id]?.icon} ${itemById[id]?.name}!`),
+            next
+              ? `${next.icon} ${next.name} opens in ${COOLDOWN_DAYS} days. ${camp?.cooldown ?? ''}`
+              : 'That was the last rank. There is nothing harder. Probably. Go outside?',
+          ],
+        });
       }}
     />
   );
@@ -244,6 +369,7 @@ export function PlayWanderer({ id }: { id: string }) {
         tier: 2,
         tone: toneOf(region),
         region: region.id,
+        campaign: region.campaign,
       })}
       onEnd={(res) => {
         if (res.won)
@@ -287,6 +413,7 @@ export function PlaySkill({
         tier: 1,
         tone: toneOf(region),
         region: region.id,
+        campaign: region.campaign,
         focus: atomOk ? { skill: skill.id, atom: atom! } : undefined,
       })}
       onEnd={() => go(back ?? `/region/${region.id}`, true)}

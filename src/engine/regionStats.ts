@@ -4,8 +4,8 @@
  */
 import type { PathNode, Region } from '../content/schema';
 import type { Profile } from './profile';
-import { regionById, skills } from '../content';
-import { nextNodeIndex, nodeDone, nodeKey, regionDone, regionUnlocked } from './progress';
+import { skills } from '../content';
+import { nextNodeIndex, nodeDone, nodeKey, regionDone, regionNeeds, regionUnlocked } from './progress';
 import { atomStatus, effectiveMastery } from './mastery';
 import { DAY } from './dates';
 
@@ -90,7 +90,7 @@ export function regionStats(p: Profile, r: Region, now = Date.now()): RegionStat
     atomsTotal,
     needsReview: finished && learned > 0 && eff / learned < 0.45,
     next: ni >= 0 ? r.path[ni] : null,
-    waitingFor: r.requires.map((id) => regionById[id]).filter((x) => x && !regionDone(p, x)),
+    waitingFor: regionNeeds(r).filter((x) => !regionDone(p, x)),
     lastAt: p.lastAt[r.id] ?? 0,
   };
 }

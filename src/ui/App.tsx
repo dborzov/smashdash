@@ -16,7 +16,7 @@ import { RegionScreen } from './screens/Region';
 import { HeroScreen } from './screens/Hero';
 import { PetScreen } from './screens/Pet';
 import { ShopScreen } from './screens/Shop';
-import { PlayNode, PlaySkill, PlayStory, PlayWanderer } from './screens/Play';
+import { PlayNode, PlayRank, PlaySkill, PlayStory, PlayWanderer } from './screens/Play';
 import { Preview } from './screens/Preview';
 
 export function App() {
@@ -44,6 +44,7 @@ export function App() {
   let full = null;
   if (a === 'story' && b) full = <PlayStory key={b} id={b} />;
   else if (a === 'play' && b && c) full = <PlayNode key={`${b}/${c}`} regionId={b} nodeId={c} />;
+  else if (a === 'rank' && b && c) full = <PlayRank key={`${b}/${c}`} regionId={b} nodeId={c} />;
   else if (a === 'wander' && b) full = <PlayWanderer key={b} id={b} />;
   else if (a === 'practice' && b) full = <PlaySkill key={b} skillId={b} />;
   else if (a === 'drill' && b)

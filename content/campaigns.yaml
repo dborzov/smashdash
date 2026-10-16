@@ -1,11 +1,19 @@
 # Story arcs. Every region belongs to one (region.yaml `campaign:`). The adventure board
 # groups regions by campaign. `mood: dark` gives the campaign's cards and map a grimmer look.
+# `requires`: regions (from other campaigns) to finish before this campaign opens.
+# `cooldown`: the in-story reason for the two-day wait between a region's ranks.
+# `critic`: who answers first in a Mistake Hunt (the rank twist), and what the hunt is called.
 - id: kingdom
   name: The Muddled Kingdom
   tagline: The Muddler stuffed every number into a box. Unbox the kingdom, one spell at a time.
   order: 1
   mood: bright
   icon: "🏰"
+  grades: Grades 4–7
+  cooldown: >-
+    The Muddler's fog grows back slowly — about two days. Meanwhile your brain does its secret
+    night shift: memories set while you sleep, like jelly in a fridge. Come back in two sleeps.
+  critic: { name: Goblin Know-It-All, icon: "👺", hunt: Mistake Hunt }
 - id: march
   name: The Long Count
   tagline: >-
@@ -14,3 +22,49 @@
   order: 2
   mood: dark
   icon: "⚔️"
+  grades: Grades 5–6
+  cooldown: >-
+    The Host regroups. The scouts need two days to bring word of where it strikes next. Sleep
+    while you can, clerk. Soldiers who sleep remember their drills.
+  critic: { name: Maul Vane's clerk, icon: "🖋️", hunt: Audit the Ledgers }
+- id: tables
+  name: Dungeons & Times Tables
+  tagline: >-
+    A dungeon crawl through the times table, run by a Dungeon Master who did NOT prepare for
+    this. Roll for multiplication.
+  order: 3
+  mood: bright
+  icon: "🎲"
+  grades: Grades 3–5
+  cooldown: >-
+    The Dungeon Master needs two days to prepare the next session. He calls it
+    "world-building". It is mostly snacks. (Also: your brain files the facts away while you
+    sleep. True story.)
+  critic: { name: Bard Barry, icon: "🪕", hunt: Fact-Check the Bard }
+- id: magnitude
+  name: The Order of Magnitude
+  tagline: >-
+    Join a superhero team whose powers all come in tens. Estimate fast, think big, save the
+    day (approximately).
+  order: 4
+  mood: bright
+  icon: "🦸"
+  grades: Grades 4–7
+  cooldown: >-
+    Doctor Exactly has started a two-day villain monologue. It is extremely precise. Use the
+    time to sleep — brains sort out what they learned at night.
+  critic: { name: Doctor Exactly, icon: "🥼", hunt: Fake News Desk }
+- id: sequel
+  name: The Muddler Strikes Back
+  tagline: >-
+    Every villain gets a sequel. This one has negative numbers, x on both sides, fruit, and a
+    plot twist nobody asked for.
+  order: 5
+  mood: bright
+  icon: "🎬"
+  grades: Grades 6–8
+  requires: [bazaar, mirrors]
+  cooldown: >-
+    Sequels take time. The Muddler is "in the editing room" for two days. (He is crying in the
+    editing room.) Sleep on what you learned — it really does help.
+  critic: { name: The Muddler's Intern, icon: "🧑‍💼", hunt: Blooper Reel }

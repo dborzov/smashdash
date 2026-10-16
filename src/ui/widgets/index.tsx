@@ -18,6 +18,8 @@ import {
   Shifter,
 } from './PlaceValue';
 import { EqCanvas } from '../eqcanvas/EqCanvas';
+import { GameView, GAME_KINDS, type GameWidget } from '../games';
+import type { Outcome } from '../../engine/mastery';
 import { eqFrom, fVal, solutionOf } from '../../engine/eqcanvas';
 
 export function WidgetView({
@@ -27,11 +29,16 @@ export function WidgetView({
   quiz = false,
 }: {
   w: Widget | Visual;
-  onDone?: () => void;
+  onDone?: (o?: Outcome) => void;
   interactive?: boolean;
   /** The picture belongs to a question: don't give the answer away (no glowing bulbs). */
   quiz?: boolean;
 }) {
+  if (GAME_KINDS.has(w.kind)) {
+    const game = <GameView spec={w as GameWidget} onDone={onDone} still={!interactive} />;
+    // Mini-games are drawn for the parchment card; a problem picture is already on one.
+    return quiz ? game : <div class="card game-card">{game}</div>;
+  }
   switch (w.kind) {
     case 'boxes':
       return (

@@ -1,4 +1,5 @@
 import type { Rng } from '../engine/rng';
+import type { Widget } from '../content/schema';
 
 /** Difficulty tier inside one skill. Chosen from the player's mastery of that skill. */
 export type Level = 1 | 2 | 3;
@@ -18,7 +19,41 @@ export type Answer =
   | { kind: 'choice'; options: string[]; correct: number }
   | OrderAnswer
   | LineAnswer
-  | CanvasAnswer;
+  | CanvasAnswer
+  | GameAnswer;
+
+/**
+ * Played as a mini-game (src/ui/games): build an array, place things on the Scale Ladder,
+ * fly the balloon, sort terms, crack the fruit puzzle, work a chain of steps… The game gives
+ * feedback on every move and reports right (no slips), nudged (slips put right) or wrong
+ * ("show me").
+ */
+export interface GameAnswer {
+  kind: 'game';
+  game: GameSpec;
+}
+
+/** A mini-game, as used in practice problems. The same shapes are content widgets. */
+export type GameSpec = Extract<
+  Widget,
+  {
+    kind:
+      | 'array'
+      | 'skipjump'
+      | 'tablegrid'
+      | 'squaregrow'
+      | 'chain'
+      | 'sizeline'
+      | 'sampler'
+      | 'balloon'
+      | 'sorter'
+      | 'fruit'
+      | 'ineqline';
+  }
+>;
+
+export type ChainSpec = Extract<Widget, { kind: 'chain' }>;
+export type ChainStep = ChainSpec['steps'][number];
 
 /**
  * Worked on the EQcanvas slate (src/ui/eqcanvas): build an equation from story tiles, then
@@ -97,6 +132,7 @@ export interface DialsEntry {
 
 /** Optional picture shown with a problem. */
 export type Visual =
+  | Extract<Widget, { kind: 'array' | 'matchsticks' | 'tablegrid' | 'balloon' }>
   | { kind: 'boxes'; a: number; b: number; reveal?: number }
   | { kind: 'balance'; left: Pan; right: Pan }
   | { kind: 'power'; base: number; exp: number }
@@ -244,6 +280,16 @@ export interface Problem {
   atoms: string[];
   /** How the player enters a number answer (default: keypad). */
   entry?: DialsEntry;
+  /** Times-table facts this problem uses ([7, 8] for 7 × 8), for the fact map. */
+  facts?: [number, number][];
+  /** Size cards (content/sizes.yaml) collected by answering this right. */
+  cards?: string[];
 }
 
-export type Generator = (rng: Rng, level: Level) => Problem;
+/** What a generator may know about the player (to aim practice at weak spots). */
+export interface GenContext {
+  /** How much each times-table fact needs practice, keyed `a×b` (see engine/facts.ts). */
+  factWeights?: Record<string, number>;
+}
+
+export type Generator = (rng: Rng, level: Level, ctx?: GenContext) => Problem;

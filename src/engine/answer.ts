@@ -72,8 +72,8 @@ export function judge(p: Problem, given: number | number[], nudged: boolean): Ve
     }
     return { kind: 'wrong' };
   }
-  // The EQcanvas judges every step itself (src/engine/eqcanvas.ts).
-  if (p.answer.kind === 'canvas') return { kind: 'wrong' };
+  // The EQcanvas and the mini-games judge every step themselves.
+  if (p.answer.kind === 'canvas' || p.answer.kind === 'game') return { kind: 'wrong' };
   if (given === p.answer.correct) return { kind: 'right' };
   if (!nudged) {
     const n = p.nudges?.find((x) => x.match === given);

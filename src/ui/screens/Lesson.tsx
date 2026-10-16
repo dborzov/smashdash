@@ -21,7 +21,16 @@ import { WidgetView } from '../widgets';
 import { Portrait } from '../../art/Portrait';
 import { Egg } from '../../art/Pet';
 import { cast, itemById } from '../../content';
+import { factWeights } from '../../engine/facts';
+import { collectCards } from '../../engine/cards';
 import { sfx } from '../../audio/sfx';
+
+/** Fills `{region}`, `{boss}`… in a lesson's text (for stories shared by many regions). */
+export function fillLesson(lesson: Lesson, vars: Record<string, string>): Lesson {
+  let json = JSON.stringify(lesson);
+  for (const [k, v] of Object.entries(vars)) json = json.split(`{${k}}`).join(v.replace(/"/g, '\\"'));
+  return JSON.parse(json);
+}
 
 /** XP for quick checks inside lessons (smaller than practice). */
 const CHECK_XP = { right: 5, nudged: 3, wrong: 0 };
@@ -168,6 +177,7 @@ type OnAnswer = (
   atoms: string[],
   level?: Tier,
   events?: RunEvent[],
+  about?: Pick<Problem, 'facts' | 'cards'>,
 ) => void;
 
 /** Generated practice inside a lesson: an adaptive run (mistakes add extra practice). */
@@ -187,9 +197,13 @@ function PracticeBeat({
   const [n, setN] = useState(0);
   const [events, setEvents] = useState<RunEvent[]>([]);
   const q = useMemo(() => {
-    const nx = pickNext(getProfile()!, run, rng);
+    const p = getProfile()!;
+    const nx = pickNext(p, run, rng);
     const level = (beat.level as Tier | undefined) ?? nx.level;
-    return { level, problem: generateFor(nx.skill, level, rng, nx.atom) };
+    return {
+      level,
+      problem: generateFor(nx.skill, level, rng, nx.atom, { factWeights: factWeights(p) }),
+    };
   }, [n]);
   return (
     <div>
@@ -204,7 +218,7 @@ function PracticeBeat({
         problem={q.problem}
         onResult={(o) => {
           const ev = applyResult(getProfile()!, run, beat.skill, q.problem.atoms, o);
-          onAnswer(beat.skill, o, true, q.problem.atoms, q.level, ev);
+          onAnswer(beat.skill, o, true, q.problem.atoms, q.level, ev, q.problem);
           setEvents(ev);
           if (isOver(run)) onDone();
           else setN(n + 1);
@@ -221,6 +235,7 @@ function BeatView({
   firstTime,
   onNext,
   onAnswer,
+  onPlayed,
   tone,
 }: {
   beat: Beat;
@@ -229,6 +244,7 @@ function BeatView({
   firstTime: boolean;
   onNext: () => void;
   onAnswer: OnAnswer;
+  onPlayed: (w: Widget) => void;
   tone: 'bright' | 'dark';
 }) {
   const [chosen, setChosen] = useState<number | null>(null);
@@ -327,7 +343,13 @@ function BeatView({
         <>
           <Dialogue who={beat.who} text={beat.text} />
           <div class="panel" style={{ marginTop: '12px' }}>
-            <WidgetView w={beat.widget} onDone={() => setWidgetDone(true)} />
+            <WidgetView
+              w={beat.widget}
+              onDone={() => {
+                if (!widgetDone) onPlayed(beat.widget);
+                setWidgetDone(true);
+              }}
+            />
             {widgetDone && beat.done && (
               <div class="feedback right" style={{ marginTop: '12px' }}>
                 <Rich text={beat.done} />
@@ -390,7 +412,7 @@ export function LessonPlayer({
   const [quitAsk, setQuitAsk] = useState(false);
   const beat = lesson.beats[i];
 
-  const onAnswer: OnAnswer = (skill, o, practice, atoms, level, events) => {
+  const onAnswer: OnAnswer = (skill, o, practice, atoms, level, events, about) => {
     if (o === 'wrong') stats.wrong++;
     else stats.right++;
     if (dry) return;
@@ -399,8 +421,16 @@ export function LessonPlayer({
         xp: practice ? PRACTICE_XP : CHECK_XP,
         events,
         dark: tone === 'dark',
+        facts: about?.facts,
+        cards: about?.cards,
       }),
     );
+  };
+
+  /** A Scale Ladder played in a lesson collects its cards for the Scale Museum. */
+  const onPlayed = (w: Widget) => {
+    if (dry || w.kind !== 'sizeline') return;
+    update((p) => collectCards(p, w.items));
   };
 
   const next = () => {
@@ -459,6 +489,7 @@ export function LessonPlayer({
               firstTime={firstTime}
               onNext={next}
               onAnswer={onAnswer}
+              onPlayed={onPlayed}
               tone={tone}
             />
           </div>

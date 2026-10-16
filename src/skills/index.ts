@@ -3,7 +3,7 @@
  * Skill metadata (names, descriptions) lives in content/skills.yaml; every id there must
  * have a generator here (enforced by tests/content.test.ts).
  */
-import type { Generator, Level, Problem } from './types';
+import type { GenContext, Generator, Level, Problem } from './types';
 import { Rng } from '../engine/rng';
 import { evalOne, evalParens, evalTwo, notation, wordsToExpr } from './expressions';
 import { balanceRule, bothSides, inverseOps, pickMove } from './balance';
@@ -95,10 +95,15 @@ export function levelFor(mastery: number): Level {
   return mastery < 0.35 ? 1 : mastery < 0.7 ? 2 : 3;
 }
 
-export function generate(skill: string, level: Level, rng: Rng = new Rng()): Problem {
+export function generate(
+  skill: string,
+  level: Level,
+  rng: Rng = new Rng(),
+  ctx?: GenContext,
+): Problem {
   const g = generators[skill];
   if (!g) throw new Error(`No generator for skill "${skill}"`);
-  return g(rng, level);
+  return g(rng, level, ctx);
 }
 
 /**
@@ -111,8 +116,9 @@ export function generateFor(
   level: Level,
   rng: Rng = new Rng(),
   atom?: string,
+  ctx?: GenContext,
 ): Problem {
-  const first = generate(skill, level, rng);
+  const first = generate(skill, level, rng, ctx);
   if (!atom || first.atoms.includes(atom)) return first;
   const levels: Level[] = [
     level,
@@ -121,11 +127,11 @@ export function generateFor(
   ];
   for (const l of levels) {
     for (let i = 0; i < 40; i++) {
-      const p = generate(skill, l, rng);
+      const p = generate(skill, l, rng, ctx);
       if (p.atoms.includes(atom)) return p;
     }
   }
   return first;
 }
 
-export type { Generator, Level, Problem } from './types';
+export type { GenContext, Generator, Level, Problem } from './types';

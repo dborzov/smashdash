@@ -1,0 +1,294 @@
+/* Skill Tree. */
+
+/* ==========================================================================
+   Skill Tree
+   ========================================================================== */
+.legend {
+  margin-top: 10px;
+  gap: 14px;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+.ad.unseen {
+  background: transparent;
+}
+.hist {
+  display: inline-flex;
+  gap: 2px;
+}
+.hist i {
+  width: 7px;
+  height: 14px;
+  border-radius: 3px;
+}
+.hist i.r {
+  background: var(--mint);
+}
+.hist i.n {
+  background: #f0a020;
+}
+.hist i.w {
+  background: var(--danger);
+}
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+}
+.report-grid > div {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+.report-grid b {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+}
+.report-grid .muted {
+  font-size: 0.8rem;
+}
+.tree-region {
+  background: var(--panel);
+  border: 1px solid var(--panel-edge);
+  border-radius: 16px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+}
+.tree-region summary {
+  cursor: pointer;
+  font-size: 1.1rem;
+  list-style-position: inside;
+}
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+.skill-card {
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 14px;
+  border: 2px solid var(--panel-edge);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px;
+}
+.skill-card.unlearned {
+  opacity: 0.6;
+}
+.atom-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+.atom-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  padding: 2px 8px 2px 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.atom-chip .katex {
+  font-size: 0.95em;
+}
+.atom-chip.mastered {
+  background: rgba(255, 209, 102, 0.15);
+  border-color: rgba(255, 209, 102, 0.5);
+}
+.atom-chip.shaky {
+  background: rgba(255, 107, 107, 0.15);
+  border-color: rgba(255, 107, 107, 0.5);
+}
+.atom-chip.solid {
+  background: rgba(94, 230, 168, 0.12);
+}
+.skill-modal {
+  text-align: left;
+  max-width: 640px;
+}
+.tier-ladder {
+  display: flex;
+  gap: 6px;
+  margin: 6px 0;
+}
+.rung {
+  flex: 1;
+  text-align: center;
+  padding: 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.rung.past {
+  background: rgba(94, 230, 168, 0.2);
+  color: var(--mint);
+}
+.rung.on {
+  background: var(--gold);
+  color: #4a2a00;
+}
+.atom-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.atom-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+}
+.atom-row.shaky {
+  background: rgba(255, 107, 107, 0.12);
+}
+.atom-row.mastered {
+  background: rgba(255, 209, 102, 0.1);
+}
+.atom-name {
+  flex: 1;
+  min-width: 0;
+}
+.deps {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.chip.link {
+  cursor: pointer;
+  color: inherit;
+  margin: 2px;
+}
+.graph-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
+}
+.skill-graph {
+  display: block;
+  height: auto;
+}
+.graph-band {
+  fill: rgba(255, 255, 255, 0.04);
+  stroke: rgba(255, 255, 255, 0.08);
+}
+.graph-region {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+}
+.graph-edge {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 3;
+}
+.graph-edge.lit {
+  stroke: rgba(125, 211, 252, 0.55);
+}
+.graph-ring-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 5;
+}
+.graph-ring {
+  fill: none;
+  stroke: var(--mint);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+.graph-dot {
+  fill: #2a2350;
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 2;
+}
+.graph-dot.t2 {
+  fill: #1e4a66;
+  stroke: var(--sky);
+}
+.graph-dot.t3 {
+  fill: #5a4410;
+  stroke: var(--gold);
+}
+.graph-dot.unk {
+  fill: #1a1630;
+  opacity: 0.6;
+}
+.graph-label {
+  fill: var(--text-dim);
+  font-size: 12px;
+  font-family: var(--font-body);
+  font-weight: 700;
+}
+.graph-node:hover .graph-dot {
+  stroke-width: 4;
+}
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.report-table th,
+.report-table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--panel-edge);
+}
+.report-table th {
+  color: var(--gold);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+@keyframes wag {
+  from {
+    transform: rotate(-12deg);
+  }
+  to {
+    transform: rotate(14deg);
+  }
+}
+@keyframes chomp {
+  0%,
+  70%,
+  100% {
+    transform: rotate(0);
+  }
+  80% {
+    transform: rotate(-14deg);
+  }
+  90% {
+    transform: rotate(-2deg);
+  }
+}
+.zzz text {
+  animation: float-z 2.4s ease-in-out infinite;
+}
+.zzz text:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.zzz text:nth-child(3) {
+  animation-delay: 0.8s;
+}
+@keyframes float-z {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(4px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}

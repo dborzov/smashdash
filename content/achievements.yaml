@@ -4,66 +4,66 @@
 # region:<id>). `title` unlocks a title the hero can wear. `secret` hides it until earned.
 
 # --- Learning -------------------------------------------------------------
-- { id: first-steps, name: First Steps, icon: "👣", desc: "Answer your first question right.", stat: right, goal: 1, gold: 5 }
-- { id: hundred-right, name: A Hundred Right, icon: "💯", desc: "Answer 100 questions right.", stat: right, goal: 100, gold: 30 }
-- { id: thousand-right, name: The Thousand, icon: "🏛️", desc: "Answer 1,000 questions right.", stat: right, goal: 1000, gold: 150, title: the Relentless }
-- { id: sharpshooter, name: Sharpshooter, icon: "🎯", desc: "Get 50 right on the first try.", stat: clean, goal: 50, gold: 20 }
-- { id: back-up, name: Back on Your Feet, icon: "🪨", desc: "Put a mistake right — answer it right on the next go.", stat: grit, goal: 1, gold: 10 }
-- { id: iron-will, name: Iron Will, icon: "🛡️", desc: "Put 25 mistakes right. Struggling and then getting it is how brains grow.", stat: grit, goal: 25, gold: 60, title: the Unbroken }
-- { id: mountain-grit, name: Mountain of Grit, icon: "⛰️", desc: "Put 100 mistakes right.", stat: grit, goal: 100, gold: 150, title: the Stubborn }
-- { id: on-fire, name: On Fire, icon: "🔥", desc: "Get 5 right in a row.", stat: combo5, goal: 1, gold: 10 }
-- { id: unstoppable, name: Unstoppable, icon: "☄️", desc: "Get 10 right in a row.", stat: combo10, goal: 1, gold: 40, title: the Unstoppable }
-- { id: moving-up, name: Moving Up, icon: "⬆️", desc: "Move a skill up a tier (Novice → Adept, or Adept → Master).", stat: promote, goal: 1, gold: 15 }
-- { id: master-one, name: Master of One, icon: "🎓", desc: "Reach Master tier in any skill.", stat: master, goal: 1, gold: 40 }
-- { id: master-many, name: Master of Many, icon: "🧠", desc: "Have 10 skills at Master tier at once.", stat: masters, goal: 10, gold: 120, title: the Wise }
-- { id: leaves-25, name: Twenty-Five Leaves, icon: "🍃", desc: "Get 25 tiny skills solid on the Skill Tree.", stat: atomsSolid, goal: 25, gold: 25 }
-- { id: tree-bloom, name: A Tree in Bloom, icon: "🌳", desc: "Get 100 tiny skills solid.", stat: atomsSolid, goal: 100, gold: 100, title: the Thorough }
-- { id: golden-leaves, name: Golden Leaves, icon: "✨", desc: "Master 50 tiny skills.", stat: atomsMastered, goal: 50, gold: 120 }
-- { id: drill-sergeant, name: Drill Sergeant, icon: "🥁", desc: "Finish a drill from the Skill Tree.", stat: drill, goal: 1, gold: 10 }
-- { id: bookworm, name: Bookworm, icon: "📚", desc: "Finish 10 lessons.", stat: lesson, goal: 10, gold: 30 }
+- { id: first-steps, name: First Steps, icon: "👣", desc: "Answer your first question right.", stat: right, goal: 1, gold: 5, cat: learning }
+- { id: hundred-right, name: A Hundred Right, icon: "💯", desc: "Answer 100 questions right.", stat: right, goal: 100, gold: 30, cat: learning }
+- { id: thousand-right, name: The Thousand, icon: "🏛️", desc: "Answer 1,000 questions right.", stat: right, goal: 1000, gold: 150, title: the Relentless, cat: learning }
+- { id: sharpshooter, name: Sharpshooter, icon: "🎯", desc: "Get 50 right on the first try.", stat: clean, goal: 50, gold: 20, cat: learning }
+- { id: back-up, name: Back on Your Feet, icon: "🪨", desc: "Put a mistake right — answer it right on the next go.", stat: grit, goal: 1, gold: 10, cat: learning }
+- { id: iron-will, name: Iron Will, icon: "🛡️", desc: "Put 25 mistakes right. Struggling and then getting it is how brains grow.", stat: grit, goal: 25, gold: 60, title: the Unbroken, cat: learning }
+- { id: mountain-grit, name: Mountain of Grit, icon: "⛰️", desc: "Put 100 mistakes right.", stat: grit, goal: 100, gold: 150, title: the Stubborn, cat: learning }
+- { id: on-fire, name: On Fire, icon: "🔥", desc: "Get 5 right in a row.", stat: combo5, goal: 1, gold: 10, cat: learning }
+- { id: unstoppable, name: Unstoppable, icon: "☄️", desc: "Get 10 right in a row.", stat: combo10, goal: 1, gold: 40, title: the Unstoppable, cat: learning }
+- { id: moving-up, name: Moving Up, icon: "⬆️", desc: "Move a skill up a tier (Novice → Adept, or Adept → Master).", stat: promote, goal: 1, gold: 15, cat: learning }
+- { id: master-one, name: Master of One, icon: "🎓", desc: "Reach Master tier in any skill.", stat: master, goal: 1, gold: 40, cat: learning }
+- { id: master-many, name: Master of Many, icon: "🧠", desc: "Have 10 skills at Master tier at once.", stat: masters, goal: 10, gold: 120, title: the Wise, cat: learning }
+- { id: leaves-25, name: Twenty-Five Leaves, icon: "🍃", desc: "Get 25 tiny skills solid on the Skill Tree.", stat: atomsSolid, goal: 25, gold: 25, cat: learning }
+- { id: tree-bloom, name: A Tree in Bloom, icon: "🌳", desc: "Get 100 tiny skills solid.", stat: atomsSolid, goal: 100, gold: 100, title: the Thorough, cat: learning }
+- { id: golden-leaves, name: Golden Leaves, icon: "✨", desc: "Master 50 tiny skills.", stat: atomsMastered, goal: 50, gold: 120, cat: learning }
+- { id: drill-sergeant, name: Drill Sergeant, icon: "🥁", desc: "Finish a drill from the Skill Tree.", stat: drill, goal: 1, gold: 10, cat: learning }
+- { id: bookworm, name: Bookworm, icon: "📚", desc: "Finish 10 lessons.", stat: lesson, goal: 10, gold: 30, cat: learning }
 
 # --- Fighting ---------------------------------------------------------------
-- { id: first-victory, name: First Victory, icon: "⚔️", desc: "Win your first fight.", stat: win, goal: 1, gold: 10 }
-- { id: veteran, name: Veteran, icon: "🎖️", desc: "Win 25 fights.", stat: wins, goal: 25, gold: 50 }
-- { id: warlord, name: Warlord, icon: "👑", desc: "Win 100 fights.", stat: wins, goal: 100, gold: 150, title: the Warlord }
-- { id: flawless, name: Flawless, icon: "💎", desc: "Win a fight without a single mistake.", stat: flawless, goal: 1, gold: 20 }
-- { id: untouchable, name: Untouchable, icon: "🪽", desc: "Win 10 fights without a mistake.", stat: flawless, goal: 10, gold: 80, title: the Untouchable }
-- { id: comeback, name: Comeback Kid, icon: "🩹", desc: "Win a fight after losing two hearts.", stat: comeback, goal: 1, gold: 25 }
-- { id: giant-slayer, name: Giant Slayer, icon: "🐉", desc: "Beat your first boss.", stat: bosses, goal: 1, gold: 25 }
-- { id: boss-breaker, name: Boss Breaker, icon: "💀", desc: "Beat 5 bosses.", stat: bosses, goal: 5, gold: 80 }
-- { id: monster-hunter, name: Monster Hunter, icon: "👹", desc: "Beat 10 wandering monsters.", stat: wander, goal: 10, gold: 50, title: the Hunter }
+- { id: first-victory, name: First Victory, icon: "⚔️", desc: "Win your first fight.", stat: win, goal: 1, gold: 10, cat: fighting }
+- { id: veteran, name: Veteran, icon: "🎖️", desc: "Win 25 fights.", stat: wins, goal: 25, gold: 50, cat: fighting }
+- { id: warlord, name: Warlord, icon: "👑", desc: "Win 100 fights.", stat: wins, goal: 100, gold: 150, title: the Warlord, cat: fighting }
+- { id: flawless, name: Flawless, icon: "💎", desc: "Win a fight without a single mistake.", stat: flawless, goal: 1, gold: 20, cat: fighting }
+- { id: untouchable, name: Untouchable, icon: "🪽", desc: "Win 10 fights without a mistake.", stat: flawless, goal: 10, gold: 80, title: the Untouchable, cat: fighting }
+- { id: comeback, name: Comeback Kid, icon: "🩹", desc: "Win a fight after losing two hearts.", stat: comeback, goal: 1, gold: 25, cat: fighting }
+- { id: giant-slayer, name: Giant Slayer, icon: "🐉", desc: "Beat your first boss.", stat: bosses, goal: 1, gold: 25, cat: fighting }
+- { id: boss-breaker, name: Boss Breaker, icon: "💀", desc: "Beat 5 bosses.", stat: bosses, goal: 5, gold: 80, cat: fighting }
+- { id: monster-hunter, name: Monster Hunter, icon: "👹", desc: "Beat 10 wandering monsters.", stat: wander, goal: 10, gold: 50, title: the Hunter, cat: fighting }
 
 # --- The journey ------------------------------------------------------------
-- { id: every-page, name: Every Page Readable, icon: "📜", desc: "Finish Greyhaven.", stat: "region:greyhaven", goal: 1, gold: 40 }
-- { id: forty-wagons, name: Forty Wagons In, icon: "🛒", desc: "Finish the Ashen Road.", stat: "region:ashroad", goal: 1, gold: 50 }
-- { id: wall-held, name: The Wall Held, icon: "🏰", desc: "Finish the Siege of Thornwall.", stat: "region:thornwall", goal: 1, gold: 60 }
-- { id: reckoner, name: Reckoner of the March, icon: "⚜️", desc: "Finish the Long Count campaign.", stat: "campaign:march", goal: 1, gold: 250, item: iron-crown, title: Reckoner of the March }
-- { id: unboxer, name: Unboxer of the Kingdom, icon: "📦", desc: "Finish every region of the Muddled Kingdom.", stat: "campaign:kingdom", goal: 1, gold: 250, title: the Unboxer }
-- { id: explorer, name: Explorer, icon: "🧭", desc: "Finish 5 regions.", stat: regions, goal: 5, gold: 60 }
-- { id: bounty-hunter, name: Bounty Hunter, icon: "📜", desc: "Claim 10 daily bounties.", stat: quest, goal: 10, gold: 50 }
-- { id: five-hours, name: Five Hours In, icon: "⏳", desc: "Spend five hours on adventures.", stat: hours, goal: 5, gold: 40 }
-- { id: level-5, name: Level 5, icon: "⭐", desc: "Reach level 5.", stat: level, goal: 5, gold: 25 }
-- { id: level-10, name: Level 10, icon: "🌟", desc: "Reach level 10.", stat: level, goal: 10, gold: 80 }
+- { id: every-page, name: Every Page Readable, icon: "📜", desc: "Finish Greyhaven.", stat: "region:greyhaven", goal: 1, gold: 40, cat: journey }
+- { id: forty-wagons, name: Forty Wagons In, icon: "🛒", desc: "Finish the Ashen Road.", stat: "region:ashroad", goal: 1, gold: 50, cat: journey }
+- { id: wall-held, name: The Wall Held, icon: "🏰", desc: "Finish the Siege of Thornwall.", stat: "region:thornwall", goal: 1, gold: 60, cat: journey }
+- { id: reckoner, name: Reckoner of the March, icon: "⚜️", desc: "Finish the Long Count campaign.", stat: "campaign:march", goal: 1, gold: 250, item: iron-crown, title: Reckoner of the March, cat: journey }
+- { id: unboxer, name: Unboxer of the Kingdom, icon: "📦", desc: "Finish every region of the Muddled Kingdom.", stat: "campaign:kingdom", goal: 1, gold: 250, title: the Unboxer, cat: journey }
+- { id: explorer, name: Explorer, icon: "🧭", desc: "Finish 5 regions.", stat: regions, goal: 5, gold: 60, cat: journey }
+- { id: bounty-hunter, name: Bounty Hunter, icon: "📜", desc: "Claim 10 daily bounties.", stat: quest, goal: 10, gold: 50, cat: journey }
+- { id: five-hours, name: Five Hours In, icon: "⏳", desc: "Spend five hours on adventures.", stat: hours, goal: 5, gold: 40, cat: journey }
+- { id: level-5, name: Level 5, icon: "⭐", desc: "Reach level 5.", stat: level, goal: 5, gold: 25, cat: journey }
+- { id: level-10, name: Level 10, icon: "🌟", desc: "Reach level 10.", stat: level, goal: 10, gold: 80, cat: journey }
 
 # --- Streaks ----------------------------------------------------------------
-- { id: streak-3, name: Three in a Row, icon: "🔥", desc: "Hit your daily goal 3 days in a row.", stat: streak, goal: 3, gold: 20 }
-- { id: streak-7, name: A Week of Fire, icon: "🔥", desc: "A 7-day streak.", stat: streak, goal: 7, gold: 60, title: the Steadfast }
-- { id: streak-30, name: A Month of Fire, icon: "🌋", desc: "A 30-day streak.", stat: streak, goal: 30, gold: 300, title: the Eternal Flame }
+- { id: streak-3, name: Three in a Row, icon: "🔥", desc: "Hit your daily goal 3 days in a row.", stat: streak, goal: 3, gold: 20, cat: streaks }
+- { id: streak-7, name: A Week of Fire, icon: "🔥", desc: "A 7-day streak.", stat: streak, goal: 7, gold: 60, title: the Steadfast, cat: streaks }
+- { id: streak-30, name: A Month of Fire, icon: "🌋", desc: "A 30-day streak.", stat: streak, goal: 30, gold: 300, title: the Eternal Flame, cat: streaks }
 
 # --- The pet ----------------------------------------------------------------
-- { id: its-alive, name: "It's Alive!", icon: "🐣", desc: "Hatch a pet.", stat: hatch, goal: 1, gold: 10 }
-- { id: never-hungry, name: Never Hungry, icon: "🍖", desc: "Feed your pets 50 times.", stat: feed, goal: 50, gold: 40 }
-- { id: poop-patrol, name: Poop Patrol, icon: "💩", desc: "Scoop 25 poops. Somebody has to.", stat: scoop, goal: 25, gold: 30, title: of the Poop Patrol }
-- { id: best-friends, name: Best Friends, icon: "🤝", desc: "Pat your pet 100 times.", stat: pat, goal: 100, gold: 30 }
-- { id: inseparable, name: Inseparable, icon: "💞", desc: "Reach a bond of 100 with a pet.", stat: bond, goal: 100, gold: 80, title: the Beloved }
-- { id: show-off, name: Show-Off, icon: "🎪", desc: "Get your pet to do a trick.", stat: trick, goal: 1, gold: 10 }
-- { id: circus, name: Circus Master, icon: "🎪", desc: "25 tricks.", stat: trick, goal: 25, gold: 40 }
-- { id: bug-catcher, name: Bug Catcher, icon: "🦟", desc: "Catch 100 bugs in the den.", stat: bugs, goal: 100, gold: 40 }
-- { id: one-week-old, name: One Week Old, icon: "🎂", desc: "Keep a pet alive for 7 days.", stat: petAge, goal: 7, gold: 40 }
-- { id: gone-not-forgotten, name: Gone But Not Forgotten, icon: "🪦", desc: "Hold a funeral. We don't talk about it.", stat: funeral, goal: 1, gold: 5, secret: true }
-- { id: home-sweet-den, name: Home Sweet Den, icon: "🏠", desc: "Decorate the den with 5 things.", stat: decor, goal: 5, gold: 40 }
+- { id: its-alive, name: "It's Alive!", icon: "🐣", desc: "Hatch a pet.", stat: hatch, goal: 1, gold: 10, cat: pet }
+- { id: never-hungry, name: Never Hungry, icon: "🍖", desc: "Feed your pets 50 times.", stat: feed, goal: 50, gold: 40, cat: pet }
+- { id: poop-patrol, name: Poop Patrol, icon: "💩", desc: "Scoop 25 poops. Somebody has to.", stat: scoop, goal: 25, gold: 30, title: of the Poop Patrol, cat: pet }
+- { id: best-friends, name: Best Friends, icon: "🤝", desc: "Pat your pet 100 times.", stat: pat, goal: 100, gold: 30, cat: pet }
+- { id: inseparable, name: Inseparable, icon: "💞", desc: "Reach a bond of 100 with a pet.", stat: bond, goal: 100, gold: 80, title: the Beloved, cat: pet }
+- { id: show-off, name: Show-Off, icon: "🎪", desc: "Get your pet to do a trick.", stat: trick, goal: 1, gold: 10, cat: pet }
+- { id: circus, name: Circus Master, icon: "🎪", desc: "25 tricks.", stat: trick, goal: 25, gold: 40, cat: pet }
+- { id: bug-catcher, name: Bug Catcher, icon: "🦟", desc: "Catch 100 bugs in the den.", stat: bugs, goal: 100, gold: 40, cat: pet }
+- { id: one-week-old, name: One Week Old, icon: "🎂", desc: "Keep a pet alive for 7 days.", stat: petAge, goal: 7, gold: 40, cat: pet }
+- { id: gone-not-forgotten, name: Gone But Not Forgotten, icon: "🪦", desc: "Hold a funeral. We don't talk about it.", stat: funeral, goal: 1, gold: 5, secret: true, cat: pet }
+- { id: home-sweet-den, name: Home Sweet Den, icon: "🏠", desc: "Decorate the den with 5 things.", stat: decor, goal: 5, gold: 40, cat: pet }
 
 # --- Stuff ------------------------------------------------------------------
-- { id: hat-collector, name: Hat Collector, icon: "🎩", desc: "Own 5 hats.", stat: hats, goal: 5, gold: 40, title: the Well-Dressed }
-- { id: big-spender, name: Big Spender, icon: "🛍️", desc: "Buy 20 things in the shop.", stat: buy, goal: 20, gold: 20 }
-- { id: dragons-hoard, name: "Dragon's Hoard", icon: "🐲", desc: "Have 1,000 gold at once.", stat: gold, goal: 1000, title: the Hoarder, secret: true }
+- { id: hat-collector, name: Hat Collector, icon: "🎩", desc: "Own 5 hats.", stat: hats, goal: 5, gold: 40, title: the Well-Dressed, cat: stuff }
+- { id: big-spender, name: Big Spender, icon: "🛍️", desc: "Buy 20 things in the shop.", stat: buy, goal: 20, gold: 20, cat: stuff }
+- { id: dragons-hoard, name: "Dragon's Hoard", icon: "🐲", desc: "Have 1,000 gold at once.", stat: gold, goal: 1000, title: the Hoarder, secret: true, cat: stuff }

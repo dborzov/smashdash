@@ -1,0 +1,252 @@
+/* Encounter layout and run progress. */
+
+/* ==========================================================================
+   v2: answer formats, adaptive runs, encounter layout, place-value applets
+   ========================================================================== */
+
+/* ---------- Encounter layout ---------- */
+.enc-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  background: linear-gradient(rgba(10, 6, 30, 0.9), rgba(10, 6, 30, 0));
+}
+.enc-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.enc-arena {
+  position: absolute;
+  top: 56px;
+  left: 0;
+  right: 0;
+  height: clamp(150px, 32vh, 300px);
+  z-index: 3;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 4vw;
+}
+.enc-duel {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.enc-problems {
+  position: absolute;
+  top: calc(56px + clamp(150px, 32vh, 300px));
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  z-index: 4;
+  padding: 10px 14px 24px;
+}
+.foe-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  text-shadow: 0 2px 4px #000;
+}
+.companion {
+  position: absolute;
+  right: -34%;
+  bottom: 0;
+  width: 50%;
+  z-index: 1;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+  animation: bob 2.4s ease-in-out infinite;
+}
+.companion.cheer {
+  animation: cheer 0.6s ease-out 2;
+}
+@keyframes cheer {
+  50% {
+    transform: translateY(-18px) rotate(-8deg);
+  }
+}
+.siege-front {
+  animation: bob 1.2s ease-in-out infinite;
+}
+@media (max-width: 700px) {
+  .enc-top .btn.small {
+    padding: 6px 8px;
+    min-height: 36px;
+  }
+}
+
+.duel-hero {
+  width: 26%;
+  max-width: 170px;
+  height: 92%;
+  position: relative;
+}
+.duel-foe {
+  width: 32%;
+  max-width: 220px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.duel-foe.boss {
+  width: 38%;
+  max-width: 280px;
+}
+.arena-wide {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  height: 100%;
+}
+.bridge-hero {
+  position: absolute;
+  bottom: 38%;
+  width: 14%;
+  max-width: 90px;
+  transition: left 0.5s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.siege-hero {
+  position: absolute;
+  bottom: 58%;
+  left: 3%;
+  width: 11%;
+  max-width: 80px;
+}
+.rank-tag {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: #1b1033;
+  background: var(--rank, var(--gold));
+  vertical-align: 2px;
+}
+.relic-chip {
+  letter-spacing: 2px;
+}
+.chip.quick {
+  opacity: 0.6;
+}
+.chip.quick.on {
+  opacity: 1;
+  background: rgba(255, 209, 102, 0.22);
+  color: var(--gold);
+}
+
+/*
+ * Landscape screens (an iPad held sideways, a laptop, a phone on its side): the arena moves to
+ * a column on the left and the problem gets the whole height on the right — no scrolling
+ * between the monster and the maths.
+ */
+@media (min-aspect-ratio: 5/4) and (min-width: 700px) {
+  .enc .enc-arena {
+    top: 56px;
+    bottom: 0;
+    height: auto;
+    width: 36%;
+    padding: 2vh 1.5vw 4vh;
+    align-items: center;
+  }
+  .enc .enc-duel {
+    height: min(60vh, 460px);
+  }
+  .enc .duel-hero {
+    width: 42%;
+  }
+  .enc .duel-foe,
+  .enc .duel-foe.boss {
+    width: 50%;
+  }
+  .enc .arena-wide {
+    height: min(46vh, 340px);
+  }
+  .enc .enc-problems {
+    top: 56px;
+    left: 36%;
+    padding: 6px 18px 24px 6px;
+  }
+  .enc .enc-problems .content-col {
+    max-width: 860px;
+  }
+  .enc .companion {
+    right: -10%;
+    width: 46%;
+  }
+}
+
+/* Dark campaign: colder, greyer UI accents */
+.dark-mode .panel,
+.dark-panel {
+  background: rgba(14, 12, 22, 0.9);
+  border-color: rgba(180, 190, 210, 0.16);
+}
+.dark-mode .enc-top {
+  background: linear-gradient(rgba(8, 8, 14, 0.94), rgba(8, 8, 14, 0));
+}
+
+/* ---------- Run progress ---------- */
+.runbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 220px;
+}
+.pips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  flex: 1;
+}
+.pips i {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.06);
+  transition:
+    background 0.3s,
+    transform 0.3s;
+}
+.pips i.on {
+  background: var(--mint);
+  border-color: var(--mint-deep);
+  transform: scale(1.08);
+}
+.pips i.extra {
+  border-color: var(--violet);
+  border-style: dashed;
+  background: rgba(155, 123, 255, 0.15);
+}
+.chip.combo {
+  color: #ffb36b;
+  animation: pop-in 0.25s;
+}
+.run-news {
+  margin: 0 0 8px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: rgba(155, 123, 255, 0.18);
+  border: 1px solid rgba(155, 123, 255, 0.45);
+  font-weight: 700;
+  animation: pop-in 0.25s;
+}

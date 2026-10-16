@@ -18,6 +18,8 @@ import { NumberLineSvg } from '../widgets/NumberLine';
 import { sfx } from '../../audio/sfx';
 import { group, PLACE_SHORT, pow10 } from '../../skills/place';
 import { EqCanvas } from '../eqcanvas/EqCanvas';
+import { GameView } from '../games';
+import type { Claim } from '../../engine/critic';
 
 const PRAISE_BRIGHT = [
   'Boom!',
@@ -46,8 +48,8 @@ const OOPS_DARK = ['Not quite.', 'Missed.', 'Not this time.', 'Wide of the mark.
 
 export interface ProblemCardProps {
   problem: Problem;
-  /** Called once the player is done with this problem. */
-  onResult: (outcome: Outcome) => void;
+  /** Called once the player is done with this problem (`caught`: a Mistake Hunt catch). */
+  onResult: (outcome: Outcome, critic?: { caught: boolean }) => void;
   /** Called the moment an answer is judged (for battle animations). */
   onVerdict?: (v: Verdict) => void;
   /** 'free': hint button always works. 'paid': calls onHint, which may refuse. */
@@ -58,6 +60,8 @@ export interface ProblemCardProps {
   eliminated?: number[];
   /** Voice of the feedback: the bright kingdom or the grim North. */
   tone?: 'bright' | 'dark';
+  /** Mistake Hunt: someone has answered already; the player checks them first. */
+  critic?: { name: string; icon: string; claim: Claim };
 }
 
 /** Keypad input shown with thousands separators: "2040006" → "2,040,006". */
@@ -134,6 +138,7 @@ export function ProblemCard({
   hintLabel,
   eliminated = [],
   tone = 'bright',
+  critic,
 }: ProblemCardProps) {
   const PRAISE = tone === 'dark' ? PRAISE_DARK : PRAISE_BRIGHT;
   const OOPS = tone === 'dark' ? OOPS_DARK : OOPS_BRIGHT;
@@ -153,8 +158,47 @@ export function ProblemCard({
   const oops = useMemo(() => OOPS[Math.floor(Math.random() * OOPS.length)], [problem]);
   const done = phase === 'right' || phase === 'wrong';
   const a = problem.answer;
+  // Mistake Hunt: judge the claim first, then (if it was wrong) answer it yourself.
+  const [judging, setJudging] = useState(!!critic);
+  const [caught, setCaught] = useState(false);
+  const [criticNote, setCriticNote] = useState<{ ok: boolean; text: string } | null>(null);
 
-  const finish = () => onResult(phase === 'right' ? (nudged ? 'nudged' : 'right') : 'wrong');
+  const finish = () =>
+    onResult(phase === 'right' ? (nudged ? 'nudged' : 'right') : 'wrong', critic ? { caught } : undefined);
+
+  const claimText = (c: Claim) =>
+    a.kind === 'choice' ? a.options[c.value] : `$${group(c.value).replace(/,/g, '{,}')}$`;
+
+  const judgeClaim = (saysRight: boolean) => {
+    if (!critic) return;
+    const c = critic.claim;
+    setJudging(false);
+    if (saysRight && c.right) {
+      sfx('right');
+      onVerdict?.({ kind: 'right' });
+      setCriticNote({ ok: true, text: `Yes — ${critic.name} got one right. Somebody write the date down.` });
+      setPhase('right');
+      return;
+    }
+    if (!saysRight && !c.right) {
+      sfx('right');
+      setCaught(true);
+      setCriticNote({
+        ok: true,
+        text: `🔎 Good catch! ${c.why ?? `${critic.name} slipped up.`} Now — what's the right answer?`,
+      });
+      if (a.kind === 'choice') setPicked((p) => ({ ...p, [c.value]: 'wrong' }));
+      return;
+    }
+    sfx('nudge');
+    setNudged(true);
+    setCriticNote({
+      ok: false,
+      text: c.right
+        ? `Careful — ${critic.name} was actually **right** this time. Work it out and see:`
+        : `Hmm — check it yourself before you trust ${critic.name}. Work it out:`,
+    });
+  };
 
   const apply = (v: Verdict, pickedIndex?: number) => {
     onVerdict?.(v);
@@ -177,7 +221,7 @@ export function ProblemCard({
 
   // Auto-advance after a right answer (not on the slate: the player should see their work).
   useEffect(() => {
-    if (phase !== 'right' || a.kind === 'canvas') return;
+    if (phase !== 'right' || a.kind === 'canvas' || a.kind === 'game' || critic) return;
     const t = setTimeout(finish, 1300);
     return () => clearTimeout(t);
   }, [phase]);
@@ -229,7 +273,7 @@ export function ProblemCard({
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement) return;
-      if (a.kind === 'canvas' && !done) return;
+      if ((a.kind === 'canvas' || a.kind === 'game' || judging) && !done) return;
       if (done) {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -291,13 +335,48 @@ export function ProblemCard({
           }}
         />
       )}
+      {a.kind === 'game' && (
+        <GameView
+          spec={a.game}
+          onDone={(o) => {
+            setNudged(o === 'nudged');
+            const v: Verdict = o === 'wrong' ? { kind: 'wrong' } : { kind: 'right' };
+            onVerdict?.(v);
+            sfx(o === 'wrong' ? 'wrong' : 'right');
+            setPhase(o === 'wrong' ? 'wrong' : 'right');
+          }}
+        />
+      )}
       {problem.visual && (
         <div style={{ margin: '6px 0' }}>
           <WidgetView w={problem.visual} interactive={false} quiz />
         </div>
       )}
+      {critic && judging && (
+        <div class="critic">
+          <div class="critic-claim">
+            <span class="critic-icon">{critic.icon}</span>
+            <div>
+              <b>{critic.name}</b> says the answer is <RichInline text={claimText(critic.claim)} />
+            </div>
+          </div>
+          <div class="row center-row">
+            <button class="btn mint" onClick={() => judgeClaim(true)}>
+              ✅ That's right
+            </button>
+            <button class="btn danger" onClick={() => judgeClaim(false)}>
+              ❌ That's wrong
+            </button>
+          </div>
+        </div>
+      )}
+      {criticNote && (
+        <div class={`feedback ${criticNote.ok ? 'right' : 'nudge'}`}>
+          <Rich text={criticNote.text} />
+        </div>
+      )}
 
-      {a.kind === 'choice' && (
+      {!judging && a.kind === 'choice' && (
         <div class="choices">
           {a.options.map((o, i) => {
             const st = picked[i];
@@ -320,7 +399,7 @@ export function ProblemCard({
         </div>
       )}
 
-      {a.kind === 'number' && (
+      {!judging && a.kind === 'number' && (
         <>
           {entry ? (
             <>
@@ -378,7 +457,7 @@ export function ProblemCard({
         </>
       )}
 
-      {a.kind === 'order' && (
+      {!judging && a.kind === 'order' && (
         <div class="order-q">
           <div class="order-dir">{a.direction}</div>
           <div class="order-slots">
@@ -445,7 +524,7 @@ export function ProblemCard({
         </div>
       )}
 
-      {a.kind === 'line' && (
+      {!judging && a.kind === 'line' && (
         <div class="line-q">
           <NumberLineSvg
             min={a.min}
@@ -506,13 +585,13 @@ export function ProblemCard({
           {nudged && <div>Good save!</div>}
         </div>
       )}
-      {phase === 'wrong' && a.kind === 'canvas' && (
+      {phase === 'wrong' && (a.kind === 'canvas' || a.kind === 'game') && (
         <div class="feedback wrong">
           <div class="title">You got there — with a little help.</div>
           <div>Look back over the steps above: next time, they're yours.</div>
         </div>
       )}
-      {phase === 'wrong' && a.kind !== 'canvas' && (
+      {phase === 'wrong' && a.kind !== 'canvas' && a.kind !== 'game' && (
         <div class="feedback wrong">
           <div class="title">
             {oops}
@@ -528,7 +607,7 @@ export function ProblemCard({
       )}
 
       <div class="row" style={{ marginTop: '12px', justifyContent: 'flex-end' }}>
-        {!done && hint !== 'none' && problem.hint && !showHint && a.kind !== 'canvas' && (
+        {!done && !judging && hint !== 'none' && problem.hint && !showHint && a.kind !== 'canvas' && (
           <button
             class="btn small ghost"
             style={{ color: 'var(--card-ink)', background: '#efe4c6' }}

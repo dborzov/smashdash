@@ -12,6 +12,7 @@ import type {
   PetSpecies,
   Region,
   Skill,
+  SizeCard,
 } from './schema';
 
 const regionFiles = import.meta.glob('/content/regions/*/region.yaml', { eager: true, import: 'default' });
@@ -25,6 +26,7 @@ import classesYaml from '../../content/classes.yaml';
 import campaignsYaml from '../../content/campaigns.yaml';
 import achievementsYaml from '../../content/achievements.yaml';
 import newsYaml from '../../content/news.yaml';
+import sizesYaml from '../../content/sizes.yaml';
 
 /** Default values zod would fill in; applied here so runtime does not depend on zod. */
 function regionDefaults(r: Region): Region {
@@ -33,6 +35,11 @@ function regionDefaults(r: Region): Region {
     requires: r.requires ?? [],
     campaign: r.campaign ?? 'kingdom',
     path: r.path.map((n) => (n.type === 'encounter' ? { ...n, count: n.count ?? 5 } : n)),
+    ranks: (r.ranks ?? []).map((d) => ({
+      ...d,
+      nodes: d.nodes?.map((n) => ({ ...n, count: n.count ?? 5 })),
+    })),
+    treasures: r.treasures ?? [],
   };
 }
 
@@ -73,7 +80,9 @@ export interface HeroClass {
 }
 export const classes: Record<string, HeroClass> = classesYaml as Record<string, HeroClass>;
 
-export const campaigns: Campaign[] = (campaignsYaml as Campaign[]).sort((a, b) => a.order - b.order);
+export const campaigns: Campaign[] = (campaignsYaml as Campaign[])
+  .map((c) => ({ ...c, requires: c.requires ?? [] }))
+  .sort((a, b) => a.order - b.order);
 export const campaignById: Record<string, Campaign> = Object.fromEntries(
   campaigns.map((c) => [c.id, c]),
 );
@@ -89,6 +98,10 @@ export const achievementById: Record<string, Achievement> = Object.fromEntries(
 /** Dispatch feed, newest first. */
 export const news: News[] = (newsYaml as News[]).slice().sort((a, b) => (a.date < b.date ? 1 : -1));
 
+/** Real things and their sizes, for the Scale Ladder and the Scale Museum (smallest first). */
+export const sizes: SizeCard[] = (sizesYaml as SizeCard[]).slice().sort((a, b) => a.m - b.m);
+export const sizeById: Record<string, SizeCard> = Object.fromEntries(sizes.map((c) => [c.id, c]));
+
 /** Raw objects for validation tests. */
 export const raw = {
   regionFiles,
@@ -102,4 +115,5 @@ export const raw = {
   campaignsYaml,
   achievementsYaml,
   newsYaml,
+  sizesYaml,
 };

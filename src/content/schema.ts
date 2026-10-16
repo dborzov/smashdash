@@ -19,7 +19,7 @@ export const Widget = z.discriminatedUnion('kind', [
     value: z.number().int().min(0).optional(),
     goal: z.enum(['isolate', 'tip', 'none']).default('none'),
     /** Which tools are available. */
-    tools: z.array(z.enum(['both', 'left', 'right', 'divide'])).default(['both']),
+    tools: z.array(z.enum(['both', 'left', 'right', 'divide', 'boxes'])).default(['both']),
   }),
   /** Slider over powers of ten. */
   z.object({ kind: z.literal('powers'), min: z.number().int(), max: z.number().int(), start: z.number().int().default(0) }),
@@ -152,6 +152,120 @@ export const Widget = z.discriminatedUnion('kind', [
   /** A grid of hundredths (or thousandths strip) with `value` shaded. */
   z.object({ kind: z.literal('decgrid'), value: z.number().min(0).max(1) }),
   /**
+   * Rows × columns of gems. `show` is a picture; `build` asks for an array of `target` gems
+   * (with `fixRows`, the rows are given); `turn` rotates it (a × b = b × a); `split` cuts it
+   * between two rows (7 × 6 = 5 × 6 + 2 × 6); `double` copies it (× 2, × 4, × 8).
+   */
+  z.object({
+    kind: z.literal('array'),
+    rows: z.number().int().min(1).max(12),
+    cols: z.number().int().min(1).max(12),
+    mode: z.enum(['show', 'build', 'turn', 'split', 'double']).optional(),
+    target: z.number().int().min(1).max(144).optional(),
+    fixRows: z.boolean().optional(),
+    /** Split mode: the row to cut after (any row if left out). */
+    at: z.number().int().min(1).optional(),
+    /** Double mode: how many doublings (1–3). */
+    times: z.number().int().min(1).max(3).optional(),
+  }),
+  /** A frog skip-counting along a number line: tap where it lands on each jump. */
+  z.object({
+    kind: z.literal('skipjump'),
+    step: z.number().int().min(1).max(12),
+    jumps: z.number().int().min(1).max(12),
+    start: z.number().int().min(0).optional(),
+  }),
+  /**
+   * The times table as a grid. `show`: just the table. `find`: tap every cell equal to
+   * `target`. `squares`: tap the diagonal. `mirror`: tap a cell, its mirror image lights up.
+   * `row`: fill row `row` cell by cell (skip counting).
+   */
+  z.object({
+    kind: z.literal('tablegrid'),
+    size: z.number().int().min(5).max(12).optional(),
+    mode: z.enum(['show', 'find', 'squares', 'mirror', 'row']),
+    target: z.number().int().min(1).max(144).optional(),
+    row: z.number().int().min(1).max(12).optional(),
+  }),
+  /** Grow a square one L-shaped layer at a time: 1, 4, 9, 16… (each layer is an odd number). */
+  z.object({ kind: z.literal('squaregrow'), upto: z.number().int().min(2).max(8) }),
+  /**
+   * A chain of small steps, each with its own answer and feedback (show your work for mental
+   * maths): `7 \times 9 = 7 \times 10 - \box`. A step may offer `options` instead of a number.
+   * `pics[i]` (optional) is the picture shown once i steps are done.
+   */
+  z.object({
+    kind: z.literal('chain'),
+    steps: z
+      .array(
+        z.object({
+          tex: z.string(),
+          say: Rich.optional(),
+          answer: z.number(),
+          options: z.array(Rich).min(2).optional(),
+          nudges: z.array(z.object({ value: z.number(), text: Rich })).optional(),
+          hint: Rich.optional(),
+          note: Rich.optional(),
+          /** Accept anything within this distance (estimates). */
+          tolerance: z.number().min(0).optional(),
+        }),
+      )
+      .min(1),
+    pics: z.array(z.any()).optional(),
+  }),
+  /** The Scale Ladder: put things (ids in content/sizes.yaml) on a powers-of-ten line. */
+  z.object({
+    kind: z.literal('sizeline'),
+    items: z.array(z.string()).min(1).max(6),
+    min: z.number().int().min(-16).max(26).optional(),
+    max: z.number().int().min(-15).max(27).optional(),
+  }),
+  /** A field of `n` dots on a grid × grid board: count one patch, scale up, estimate. */
+  z.object({
+    kind: z.literal('sampler'),
+    n: z.number().int().min(20).max(5000),
+    grid: z.number().int().min(2).max(10),
+    seed: z.number().int(),
+    icon: z.string().optional(),
+  }),
+  /**
+   * Hot-air balloon for negative numbers: balloons lift (+1), sandbags pull down (−1).
+   * With `op` and `k`, the player does `start op k` with the balloon (zero pairs and all).
+   */
+  z.object({
+    kind: z.literal('balloon'),
+    start: z.number().int().min(-10).max(10),
+    op: z.enum(['add', 'sub']).optional(),
+    k: z.number().int().min(-10).max(10).optional(),
+  }),
+  /** Sort terms into piles of like terms, then total each pile. */
+  z.object({
+    kind: z.literal('sorter'),
+    terms: z.array(z.string()).min(2).max(10),
+  }),
+  /** Picture puzzles: rows of fruit that add up; work out what each fruit is worth. */
+  z.object({
+    kind: z.literal('fruit'),
+    rows: z.array(z.object({ items: z.array(z.string()).min(1).max(5), total: z.number() })).min(1),
+    values: z.record(z.string(), z.number()),
+    /** Fruit to find, in order (default: all). */
+    ask: z.array(z.string()).optional(),
+  }),
+  /** Show an inequality on a number line: pick the dot (open/closed) and shade a direction. */
+  z.object({
+    kind: z.literal('ineqline'),
+    min: z.number().int(),
+    max: z.number().int(),
+    value: z.number().int(),
+    op: z.enum(['<', '>', '<=', '>=']),
+  }),
+  /** A growing matchstick pattern: stage 1, 2, 3… (squares, triangles or houses in a row). */
+  z.object({
+    kind: z.literal('matchsticks'),
+    shape: z.enum(['squares', 'triangles', 'houses']),
+    stages: z.number().int().min(1).max(5),
+  }),
+  /**
    * The EQcanvas slate: write an equation from story tiles and/or solve it move by move on both
    * sides. `story` marks its numbers as tiles: '[[51|legs in all]]' ('[[4|bats|decoy]]' for a
    * number the question doesn't need). With `demo`, it plays itself one "Next step" at a time.
@@ -253,21 +367,25 @@ export const Monster = z.object({
 });
 export type Monster = z.infer<typeof Monster>;
 
-export const Game = z.enum(['battle', 'chest', 'bridge', 'siege', 'vault']);
+export const Game = z.enum(['battle', 'chest', 'bridge', 'siege', 'vault', 'duel', 'rescue']);
 export type Game = z.infer<typeof Game>;
 
 const NodeBase = { id: z.string(), title: z.string() };
+export const EncounterNode = z.object({
+  ...NodeBase,
+  type: z.literal('encounter'),
+  game: Game,
+  skills: z.array(z.string()).min(1),
+  count: z.number().int().min(1).max(15).default(5),
+  monster: Monster.optional(),
+  /** `critic`: someone else answers first and the player checks them (a Mistake Hunt). */
+  twist: z.enum(['critic']).optional(),
+});
+export type EncounterNode = z.infer<typeof EncounterNode>;
 export const PathNode = z.discriminatedUnion('type', [
   z.object({ ...NodeBase, type: z.literal('lesson'), lesson: z.string() }),
   z.object({ ...NodeBase, type: z.literal('story'), lesson: z.string() }),
-  z.object({
-    ...NodeBase,
-    type: z.literal('encounter'),
-    game: Game,
-    skills: z.array(z.string()).min(1),
-    count: z.number().int().min(1).max(15).default(5),
-    monster: Monster.optional(),
-  }),
+  EncounterNode,
   z.object({
     ...NodeBase,
     type: z.literal('boss'),
@@ -278,6 +396,36 @@ export const PathNode = z.discriminatedUnion('type', [
   }),
 ]);
 export type PathNode = z.infer<typeof PathNode>;
+
+/** Changes to the boss at a higher rank (a plot twist). Unset fields keep the original. */
+export const RankBoss = z.object({
+  name: z.string().optional(),
+  seed: z.number().int().optional(),
+  hue: z.number().min(0).max(360).optional(),
+  intro: z.array(z.string()).min(1).optional(),
+  /** One per phase, including the extra final phase every rank adds. */
+  taunts: z.array(z.string()).optional(),
+  defeat: z.string().optional(),
+});
+
+/** A higher rank of a region (Heroic = 2, Legendary = 3, …). See src/engine/ranks.ts. */
+export const RankDef = z.object({
+  rank: z.number().int().min(2).max(5),
+  /** A short twist story played first. */
+  story: z.string().optional(),
+  boss: RankBoss.optional(),
+  /** Extra nodes for this rank only (new problem types), played before the boss. */
+  nodes: z.array(z.lazy(() => EncounterNode)).optional(),
+});
+export type RankDef = z.infer<typeof RankDef>;
+
+/** Something only this region gives: for clearing a rank, or for flawless fights here. */
+export const Treasure = z.object({
+  item: z.string(),
+  rank: z.number().int().min(1).max(5).optional(),
+  flawless: z.number().int().min(1).optional(),
+});
+export type Treasure = z.infer<typeof Treasure>;
 
 export const Region = z.object({
   id: z.string(),
@@ -300,6 +448,8 @@ export const Region = z.object({
   path: z.array(PathNode).min(1),
   /** Monsters for random encounters around this region. */
   monsters: z.array(Monster).min(1),
+  ranks: z.array(RankDef).default([]),
+  treasures: z.array(Treasure).default([]),
 });
 export type Region = z.infer<typeof Region>;
 
@@ -345,10 +495,33 @@ export const ItemEffect = z.object({
   bond: z.number().optional(),
 });
 
+/**
+ * What a relic does while worn (see src/engine/relics.ts). `campaign` limits it to fights in
+ * one campaign, so the best relic for a campaign is earned there.
+ */
+export const RelicEffect = z.object({
+  campaign: z.string().optional(),
+  /** Extra hearts in fights. */
+  hearts: z.number().int().min(1).max(2).optional(),
+  /** Free hints per fight. */
+  hints: z.number().int().min(1).max(2).optional(),
+  /** Start every fight with a ward up (blocks one lost heart). */
+  ward: z.boolean().optional(),
+  /** Extra loot gold, percent. */
+  gold: z.number().int().min(5).max(100).optional(),
+  /** Extra XP for winning, percent. */
+  xp: z.number().int().min(5).max(100).optional(),
+  /** Rally (a heart back) after this many clean answers instead of 3. */
+  rally: z.number().int().min(2).max(3).optional(),
+  /** The pet companion finds gold more often. */
+  pet: z.boolean().optional(),
+});
+export type RelicEffect = z.infer<typeof RelicEffect>;
+
 export const Item = z.object({
   id: z.string(),
   name: z.string(),
-  kind: z.enum(['food', 'toy', 'care', 'potion', 'hat', 'cape', 'special', 'decor']),
+  kind: z.enum(['food', 'toy', 'care', 'potion', 'hat', 'cape', 'special', 'decor', 'relic']),
   icon: z.string(),
   price: z.number().int().min(0),
   desc: z.string(),
@@ -362,6 +535,9 @@ export const Item = z.object({
   max: z.number().int().optional(),
   /** Hero level needed to buy. */
   level: z.number().int().default(1),
+  relic: RelicEffect.optional(),
+  /** Where it comes from, for items that aren't sold: a region id (shown on the item). */
+  from: z.string().optional(),
 });
 export type Item = z.infer<typeof Item>;
 
@@ -395,6 +571,16 @@ export const Campaign = z.object({
   /** Visual mood of the campaign's map and cards. */
   mood: z.enum(['bright', 'dark']),
   icon: z.string(),
+  /** Regions (from other campaigns) that must be finished before this campaign opens. */
+  requires: z.array(z.string()).default([]),
+  /** Grades it suits, for the board ("Grades 3–5"). */
+  grades: z.string().optional(),
+  /** In-story reason for the two-day wait between ranks. */
+  cooldown: z.string(),
+  /** Who answers first in a Mistake Hunt, and the hunt's name. */
+  critic: z.object({ name: z.string(), icon: z.string(), hunt: z.string() }),
+  /** Background for the atlas and region cards of this campaign. */
+  scene: z.string().optional(),
 });
 export type Campaign = z.infer<typeof Campaign>;
 
@@ -412,6 +598,10 @@ export const Achievement = z.object({
   title: z.string().optional(),
   /** Hidden until unlocked. */
   secret: z.boolean().optional(),
+  /** Shelf in the Trophy Room. */
+  cat: z.enum(['learning', 'fighting', 'journey', 'streaks', 'pet', 'stuff', 'region']),
+  /** The region it belongs to (Trophy Room groups by it and links there). */
+  region: z.string().optional(),
 });
 export type Achievement = z.infer<typeof Achievement>;
 
@@ -428,3 +618,15 @@ export const Classes = z.record(
   z.string(),
   z.object({ name: z.string(), icon: z.string(), perk: z.string(), desc: z.string() }),
 );
+
+/** A real thing with a real size, for the Scale Ladder and the Scale Museum. */
+export const SizeCard = z.object({
+  id: z.string().regex(/^[a-z0-9-]+$/),
+  name: z.string(),
+  icon: z.string(),
+  /** Size in metres (length, height or width — `what` says which). */
+  m: z.number().positive(),
+  what: z.string(),
+  fact: z.string(),
+});
+export type SizeCard = z.infer<typeof SizeCard>;

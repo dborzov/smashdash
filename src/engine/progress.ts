@@ -1,7 +1,7 @@
 /** Where the player is on the map: which regions and path nodes are open or finished. */
 import type { Region } from '../content/schema';
 import type { Profile } from './profile';
-import { regions, regionById } from '../content';
+import { campaignById, regions, regionById } from '../content';
 
 export const nodeKey = (regionId: string, nodeId: string) => `${regionId}/${nodeId}`;
 
@@ -13,8 +13,23 @@ export function regionDone(p: Profile, region: Region): boolean {
   return region.path.every((n) => nodeDone(p, region.id, n.id));
 }
 
+/** A campaign opens once the regions it needs (from other campaigns) are finished. */
+export function campaignOpen(p: Profile, campaignId: string): boolean {
+  const c = campaignById[campaignId];
+  return !c || c.requires.every((id) => regionById[id] && regionDone(p, regionById[id]));
+}
+
 export function regionUnlocked(p: Profile, region: Region): boolean {
-  return region.requires.every((id) => regionById[id] && regionDone(p, regionById[id]));
+  return (
+    campaignOpen(p, region.campaign) &&
+    region.requires.every((id) => regionById[id] && regionDone(p, regionById[id]))
+  );
+}
+
+/** Regions that must be finished before this one opens (its own and its campaign's). */
+export function regionNeeds(region: Region): Region[] {
+  const c = campaignById[region.campaign];
+  return [...(c?.requires ?? []), ...region.requires].map((id) => regionById[id]).filter(Boolean);
 }
 
 /** A node is open when every node before it in the path is done. */

@@ -60,6 +60,8 @@ export interface Run {
   /** Skill of the last problem, and whether it was answered wrong. */
   last?: string;
   lastWrong?: boolean;
+  /** Lowest level problems start at (higher ranks of a region raise it). */
+  floor: Tier;
 }
 
 export type RunEvent =
@@ -81,6 +83,7 @@ export function newRun(
   count: number,
   rng: Rng,
   focus?: { skill: string; atom: string },
+  floor: Tier = 1,
 ): Run {
   const uniq = [...new Set(skills)];
   const base = Math.max(count, 1);
@@ -109,6 +112,7 @@ export function newRun(
     best: 0,
     grit: 0,
     wrong: 0,
+    floor,
   };
 }
 
@@ -142,7 +146,8 @@ export function pickNext(p: Profile, run: Run, rng: Rng): Next {
     });
   }
   const r = run.s[skill];
-  const level = Math.max(1, startLevel(p, skill) - r.drop) as Tier;
+  // A miss still scaffolds one level down, even below the rank's floor.
+  const level = Math.max(1, Math.max(run.floor ?? 1, startLevel(p, skill)) - r.drop) as Tier;
   return { skill, level, atom: r.target ?? r.misses[0] ?? r.focus };
 }
 
@@ -168,7 +173,7 @@ export function applyResult(
     run.combo = 0;
     r.streak = 0;
     r.since = 0;
-    if (tierOf(p, skill) > 1 || startLevel(p, skill) > 1) r.drop = 1;
+    if (tierOf(p, skill) > 1 || startLevel(p, skill) > 1 || (run.floor ?? 1) > 1) r.drop = 1;
     for (const a of atoms) if (!r.misses.includes(a)) r.misses.push(a);
     r.target = atoms[0];
     if (run.extra < run.maxExtra) {
