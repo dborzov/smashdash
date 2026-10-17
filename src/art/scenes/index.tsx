@@ -9,31 +9,8 @@ import type { ComponentType } from 'preact';
 import { hills, ridge, snowCap } from '../paint';
 import { Particles, type ParticleKind } from '../../ui/components/Particles';
 import { AshRoad, Muster, Siege, Vault } from './dark';
-
-const VB = '0 0 1200 800';
-
-function Svg({ children }: { children: preact.ComponentChildren }) {
-  return (
-    <svg viewBox={VB} preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <filter id="blur8" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="8" />
-        </filter>
-        <filter id="blur20" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="20" />
-        </filter>
-        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="6" result="b" />
-          <feMerge>
-            <feMergeNode in="b" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-      {children}
-    </svg>
-  );
-}
+import { Svg } from './kit';
+import { Dungeon, GridRoom, SquareHall, Tavern } from './tables';
 
 function Cloud({
   x,
@@ -1299,6 +1276,10 @@ export const SCENES: Record<
   ashroad: { Art: AshRoad, particles: 'ash', count: 40 },
   siege: { Art: Siege, particles: 'ember', count: 34 },
   vault: { Art: Vault, particles: 'mote', count: 30 },
+  tavern: { Art: Tavern, particles: 'ember', count: 14 },
+  dungeon: { Art: Dungeon, particles: 'mote', count: 24 },
+  squarehall: { Art: SquareHall, particles: 'spark', count: 20 },
+  gridroom: { Art: GridRoom, particles: 'star', count: 24 },
 };
 
 export function Scene({ id, dim = 0 }: { id: string; dim?: number }) {

@@ -356,6 +356,20 @@ export const Lesson = z.object({
 });
 export type Lesson = z.infer<typeof Lesson>;
 
+/** Hand-drawn bosses of the newer campaigns (src/art/Bosses.tsx). */
+export const BOSS_ARTS = [
+  'cube',
+  'hydra',
+  'beholder',
+  'dm',
+  'confuser',
+  'exactly',
+  'googol',
+  'waddles',
+  'clutter',
+  'mumsy',
+] as const;
+
 export const Monster = z.object({
   name: z.string(),
   /** Seed for the procedural monster art. */
@@ -363,7 +377,7 @@ export const Monster = z.object({
   hue: z.number().min(0).max(360).optional(),
   taunts: z.array(z.string()).optional(),
   /** Special hand-drawn art instead of the procedural monster. */
-  art: z.enum(['muddler', 'hollow', 'wraith', 'tallyman', 'forger', 'golem', 'rider']).optional(),
+  art: z.enum(['muddler', 'hollow', 'wraith', 'tallyman', 'forger', 'golem', 'rider', ...BOSS_ARTS]).optional(),
 });
 export type Monster = z.infer<typeof Monster>;
 
@@ -554,12 +568,14 @@ export type PetSpecies = z.infer<typeof PetSpecies>;
 
 export const CastMember = z.object({
   name: z.string(),
-  art: z.enum(['grimble', 'hero', 'muddler', 'monster', 'npc', 'dark', 'foe']),
+  art: z.enum(['grimble', 'hero', 'muddler', 'monster', 'npc', 'dark', 'foe', 'boss']),
   color: z.string(),
   seed: z.number().int().optional(),
   hue: z.number().optional(),
   /** For art: foe — which dark foe to draw. */
   foe: z.enum(['hollow', 'wraith', 'tallyman', 'forger', 'golem', 'rider']).optional(),
+  /** For art: boss — which hand-drawn boss (src/art/Bosses.tsx). */
+  boss: z.enum(BOSS_ARTS).optional(),
 });
 export type CastMember = z.infer<typeof CastMember>;
 

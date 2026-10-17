@@ -1,4 +1,6 @@
 /** Dialogue portraits: Grimble the frog, the Muddler, named NPCs, monsters and the hero. */
+import { BossArtView } from './Bosses';
+import { NpcHead } from './Npcs';
 import { DarkFoeArt, DarkPortrait, type DarkFoe } from './Dark';
 import { cast } from '../content';
 import { MonsterArt } from './Monster';
@@ -551,6 +553,9 @@ function Npc({ id, color, class: cls }: { id: string; color: string; class?: str
   );
 }
 
+/** Cast drawn by NpcHead (src/art/Npcs.tsx) rather than the older Npc painter above. */
+const NEW_NPCS = new Set(['dm', 'thog', 'barry', 'tenfold', 'ballpark', 'kevin', 'marge', 'balance', 'intern']);
+
 /** Portrait for a cast id. `hero` uses the current player's avatar. */
 export function Portrait({
   who,
@@ -582,11 +587,13 @@ export function Portrait({
       return <MonsterArt seed={c.seed ?? 1} hue={c.hue} class={cls} />;
     case 'dark':
       return <DarkPortrait who={who} class={cls} />;
+    case 'boss':
+      return c.boss ? <BossArtView art={c.boss} hue={c.hue} class={cls} /> : <Grimble class={cls} />;
     case 'foe':
       return (
         <DarkFoeArt art={(c.foe ?? 'hollow') as DarkFoe} seed={c.seed} hue={c.hue} class={cls} />
       );
     default:
-      return <Npc id={who} color={c.color} class={cls} />;
+      return NEW_NPCS.has(who) ? <NpcHead id={who} class={cls} /> : <Npc id={who} color={c.color} class={cls} />;
   }
 }

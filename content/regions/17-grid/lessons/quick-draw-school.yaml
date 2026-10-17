@@ -1,0 +1,48 @@
+id: quick-draw-school
+title: Quick Draw School
+skill: quick-facts
+beats:
+  - type: narrate
+    text: >-
+      Room 144 has swinging saloon doors, a piano that plays itself, and a skeleton in a cowboy hat
+      polishing a single glass.
+  - type: say
+    who: dm
+    text: >-
+      Welcome to Quick Draw School. Here, you know a fact when you can answer it **before you can
+      think about it**. That's not cramming — it's what happens after you've used a fact lots of
+      times. Like knowing your own name.
+  - type: say
+    who: dm
+    text: >-
+      In a **duel**, a sand timer runs while you answer. Beat it for a quick-draw bonus. Miss it? No
+      penalty — slow and right beats fast and wrong every time. The timer is a game, not a judge.
+  - type: input
+    who: thog
+    text: "Practice round. $6 \\times 8$!"
+    answer: 48
+    atom: infamous
+    nudges:
+      - { value: 14, text: "Times, not plus!" }
+      - { value: 42, text: "That's $6 \\times 7$ — one 6 short." }
+      - { value: 54, text: "That's $6 \\times 9$ — one 6 too many." }
+    hint: "Double 6, double again, double again: 12, 24, 48."
+    explain: "$6 \\times 8 = 48$. Three doublings of 6."
+  - type: input
+    who: barry
+    text: "♪ Seven times eight! The infamous one! ♪ What is it, really?"
+    answer: 56
+    atom: infamous
+    nudges:
+      - { value: 54, text: "That's Barry's favourite wrong answer. $7 \\times 7 = 49$, plus 7…" }
+      - { value: 63, text: "That's $7 \\times 9$." }
+    explain: "5, 6, 7, 8: $56 = 7 \\times 8$. The numbers even count in order."
+  - type: say
+    who: dm
+    text: >-
+      Your Grid keeps score of every fact. Weak ones come back more often, strong ones less — that's
+      how you get them all to stick without wasting time. Open the Skill Tree any time to see your
+      map light up.
+  - type: practice
+    skill: quick-facts
+    count: 6

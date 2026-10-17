@@ -1,0 +1,32 @@
+id: tavern-r3
+title: "Legendary: Somebody's Mum"
+beats:
+  - type: narrate
+    text: >-
+      The **Legendary** run. A shadow falls over the tavern. A very large, very square, very
+      wobbly shadow.
+  - type: say
+    who: dm
+    text: >-
+      Okay, so, um. I didn't write this bit. Something has walked into my campaign. That's not
+      supposed to happen. I'm the Dungeon Master. I'm supposed to be in charge.
+  - type: say
+    who: thog
+    text: Thog smell jelly. Big jelly. Angry jelly. Thog think… it is a MUM.
+  - type: say
+    who: barry
+    text: >-
+      ♪ Every cube has got a mother, every mother's got a cube — ♪ Sorry. Nervous singing. I do it
+      when a five-by-five-by-five jelly is looking at me.
+  - type: input
+    who: dm
+    text: "Quick, before she arrives: a crate holds 8 rows of 9 bottles. How many bottles of emergency lemonade do we have?"
+    answer: 72
+    nudges:
+      - { value: 17, text: "Rows **times** bottles: $8 \\times 9$." }
+      - { value: 81, text: "That's $9 \\times 9$ — one row too many." }
+    hint: "$8 \\times 10 = 80$, minus one row of 8."
+    explain: "$8 \\times 9 = 72$. That's a lot of lemonade. Enough for a siege."
+  - type: say
+    who: dm
+    text: She's here. Good luck. I'll be behind my cardboard screen. It is very thin cardboard.

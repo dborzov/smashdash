@@ -1,0 +1,67 @@
+id: turn-it-around
+title: Turn It Around
+skill: turnaround
+beats:
+  - type: say
+    who: barry
+    text: >-
+      ♪ Three times eight is twenty-four, but EIGHT times three — who knows? Who knows? ♪ I've been
+      trying to work it out for years.
+  - type: say
+    who: dm
+    text: Barry. Barry. Watch this. Here are 3 rows of 8.
+  - type: play
+    who: dm
+    text: Turn the tray round and see what happens to the gems.
+    widget: { kind: array, mode: turn, rows: 3, cols: 8 }
+    done: "3 rows of 8 became 8 rows of 3 — the **same 24 gems**. Nothing fell off. $3 \\times 8 = 8 \\times 3$."
+  - type: say
+    who: barry
+    text: >-
+      ♪ It's the SAME? It was the same ALL ALONG? ♪ I wrote a seven-verse song about the difference.
+  - type: ask
+    who: dm
+    text: "If $9 \\times 4 = 36$, what is $4 \\times 9$?"
+    options: ['$36$', '$13$', '$49$', '"No idea, I only know the first one"']
+    correct: 0
+    atom: swap
+    nudges:
+      "1": "Times, not plus! Turn the array round — same gems."
+      "2": "That's 4 and 9 glued. Turn the array round instead."
+      "3": "You DO know it! It's the same array turned round."
+    explain: "$4 \\times 9 = 9 \\times 4 = 36$."
+  - type: say
+    who: dm
+    text: >-
+      This is the cheapest trick in the dungeon: **you only need to learn half the table.** Know
+      $7 \times 3$? Then you know $3 \times 7$ for free. The times table is a mirror.
+  - type: play
+    who: dm
+    text: Here's the whole dungeon map. Tap a few rooms and watch their mirror twins light up.
+    widget: { kind: tablegrid, mode: mirror, size: 10 }
+    done: "Every room has a twin across the diagonal: row 3, column 7 holds the same as row 7, column 3."
+  - type: ask
+    who: thog
+    text: "Thog must do $9 \\times 2$. Thog starts counting 2s on fingers… What's the quick way?"
+    options: ["Turn it round: $2 \\times 9$ is double 9", "Count in 2s, nine times", "Add 9 and 2"]
+    correct: 0
+    atom: easier
+    nudges:
+      "1": "That works, but it's slow (and Thog only has 8 fingers — long story). Turn it round!"
+      "2": "That's adding. We need 9 lots of 2."
+    explain: "$9 \\times 2 = 2 \\times 9$, and 2 lots of 9 is double 9: 18."
+  - type: ask
+    who: barry
+    text: "♪ If turning round works for times, it works for EVERYTHING! ♪ So $10 - 3 = 3 - 10$?"
+    options: ["No — turnaround works for $\\times$ and $+$, not for $-$", "Yes, turn anything round!"]
+    correct: 0
+    atom: not-minus
+    nudges:
+      "1": "$10 - 3 = 7$. But $3 - 10$? You can't take 10 apples from 3 apples. Not the same!"
+    explain: "$3 + 5 = 5 + 3$ and $3 \\times 5 = 5 \\times 3$, but $10 - 3 \\neq 3 - 10$. Sorry, Barry."
+  - type: practice
+    skill: turnaround
+    count: 4
+  - type: say
+    who: barry
+    text: ♪ Half a table, twice the fun! Turn it round and then you're done! ♪ …That one's actually right.

@@ -1,0 +1,65 @@
+id: break-it-down
+title: Break It Down
+skill: split-facts
+beats:
+  - type: say
+    who: dm
+    text: >-
+      Here's the secret every maths wizard uses and never tells you: **you never have to face a
+      hard fact head-on.** Break it into easy ones.
+  - type: play
+    who: dm
+    text: "$7 \\times 6$ is hard? Cut the 7 rows into 5 rows and 2 rows. Tap between two rows to cut."
+    widget: { kind: array, mode: split, rows: 7, cols: 6, at: 5 }
+    done: "Two easy facts: $5 \\times 6 = 30$ and $2 \\times 6 = 12$. Together: 42."
+  - type: play
+    who: barry
+    text: "♪ Now break $8 \\times 7$ the same way! ♪ Five sevens and three sevens."
+    widget:
+      kind: chain
+      steps:
+        - { tex: '5 \times 7 = \box', answer: 35 }
+        - { tex: '3 \times 7 = \box', answer: 21 }
+        - { tex: '35 + 21 = \box', answer: 56, note: "$8 \\times 7 = 56$. The nightmare is over." }
+    pics: []
+    done: "$8 \\times 7 = 5 \\times 7 + 3 \\times 7 = 35 + 21 = 56$."
+  - type: say
+    who: thog
+    text: >-
+      FIFTY-SIX. Thog's nightmare number. Thog not scared any more. Thog going to name his axe
+      Fifty-Six.
+  - type: say
+    who: dm
+    text: >-
+      Another trick: use a **neighbour**. You know your squares now. $7 \times 8$ is just
+      $7 \times 7$ plus one more 7: $49 + 7 = 56$. And $6 \times 9$ is $6 \times 10$ minus one 6.
+  - type: input
+    who: dm
+    text: "$6 \\times 7$: you know $6 \\times 6 = 36$. Add one more 6. What is $6 \\times 7$?"
+    answer: 42
+    atom: one-more
+    nudges:
+      - { value: 37, text: "One more **group of 6**, not one more." }
+      - { value: 43, text: "Add 6 to 36: 36 + 4 = 40, + 2 = 42." }
+    explain: "$6 \\times 7 = 6 \\times 6 + 6 = 36 + 6 = 42$."
+  - type: input
+    who: barry
+    text: "♪ Seven nines! Ten sevens is seventy… ♪ Now take away one 7. What is $7 \\times 9$?"
+    answer: 63
+    atom: one-less
+    nudges:
+      - { value: 69, text: "Take away a whole 7, not 1." }
+    explain: "$7 \\times 9 = 70 - 7 = 63$."
+  - type: ask
+    who: dm
+    text: "Which is a correct way to break up $12 \\times 6$?"
+    options: ['$10 \times 6 + 2 \times 6$', '$10 \times 6 + 2$', '$12 + 6$']
+    correct: 0
+    atom: split-ten
+    nudges:
+      "1": "Halfcopy got here first! The 2 must multiply the 6 too: $2 \\times 6$."
+      "2": "That's adding. Twelve sixes!"
+    explain: "$12 \\times 6 = 60 + 12 = 72$."
+  - type: practice
+    skill: split-facts
+    count: 4

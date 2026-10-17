@@ -1,0 +1,107 @@
+id: doubling
+order: 15
+name: The Doubling Dungeon
+tagline: Cut off one head, two grow back. Down here, everything doubles — even the bad decisions.
+campaign: tables
+topic: 'Doubling ($\times 2$, $\times 4$, $\times 8$), $\times 10$ and $\times 5$, and the nine trick'
+added: '2026-10-17'
+scene: dungeon
+map: { x: 40, y: 52 }
+requires: [tavern]
+palette: { sky: ["#0e1418", "#2a4a4a"], accent: "#5ee6a8", ground: "#2a2f36" }
+outro: doubling-outro
+monsters:
+  - { name: Hydra Pup, seed: 151, hue: 150, taunts: ["Two heads are better than one! Four are better than two!", "Yip! Yip! (in stereo)"] }
+  - { name: Copy Goblin, seed: 152, hue: 90, taunts: ["Copy that! Copy that!", "There's two of me. Wait, three."] }
+  - { name: Echo Bat, seed: 153, hue: 260, taunts: ["Echo… echo… echo… (×8)", "Skree! Skree! Skree! Skree!"] }
+path:
+  - id: intro
+    type: story
+    title: No Refunds
+    lesson: doubling-intro
+  - id: double-trouble
+    type: lesson
+    title: Double Trouble
+    lesson: double-trouble
+  - id: pup-pack
+    type: encounter
+    title: A Pack of Hydra Pups
+    game: battle
+    skills: [doubles]
+    count: 5
+    monster: { name: Hydra Pup, seed: 151, hue: 150, taunts: ["Yip! Yip!", "Bite you twice!"] }
+  - id: high-fives
+    type: lesson
+    title: High Fives
+    lesson: high-fives
+  - id: mirror-chest
+    type: encounter
+    title: The Mirror Chest
+    game: chest
+    skills: [doubles, fives-tens]
+    count: 6
+  - id: nine-trick
+    type: lesson
+    title: The Nine Trick
+    lesson: nine-trick
+  - id: echo-duel
+    type: encounter
+    title: Duel in the Echo Hall
+    game: duel
+    skills: [nines, fives-tens]
+    count: 6
+    monster: { name: Echo Bat, seed: 153, hue: 260, taunts: ["Draw! …draw! …draw!", "Skree-skree!"] }
+  - id: chain-bridge
+    type: encounter
+    title: The Chain Bridge
+    game: bridge
+    skills: [doubles, fives-tens, nines]
+    count: 7
+  - id: boss
+    type: boss
+    title: The Hydra
+    monster: { name: The Hydra, seed: 1501, hue: 150, art: hydra }
+    intro:
+      - "HELLO. HELLO. We are the Hydra. We are three heads. We were one head this morning. Somebody tried to chop it off."
+      - "Every head you knock off, two grow back. We call it HYDRA-NOMICS. Head one is good at maths. Heads two and three are not."
+      - "Let's see you double faster than we do!"
+    phases:
+      - { skills: [doubles], count: 3, taunt: "Double! Double! Head two says 'what's double 17?' Head three says 'seventeen-seventeen'. Head three is an idiot." }
+      - { skills: [fives-tens, doubles], count: 3, taunt: "Ten heads would be scary. Five heads would be half as scary. Do the maths, hero." }
+      - { skills: [nines, fives-tens], count: 3, taunt: "We have nine heads now! No — eight! Nine minus one! We're confused! We're ALWAYS confused!" }
+    defeat: "Ow. Ow. Ow. OK, one head is plenty. We're going to be a regular snake now. A normal, quiet snake. With a lot of feelings."
+ranks:
+  - rank: 2
+    story: doubling-r2
+    boss:
+      name: The Hydra (Eight Heads)
+      intro:
+        - "WE'RE BACK. We doubled. Then doubled. Then doubled. Eight heads. One stomach. It's a lot of opinions."
+        - "Head six wants to sing. Head seven wants a nap. All of us want to beat YOU."
+      taunts:
+        - "Double, double, toil and trouble — and then double that!"
+        - "Five heads say 'half of ten'! The other three say 'what's ten'!"
+        - "Nine times seven! Ten sevens minus one seven! We can do it now! …Can we?"
+        - "EVERYTHING! ALL HEADS! ATTACK!"
+      defeat: "Ow ×8. We're going back to one head. One is the loneliest number, but it's the quietest."
+    nodes:
+      - { id: copy-vault, type: encounter, title: The Copy Goblin's Vault, game: vault, skills: [doubles, nines], count: 6 }
+  - rank: 3
+    story: doubling-r3
+    boss:
+      name: The Hydra's Accountant
+      seed: 1502
+      hue: 40
+      intro:
+        - "Good afternoon. I represent the Hydra. All sixteen heads of it. They are suing you for emotional damage."
+        - "I am also a hydra. I have two heads. One does the adding. One does the doubling. Neither does the halving. That's where you come in."
+      taunts:
+        - "Double the claim! Double it again! The lawyers love doubling."
+        - "Five percent? No — FIFTY. Half of a hundred. Move the zeros, hero."
+        - "Nine sevens is sixty-three. Our fee is sixty-three gold. That's just maths."
+        - "Everything, in triplicate! Signed! Stamped! Doubled!"
+      defeat: "Case dismissed. I'll tell the heads they lost. They'll argue among themselves for weeks. Good."
+treasures:
+  - { item: hydra-snacks, rank: 2 }
+  - { item: doubling-mirror, rank: 3 }
+  - { item: hydra-cape, flawless: 5 }

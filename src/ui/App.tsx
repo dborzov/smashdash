@@ -29,7 +29,7 @@ export function App() {
   }, []);
   useEffect(() => setMuted(!(p?.sound ?? true)), [p?.sound]);
 
-  const [a, b, c] = route;
+  const [a, b, c, d] = route;
 
   if (!p) {
     return (
@@ -50,7 +50,7 @@ export function App() {
   else if (a === 'drill' && b)
     full = <PlaySkill key={`${b}/${c}`} skillId={b} atom={c} back="/skills" />;
   else if (a === 'new') full = <CreateHero />;
-  else if (a === 'preview') full = <Preview kind={b} id={c} />;
+  else if (a === 'preview') full = <Preview kind={b} id={c} beat={d ? Number(d) : undefined} />;
   if (full) {
     return (
       <div class="app">

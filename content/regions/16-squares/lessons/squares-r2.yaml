@@ -1,0 +1,20 @@
+id: squares-r2
+title: "Heroic: The Optician"
+beats:
+  - type: say
+    who: dm
+    text: >-
+      **Heroic** Hall of Squares. Since you beat it, the Squareholder has been to the optician. It
+      got glasses for every eye. All forty-nine pairs.
+  - type: say
+    who: barry
+    text: >-
+      ♪ And I'm here to check your work — I mean, YOU check MINE! ♪ I'll shout out answers. Some
+      will be right. Most will be… artistic.
+  - type: input
+    who: thog
+    text: "How many lenses did the Squareholder buy? 49 eyes, one lens each… no wait, Thog mean: $7 \\times 7$ eyes."
+    answer: 49
+    nudges:
+      - { value: 14, text: "That's $7 + 7$. Seven rows of seven eyes." }
+    explain: "$7 \\times 7 = 49$ lenses. The optician retired on the spot."

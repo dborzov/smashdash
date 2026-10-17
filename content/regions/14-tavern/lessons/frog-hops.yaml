@@ -1,0 +1,61 @@
+id: frog-hops
+title: The Frog Who Counted
+skill: skip-count
+beats:
+  - type: narrate
+    text: >-
+      Under a table sits a frog in a tiny hat. It is not Grimble. It's his cousin, Gordon, who is
+      a wizard of exactly one spell: hopping.
+  - type: say
+    who: dm
+    text: >-
+      Gordon only hops in jumps of exactly the same size. Watch him hop in 3s from 0: 3, 6, 9,
+      12… Every place he lands is in the **3 times table**.
+  - type: play
+    who: dm
+    text: Gordon hops in 4s now. Tap where he lands each time.
+    widget: { kind: skipjump, step: 4, jumps: 5 }
+    done: "4, 8, 12, 16, 20 — that's the 4 times table, one hop at a time."
+  - type: say
+    who: thog
+    text: Thog notice something. Five hops of 4 land on 20. And $5 \times 4 = 20$!
+  - type: ask
+    who: dm
+    text: Gordon makes **6 hops of 7**. Where does he land?
+    options: ['$42$', '$13$', '$35$', '$49$']
+    correct: 0
+    atom: nth
+    nudges:
+      "1": "That's $6 + 7$. Six **hops**, each 7 long: $6 \\times 7$."
+      "2": "That's 5 hops. Count them again: 7, 14, 21, 28, 35, …"
+      "3": "That's 7 hops. One too many!"
+    explain: "6 hops of 7: $6 \\times 7 = 42$."
+  - type: input
+    who: barry
+    text: "♪ Gordon's diary got wet! ♪ 18, 24, ?, 36 — he was hopping in 6s. What's missing?"
+    math: '18,\ 24,\ \box,\ 36'
+    answer: 30
+    atom: missing
+    nudges:
+      - { value: 25, text: "The hops are 6 long, not 1." }
+      - { value: 32, text: "From 24, one hop of 6." }
+    explain: "$24 + 6 = 30$, and $30 + 6 = 36$ ✓."
+  - type: ask
+    who: dm
+    text: Gordon hops in 5s from 0. Which of these does he land on?
+    options: ['$45$', '$43$', '$52$', '$34$']
+    correct: 0
+    atom: on-path
+    nudges:
+      "1": "Hops of 5 always land on numbers ending in 5 or 0."
+      "2": "Ends in 2 — hops of 5 only land on numbers ending in 5 or 0."
+      "3": "Ends in 4 — not a landing for 5s."
+    explain: "$9 \\times 5 = 45$. All the 5s end in 5 or 0."
+  - type: practice
+    skill: skip-count
+    count: 4
+  - type: say
+    who: dm
+    text: >-
+      Gordon croaks something that might be "thank you" or might be "I ate a fly". Hard to tell
+      with frogs.

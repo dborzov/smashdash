@@ -1,0 +1,106 @@
+id: squares
+order: 16
+name: The Hall of Squares
+tagline: A hall where every room is square, every tile is square, and the monster has a perfectly square grid of eyes.
+campaign: tables
+topic: 'Square numbers, breaking hard facts into easy ones ($7 \times 8 = 7 \times 7 + 7$), and division as the reverse'
+added: '2026-10-17'
+scene: squarehall
+map: { x: 62, y: 66 }
+requires: [doubling]
+palette: { sky: ["#1a0a2e", "#6a2a8a"], accent: "#ff7ab8", ground: "#2e1a46" }
+outro: squares-outro
+monsters:
+  - { name: Square Slime, seed: 161, hue: 300, taunts: ["I'm a square! A squishy square!", "Four sides! Four corners! Zero friends!"] }
+  - { name: Tile Golem, seed: 162, hue: 270, taunts: ["I am made of 49 tiles. Seven by seven. Count me. COUNT ME.", "Crunch."] }
+  - { name: Eyeball Imp, seed: 163, hue: 330, taunts: ["I see you! With all four eyes!", "Blink. Blink. Blink. Blink."] }
+path:
+  - id: intro
+    type: story
+    title: The Square Door
+    lesson: squares-intro
+  - id: perfect-squares
+    type: lesson
+    title: Perfect Squares
+    lesson: perfect-squares
+  - id: tile-fight
+    type: encounter
+    title: The Tile Golem
+    game: battle
+    skills: [square-nums]
+    count: 5
+    monster: { name: Tile Golem, seed: 162, hue: 270, taunts: ["Crunch.", "Seven by seven. Count me!"] }
+  - id: break-it-down
+    type: lesson
+    title: Break It Down
+    lesson: break-it-down
+  - id: square-chest
+    type: encounter
+    title: The Square Chest
+    game: chest
+    skills: [split-facts, square-nums]
+    count: 6
+  - id: fact-families
+    type: lesson
+    title: Fact Families
+    lesson: fact-families
+  - id: eye-duel
+    type: encounter
+    title: Staring Contest
+    game: duel
+    skills: [fact-families, split-facts]
+    count: 6
+    monster: { name: Eyeball Imp, seed: 163, hue: 330, taunts: ["Don't blink!", "I have more eyes than you! I win staring contests by default!"] }
+  - id: tile-bridge
+    type: encounter
+    title: The Tile Bridge
+    game: bridge
+    skills: [square-nums, split-facts, fact-families]
+    count: 7
+  - id: boss
+    type: boss
+    title: The Squareholder
+    monster: { name: The Squareholder, seed: 1601, hue: 320, art: beholder }
+    intro:
+      - "I am the SQUAREHOLDER. I have forty-nine eyes. Seven by seven. A perfect square. Every eye is judging you."
+      - "Most beholders are round. I am SQUARE. The other beholders laugh at me. Well, now I laugh at YOU."
+      - "One eye sees squares. One eye sees splits. One eye sees division. The other forty-six are just for show."
+    phases:
+      - { skills: [square-nums], count: 3, taunt: "Six times six! Thirty-six eyes! Wait, I have forty-nine. Seven squared. I always forget my own size." }
+      - { skills: [split-facts, square-nums], count: 3, taunt: "Seven times eight is too hard! Unless… you know seven times seven. Do you? DO YOU?" }
+      - { skills: [fact-families, split-facts], count: 3, taunt: "If you share my 49 eyes between 7 heroes, how many does each get? Seven! …Please don't take my eyes." }
+    defeat: "All forty-nine eyes are watering. You beat me fair and square. Mostly square."
+ranks:
+  - rank: 2
+    story: squares-r2
+    boss:
+      name: The Squareholder, Now With Glasses
+      intro:
+        - "I got glasses. Forty-nine little pairs. Do you know how much forty-nine pairs of glasses cost? Forty-nine times a lot."
+        - "Now I see EVERYTHING. Especially your mistakes."
+      taunts:
+        - "Eight squared! Sixty-four! I can see it clearly now!"
+        - "Break it down? I'll break YOU down. Into a five and a two."
+        - "Fifty-six divided by eight! I see the answer! It's — wait, my glasses fogged up."
+        - "All my eyes! All your facts! LOOK AT ME!"
+      defeat: "My glasses! I've dropped all ninety-eight lenses! Nobody move!"
+    nodes:
+      - { id: square-heist, type: encounter, title: The Square Vault, game: vault, skills: [square-nums, fact-families], count: 6 }
+  - rank: 3
+    story: squares-r3
+    boss:
+      name: The Cubeholder
+      hue: 200
+      intro:
+        - "My cousin the Squareholder had 49 eyes. I have SEVEN by SEVEN by SEVEN. Three hundred and forty-three eyes. I'm a cube."
+        - "Yes, I know Gerald. No, we don't talk about Gerald."
+      taunts:
+        - "Squares are flat! Cubes are DEEP!"
+        - "Break the fact apart! Like I'll break your spirit! …That came out wrong."
+        - "Division! The opposite of multiplication! I am the opposite of a nice monster!"
+        - "Three hundred and forty-three eyes, all on you!"
+      defeat: "I see now. I see everything. Mostly that I've lost. Three hundred and forty-three times over."
+treasures:
+  - { item: square-crackers, rank: 2 }
+  - { item: eye-of-squares, rank: 3 }
+  - { item: square-rug, flawless: 5 }

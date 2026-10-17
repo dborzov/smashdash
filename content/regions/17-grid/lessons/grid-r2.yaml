@@ -1,0 +1,21 @@
+id: grid-r2
+title: "Heroic: The Rematch"
+beats:
+  - type: say
+    who: dm
+    text: >-
+      **Heroic** Grid. I demand a rematch. I've been practising. I know my times tables now too. I
+      learned them from watching YOU. Which is annoying for both of us.
+  - type: say
+    who: barry
+    text: >-
+      ♪ And I'm on the Dungeon Master's side this time! ♪ I'll answer first. You check me. If I'm
+      wrong, you win. I'm almost always wrong. This is a terrible plan.
+  - type: input
+    who: thog
+    text: "Thog warm up. $8 \\times 8$?"
+    answer: 64
+    nudges:
+      - { value: 16, text: "Times! Eight rows of eight." }
+      - { value: 56, text: "That's $7 \\times 8$. One more 8!" }
+    explain: "$8 \\times 8 = 64$. A square. Thog likes squares now."

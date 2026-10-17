@@ -53,6 +53,10 @@ const PICTURES = new Set([
   'placechart',
   'numberline',
   'decgrid',
+  'array',
+  'matchsticks',
+  'tablegrid',
+  'balloon',
 ]);
 function asVisual(w: Widget | undefined): Visual | undefined {
   return w && PICTURES.has(w.kind) ? ({ ...w } as Visual) : undefined;
@@ -395,6 +399,7 @@ export function LessonPlayer({
   onFinish,
   onQuit,
   dry,
+  start = 0,
   tone = 'bright',
 }: {
   lesson: Lesson;
@@ -404,10 +409,12 @@ export function LessonPlayer({
   tone?: 'bright' | 'dark';
   /** Preview mode: nothing is saved. */
   dry?: boolean;
+  /** Beat to start at (preview only: `#/preview/lesson/<id>/<beat>`). */
+  start?: number;
   onFinish: (r: LessonResult) => void;
   onQuit: () => void;
 }) {
-  const [i, setI] = useState(0);
+  const [i, setI] = useState(Math.max(0, Math.min(start, lesson.beats.length - 1)));
   const [stats] = useState({ right: 0, wrong: 0 });
   const [quitAsk, setQuitAsk] = useState(false);
   const beat = lesson.beats[i];

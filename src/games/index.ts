@@ -436,7 +436,7 @@ export function validateGame(g: GameSpec | Widget): string | null {
     case 'array':
       if (g.mode === 'build') {
         const t = g.target ?? g.rows * g.cols;
-        if (g.fixRows ? t % g.rows !== 0 || t / g.rows > 12 : factorPairs(t).length === 0)
+        if (g.fixRows ? t % g.rows !== 0 || t / g.rows > 12 : !factorPairs(t).some(([r]) => r <= 8))
           return `array: can't build ${t}`;
       }
       if (g.mode === 'split' && g.rows < 2) return 'array: nothing to split';

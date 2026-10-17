@@ -1,0 +1,58 @@
+id: tavern-intro
+title: Roll for Initiative
+beats:
+  - type: narrate
+    text: >-
+      Every adventure starts in a tavern. It's the law. This one is called the Gem & Tonic. It
+      smells of old cheese, wet dog and destiny. Mostly cheese.
+  - type: say
+    who: dm
+    text: >-
+      *Ahem.* Welcome, adventurer, to DUNGEONS & TIMES TABLES! I am the Dungeon Master. I narrate
+      your adventure, I play every monster, and I eat all the crisps.
+  - type: say
+    who: dm
+    text: >-
+      I spent eleven hours preparing a dark, moody campaign full of betrayal and dragons. Then the
+      website said it "has to teach the times tables". So. Here we are. Thanks, website.
+  - type: say
+    who: thog
+    text: >-
+      THOG HERE. Thog is barbarian. Thog has loot. Thog count loot: one, two… MANY. Thog does not
+      know how much is many. Thog sad.
+  - type: say
+    who: barry
+    text: >-
+      ♪ Oh, Thog has many gold, and many is a lot! ♪ Hello! Bard Barry. I sing facts. Mostly true
+      facts. Sometimes. Occasionally. Once.
+  - type: choose
+    who: dm
+    text: Your new party stares at you. Say something heroic.
+    options:
+      - { text: "I'll help Thog count his loot!", reply: "THOG LOVE NEW FRIEND. Thog hug you now. Thog hug too hard. Sorry.", who: thog }
+      - { text: "Is the cheese free?", reply: "Nothing in a tavern is free. Except the smell. The smell is on the house.", who: dm }
+      - { text: "Who's the boss of this level?", reply: "No spoilers! …It's a cube. Forget I said that.", who: dm }
+  - type: say
+    who: dm
+    text: >-
+      Here's the plot. Something in the cellar has been EATING THE TABLES. The wooden ones. And
+      ever since, nobody in town can do their times tables either. Coincidence? I rolled a d20 to
+      decide. It's not.
+  - type: ask
+    who: thog
+    text: "Thog has 3 bags. Each bag has 4 gold. Thog count: one, two, three, four… MANY. How many is it really?"
+    options: ['$12$', '$7$', '$34$', '"Many"']
+    correct: 0
+    nudges:
+      "1": "That's $3 + 4$. But **each** of the 3 bags has 4 in it: $4 + 4 + 4$."
+      "2": "That's 3 and 4 glued together. Count it: 4, 8, …"
+      "3": "\"Many\" is not a number. Thog checked."
+    explain: "Three bags of 4: $4 + 4 + 4 = 3 \\times 4 = 12$."
+  - type: say
+    who: thog
+    text: TWELVE. Thog has TWELVE gold. Thog feel… educated. Thog not like it. Thog want more.
+  - type: say
+    who: dm
+    text: >-
+      Your quest: learn to multiply like a legend, go down to the cellar, and stop whatever is
+      eating the tables. Roll for initiative! …Kidding. There are no dice. It's a website.

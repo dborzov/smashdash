@@ -75,7 +75,7 @@ export function ChainGame({ spec, onDone, still }: GameProps<ChainSpec>) {
           const done = i < at;
           const box = done
             ? `\\good{${s.options ? '\\checkmark' : fmt(s.answer)}}`
-            : `\\hl{\\boxed{${val === '' ? '\;?\;' : val.replace('-', '−')}}}`;
+            : `\\hl{\\boxed{${val === '' ? '\\;?\\;' : val.replace('-', '−')}}}`;
           return (
             <div key={i} class={`chain-step ${done ? 'done' : 'now'}`}>
               {s.say && !done && <Rich text={s.say} class="chain-say" />}

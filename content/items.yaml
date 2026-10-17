@@ -453,3 +453,123 @@
   desc: "Gold-trimmed. Poop makes your pet sick only half as fast."
   level: 2
 
+
+# ==========================================================================================
+# Region treasures. Each region gives its own: a souvenir at Heroic (pets can bring more
+# back from expeditions there), a relic at Legendary, and sometimes something to wear for
+# flawless fights. They are never sold. `from` is the region they come from.
+# ==========================================================================================
+
+# --- Dungeons & Times Tables -------------------------------------------------------
+- id: cube-jelly
+  name: Gerald's Jelly
+  kind: food
+  icon: "🟩"
+  price: 0
+  inShop: false
+  from: tavern
+  desc: "A wobbly cube of lime jelly from the Tavern of Arrays. It is 3 by 3 by 3 wobbles."
+  use: "Your pet eats the jelly. Then it wobbles. For an hour. In a perfect cube shape."
+  effect: { hunger: 45, joy: 25, sound: eat }
+  drop: 2
+- id: dice-of-destiny
+  name: Dice of Destiny
+  kind: relic
+  icon: "🎲"
+  price: 0
+  inShop: false
+  from: tavern
+  desc: "The Dungeon Master's lucky d20. It always rolls a 20. He is furious that you have it."
+  relic: { campaign: tables, hints: 1 }
+- id: thogs-helm
+  name: Thog's Spare Helm
+  kind: hat
+  icon: "🪖"
+  price: 0
+  inShop: false
+  from: tavern
+  desc: "Horned, dented, smells of soup. Thog says it makes you 10% more barbarian."
+- id: hydra-snacks
+  name: Hydra Snacks
+  kind: food
+  icon: "🥨"
+  price: 0
+  inShop: false
+  from: doubling
+  desc: "Every time your pet eats one, two more appear in the bag. (They don't. But it feels like it.)"
+  use: "Crunch. Crunch crunch. Crunch crunch crunch crunch. Your pet is confused but happy."
+  effect: { hunger: 35, joy: 20, bond: 3, sound: eat }
+  drop: 2
+- id: doubling-mirror
+  name: Doubling Mirror
+  kind: relic
+  icon: "🪞"
+  price: 0
+  inShop: false
+  from: doubling
+  desc: "A hand mirror from the Doubling Dungeon. Coins that look into it come out a bit more numerous."
+  relic: { campaign: tables, gold: 30 }
+- id: hydra-cape
+  name: Hydra-Scale Cape
+  kind: cape
+  icon: "🐍"
+  price: 0
+  inShop: false
+  from: doubling
+  desc: "Made from scales the Hydra shed. It shed a LOT. Two for every one, apparently."
+- id: square-crackers
+  name: Perfectly Square Crackers
+  kind: food
+  icon: "🧇"
+  price: 0
+  inShop: false
+  from: squares
+  desc: "Seven by seven crackers from the Hall of Squares. Count them. Go on."
+  use: "Your pet eats them in rows, then columns. Very methodical. Very crumbly."
+  effect: { hunger: 40, joy: 15, sound: eat }
+  drop: 2
+- id: eye-of-squares
+  name: Eye of the Squareholder
+  kind: relic
+  icon: "👁️"
+  price: 0
+  inShop: false
+  from: squares
+  desc: "One of forty-nine eyes. It still blinks. It seems to like you. It warns you before you get hit."
+  relic: { campaign: tables, ward: true }
+- id: square-rug
+  name: Chequered Rug
+  kind: decor
+  icon: "🏁"
+  price: 0
+  inShop: false
+  from: squares
+  desc: "A rug from the Hall of Squares: 12 by 12 squares. Pets love counting them. (They can't count.)"
+- id: dm-crisps
+  name: The Dungeon Master's Crisps
+  kind: food
+  icon: "🍟"
+  price: 0
+  inShop: false
+  from: grid
+  desc: "Salt and vinegar. Stolen from behind the screen. He will notice. He always notices."
+  use: "CRUNCH. Your pet's breath now smells of a Saturday afternoon board game."
+  effect: { hunger: 30, joy: 35, sound: eat }
+  drop: 2
+- id: dm-screen
+  name: The Dungeon Master's Screen
+  kind: relic
+  icon: "🗂️"
+  price: 0
+  inShop: false
+  from: grid
+  desc: "A folding cardboard screen with every times table drawn on the inside. Hide behind it: +1 heart in any fight."
+  relic: { hearts: 1 }
+- id: cape-of-144
+  name: Cape of 144 Squares
+  kind: cape
+  icon: "🧣"
+  price: 0
+  inShop: false
+  from: grid
+  desc: "Twelve squares by twelve. Every square is a fact you know by heart."

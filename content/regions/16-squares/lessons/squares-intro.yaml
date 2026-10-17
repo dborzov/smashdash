@@ -1,0 +1,31 @@
+id: squares-intro
+title: The Square Door
+beats:
+  - type: narrate
+    text: >-
+      The Hall of Squares. Square tiles. Square windows. A square cat, which is upsetting to
+      look at.
+  - type: say
+    who: dm
+    text: >-
+      Welcome to the hall where the hard facts live. $7 \times 8$. $6 \times 7$. The ones that make
+      grown-ups pause and say "erm". By the end of this level, you won't say "erm". You'll say
+      "fifty-six, obviously".
+  - type: say
+    who: thog
+    text: Thog afraid of seven times eight. Thog has nightmares about it. In nightmare, it is fifty… something.
+  - type: say
+    who: barry
+    text: ♪ Fifty-four! ♪ No? ♪ Fifty-SIX! ♪ No? ♪ Fifty-ELEVEN! ♪
+  - type: choose
+    who: dm
+    text: The square cat blocks the corridor. It wants something.
+    options:
+      - { text: Pet the square cat, reply: "It purrs. In a perfect square wave. Bzzzt bzzzt bzzzt." }
+      - { text: Ask the cat the way, reply: "The cat says: 'Go straight. Then turn ninety degrees. Then turn ninety degrees. Then turn ninety degrees.' You end up back where you started." }
+      - { text: Give it a square fish, reply: "Where did you get a square fish? Never mind. The cat accepts. You may pass." }
+  - type: say
+    who: dm
+    text: >-
+      Somewhere deep in the hall lives the Squareholder. It has a lot of eyes. A square number of
+      eyes. That's foreshadowing.

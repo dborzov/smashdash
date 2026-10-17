@@ -1,0 +1,67 @@
+id: high-fives
+title: High Fives
+skill: fives-tens
+beats:
+  - type: narrate
+    text: >-
+      A room full of mirrors. Each one makes everything **ten times** bigger. Thog looks in. Ten Thogs
+      look back. They all look confused.
+  - type: say
+    who: dm
+    text: >-
+      Times 10 is easy, but people say it wrong. They say "just add a zero". Watch: $7 \times 10$.
+      The 7 ones become 7 **tens** — every digit moves up one place, and a zero holds the empty ones place.
+  - type: show
+    widget: { kind: shifter, value: 23, times: 1 }
+    text: "$23 \\times 10 = 230$ — the 2 and the 3 both slide up a place."
+  - type: input
+    who: dm
+    text: "What is $34 \\times 10$?"
+    answer: 340
+    atom: x10
+    nudges:
+      - { value: 44, text: "That's adding 10. Times 10 makes it ten **times** bigger." }
+      - { value: 3400, text: "That's times 100 — one place too far." }
+    explain: "3 tens become 3 hundreds, 4 ones become 4 tens: 340."
+  - type: say
+    who: barry
+    text: >-
+      ♪ Five is half of ten! Five is half of ten! ♪ That's the whole song. It's a hit. Everyone
+      hums it.
+  - type: say
+    who: dm
+    text: >-
+      Barry has accidentally said something useful. **Five is half of ten**, so $\times 5$ is half of
+      $\times 10$. $8 \times 5$? Do $8 \times 10 = 80$, then halve it: 40.
+  - type: play
+    who: dm
+    text: Your turn. Work out $6 \times 5$ the high-five way.
+    widget:
+      kind: chain
+      steps:
+        - { tex: '6 \times 10 = \box', answer: 60 }
+        - { tex: '60 \div 2 = \box', answer: 30, say: "Five is half of ten, so halve it.", note: "$6 \\times 5 = 30$." }
+    done: "Ten sixes, halved. High five! ✋"
+  - type: input
+    who: thog
+    text: "Thog try odd one. $7 \\times 5$. Thog do $7 \\times 10$, then half… half of 70 is…?"
+    answer: 35
+    atom: odd
+    nudges:
+      - { value: 30, text: "Half of 70: 35 + 35 = 70." }
+      - { value: 140, text: "That's doubling. Halve it!" }
+    explain: "$7 \\times 10 = 70$, half of 70 is 35."
+  - type: ask
+    who: barry
+    text: "♪ I'm selling REAL five-times-table numbers! ♪ Which one is a fake?"
+    options: ['$63$', '$45$', '$70$', '$85$']
+    correct: 0
+    atom: ends
+    nudges:
+      "1": "45 ends in 5 — real."
+      "2": "70 ends in 0 — real."
+      "3": "85 ends in 5 — real, just big."
+    explain: "The 5s always end in 5 or 0. 63 ends in 3: fake! Barry gives a refund. (He doesn't.)"
+  - type: practice
+    skill: fives-tens
+    count: 4

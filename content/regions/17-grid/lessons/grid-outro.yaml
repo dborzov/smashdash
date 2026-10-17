@@ -1,0 +1,27 @@
+id: grid-outro
+title: Same Time Next Week?
+beats:
+  - type: narrate
+    text: >-
+      The Dungeon Master puts down his dice. He takes off his hood. He's just a slightly tired gnome
+      who really, really likes dragons.
+  - type: say
+    who: dm
+    text: >-
+      You did it. Arrays, turnarounds, frog hops, doubling, high fives, nines, squares, splits,
+      families, patterns, elevens, twelves. The whole table. I'm… actually a bit proud. Don't tell
+      anyone.
+  - type: say
+    who: thog
+    text: >-
+      Thog count all loot. Thog has 7 bags of 8 gold. FIFTY-SIX. Thog not even scared. Thog will tell
+      Thog's brothers. All four Thogs.
+  - type: say
+    who: barry
+    text: ♪ And now I sing the RIGHT answers! ♪ …Mostly. Old habits.
+  - type: say
+    who: dm
+    text: >-
+      Every room in this dungeon has a Heroic and a Legendary version now, by the way. Come back in
+      a couple of days. Each one is harder, and something ridiculous happens. I'm contractually
+      obliged to tell you that.

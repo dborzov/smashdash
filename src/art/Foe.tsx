@@ -3,6 +3,7 @@ import type { Monster } from '../content/schema';
 import { MonsterArt } from './Monster';
 import { Muddler } from './Portrait';
 import { DarkFoeArt, type DarkFoe } from './Dark';
+import { BossArtView, isBossArt } from './Bosses';
 
 const DARK = ['hollow', 'wraith', 'tallyman', 'forger', 'golem', 'rider'];
 
@@ -18,6 +19,7 @@ export function FoeArt({
   class?: string;
 }) {
   if (m.art === 'muddler') return <Muddler class={cls} />;
+  if (isBossArt(m.art)) return <BossArtView art={m.art} hue={m.hue} boss={boss} hurt={hurt} class={cls} />;
   if (m.art && DARK.includes(m.art))
     return (
       <DarkFoeArt

@@ -149,6 +149,13 @@ describe.each(Object.keys(generators))('generator %s', (id) => {
           : []),
       ];
       for (const n of p.nudges ?? []) texts.push(n.text);
+      if (p.answer.kind === 'game' && p.answer.game.kind === 'chain')
+        for (const st of p.answer.game.steps) {
+          renderMath(st.tex, true, true);
+          texts.push(st.say ?? '', st.note ?? '', st.hint ?? '', ...(st.options ?? []), ...(st.nudges ?? []).map((n) => n.text));
+          expect(st.tex, ctx).not.toMatch(/undefined|NaN/);
+        }
+      if (p.facts) for (const [x, y] of p.facts) expect(Number.isInteger(x) && Number.isInteger(y), ctx).toBe(true);
       for (const t of texts) for (const m of mathBits(t)) renderMath(m, false, true);
       if (p.math) renderMath(p.math, true, true);
     }

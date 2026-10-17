@@ -171,6 +171,9 @@
   }
   .enc .duel-hero {
     width: 42%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    align-self: flex-end;
   }
   .enc .duel-foe,
   .enc .duel-foe.boss {

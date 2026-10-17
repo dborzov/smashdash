@@ -1,0 +1,57 @@
+id: pattern-detective
+title: Pattern Detective
+skill: table-patterns
+beats:
+  - type: say
+    who: dm
+    text: >-
+      The times table isn't 144 random numbers. It's full of patterns. Detectives spot patterns.
+      Put on this hat. *hands you a deerstalker* Now you're a detective.
+  - type: say
+    who: dm
+    text: >-
+      Clue one: **odd times odd is always odd.** Three odd groups of an odd number — there's always
+      one left over. But if either number is even, everything pairs up: **even**.
+  - type: ask
+    who: thog
+    text: "Is $7 \\times 9$ odd or even? Thog guess without working it out."
+    options: [Odd, Even]
+    correct: 0
+    atom: odd-even
+    nudges:
+      "1": "7 and 9 are both odd. Odd × odd is always odd. (It's 63.)"
+    explain: "Odd × odd is odd: $7 \\times 9 = 63$."
+  - type: say
+    who: barry
+    text: >-
+      ♪ The fours go 4, 8, 12, 16, 20… ♪ Look at just the last digits: 4, 8, 2, 6, 0 — then 4, 8,
+      2, 6, 0 again! ♪ The last digits go round and round! ♪
+  - type: ask
+    who: dm
+    text: "Which of these can **never** be in the 4 times table?"
+    options: ['$34$', '$28$', '$36$', '$48$']
+    correct: 0
+    atom: impossible
+    nudges:
+      "1": "$7 \\times 4 = 28$ — it's in."
+      "2": "$9 \\times 4 = 36$ — it's in."
+      "3": "$12 \\times 4 = 48$ — it's in."
+    explain: "34 is even, but $8 \\times 4 = 32$ and $9 \\times 4 = 36$ — it falls in between. Being even isn't enough!"
+  - type: play
+    who: dm
+    text: Now the big one. The number 24 lives in several rooms. Find every one.
+    widget: { kind: tablegrid, mode: find, size: 12, target: 24 }
+    done: "24 is $2 \\times 12$, $3 \\times 8$, $4 \\times 6$, and their mirror twins. Six rooms! Every pair is a fact family."
+  - type: ask
+    who: thog
+    text: "Why is 25 never in the 2 times table?"
+    options: ["The 2s are all even, and 25 is odd", "25 is too big", "Nobody knows"]
+    correct: 0
+    atom: odd-even
+    nudges:
+      "1": "The 2s go on forever — 26 is in! It's about odd and even."
+      "2": "Detectives know! The 2s are all even…"
+    explain: "Every 2s number is even. 25 is odd. Case closed."
+  - type: practice
+    skill: table-patterns
+    count: 4

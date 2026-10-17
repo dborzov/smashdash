@@ -1,0 +1,34 @@
+id: tavern-r2
+title: "Heroic: The Session Goes Wrong"
+beats:
+  - type: say
+    who: dm
+    text: >-
+      Welcome back to the Gem & Tonic! This is the **Heroic** run. Same tavern. Harder sums.
+      I've also added a plot twist, because a man in a hoodie on the internet said every good
+      campaign needs one.
+  - type: narrate
+    text: >-
+      The plot twist: the gems are gone. All of them. In their place is a note: "Dear tavern,
+      I have taken the gems to buy a bigger body. Love, Gerald."
+  - type: say
+    who: thog
+    text: Thog knew cube was trouble. Thog never trust a shape with no front.
+  - type: say
+    who: barry
+    text: >-
+      ♪ Also I've been asked to check your answers today, as a SPECIAL GUEST! ♪ Mostly I'll be
+      wrong. Spot when I'm wrong. That's the game. Please be gentle.
+  - type: ask
+    who: barry
+    text: "♪ Six rows of seven gems — that's FORTY-TWO! Or is it thirteen? I forget which one is true! ♪ Which is it?"
+    options: ['$42$', '$13$']
+    correct: 0
+    nudges:
+      "1": "That's $6 + 7$. Rows **times** gems, Barry."
+    explain: "$6 \\times 7 = 42$. Barry writes it on his lute in permanent marker."
+  - type: say
+    who: dm
+    text: >-
+      Excellent. Gerald is in the cellar, and he's been eating. Roll for initiative. (Still no dice.
+      I asked.)

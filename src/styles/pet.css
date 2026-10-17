@@ -212,6 +212,25 @@
     transform: translateX(-50%) rotate(-360deg);
   }
 }
+.den-pet.trick-zoom {
+  animation: tzoom 1.4s ease-in-out;
+}
+@keyframes tzoom {
+  30% {
+    transform: translateX(-50%) scale(0.2);
+  }
+  70% {
+    transform: translateX(-50%) scale(1.6);
+  }
+}
+.den-pet.trick-float {
+  animation: tfloat 1.6s ease-in-out;
+}
+@keyframes tfloat {
+  50% {
+    transform: translateX(-50%) translateY(-110px) rotate(6deg);
+  }
+}
 .bughunt {
   position: absolute;
   inset: 0;

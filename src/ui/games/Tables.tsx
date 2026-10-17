@@ -22,6 +22,9 @@ import { ding, Say, ShowMe, useScore, type GameProps } from './kit';
 
 type ArraySpec = Extract<Widget, { kind: 'array' }>;
 
+/** Rows offered when building an array freely (enough for every target up to 12 × 8). */
+const BUILD_ROWS = 8;
+
 function Mathy({ tex }: { tex: string }) {
   return <div class="math-big game-math" dangerouslySetInnerHTML={{ __html: renderMath(tex, true) }} />;
 }
@@ -150,7 +153,7 @@ export function ArrayGame({ spec, onDone, still }: GameProps<ArraySpec>) {
         <Gems
           rows={sel[0]}
           cols={sel[1]}
-          gridRows={12}
+          gridRows={spec.fixRows ? spec.rows : BUILD_ROWS}
           gridCols={12}
           sel={sel}
           ghost
@@ -280,10 +283,10 @@ export function ArrayGame({ spec, onDone, still }: GameProps<ArraySpec>) {
     );
   }
 
-  // show
+  // show (a picture; `at` draws the cut of a split)
   return (
     <div class="array-game">
-      <Gems rows={rows} cols={cols} />
+      <Gems rows={rows} cols={cols} split={spec.at} />
       {!still && <div class="game-hud">{rows} rows of {cols}</div>}
     </div>
   );
@@ -292,7 +295,7 @@ export function ArrayGame({ spec, onDone, still }: GameProps<ArraySpec>) {
 /** Rows for the "show me" array: the squarest factor pair. */
 function bestRows(t: number): number {
   let best = 1;
-  for (let r = 1; r <= 12; r++) if (t % r === 0 && t / r <= 12 && r <= t / r) best = r;
+  for (let r = 1; r <= BUILD_ROWS; r++) if (t % r === 0 && t / r <= 12 && r <= t / r) best = r;
   return best;
 }
 

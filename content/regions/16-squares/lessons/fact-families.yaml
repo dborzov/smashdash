@@ -1,0 +1,50 @@
+id: fact-families
+title: Fact Families
+skill: fact-families
+beats:
+  - type: say
+    who: dm
+    text: >-
+      Every array tells four stories. Look: 6 rows of 7 is 42. Turn it: 7 rows of 6 is 42. Now
+      **share** the 42 into 6 rows: 7 in each. Or into 7 rows: 6 in each.
+  - type: show
+    widget: { kind: array, rows: 6, cols: 7 }
+    math: '6 \times 7 = 42 \quad 7 \times 6 = 42 \quad 42 \div 6 = 7 \quad 42 \div 7 = 6'
+    text: "One array, four facts. A **fact family**."
+  - type: say
+    who: thog
+    text: Thog has family too. Thog has 4 brothers. All named Thog. Family dinners very confusing.
+  - type: input
+    who: dm
+    text: "So division is a times fact backwards. $\\box \\times 8 = 56$. What's in the box?"
+    math: '\box \times 8 = 56'
+    answer: 7
+    atom: missing
+    nudges:
+      - { value: 48, text: "That's $56 - 8$. How many 8s make 56?" }
+      - { value: 448, text: "That's multiplying. We know the total — how many 8s fit in it?" }
+    hint: "Count in 8s: 8, 16, 24, … or remember the nightmare number."
+    explain: "$7 \\times 8 = 56$, so the box is 7."
+  - type: input
+    who: barry
+    text: "♪ Forty-five gold, shared between five! ♪ How much does each bard get? (There are five bards. Don't ask.)"
+    answer: 9
+    atom: share
+    nudges:
+      - { value: 40, text: "That's 45 − 5. Sharing means splitting into 5 equal piles." }
+      - { value: 50, text: "That's 45 + 5. Share it out instead!" }
+    explain: "$45 \\div 5 = 9$, because $5 \\times 9 = 45$."
+  - type: ask
+    who: dm
+    text: "Which of these is **not** in the family of $4 \\times 9 = 36$?"
+    options: ['$36 - 9 = 27$', '$9 \times 4 = 36$', '$36 \div 4 = 9$', '$36 \div 9 = 4$']
+    correct: 0
+    atom: family
+    nudges:
+      "1": "That's the turnaround — real family."
+      "2": "That's sharing 36 into 4s — real family."
+      "3": "Sharing 36 into 9s — real family."
+    explain: "The family is $4 \\times 9$, $9 \\times 4$, $36 \\div 4$ and $36 \\div 9$. Taking away isn't invited."
+  - type: practice
+    skill: fact-families
+    count: 4

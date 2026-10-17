@@ -1,0 +1,106 @@
+id: tavern
+order: 14
+name: The Tavern of Arrays
+tagline: Every adventure starts in a tavern. This one has gems on the shelves and something wobbly in the cellar.
+campaign: tables
+topic: 'Multiplication as rows × columns, turning it around ($3 \times 8 = 8 \times 3$), skip counting'
+added: '2026-10-17'
+scene: tavern
+map: { x: 18, y: 72 }
+requires: []
+palette: { sky: ["#2a1608", "#8a4a1a"], accent: "#ffb347", ground: "#5a3418" }
+outro: tavern-outro
+monsters:
+  - { name: Tavern Rat, seed: 141, hue: 30, taunts: ["Squeak! (That means 'pay your bill'.)", "I counted the cheese. It's ONE cheese. I ate it."] }
+  - { name: Rattly Skeleton, seed: 142, hue: 210, taunts: ["I've got a bone to pick with you!", "How many bones do I have? Nobody knows. Not even me."] }
+  - { name: Mimic Stool, seed: 143, hue: 20, taunts: ["Sit on me. SIT ON ME.", "I'm definitely a stool. Probably."] }
+path:
+  - id: intro
+    type: story
+    title: Roll for Initiative
+    lesson: tavern-intro
+  - id: gem-shelves
+    type: lesson
+    title: Gem Shelves
+    lesson: gem-shelves
+  - id: bar-brawl
+    type: encounter
+    title: Bar Brawl
+    game: battle
+    skills: [arrays]
+    count: 5
+    monster: { name: Rattly Skeleton, seed: 142, hue: 210, taunts: ["Rattle rattle!", "I'm not scared, I'm just bony."] }
+  - id: turn-it-around
+    type: lesson
+    title: Turn It Around
+    lesson: turn-it-around
+  - id: cellar-chest
+    type: encounter
+    title: The Cellar Chest
+    game: chest
+    skills: [arrays, turnaround]
+    count: 6
+  - id: frog-hops
+    type: lesson
+    title: The Frog Who Counted
+    lesson: frog-hops
+  - id: quick-draw
+    type: encounter
+    title: Quick Draw at the Bar
+    game: duel
+    skills: [skip-count, turnaround]
+    count: 6
+    monster: { name: Skeleton Sheriff, seed: 144, hue: 45, taunts: ["This tavern ain't big enough for the two of us. It's 7 by 8.", "Draw, partner!"] }
+  - id: ale-river
+    type: encounter
+    title: Over the Ale River
+    game: bridge
+    skills: [skip-count, arrays, turnaround]
+    count: 6
+  - id: boss
+    type: boss
+    title: Gerald the Gelatinous Cube
+    monster: { name: Gerald the Gelatinous Cube, seed: 1401, hue: 100, art: cube }
+    intro:
+      - "Hello. I am Gerald. I am a cube. I am three wobbles by three wobbles by three wobbles. Do you know how hard that is?"
+      - "I ate the tables. All of them. The wooden ones AND the times ones. Mmm. Crunchy furniture. Crunchy facts."
+      - "If you want them back, you'll have to come in and get them. Squelch."
+    phases:
+      - { skills: [arrays], count: 3, taunt: "You think rows times columns scares me? I AM rows times columns. And layers." }
+      - { skills: [turnaround, arrays], count: 3, taunt: "Turn me round! Go on! …I look the same. I'm a CUBE." }
+      - { skills: [skip-count, turnaround], count: 3, taunt: "I have a skeleton inside me. Not mine. He's been in here since Tuesday." }
+    defeat: "Bleurgh. *splat* …Fine. Have your tables back. They're a bit sticky. Also, here's your skeleton."
+ranks:
+  - rank: 2
+    story: tavern-r2
+    boss:
+      name: Gerald the Slightly Bigger Cube
+      intro:
+        - "It's me. Gerald. I've been eating. I am now FOUR by four by four. Do the maths. Actually, don't, that's level three stuff."
+        - "I ate a bard on the way. He's still singing. You can hear him if you put your ear against me."
+      taunts:
+        - "Rows! Columns! More rows! I'm basically a spreadsheet now."
+        - "Turn me around. I dare you. I'm STILL a cube."
+        - "Hop, hop, hop. That's the sound of the frog I also ate."
+        - "Everything at once! Like a buffet! I love a buffet!"
+      defeat: "Bleeeurgh. *splat* The bard falls out, still singing. He's out of tune. That one's not my fault."
+    nodes:
+      - { id: gem-heist, type: encounter, title: The Gem Heist, game: vault, skills: [arrays], count: 6 }
+  - rank: 3
+    story: tavern-r3
+    boss:
+      name: Geraldine, Gerald's Mum
+      hue: 320
+      intro:
+        - "WHO has been SPLATTING my little Gerald?"
+        - "I am Geraldine. I am five by five by five. I have been a cube for three hundred years. I have seen times tables come and go."
+      taunts:
+        - "Gerald never did his times tables. I always said: Gerald, rows TIMES columns. Did he listen? No. He ate the tables."
+        - "Turnaround! I do it every morning. I still look the same. Cube life."
+        - "Hop hop hop. I ate a frog once. It was 1823. It's still in there, hopping."
+        - "ALL OF IT! LIKE A MOTHER'S LOVE!"
+      defeat: "*splat* …You're a good one. Come back for tea sometime. It's jelly. Everything here is jelly."
+treasures:
+  - { item: cube-jelly, rank: 2 }
+  - { item: dice-of-destiny, rank: 3 }
+  - { item: thogs-helm, flawless: 5 }

@@ -48,7 +48,7 @@ export function sendPet(p: Profile, regionId: string, hours: number, now = Date.
 /** Things a pet can bring back from a region: its souvenirs, else ordinary loot. */
 export function souvenirPool(regionId: string) {
   const own = items.filter((i) => i.from === regionId && ['food', 'toy', 'care'].includes(i.kind));
-  const common = items.filter((i) => i.drop > 0 && ['food', 'toy', 'care'].includes(i.kind));
+  const common = items.filter((i) => i.drop > 0 && !i.from && ['food', 'toy', 'care'].includes(i.kind));
   return { own, common };
 }
 

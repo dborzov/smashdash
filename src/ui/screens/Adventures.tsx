@@ -17,7 +17,7 @@ import { learnedSkills } from '../../engine/mastery';
 import { update } from '../../engine/store';
 import { go } from '../router';
 import { sfx } from '../../audio/sfx';
-import { Landmark } from './WorldMap';
+import { Landmark } from '../../art/Landmarks';
 import { FoeArt } from '../../art/Foe';
 import { RichInline } from '../components/Rich';
 import { Bounties } from '../components/Bounties';

@@ -1,0 +1,65 @@
+id: nine-trick
+title: The Nine Trick
+skill: nines
+beats:
+  - type: say
+    who: dm
+    text: >-
+      Nines are the troll of the times table: everyone fears them. But nines have a secret.
+      **Nine of something is ten of it, minus one of it.**
+  - type: show
+    widget: { kind: array, rows: 9, cols: 6 }
+    text: "9 rows of 6 is 10 rows of 6 — with one row missing."
+  - type: play
+    who: dm
+    text: "Do $9 \\times 6$: ten sixes, then take one six away."
+    widget:
+      kind: chain
+      steps:
+        - { tex: '10 \times 6 = \box', answer: 60 }
+        - tex: '60 - 6 = \box'
+          answer: 54
+          say: "Ten sixes is one six too many."
+          nudges: [{ value: 59, text: "Take away a whole **six** — one row — not just 1." }]
+          note: "$9 \\times 6 = 54$."
+    done: "Ten lots minus one lot. The nines are scared of you now."
+  - type: input
+    who: thog
+    text: "Thog try. $9 \\times 8$?"
+    answer: 72
+    atom: ten-minus
+    nudges:
+      - { value: 79, text: "Ten eights is 80. Take away one **eight**, not 1." }
+      - { value: 71, text: "Take away one eight: $80 - 8$." }
+    hint: "Ten eights, minus one eight."
+    explain: "$80 - 8 = 72$."
+  - type: say
+    who: barry
+    text: >-
+      ♪ Here's a secret, here's a treat: the nines add up to nine, how neat! ♪ Look: 18 → 1 + 8 = 9.
+      27 → 2 + 7 = 9. 36, 45, 54… all of them!
+  - type: say
+    who: dm
+    text: >-
+      And another one: in $9 \times 7$, the **tens digit is one less than 7**: 6. Then pick the ones
+      digit to make 9: 6 and 3. So $9 \times 7 = 63$.
+  - type: input
+    who: dm
+    text: "The digits of a nines answer add to 9. Fill the gap: $9 \\times 4 = 3\\box$"
+    answer: 6
+    atom: digit-sum
+    nudges:
+      - { value: 4, text: "3 + 4 is 7. What goes with 3 to make **9**?" }
+    explain: "3 + 6 = 9, so $9 \\times 4 = 36$."
+  - type: ask
+    who: barry
+    text: "♪ Nine times seven is SEVENTY-THREE! ♪ Is Barry right?"
+    options: ["No — it's 63 (and 7 + 3 isn't even 9)", "Yes, Barry is always right"]
+    correct: 0
+    atom: spot
+    nudges:
+      "1": "Check the digits: 7 + 3 = 10, not 9. Also, Barry is never always right."
+    explain: "$9 \\times 7 = 70 - 7 = 63$, and 6 + 3 = 9 ✓."
+  - type: practice
+    skill: nines
+    count: 4

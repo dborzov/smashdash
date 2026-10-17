@@ -1,0 +1,35 @@
+id: grid-intro
+title: The Map Is the Territory
+beats:
+  - type: narrate
+    text: >-
+      A door opens onto a vast hall split into rooms by glowing lines: twelve rows, twelve columns.
+      Above each doorway, a number. Above the door at row 7, column 8, someone has scrawled
+      "56 — DON'T PANIC".
+  - type: say
+    who: dm
+    text: >-
+      The Grid of 144 Rooms. Every room is a times fact. Row times column. You've beaten every
+      trick in my dungeon — now let's see you run the whole map.
+  - type: say
+    who: thog
+    text: Thog has map. Thog holding map upside down. Thog not care. Thog know turnaround. Upside down is fine.
+  - type: say
+    who: barry
+    text: >-
+      ♪ A hundred and forty-four rooms, and one of them's a loo! ♪ That's not true. There are no
+      loos in this dungeon. That's the real horror.
+  - type: say
+    who: dm
+    text: >-
+      Here's the deal. Every fact you get right gets remembered. The Grid lights up, room by room.
+      Get the whole map glowing and you're a Grid Master. Also you'll be able to do shopping maths
+      without a calculator, which is basically a superpower.
+  - type: input
+    who: dm
+    text: "First room: row 12, column 12 — the very last room. How many gold coins inside? (Hint: 12 × 12 is 10 × 12 + 2 × 12.)"
+    answer: 144
+    nudges:
+      - { value: 24, text: "That's 12 + 12. Twelve **rows** of twelve!" }
+      - { value: 122, text: "Twelve times twelve: 120 + 24." }
+    explain: "$12 \\times 12 = 120 + 24 = 144$. That's why it's called the Grid of 144 Rooms."

@@ -45,6 +45,13 @@ const CAPES: Record<string, string> = {
   'ash-cloak': '#4a4652',
   'march-mantle': '#2f4a6a',
   'blood-moon': '#7a1830',
+  // Region treasures (patterns are defined in the avatar's <defs>)
+  'hydra-cape': 'url(#cape-scales)',
+  'cape-of-144': 'url(#cape-checker)',
+  'cape-of-magnitude': 'url(#cape-stars)',
+  'ballpark-jacket': '#e0334d',
+  'zero-cape': 'url(#cape-stripes)',
+  'frost-cape': '#7dd3fc',
 };
 
 function darker(hex: string, f = 0.7): string {
@@ -140,6 +147,34 @@ function Hair({ style, color, back }: { style: number; color: string; back?: boo
 
 export function HatArt({ id, outfit }: { id: string; outfit: string }) {
   switch (id) {
+    case 'thogs-helm':
+      return (
+        <g>
+          <path d="M26 30 Q6 18 10 -10 Q18 10 32 16 Z" fill="#fff4dc" stroke="#7a6a50" stroke-width="2.5" />
+          <path d="M94 30 Q114 18 110 -10 Q102 10 88 16 Z" fill="#fff4dc" stroke="#7a6a50" stroke-width="2.5" />
+          <path d="M28 36 Q30 4 60 4 Q90 4 92 36 Z" fill="#8d6e4a" stroke="#3a2a14" stroke-width="2.5" />
+          <path d="M44 10 l4 8 M60 6 v9 M76 10 l-4 8" stroke="#3a2a14" stroke-width="2" />
+          <path d="M24 38 Q60 26 96 38 L96 44 Q60 34 24 44 Z" fill="#c9a26a" stroke="#6a4a24" stroke-width="2" />
+          <path d="M30 40 l3 5 M40 38 l2 6 M52 36 l1 6 M68 36 l-1 6 M80 38 l-2 6 M90 40 l-3 5" stroke="#6a4a24" stroke-width="2" />
+        </g>
+      );
+    case 'bobble-hat':
+      return (
+        <g>
+          <path d="M28 36 Q28 4 60 4 Q92 4 92 36 Z" fill="#5ec8ff" stroke="#1a5a8a" stroke-width="2.5" />
+          <path d="M34 16 h52 M30 26 h60" stroke="#fff" stroke-width="4" opacity=".8" />
+          <rect x="24" y="32" width="72" height="10" rx="5" fill="#fff" stroke="#1a5a8a" stroke-width="2" />
+          <circle cx="60" cy="0" r="10" fill="#fff" stroke="#1a5a8a" stroke-width="2" />
+        </g>
+      );
+    case 'star-mask':
+      return (
+        <g>
+          <path d="M30 32 Q30 6 60 6 Q90 6 90 32 Z" fill="#2b4fd6" stroke="#142a7a" stroke-width="2.5" />
+          <path d="M60 10 l4 8 8 1 -6 5 2 8 -8 -4 -8 4 2 -8 -6 -5 8 -1 Z" fill="#ffd166" stroke="#a86b00" stroke-width="1.5" />
+          <path d="M26 34 Q60 26 94 34 L94 40 Q60 32 26 40 Z" fill="#e0334d" stroke="#7a1020" stroke-width="2" />
+        </g>
+      );
     case 'party-hat':
       return (
         <g transform="rotate(-8 60 20)">
@@ -580,6 +615,23 @@ export function Avatar({
           <stop offset=".75" stop-color="#5ec8ff" />
           <stop offset="1" stop-color="#9b7bff" />
         </linearGradient>
+        <pattern id="cape-checker" width="12" height="12" patternUnits="userSpaceOnUse">
+          <rect width="12" height="12" fill="#1a4a7a" />
+          <rect width="6" height="6" fill="#7dd3fc" />
+          <rect x="6" y="6" width="6" height="6" fill="#7dd3fc" />
+        </pattern>
+        <pattern id="cape-scales" width="10" height="8" patternUnits="userSpaceOnUse">
+          <rect width="10" height="8" fill="#1f7a52" />
+          <path d="M0 8 Q5 0 10 8" fill="#5ee6a8" stroke="#145a3a" stroke-width="1" />
+        </pattern>
+        <pattern id="cape-stars" width="16" height="16" patternUnits="userSpaceOnUse">
+          <rect width="16" height="16" fill="#2b4fd6" />
+          <path d="M8 3 l1.5 3.2 3.5 .4 -2.6 2.3 .8 3.4 -3.2 -1.8 -3.2 1.8 .8 -3.4 -2.6 -2.3 3.5 -.4 Z" fill="#ffd166" />
+        </pattern>
+        <pattern id="cape-stripes" width="10" height="10" patternUnits="userSpaceOnUse">
+          <rect width="10" height="10" fill="#3a2a6a" />
+          <rect width="5" height="10" fill="#c08cff" />
+        </pattern>
       </defs>
       {capeFill && (
         <path

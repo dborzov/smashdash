@@ -1,0 +1,15 @@
+id: doubling-outro
+title: One Head Is Plenty
+beats:
+  - type: narrate
+    text: The Hydra slithers off as an ordinary snake, muttering to itself in one voice for once.
+  - type: say
+    who: thog
+    text: >-
+      Thog learn three tricks. Double for twos, fours, eights. Half of ten for fives. Ten-minus-one
+      for nines. Thog brain is getting crowded. Thog like it.
+  - type: say
+    who: dm
+    text: >-
+      Further down there's a hall where everything is perfectly square. The floor, the doors, the
+      monster's eyes. ESPECIALLY the monster's eyes. Don't stare back.

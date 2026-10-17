@@ -1,0 +1,63 @@
+id: perfect-squares
+title: Perfect Squares
+skill: square-nums
+beats:
+  - type: say
+    who: dm
+    text: >-
+      Some arrays are special: the same number of rows as columns. They make a **square**. 3 rows
+      of 3. 5 rows of 5. Those numbers — 9, 25 — are called **square numbers**.
+  - type: show
+    widget: { kind: array, rows: 5, cols: 5 }
+    text: "$5 \\times 5 = 25$ — five rows of five makes a square."
+  - type: play
+    who: dm
+    text: Grow a square one layer at a time. Watch how many tiles each layer adds.
+    widget: { kind: squaregrow, upto: 6 }
+    done: "1, 3, 5, 7, 9, 11 — every new layer is the next **odd** number. And the totals are the squares: 1, 4, 9, 16, 25, 36."
+  - type: input
+    who: thog
+    text: "Thog know $6 \\times 6 = 36$. To make $7 \\times 7$, how many tiles does Thog add?"
+    answer: 13
+    atom: odd-layers
+    nudges:
+      - { value: 7, text: "The new layer wraps round **two** sides — 6 + 6 — plus the corner." }
+      - { value: 12, text: "Don't forget the corner tile! 6 + 6 + 1." }
+    explain: "6 + 6 + 1 = 13, and $36 + 13 = 49 = 7 \\times 7$."
+  - type: say
+    who: barry
+    text: >-
+      ♪ Six squared is TWELVE! ♪ Because… squared means two… so six times two… right?
+  - type: say
+    who: dm
+    text: >-
+      Wrong, Barry, and it's the most common square mistake in the kingdom. $6^2$ — "six squared" —
+      means **six times six**. The little 2 says "two sixes multiplied", not "times two".
+  - type: ask
+    who: dm
+    text: "What is $8^2$?"
+    options: ['$64$', '$16$', '$10$']
+    correct: 0
+    atom: not-double
+    nudges:
+      "1": "That's $8 \\times 2$. Squared is 8 times **itself**."
+      "2": "That's $8 + 2$. The little 2 means: two eights, multiplied."
+    explain: "$8^2 = 8 \\times 8 = 64$."
+  - type: play
+    who: dm
+    text: The square numbers live on the diagonal of the dungeon map. Tap every square room.
+    widget: { kind: tablegrid, mode: squares, size: 10 }
+    done: "1, 4, 9, 16, 25, 36, 49, 64, 81, 100 — the diagonal of squares."
+  - type: ask
+    who: thog
+    text: Thog has 50 gold coins. Can Thog lay them out in a perfect square?
+    options: ["No — $7 \\times 7 = 49$ and $8 \\times 8 = 64$, so 50 is not a square", "Yes, 50 is a square number", "Yes, $5 \\times 10$"]
+    correct: 0
+    atom: is-square
+    nudges:
+      "1": "Is there a number that times itself is 50? $7 \\times 7 = 49$… $8 \\times 8 = 64$… Missed it!"
+      "2": "$5 \\times 10$ is a rectangle, not a square. A square has the same rows as columns."
+    explain: "50 sits between 49 and 64. One coin too many — Thog keeps it as a snack."
+  - type: practice
+    skill: square-nums
+    count: 4

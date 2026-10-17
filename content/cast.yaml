@@ -166,3 +166,90 @@ ledgerwraith:
   color: "#7dd3fc"
   seed: 3
   hue: 195
+
+# --- Dungeons & Times Tables ----------------------------------------------------
+dm:
+  name: The Dungeon Master
+  art: npc
+  color: "#c8a2ff"
+thog:
+  name: Thog the Barbarian
+  art: npc
+  color: "#ff9a5a"
+barry:
+  name: Bard Barry
+  art: npc
+  color: "#7de0c0"
+gerald:
+  name: Gerald the Gelatinous Cube
+  art: boss
+  boss: cube
+  color: "#9be37a"
+hydra:
+  name: The Hydra
+  art: boss
+  boss: hydra
+  color: "#5ee6a8"
+squareholder:
+  name: The Squareholder
+  art: boss
+  boss: beholder
+  color: "#ff7ab8"
+
+# --- The Order of Magnitude -----------------------------------------------------
+tenfold:
+  name: Captain Tenfold
+  art: npc
+  color: "#5ec8ff"
+ballpark:
+  name: Ms. Ballpark
+  art: npc
+  color: "#ffd166"
+kevin:
+  name: Shrinking Kevin
+  art: npc
+  color: "#9fe08a"
+exactly:
+  name: Doctor Exactly
+  art: boss
+  boss: exactly
+  color: "#e0e6ff"
+confuser:
+  name: The Unit Confuser
+  art: boss
+  boss: confuser
+  color: "#ffb347"
+googol:
+  name: Professor Googol
+  art: boss
+  boss: googol
+  color: "#c08cff"
+
+# --- The Muddler Strikes Back ---------------------------------------------------
+waddles:
+  name: Admiral Waddles
+  art: boss
+  boss: waddles
+  color: "#9fd8ff"
+marge:
+  name: Madame Marge
+  art: npc
+  color: "#ffb3d1"
+balance:
+  name: Bal & Ance
+  art: npc
+  color: "#ffd166"
+clutter:
+  name: The Clutterbeast
+  art: boss
+  boss: clutter
+  color: "#c9a26a"
+intern:
+  name: The Muddler's Intern
+  art: npc
+  color: "#a0b4ff"
+mumsy:
+  name: Mumsy Muddler
+  art: boss
+  boss: mumsy
+  color: "#ff8ac4"

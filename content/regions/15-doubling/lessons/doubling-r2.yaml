@@ -1,0 +1,24 @@
+id: doubling-r2
+title: "Heroic: Hydra-nomics"
+beats:
+  - type: say
+    who: dm
+    text: >-
+      The **Heroic** Doubling Dungeon. Bad news: someone tried to chop the Hydra's head off again.
+      Which, if you were paying attention, is the ONE thing you shouldn't do.
+  - type: say
+    who: thog
+    text: Thog did it. Thog sorry. Thog thought "one head, one chop". Thog forgot about doubling.
+  - type: input
+    who: dm
+    text: "The Hydra started with 1 head. Thog chopped three times, and each chop doubled the heads. How many heads now?"
+    answer: 8
+    nudges:
+      - { value: 4, text: "Three doublings: 1 → 2 → 4 → …" }
+      - { value: 6, text: "Doubling, not adding 2 each time: 1 → 2 → 4 → 8." }
+    explain: "1 → 2 → 4 → 8. Eight heads. Eight very rude heads."
+  - type: say
+    who: barry
+    text: >-
+      ♪ And I'm today's official checker of your sums! ♪ I'll answer first. You tell me if I'm wrong.
+      I'm usually wrong. I'm very confident about that.

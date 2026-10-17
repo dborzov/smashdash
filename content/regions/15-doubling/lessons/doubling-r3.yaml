@@ -1,0 +1,23 @@
+id: doubling-r3
+title: "Legendary: The Lawsuit"
+beats:
+  - type: narrate
+    text: >-
+      The **Legendary** run. A scroll is nailed to the dungeon door: "NOTICE OF LEGAL ACTION. The
+      Hydra (all heads) v. The Hero, for repeated head-related upset."
+  - type: say
+    who: dm
+    text: >-
+      I did not see this coming. I'm the Dungeon Master and I did not see this coming. Since when do
+      monsters have LAWYERS?
+  - type: say
+    who: thog
+    text: Thog will fight lawyer. Thog good at fight. Thog bad at paperwork.
+  - type: input
+    who: dm
+    text: "The lawsuit asks for 5 gold for every head. The Hydra had 14 heads. How much do they want? (Times 10, then halve!)"
+    answer: 70
+    nudges:
+      - { value: 19, text: "5 **times** 14, not plus." }
+      - { value: 140, text: "That's times 10. Five is half of ten — halve it!" }
+    explain: "$14 \\times 10 = 140$, half is 70. Outrageous. We'll fight it."

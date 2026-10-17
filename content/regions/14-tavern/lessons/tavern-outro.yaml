@@ -1,0 +1,25 @@
+id: tavern-outro
+title: Last Orders
+beats:
+  - type: narrate
+    text: >-
+      The cellar is quiet. Gerald is a sticky puddle, sulking. The tavern's tables are back —
+      a bit wobbly, a bit green, but back.
+  - type: say
+    who: thog
+    text: >-
+      Thog counted the whole tavern! 8 tables, 6 chairs each: FORTY-EIGHT chairs. Thog never
+      want to count again. Thog is free.
+  - type: say
+    who: barry
+    text: ♪ Rows times columns, turn it around, hop like a frog — and you're glory-bound! ♪
+  - type: say
+    who: dm
+    text: >-
+      Not bad. But the dungeon goes deeper. Below the cellar there's a door marked "DOUBLING
+      DUNGEON — NO REFUNDS". I've no idea who wrote that. (I wrote that.)
+  - type: say
+    who: dm
+    text: >-
+      Oh — and if you come back in two days, the tavern will have a **Heroic** version of this
+      whole level waiting. Harder. Weirder. With a twist. I'm told that's "replay value".

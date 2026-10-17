@@ -71,7 +71,7 @@ function AnswerPreview({ p }: { p: Problem }) {
   );
 }
 
-export function Preview({ kind, id }: { kind?: string; id?: string }) {
+export function Preview({ kind, id, beat }: { kind?: string; id?: string; beat?: number }) {
   const [seed, setSeed] = useState(1);
   if (kind === 'lesson' && id && lessons[id]) {
     const region = regions.find(
@@ -86,6 +86,7 @@ export function Preview({ kind, id }: { kind?: string; id?: string }) {
         scene={region?.scene ?? 'village'}
         firstTime
         dry
+        start={beat}
         onQuit={() => go('/preview')}
         onFinish={() => go('/preview')}
       />

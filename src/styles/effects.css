@@ -486,3 +486,12 @@
     width: 72px;
   }
 }
+
+@keyframes waddle {
+  from {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(4deg);
+  }
+}

@@ -177,7 +177,7 @@ export function claimChest(p: Profile, rng = new Rng()): { gold: number; item: s
   if (!qd || qd.chest || !qd.list.every((q) => q.claimed)) return null;
   qd.chest = true;
   const pool = items.filter(
-    (i) => i.drop > 0 && ['food', 'toy', 'care', 'potion'].includes(i.kind),
+    (i) => i.drop > 0 && !i.from && ['food', 'toy', 'care', 'potion'].includes(i.kind),
   );
   const it = rng.weighted(pool, (x) => x.drop);
   const gold = rng.int(30, 50);

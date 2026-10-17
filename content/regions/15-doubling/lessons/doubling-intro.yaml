@@ -1,0 +1,32 @@
+id: doubling-intro
+title: No Refunds
+beats:
+  - type: narrate
+    text: >-
+      Below the cellar, a stone door. Someone has painted on it: "DOUBLING DUNGEON — NO REFUNDS —
+      NO TAKE-BACKS — NO HALVES". Underneath, smaller: "ok maybe halves".
+  - type: say
+    who: dm
+    text: >-
+      In this dungeon, everything comes in doubles. Two torches. Four rats. Eight bats. Sixteen
+      complaints from the bats about the rats.
+  - type: say
+    who: thog
+    text: Thog like doubles. Thog have two arms. Thog have two legs. Thog have one brain. Thog want two.
+  - type: say
+    who: barry
+    text: >-
+      ♪ Double it once, it's times two, double again, it's times four! ♪ Ooh. Wait. That's actually
+      true. I'm as surprised as you are.
+  - type: choose
+    who: dm
+    text: A sign says "Double the torches, double the fun". The corridor ahead is dark. What do you do?
+    options:
+      - { text: Light both torches, reply: "Two torches! Four shadows! The shadows wave at you. That's not normal, but it's fine." }
+      - { text: Ask Thog to go first, reply: "THOG GO FIRST. Thog always go first. Thog walk into wall. Thog fine.", who: thog }
+      - { text: Read the small print, reply: "Small print says: 'beware of the Hydra'. Smaller print says: 'the Hydra is lovely really'. Even smaller print: 'no it isn't'." }
+  - type: say
+    who: dm
+    text: >-
+      Somewhere ahead, something with several heads is arguing with itself. Let's go and make it
+      worse.

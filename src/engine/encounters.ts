@@ -99,7 +99,8 @@ export interface Loot {
 export function rollLoot(rng: Rng, tier: number, level = 1): Loot {
   const gold = rng.int(5, 10) * tier + rng.int(0, 3);
   const out: Loot = { gold, items: {} };
-  const pool = items.filter((i) => i.drop > 0 && i.level <= level + 2);
+  // Region souvenirs (`from`) only come from that region (expeditions), never from random loot.
+  const pool = items.filter((i) => i.drop > 0 && !i.from && i.level <= level + 2);
   const rolls = tier >= 3 ? 2 : 1;
   for (let i = 0; i < rolls; i++) {
     if (!rng.chance(tier >= 3 ? 1 : 0.45)) continue;

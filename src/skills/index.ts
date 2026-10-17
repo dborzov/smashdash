@@ -27,6 +27,20 @@ import {
 } from './placevalue';
 import { estimate, pow10Places, roundBig, roundRange, roundSmall } from './rounding';
 import { decCompare, decPlaces, decRound, decShift, decWrite } from './decimals';
+import {
+  arrays,
+  bigTables,
+  doubles,
+  factFamilies,
+  fivesTens,
+  nines,
+  quickFacts,
+  skipCount,
+  splitFacts,
+  squareNums,
+  tablePatterns,
+  turnaround,
+} from './tables';
 
 export const generators: Record<string, Generator> = {
   notation,
@@ -88,6 +102,19 @@ export const generators: Record<string, Generator> = {
   'dec-compare': decCompare,
   'dec-shift': decShift,
   'dec-round': decRound,
+  // Dungeons & Times Tables
+  arrays,
+  turnaround,
+  'skip-count': skipCount,
+  doubles,
+  'fives-tens': fivesTens,
+  nines,
+  'square-nums': squareNums,
+  'split-facts': splitFacts,
+  'fact-families': factFamilies,
+  'table-patterns': tablePatterns,
+  'big-tables': bigTables,
+  'quick-facts': quickFacts,
 };
 
 /** Difficulty tier from mastery in [0, 1]. */

@@ -6,15 +6,11 @@ import type { ComponentChildren } from 'preact';
 import type { Profile } from '../../engine/profile';
 import type { EncounterSpec } from './spec';
 import { Avatar } from '../../art/Avatar';
-import { MonsterArt } from '../../art/Monster';
-import { Muddler } from '../../art/Portrait';
-import { DarkFoeArt, type DarkFoe } from '../../art/Dark';
+import { FoeArt } from '../../art/Foe';
 import { PetArt } from '../../art/Pet';
 import { petMood } from '../../engine/pet';
 import { Bar } from '../components/Bits';
 import { BridgeArt, ChestArt, RescueArt, SiegeArt, VaultArt } from './GameArt';
-
-const DARK_ARTS = ['hollow', 'wraith', 'tallyman', 'forger', 'golem', 'rider'];
 
 export interface FloatFx {
   id: number;
@@ -54,7 +50,6 @@ export function Arena({
   cheer: boolean;
   pet: Profile['pet'];
 }) {
-  const art = spec.monster?.art;
   const hurt = stage === 'won';
   const foe =
     spec.game === 'chest' ? (
@@ -63,12 +58,8 @@ export function Arena({
       <VaultArt total={total} done={done} alarms={hp - hearts} ring={foeAnim === 'anim-hit'} />
     ) : spec.game === 'rescue' ? (
       <RescueArt total={total} done={done} zap={heroAnim === 'anim-hit'} />
-    ) : art === 'muddler' ? (
-      <Muddler />
-    ) : art && DARK_ARTS.includes(art) ? (
-      <DarkFoeArt art={art as DarkFoe} seed={spec.monster!.seed} hue={spec.monster!.hue} boss={!!spec.boss} hurt={hurt} />
     ) : spec.monster ? (
-      <MonsterArt seed={spec.monster.seed} hue={spec.monster.hue} boss={!!spec.boss} hurt={hurt} />
+      <FoeArt m={spec.monster} boss={!!spec.boss} hurt={hurt} />
     ) : null;
 
   const heroArt = (

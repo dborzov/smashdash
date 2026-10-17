@@ -1,0 +1,56 @@
+id: elevens-twelves
+title: Elevens and Twelves
+skill: big-tables
+beats:
+  - type: say
+    who: barry
+    text: >-
+      ♪ Eleven times three is thirty-three! Eleven times four is forty-four! ♪ The elevens just write
+      the number twice! ♪ It's the easiest song I know!
+  - type: say
+    who: dm
+    text: >-
+      Barry's right — for once — up to 9. $11 \times 7 = 77$. Why? Because 11 sevens is ten sevens
+      (70) plus one seven (7): 77.
+  - type: input
+    who: thog
+    text: "Thog try. $11 \\times 6$?"
+    answer: 66
+    atom: x11
+    nudges:
+      - { value: 17, text: "Times, not plus! Ten sixes and one more six." }
+      - { value: 116, text: "Don't glue 11 and 6 — it's 6 written twice." }
+    explain: "$11 \\times 6 = 60 + 6 = 66$."
+  - type: say
+    who: barry
+    text: ♪ Eleven times twelve is… one-twelve-twelve? ♪ Hmm. That doesn't sound like a number.
+  - type: say
+    who: dm
+    text: >-
+      The trick breaks after 9 — so do it properly: $11 \times 12$ is ten twelves (120) plus one
+      twelve: 132.
+  - type: play
+    who: dm
+    text: "And the twelves: twelve is ten and two. Work out $12 \\times 7$."
+    widget:
+      kind: chain
+      steps:
+        - { tex: '10 \times 7 = \box', answer: 70 }
+        - { tex: '2 \times 7 = \box', answer: 14 }
+        - tex: '70 + 14 = \box'
+          answer: 84
+          nudges: [{ value: 72, text: "The 2 multiplies the 7: $2 \\times 7 = 14$." }]
+          note: "$12 \\times 7 = 84$."
+    done: "Ten sevens plus two sevens. Twelves are just tens wearing a hat."
+  - type: input
+    who: dm
+    text: "What is $11 \\times 12$?"
+    answer: 132
+    atom: x11-big
+    nudges:
+      - { value: 1212, text: "The 'write it twice' trick only works up to 9! Ten twelves plus one twelve." }
+      - { value: 23, text: "Times, not plus!" }
+    explain: "$11 \\times 12 = 120 + 12 = 132$."
+  - type: practice
+    skill: big-tables
+    count: 4

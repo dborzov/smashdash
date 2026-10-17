@@ -1,0 +1,76 @@
+id: gem-shelves
+title: Gem Shelves
+skill: arrays
+beats:
+  - type: say
+    who: dm
+    text: >-
+      The innkeeper, Old Moll, keeps her gems on shelves behind the bar. Thieves keep stealing
+      them, because nobody can count them fast enough to notice.
+  - type: show
+    who: dm
+    text: Four shelves, seven gems on each. Neat rows like this are called an **array**.
+    widget: { kind: array, rows: 4, cols: 7 }
+  - type: say
+    who: thog
+    text: >-
+      Thog count! One, two, three… twenty-eight. That took Thog all morning. Thog had a nap in the
+      middle.
+  - type: say
+    who: dm
+    text: >-
+      Faster way: one shelf has 7. There are 4 shelves. So it's **4 lots of 7**:
+      $7 + 7 + 7 + 7$. And "4 lots of 7" has a short name: $4 \times 7$.
+  - type: ask
+    who: dm
+    text: An array has **5 rows** with **3 gems** in each row. Which sum counts it?
+    widget: { kind: array, rows: 5, cols: 3 }
+    options: ['$5 \times 3$', '$5 + 3$', '$53$']
+    correct: 0
+    atom: not-plus
+    nudges:
+      "1": "Plus would mean 5 gems and 3 more gems. There are 5 **rows** of 3."
+      "2": "That's the digits glued together — a much bigger number!"
+    explain: "5 rows of 3: $3 + 3 + 3 + 3 + 3 = 5 \\times 3 = 15$."
+  - type: play
+    who: barry
+    text: >-
+      ♪ Moll wants twenty gems on four shelves, the same on every shelf! ♪ Drag across the grid to
+      make it.
+    widget: { kind: array, mode: build, rows: 4, cols: 5, target: 20, fixRows: true }
+    done: "4 shelves of 5: $4 \\times 5 = 20$. Moll gives you a free pickled egg. You didn't want it."
+  - type: input
+    who: thog
+    text: Thog sees 6 shelves with 8 gems on each. How many gems?
+    widget: { kind: array, rows: 6, cols: 8 }
+    answer: 48
+    atom: count
+    nudges:
+      - { value: 14, text: "That's $6 + 8$. There are 6 **rows** of 8." }
+      - { value: 8, text: "That's one shelf. There are 6 of them!" }
+      - { value: 40, text: "Count the shelves again — 6, not 5." }
+    hint: "$8 + 8 = 16$, $16 + 16 = 32$, and two more shelves…"
+    explain: "6 rows of 8: $6 \\times 8 = 48$."
+  - type: say
+    who: dm
+    text: >-
+      Arrays work backwards too. If 24 gems sit on shelves of 6, how many shelves? Ask yourself:
+      **how many 6s make 24?**
+  - type: input
+    who: dm
+    text: "$\\box$ shelves of 6 make 24. How many shelves?"
+    math: '\box \times 6 = 24'
+    answer: 4
+    atom: missing-rows
+    nudges:
+      - { value: 18, text: "That's $24 - 6$. How many 6s fit in 24? 6, 12, …" }
+      - { value: 144, text: "That's multiplying. We know the total — count up in 6s." }
+    explain: "$4 \\times 6 = 24$, so 4 shelves."
+  - type: practice
+    skill: arrays
+    count: 4
+  - type: say
+    who: thog
+    text: >-
+      Thog get it. Rows TIMES gems. Thog will never count on fingers again. …Thog will still count
+      on toes. Toes are different.

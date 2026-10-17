@@ -1,0 +1,15 @@
+id: squares-outro
+title: Fair and Square
+beats:
+  - type: narrate
+    text: The Squareholder blinks forty-nine tearful eyes and rolls (squarely) out of the way.
+  - type: say
+    who: thog
+    text: >-
+      Thog know squares. Thog know splits. Thog know families. Thog… is ready. Thog does not know
+      for what. But Thog is ready.
+  - type: say
+    who: dm
+    text: >-
+      One level left: the Grid of 144 Rooms. The whole times table, as a map. And at the end of it —
+      the final boss. I've got a really good one. You'll never guess who.

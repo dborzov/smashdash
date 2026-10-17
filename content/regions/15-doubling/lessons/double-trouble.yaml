@@ -1,0 +1,60 @@
+id: double-trouble
+title: Double Trouble
+skill: doubles
+beats:
+  - type: say
+    who: dm
+    text: >-
+      Rule one of the dungeon: **times 2 means double**. Two lots of something. $2 \times 17$ is
+      just $17 + 17$.
+  - type: input
+    who: thog
+    text: Thog has 16 gold. A mimic doubles it (for once, a nice mimic). How much now?
+    answer: 32
+    atom: double
+    nudges:
+      - { value: 18, text: "Doubling isn't adding 2. It's two lots of 16: $16 + 16$." }
+      - { value: 1616, text: "That's 16 written twice! Add them: $16 + 16$." }
+    explain: "$16 + 16 = 32$."
+  - type: say
+    who: dm
+    text: >-
+      Now the clever bit. What's $4 \times 7$? Don't count fours! **Double, then double again**:
+      7 → 14 → 28. Four is two twos.
+  - type: play
+    who: dm
+    text: Double the gem shelf and watch it grow — once, twice, three times.
+    widget: { kind: array, mode: double, rows: 1, cols: 6, times: 3 }
+    done: "One row of 6 → 2 rows → 4 rows → 8 rows: $8 \\times 6 = 48$. Three doublings make **times 8**."
+  - type: play
+    who: barry
+    text: "♪ Now YOU do the doubling, I'll do the singing! ♪ Work out $4 \\times 9$, one double at a time."
+    widget:
+      kind: chain
+      steps:
+        - { tex: '9 \times 2 = \box', answer: 18, nudges: [{ value: 11, text: "Double means $9 + 9$, not $9 + 2$." }] }
+        - { tex: '18 \times 2 = \box', answer: 36, say: "That was $2 \\times 9$. Now double **that**.", note: "Double-double: $4 \\times 9 = 36$." }
+    done: "$9 \\to 18 \\to 36$. No fours were counted in the making of this answer."
+  - type: ask
+    who: dm
+    text: "Which is the quick way to do $8 \\times 7$?"
+    options: ["Double 7 three times: 14, 28, 56", "Double 7 eight times", "Add 8 and 7, then double"]
+    correct: 0
+    atom: x8
+    nudges:
+      "1": "Eight doublings would be enormous! $2 \\times 2 \\times 2 = 8$, so three doublings are enough."
+      "2": "Adding first gives a totally different number. Times 8 is three doublings."
+    explain: "$\\times 2 \\times 2 \\times 2 = \\times 8$: 7 → 14 → 28 → 56."
+  - type: input
+    who: thog
+    text: Halving is doubling backwards. Thog has 58 gold to share with Barry. Fair shares. How much each?
+    answer: 29
+    atom: halve
+    nudges:
+      - { value: 56, text: "That's taking 2 away. Halving splits it into two equal piles." }
+      - { value: 116, text: "That's doubling! Halving goes the other way." }
+    hint: "Half of 50 is 25, half of 8 is 4."
+    explain: "Half of 58: $25 + 4 = 29$. Barry spends his on a new lute string. It's out of tune."
+  - type: practice
+    skill: doubles
+    count: 4

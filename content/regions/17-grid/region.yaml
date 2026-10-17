@@ -1,0 +1,106 @@
+id: grid
+order: 17
+name: The Grid of 144 Rooms
+tagline: The whole times table, as one enormous dungeon. Row 7, column 8 is a room. Guess what's in it.
+campaign: tables
+topic: 'Patterns in the times table, $\times 11$ and $\times 12$, and the whole table at speed'
+added: '2026-10-17'
+scene: gridroom
+map: { x: 82, y: 40 }
+requires: [squares]
+palette: { sky: ["#05101e", "#1a4a7a"], accent: "#7dd3fc", ground: "#0e2238" }
+outro: grid-outro
+monsters:
+  - { name: Room Guardian, seed: 171, hue: 200, taunts: ["This room is 6 by 8. You may not pass unless you know what that means.", "None shall pass! (Unless they can multiply.)"] }
+  - { name: Corridor Ghoul, seed: 172, hue: 120, taunts: ["I've been lost in here since the 12s. Help me?", "Boo! …Sorry. Habit."] }
+  - { name: Dice Goblin, seed: 173, hue: 50, taunts: ["I rolled a twelve! Times a twelve! A HUNDRED AND FORTY-FOUR!", "Roll, roll, roll!"] }
+path:
+  - id: intro
+    type: story
+    title: The Map Is the Territory
+    lesson: grid-intro
+  - id: pattern-detective
+    type: lesson
+    title: Pattern Detective
+    lesson: pattern-detective
+  - id: room-guard
+    type: encounter
+    title: The Room Guardian
+    game: battle
+    skills: [table-patterns, fact-families]
+    count: 5
+    monster: { name: Room Guardian, seed: 171, hue: 200, taunts: ["None shall pass!", "This room is worth 24. Find its twins!"] }
+  - id: elevens-twelves
+    type: lesson
+    title: Elevens and Twelves
+    lesson: elevens-twelves
+  - id: dice-chest
+    type: encounter
+    title: The Dice Goblin's Chest
+    game: chest
+    skills: [big-tables, table-patterns]
+    count: 6
+  - id: quick-draw-school
+    type: lesson
+    title: Quick Draw School
+    lesson: quick-draw-school
+  - id: ghoul-duel
+    type: encounter
+    title: High Noon in Room 144
+    game: duel
+    skills: [quick-facts]
+    count: 8
+    monster: { name: Corridor Ghoul, seed: 172, hue: 120, taunts: ["Draw! …please? I'm lonely.", "Boo! Seven eights!"] }
+  - id: grid-bridge
+    type: encounter
+    title: The Bridge over Row 12
+    game: bridge
+    skills: [quick-facts, big-tables, table-patterns]
+    count: 8
+  - id: boss
+    type: boss
+    title: The Dungeon Master
+    monster: { name: The Dungeon Master, seed: 1701, hue: 270, art: dm }
+    intro:
+      - "So. You've reached the end of my dungeon. Congratulations. Now for the twist: the final boss… is ME."
+      - "I'm tired of you doing maths in my fantasy game! Fourteen sessions! I had a DRAGON planned! A whole betrayal arc!"
+      - "I have the Dungeon Master's Screen of +5 Everything and a bag of dice. Prepare to be RAILROADED."
+    phases:
+      - { skills: [table-patterns, fact-families], count: 3, taunt: "Odd times odd! Even times anything! I know the RULES, I wrote the RULES!" }
+      - { skills: [big-tables, split-facts], count: 3, taunt: "Twelve times twelve! A hundred and forty-four! That's how many rooms I had to draw BY HAND!" }
+      - { skills: [quick-facts], count: 5, taunt: "Speed round! I'll roll the dice faster than you can think! …Ow. I dropped one. It's under the sofa." }
+    defeat: "Fine. FINE. You win. You know the whole table. I'll… I'll write a dragon into the NEXT campaign. Same time next week?"
+ranks:
+  - rank: 2
+    story: grid-r2
+    boss:
+      name: The Dungeon Master (With Snacks)
+      intro:
+        - "Round two. This time I've prepared. I have crisps. I have a fizzy drink. I have a NEW screen. It's cardboard, but it's THICKER cardboard."
+        - "And I've hired a bard. Barry! Tell them the answers. Wrongly."
+      taunts:
+        - "Patterns! The nines add up to nine! Did you know? Of course you knew. Stop knowing things."
+        - "Eleven times twelve! A hundred and… let me check my notes…"
+        - "Quick! Quicker! I'm eating crisps at you!"
+        - "EVERYTHING AT ONCE! THIS IS MY FINAL FORM! Well. Penultimate."
+      defeat: "I'm out of crisps. That's how you know I've really lost."
+    nodes:
+      - { id: map-room, type: encounter, title: The Map Room, game: vault, skills: [table-patterns, quick-facts], count: 7 }
+  - rank: 3
+    story: grid-r3
+    boss:
+      name: The Dungeon Master's Mum
+      hue: 330
+      intro:
+        - "DAVID. Is this what you've been doing every Saturday? Making children do times tables in a pretend dungeon?"
+        - "…Actually, that's quite nice. But you said you'd tidy your room. Hero — help me tidy. Quickly. Correctly."
+      taunts:
+        - "Odd socks with odd socks! Even socks with even socks! Patterns, David!"
+        - "Twelve dirty plates, eleven dirty cups. How many dirty things? Don't make me count."
+        - "Quick! Before your father gets home!"
+        - "And the CRISP PACKETS! ALL OF THEM!"
+      defeat: "There. A tidy room AND you know your tables. Have a biscuit. David, you can have one too. Just one."
+treasures:
+  - { item: dm-crisps, rank: 2 }
+  - { item: dm-screen, rank: 3 }
+  - { item: cape-of-144, flawless: 5 }

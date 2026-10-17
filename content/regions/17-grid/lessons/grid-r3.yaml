@@ -1,0 +1,27 @@
+id: grid-r3
+title: "Legendary: David"
+beats:
+  - type: narrate
+    text: >-
+      The **Legendary** run. A door you've never seen before swings open. Light floods in. A voice
+      calls: "DAVID! Who are all these people in your room?"
+  - type: say
+    who: dm
+    text: >-
+      Oh no. Oh no no no. That's my mum. You can't — this isn't — I'm the DUNGEON MASTER. I'm in
+      charge of the DUNGEON. She's in charge of… the HOUSE.
+  - type: say
+    who: thog
+    text: Thog did not know Dungeon Master has name. Thog did not know Dungeon Master has MUM. Thog's world is changing.
+  - type: say
+    who: barry
+    text: ♪ The Dungeon Master's name is Dave! ♪ This is the best day of my life.
+  - type: input
+    who: dm
+    text: "Quick — she's counting crisp packets. 12 piles of 9. How many packets? (Use the nine trick!)"
+    answer: 108
+    nudges:
+      - { value: 21, text: "Times, not plus! Twelve nines." }
+      - { value: 119, text: "Ten twelves is 120, minus one twelve — not one 1." }
+    hint: "$9 \\times 12 = 10 \\times 12 - 12$."
+    explain: "$12 \\times 9 = 120 - 12 = 108$. That's a lot of crisps, David."

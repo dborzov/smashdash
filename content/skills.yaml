@@ -696,3 +696,138 @@
     - { id: hundredth, name: 'Round to the nearest hundredth' }
     - { id: half, name: 'Exactly halfway rounds up (2.45 → 2.5)' }
     - { id: nines, name: 'The ripple: 2.96 → 3.0' }
+
+# ---- Dungeons & Times Tables -------------------------------------------------
+- id: arrays
+  name: Gem Grids
+  region: tavern
+  icon: "💎"
+  summary: "Rows × columns: 4 rows of 7 gems is 4 × 7 = 28."
+  requires: []
+  atoms:
+    - { id: count, name: 'Count an array: $r$ rows of $c$ is $r \times c$' }
+    - { id: repeat, name: '$7 + 7 + 7 + 7 = 4 \times 7$' }
+    - { id: not-plus, name: '4 rows of 7 is $4 \times 7$, not $4 + 7$' }
+    - { id: build, name: 'Arrange gems into equal rows' }
+    - { id: missing-rows, name: '$\box$ rows of 6 make 30' }
+- id: turnaround
+  name: Turn It Around
+  region: tavern
+  icon: "🔄"
+  summary: "3 × 8 = 8 × 3: turn the array round, same gems. Half the table for free."
+  requires: [arrays]
+  atoms:
+    - { id: swap, name: '$a \times b = b \times a$' }
+    - { id: easier, name: 'Pick the easier way round ($9 \times 2$ is double 9)' }
+    - { id: mirror, name: 'The times table is a mirror across its diagonal' }
+    - { id: not-minus, name: 'Turnaround works for $\times$ and $+$, not $-$ or $\div$' }
+- id: skip-count
+  name: Frog Hops
+  region: tavern
+  icon: "🐸"
+  summary: "Count in 3s, 6s, 7s: the n-th hop lands on n × the hop."
+  requires: [arrays]
+  atoms:
+    - { id: next, name: 'The next landing when counting in 3s, 4s, 6s…' }
+    - { id: nth, name: 'The 6th hop of 7 lands on $6 \times 7$' }
+    - { id: missing, name: 'Fill the gap: 21, 28, $\box$, 42' }
+    - { id: on-path, name: 'Is it a landing? (in the times table)' }
+- id: doubles
+  name: Double Trouble
+  region: doubling
+  icon: "✌️"
+  summary: "× 2 is double. × 4 is double-double. × 8 is double-double-double."
+  requires: [arrays]
+  atoms:
+    - { id: double, name: 'Double it: $2 \times 17 = 34$' }
+    - { id: x4, name: '$\times 4$: double, then double again' }
+    - { id: x8, name: '$\times 8$: double three times' }
+    - { id: halve, name: 'Halve it: half of 56 is 28' }
+- id: fives-tens
+  name: High Fives
+  region: doubling
+  icon: "🖐️"
+  summary: "× 10 moves every digit up a place. × 5 is half of × 10."
+  requires: [doubles]
+  atoms:
+    - { id: x10, name: '$\times 10$: digits move up a place, a zero holds the ones' }
+    - { id: x5-half, name: '$\times 5$ is half of $\times 10$' }
+    - { id: ends, name: 'The 5s always end in 5 or 0' }
+    - { id: odd, name: 'Odd $\times 5$: $7 \times 5 = 70 \div 2 = 35$' }
+- id: nines
+  name: The Nine Trick
+  region: doubling
+  icon: "9️⃣"
+  summary: "9 × 7 = 10 × 7 − 7. And the digits of a nines answer add up to 9."
+  requires: [fives-tens]
+  atoms:
+    - { id: ten-minus, name: '$9 \times n = 10 \times n - n$' }
+    - { id: tens-digit, name: '$9 \times 7$: the tens digit is $7 - 1$' }
+    - { id: digit-sum, name: 'The digits of $9 \times n$ add to 9' }
+    - { id: spot, name: 'Spot a fake nines fact' }
+- id: square-nums
+  name: Perfect Squares
+  region: squares
+  icon: "🟥"
+  summary: "n × n makes a square: 1, 4, 9, 16… each new layer is an odd number."
+  requires: [turnaround]
+  atoms:
+    - { id: shape, name: '$5 \times 5$ makes a square' }
+    - { id: know, name: 'Know the squares up to $12 \times 12$' }
+    - { id: odd-layers, name: 'Next square = this square + an odd number' }
+    - { id: not-double, name: '$6^2$ is $6 \times 6$, not $6 \times 2$' }
+    - { id: is-square, name: 'Spot which numbers are squares' }
+- id: split-facts
+  name: Break It Down
+  region: squares
+  icon: "🔨"
+  summary: "Turn a hard fact into easy ones: 7 × 6 = 5 × 6 + 2 × 6."
+  requires: [square-nums, fives-tens]
+  atoms:
+    - { id: split-five, name: '$7 \times 6 = 5 \times 6 + 2 \times 6$' }
+    - { id: one-more, name: 'One more group: $7 \times 8 = 7 \times 7 + 7$' }
+    - { id: one-less, name: 'One less group: $6 \times 9 = 6 \times 10 - 6$' }
+    - { id: split-ten, name: '$12 \times 7 = 10 \times 7 + 2 \times 7$' }
+- id: fact-families
+  name: Fact Families
+  region: squares
+  icon: "👪"
+  summary: "6 × 7 = 42, so 42 ÷ 7 = 6. Find the missing number; share fairly."
+  requires: [split-facts]
+  atoms:
+    - { id: missing, name: '$\box \times 7 = 42$' }
+    - { id: divide, name: '$42 \div 7$: how many 7s fit in 42?' }
+    - { id: family, name: 'Four facts from one array' }
+    - { id: share, name: 'Share 56 gold between 8 goblins' }
+- id: table-patterns
+  name: Pattern Detective
+  region: grid
+  icon: "🕵️"
+  summary: "Odd × odd is odd, the 4s end 4, 8, 2, 6, 0, and 24 lives in four rooms."
+  requires: [fact-families]
+  atoms:
+    - { id: odd-even, name: 'Odd $\times$ odd is odd; anything $\times$ even is even' }
+    - { id: last-digit, name: 'Last digits repeat: the 4s end 4, 8, 2, 6, 0' }
+    - { id: rooms, name: 'Every room worth 24 ($3 \times 8$, $4 \times 6$…)' }
+    - { id: impossible, name: 'Why 27 is never in the 4s' }
+- id: big-tables
+  name: Elevens & Twelves
+  region: grid
+  icon: "🔢"
+  summary: "11 × 7 = 77, 11 × 12 = 132, and 12 × 7 = 10 × 7 + 2 × 7."
+  requires: [split-facts]
+  atoms:
+    - { id: x11, name: '$11 \times n$ up to 9: the digit twice' }
+    - { id: x11-big, name: '$11 \times 12 = 120 + 12$' }
+    - { id: x12, name: '$12 \times n = 10 \times n + 2 \times n$' }
+- id: quick-facts
+  name: Quick Draw
+  region: grid
+  icon: "⚡"
+  summary: "The whole table, fast — and the infamous ones (7 × 8!) until they stick."
+  requires: [table-patterns, big-tables, nines]
+  atoms:
+    - { id: easy, name: '$\times 2$, $\times 5$, $\times 10$' }
+    - { id: middle, name: '$\times 3$, $\times 4$, $\times 9$, $\times 11$' }
+    - { id: tricky, name: '$\times 6$, $\times 7$, $\times 8$, $\times 12$' }
+    - { id: infamous, name: 'The infamous six: $6 \times 7$, $6 \times 8$, $6 \times 9$, $7 \times 8$, $7 \times 9$, $8 \times 9$' }
