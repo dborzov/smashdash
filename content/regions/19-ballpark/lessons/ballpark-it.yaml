@@ -1,0 +1,48 @@
+id: ballpark-it
+title: Ballpark It
+skill: round-estimate
+beats:
+  - type: say
+    who: ballpark
+    text: >-
+      My secret move: **round first**. Turn each number into its first digit and zeros. 389
+      becomes 400. 21 becomes 20. Then the sum is easy.
+  - type: play
+    who: ballpark
+    text: "Do $389 \\times 21$ my way."
+    widget:
+      kind: chain
+      steps:
+        - { tex: '389 \approx \box', answer: 400, say: "Round 389 to its first digit.", nudges: [{ value: 300, text: "389 is nearer 400 than 300." }] }
+        - { tex: '21 \approx \box', answer: 20 }
+        - tex: '400 \times 20 = \box'
+          answer: 8000
+          say: "Multiply the front digits: $4 \\times 2 = 8$. Then count the zeros: two and one."
+          nudges: [{ value: 800, text: "Count the zeros again: 400 has two, 20 has one — three zeros." }]
+          note: "About 8,000. (Exactly: 8,169. Close enough to save a city.)"
+    done: "Four seconds. Doctor Exactly is still carrying the one."
+  - type: say
+    who: tenfold
+    text: Rounding also catches mistakes. If someone says 389 × 21 = 81,690, your 8,000 says "that's ten times too big!"
+  - type: ask
+    who: exactly
+    text: "I calculated $612 \\times 48 = 2{,}937{,}600$. EXACTLY. Is that reasonable?"
+    options: ['No — it should be about 30,000', 'Yes, he is a doctor', 'No — it should be about 3,000']
+    correct: 0
+    atom: sanity
+    nudges:
+      "1": "Doctors can slip! $600 \\times 50 = 30{,}000$. His answer is way too big."
+      "2": "Count the zeros: $600 \\times 50 = 30{,}000$."
+    explain: "$612 \\times 48 \\approx 600 \\times 50 = 30{,}000$. He has two zeros too many. (It's 29,376.)"
+  - type: input
+    who: ballpark
+    text: "About how much is $5{,}980 \\div 31$? Round to friendly numbers: $6{,}000 \\div 30$."
+    answer: 200
+    atom: div-est
+    nudges:
+      - { value: 2000, text: "Check: $30 \\times 2{,}000$ is way more than 6,000." }
+      - { value: 20, text: "Check: $30 \\times 20 = 600$. Too small." }
+    explain: "$6{,}000 \\div 30 = 200$, because $30 \\times 200 = 6{,}000$."
+  - type: practice
+    skill: round-estimate
+    count: 4

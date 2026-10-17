@@ -1,0 +1,106 @@
+id: hq
+order: 18
+name: "Hero HQ: The Zoom Room"
+tagline: The headquarters of the Order of Magnitude, the world's most okay superhero team. You're the new intern.
+campaign: magnitude
+topic: 'How big things are, from atoms to galaxies: powers of ten, zoom levels and units'
+added: '2026-10-17'
+scene: hq
+map: { x: 22, y: 60 }
+requires: []
+palette: { sky: ["#0a1a3a", "#2b6ad6"], accent: "#5ec8ff", ground: "#1a2a4a" }
+outro: hq-outro
+monsters:
+  - { name: Minion of Many Digits, seed: 181, hue: 210, taunts: ["I've got SEVEN digits! Count them! No, slower!", "One million, two hundred and — wait, where was I?"] }
+  - { name: Henchbot 3000, seed: 182, hue: 190, taunts: ["BEEP. YOUR SIZE IS: WRONG. BEEP.", "I AM 3,000 TIMES BETTER. OR 3. ROUNDING."] }
+  - { name: Ruler Gremlin, seed: 183, hue: 40, taunts: ["Is it 3 cm or 3 km? WHO CARES! Hee hee!", "I eat millimetres for breakfast!"] }
+path:
+  - id: intro
+    type: story
+    title: Welcome, Intern
+    lesson: hq-intro
+  - id: scale-ladder
+    type: lesson
+    title: The Scale Ladder
+    lesson: scale-ladder
+  - id: cat-up-a-tree
+    type: encounter
+    title: Cat Up a Tree (a Very Tall Tree)
+    game: rescue
+    skills: [size-sense]
+    count: 5
+    monster: { name: Henchbot 3000, seed: 182, hue: 190 }
+  - id: zoom-levels
+    type: lesson
+    title: Zoom Levels
+    lesson: zoom-levels-lesson
+  - id: digit-minion
+    type: encounter
+    title: The Minion of Many Digits
+    game: battle
+    skills: [zoom-levels, size-sense]
+    count: 6
+    monster: { name: Minion of Many Digits, seed: 181, hue: 210, taunts: ["SEVEN DIGITS!", "Ten to the what now?"] }
+  - id: unit-hopper
+    type: lesson
+    title: Unit Hopper
+    lesson: unit-hopper
+  - id: gremlin-chest
+    type: encounter
+    title: The Gremlin's Toolbox
+    game: chest
+    skills: [unit-hop, zoom-levels]
+    count: 6
+  - id: sky-bridge
+    type: encounter
+    title: The Sky Bridge
+    game: bridge
+    skills: [size-sense, zoom-levels, unit-hop]
+    count: 7
+  - id: boss
+    type: boss
+    title: The Unit Confuser
+    monster: { name: The Unit Confuser, seed: 1801, hue: 30, art: confuser }
+    intro:
+      - "Mwahaha! I am the UNIT CONFUSER! I have swapped every millimetre in this city for a kilometre!"
+      - "The Mayor ordered a 2-metre statue. He's getting a 2-KILOMETRE statue. It's on its way. It's blocking the sun."
+      - "Doctor Exactly pays me by the unit. Which unit? NOBODY KNOWS!"
+    phases:
+      - { skills: [size-sense], count: 3, taunt: "Is a whale 27 metres or 27 millimetres? Think how cute a 27-millimetre whale would be!" }
+      - { skills: [zoom-levels, size-sense], count: 3, taunt: "Ten to the four! Ten to the forty! What's the difference? (Thirty-six zooms. Don't tell anyone.)" }
+      - { skills: [unit-hop, zoom-levels], count: 3, taunt: "One kilogram is one gram! One kilometre is one metre! KILO IS JUST A WORD!" }
+    defeat: "Nooo! You put the units back! The statue is shrinking! It's… 2 metres. It's quite nice actually."
+ranks:
+  - rank: 2
+    story: hq-r2
+    boss:
+      name: The Unit Confuser (Imperial Edition)
+      intro:
+        - "I'm back! And this time I've brought FEET. And INCHES. And a FURLONG. Nobody knows what a furlong is!"
+        - "…Fine, the website says metric only. I'll just confuse your metric HARDER."
+      taunts:
+        - "A flea is the size of a bus! A bus is the size of a flea! Ha!"
+        - "Ten to the nine or ten to the six? Three zooms? Who's counting? (You. You're counting.)"
+        - "A thousand grams in a kilogram? I say it's a hundred! And I say it LOUDLY!"
+        - "ALL THE UNITS AT ONCE! Millikilometres! Centigrams-per-furlong!"
+      defeat: "Curses! Measured, and found wanting. Exactly 1.4 metres of wanting."
+    nodes:
+      - { id: gremlin-vault, type: encounter, title: The Gremlin's Vault, game: vault, skills: [unit-hop, size-sense], count: 6 }
+  - rank: 3
+    story: hq-r3
+    boss:
+      name: The Unit Confuser's Evil Twin, Bob
+      hue: 280
+      intro:
+        - "I'm Bob. The Unit Confuser's evil twin. Yes, he was already evil. I'm evil-er. By about a factor of ten."
+        - "I don't confuse units. I confuse ZEROS. Ten thousand? Or ten million? Mwahaha. Mwahahahahaha. That's three more ha's."
+      taunts:
+        - "An ant is a hundred metres long! A mountain fits in your pocket!"
+        - "Ten to the five, ten to the seven, same thing really!"
+        - "Kilo, mega, giga, whatever!"
+        - "ALL OF THEM! Take THAT, intern!"
+      defeat: "Hmm. You really know your zeros. Fine. I'll go and confuse something easier. Like Thursdays."
+treasures:
+  - { item: hero-bar, rank: 2 }
+  - { item: zoom-lens, rank: 3 }
+  - { item: star-mask, flawless: 5 }

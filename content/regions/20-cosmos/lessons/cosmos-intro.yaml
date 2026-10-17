@@ -1,0 +1,38 @@
+id: cosmos-intro
+title: Ten Zooms Up
+beats:
+  - type: narrate
+    text: >-
+      Captain Tenfold grows. And grows. Ten times, ten times, ten times. The city becomes a dot.
+      The Earth becomes a marble. You're riding on his shoulder in a space helmet made from a
+      goldfish bowl.
+  - type: say
+    who: tenfold
+    text: >-
+      INTERN! I'm now about $10^{8}$ metres tall! That's more than twenty thousand kilometres!
+      I can see my house! It's very small! Everything is very small!
+  - type: say
+    who: kevin
+    text: >-
+      And I went the other way! I'm $10^{-8}$ metres! I'm the size of a virus! A virus just
+      waved at me! I waved back! Is that rude? I don't know virus manners!
+  - type: say
+    who: ballpark
+    text: >-
+      Out here the numbers get huge — so we stop writing zeros and start doing maths with the
+      **zooms** themselves. It's the only way to beat whatever's guarding the edge.
+  - type: choose
+    who: tenfold
+    text: There's a sign floating in space. What does it say?
+    options:
+      - { text: "Read it out", reply: "'EDGE OF THE UNIVERSE: 8.8 × 10²⁶ METRES. NO BALL GAMES.' Very official.", who: ballpark }
+      - { text: "Ignore it", reply: "A comet bonks you on the helmet. The sign was saying 'BEWARE OF COMETS'.", who: kevin }
+  - type: ask
+    who: ballpark
+    text: "Warm-up: $10^3 \\times 10^2$ — that's 1,000 × 100. What is it?"
+    options: ['$100{,}000 = 10^5$', '$1{,}000{,}000 = 10^6$', '$10 = 10^1$']
+    correct: 0
+    nudges:
+      "1": "Count the zeros: three from 1,000 and two from 100 — five zeros."
+      "2": "That's dividing! Times makes it bigger."
+    explain: "$1{,}000 \\times 100 = 100{,}000 = 10^5$. Three zooms and two zooms make five."

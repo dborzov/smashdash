@@ -1,0 +1,106 @@
+id: ballpark
+order: 19
+name: Ballpark City
+tagline: Doctor Exactly has frozen the city until everything is counted EXACTLY. Estimate faster than he can count.
+campaign: magnitude
+topic: 'Estimating: round first, count a crowd from one patch, and Fermi chains of easy guesses'
+added: '2026-10-17'
+scene: city
+map: { x: 52, y: 42 }
+requires: [hq]
+palette: { sky: ["#3a1a0a", "#e08a3a"], accent: "#ffd166", ground: "#4a3a2a" }
+outro: ballpark-outro
+monsters:
+  - { name: Clipboard Minion, seed: 191, hue: 60, taunts: ["Form 27B/6, please. In triplicate. Exactly.", "I'll need that to fourteen decimal places."] }
+  - { name: Abacus Golem, seed: 192, hue: 30, taunts: ["Click. Clack. Counting… still counting…", "I will finish counting by next Tuesday!"] }
+  - { name: Decimal Drone, seed: 193, hue: 0, taunts: ["3.14159265358979 — beep — 32384626…", "PRECISION. PRECISION. PRECISION."] }
+path:
+  - id: intro
+    type: story
+    title: The City That Stopped
+    lesson: ballpark-intro
+  - id: ballpark-it
+    type: lesson
+    title: Ballpark It
+    lesson: ballpark-it
+  - id: stuck-bus
+    type: encounter
+    title: The Runaway Bus
+    game: rescue
+    skills: [round-estimate]
+    count: 5
+    monster: { name: Clipboard Minion, seed: 191, hue: 60 }
+  - id: crowd-counter
+    type: lesson
+    title: Crowd Counter
+    lesson: crowd-counter
+  - id: stadium-chest
+    type: encounter
+    title: The Stadium Safe
+    game: chest
+    skills: [jar-count, round-estimate]
+    count: 6
+  - id: fermi-chains
+    type: lesson
+    title: Fermi Chains
+    lesson: fermi-chains
+  - id: golem-fight
+    type: encounter
+    title: The Abacus Golem
+    game: battle
+    skills: [fermi, round-estimate]
+    count: 6
+    monster: { name: Abacus Golem, seed: 192, hue: 30, taunts: ["Click. Clack.", "Still counting!"] }
+  - id: tram-bridge
+    type: encounter
+    title: The Tram Bridge
+    game: bridge
+    skills: [round-estimate, jar-count, fermi]
+    count: 7
+  - id: boss
+    type: boss
+    title: Doctor Exactly
+    monster: { name: Doctor Exactly, seed: 1901, hue: 220, art: exactly }
+    intro:
+      - "Ah, the intern. I have frozen Ballpark City. Nobody moves until every number is counted EXACTLY."
+      - "How many people in the stadium? I am counting them. One. Two. Three… I'll be done in four years."
+      - "Estimates are for the WEAK. I am Doctor EXACTLY. It's in the name. I had it legally changed."
+    phases:
+      - { skills: [round-estimate], count: 3, taunt: "389 times 21! I will tell you the exact answer in… one moment… carry the one…" }
+      - { skills: [jar-count, round-estimate], count: 3, taunt: "You can't know how many jellybeans are in the jar without counting EVERY ONE." }
+      - { skills: [fermi, jar-count], count: 3, taunt: "How many slices of pizza does this city eat? That's UNKNOWABLE! …Unless you break it down. Don't break it down." }
+    defeat: "Impossible! You were right to within ten percent! In a tenth of the time! …Fine. Unfreeze the city. Approximately."
+ranks:
+  - rank: 2
+    story: ballpark-r2
+    boss:
+      name: Doctor Exactly (Precision Armour)
+      intro:
+        - "I have built PRECISION ARMOUR. It measures everything to a billionth of a millimetre. It took six years. It's very heavy."
+        - "Estimate THAT, intern!"
+      taunts:
+        - "My armour weighs 412.739 kilograms! About? NO. EXACTLY!"
+        - "Count the crowd! Every single person! I've numbered them with stickers!"
+        - "Fermi questions are CHEATING!"
+        - "EVERYTHING! EXACTLY! AT ONCE!"
+      defeat: "My armour… is stuck. I can't move. Could someone estimate how long it'll take to get me out? …About? FINE. About is fine."
+    nodes:
+      - { id: drone-vault, type: encounter, title: The Drone Hangar, game: vault, skills: [jar-count, fermi], count: 6 }
+  - rank: 3
+    story: ballpark-r3
+    boss:
+      name: Doctor Exactly's Supercomputer, CALCULON
+      hue: 160
+      intro:
+        - "I AM CALCULON. I CALCULATE EVERYTHING. EXACTLY. MY ANSWER TO EVERYTHING IS FORTY-TWO POINT ZERO ZERO ZERO."
+        - "I WILL COMPUTE THE EXACT ANSWER BEFORE YOU ESTIMATE IT. LOADING… LOADING… LOADING…"
+      taunts:
+        - "PROCESSING 389 × 21… 4% COMPLETE…"
+        - "COUNTING JELLYBEANS: 1, 2, 3… ERROR: OUT OF BEANS… RECOUNTING…"
+        - "FERMI QUESTION DETECTED. INSUFFICIENT DATA. PLEASE INSERT MORE DATA."
+        - "OVERHEATING. TOO. MANY. EXACT. ANSWERS."
+      defeat: "CALCULATION COMPLETE. YOU WERE CORRECT. APPROXIMATELY. SHUTTING DOWN. GOODNIGHT, INTERN."
+treasures:
+  - { item: ballpark-hotdog, rank: 2 }
+  - { item: lucky-bat, rank: 3 }
+  - { item: ballpark-jacket, flawless: 5 }

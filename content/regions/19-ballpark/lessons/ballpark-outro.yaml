@@ -1,0 +1,17 @@
+id: ballpark-outro
+title: Unfrozen
+beats:
+  - type: narrate
+    text: >-
+      The Precision Ray splutters out. Buses move. The hot-dog man finally takes his bite. The
+      crowd cheers — about 40,000 of them.
+  - type: say
+    who: exactly
+    text: >-
+      You haven't seen the last of me! I'm going to the edge of the universe, where the numbers
+      are so big NOBODY can estimate them!
+  - type: say
+    who: tenfold
+    text: >-
+      The edge of the UNIVERSE? That's at least ten zooms away! Twenty! INTERN, GET YOUR
+      SPACE HELMET!

@@ -1,0 +1,58 @@
+id: scale-ladder
+title: The Scale Ladder
+skill: size-sense
+beats:
+  - type: say
+    who: tenfold
+    text: >-
+      Watch me. I'm 2 m tall. *ZOOM* Now I'm 20 m — ten times bigger. *ZOOM* 200 m. I'm
+      taller than the Eiffel Tower. Somebody's waving at me from the top.
+  - type: say
+    who: ballpark
+    text: >-
+      Each zoom is ×10. That's why our ladder goes 1 m, 10 m, 100 m, 1,000 m… Every rung is
+      **ten times** the one below. Going down: 10 cm, 1 cm, 1 mm.
+  - type: say
+    who: ballpark
+    text: >-
+      Writing all those zeros is a pain, so heroes write $10^2$ for $10 \times 10 = 100$ — a 1
+      with **two** zeros. $10^3 = 1{,}000$. And going down, $10^{-3}$ m is a millimetre: a
+      thousandth of a metre.
+  - type: ask
+    who: kevin
+    text: "I shrank to $10^{-2}$ m. That's a 1 with two zeros — but **below** a metre. About how big am I?"
+    options: ['1 cm (a hundredth of a metre)', '100 m', '2 m']
+    correct: 0
+    nudges:
+      "1": "The minus sign means smaller than a metre — a hundredth of one."
+      "2": "That's your normal size, Kevin! The minus means you've shrunk."
+    explain: "$10^{-2}$ m is a hundredth of a metre: 1 cm. Kevin is the size of a fingernail."
+  - type: play
+    who: tenfold
+    text: Put these on the Scale Ladder. Tap a thing, then tap its rung.
+    widget: { kind: sizeline, items: [ant, cat, giraffe, eiffel] }
+    done: "Ant, cat, giraffe, Eiffel Tower — each a few rungs apart. You just collected four cards for the **Scale Museum**!"
+  - type: say
+    who: ballpark
+    text: >-
+      Notice: we don't care if the giraffe is 5.5 m or 5.3 m. We care that it's on the
+      **1-to-10-metre** rung, not the kilometre rung. That's the superpower: knowing the **zoom
+      level**.
+  - type: ask
+    who: ballpark
+    text: About how many times longer is a blue whale (27 m) than a cat (about half a metre)?
+    options: ['About 50 times', 'About 5,000 times', 'About 2 times']
+    correct: 0
+    atom: compare
+    nudges:
+      "1": "Way too many. 27 m ÷ 0.5 m — how many half-metres in 27 metres?"
+      "2": "Picture it: is a whale only twice as long as a cat? It's a WHALE."
+    explain: "27 m is about 54 cats nose to tail. Somewhere between 10 and 100 — about two rungs."
+  - type: play
+    who: kevin
+    text: "Now the tiny end. I've been down there. It's terrifying. Put these on the ladder:"
+    widget: { kind: sizeline, items: [bacterium, hair, flea] }
+    done: "A bacterium, a hair, a flea. Kevin has met all three. Personally."
+  - type: practice
+    skill: size-sense
+    count: 4

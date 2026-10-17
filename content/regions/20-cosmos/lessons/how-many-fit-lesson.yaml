@@ -1,0 +1,46 @@
+id: how-many-fit-lesson
+title: How Many Fit?
+skill: how-many-fit
+beats:
+  - type: say
+    who: kevin
+    text: >-
+      Question! How many of me — tiny me — would fit across a hair? I have been wondering this all
+      day. I am currently STANDING on a hair.
+  - type: say
+    who: ballpark
+    text: >-
+      "How many fit" is a **division**: big size ÷ small size. Rule one: same units first. You can't
+      divide metres by millimetres — that's how the Unit Confuser gets you.
+  - type: play
+    who: ballpark
+    text: "How many ants (5 mm each) nose to tail would stretch across a 2 m table?"
+    widget:
+      kind: chain
+      steps:
+        - { tex: '2 \text{ m} = \box \text{ mm}', answer: 2000, nudges: [{ value: 200, text: "1 m = 1,000 mm, so 2 m = 2,000 mm." }] }
+        - { tex: '2{,}000 \div 5 = \box', answer: 400, note: "400 ants. They would also eat your sandwich." }
+    done: "Same units, then divide: 400 ants."
+  - type: say
+    who: tenfold
+    text: >-
+      With powers of ten it's even easier. The Earth is about $10^7$ m across. The Sun is about
+      $10^9$ m. How many Earths fit across the Sun? $10^9 \div 10^7$: subtract the zooms!
+  - type: ask
+    who: tenfold
+    text: "So about how many Earths fit across the Sun?"
+    options: ['About $10^2 = 100$', 'About $2$', 'About $10^{16}$']
+    correct: 0
+    atom: powers
+    nudges:
+      "1": "They're two zooms apart — but each zoom is ×10. That's 10 × 10."
+      "2": "That's adding the zooms. 'How many fit' is a division: subtract."
+    explain: "$10^9 \\div 10^7 = 10^2 = 100$. (Really about 109. Very close!)"
+  - type: play
+    who: kevin
+    text: "Let me check the sizes on the ladder first — put these where they belong:"
+    widget: { kind: sizeline, items: [earth, sun, earth-sun] }
+    done: "Earth, Sun, and the gap between them: each a couple of zooms apart."
+  - type: practice
+    skill: how-many-fit
+    count: 4

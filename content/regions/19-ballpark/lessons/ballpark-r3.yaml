@@ -1,0 +1,22 @@
+id: ballpark-r3
+title: "Legendary: CALCULON"
+beats:
+  - type: narrate
+    text: >-
+      **Legendary.** A building-sized computer rises from the sea, blinking and whirring. A
+      speaker crackles: "I AM CALCULON."
+  - type: say
+    who: exactly
+    text: >-
+      Behold my supercomputer! It calculates EVERYTHING exactly! It is… a little slow. It's
+      been calculating the city's lunch order since March.
+  - type: say
+    who: ballpark
+    text: Then we'll ballpark faster than it calculates. Same as always. Just with more beeping.
+  - type: input
+    who: tenfold
+    text: "CALCULON needs about 50 litres of cooling water every minute. About how much in a day? (Minutes in a day ≈ 1,500 — round 1,440 to 1,500.)"
+    answer: 75000
+    nudges:
+      - { value: 7500, text: "50 × 1,500: 5 × 15 = 75, then three zeros." }
+    explain: "$50 \\times 1{,}500 = 75{,}000$ litres a day. That's a lot of water for a very slow computer."

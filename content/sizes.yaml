@@ -1,1 +1,36 @@
-[]
+# Real things and their sizes in metres, for the Scale Ladder and the Scale Museum
+# (The Order of Magnitude). `what` says which size it is. Facts must be true!
+- { id: proton, name: A proton, icon: "⚛️", m: 1.7e-15, what: across, fact: "A million billion protons in a row would be about as long as a kid is tall." }
+- { id: atom, name: A hydrogen atom, icon: "🔵", m: 1.1e-10, what: across, fact: "Ten million atoms side by side would just about cross a full stop." }
+- { id: dna, name: A strand of DNA, icon: "🧬", m: 2.0e-9, what: wide, fact: "Thin as it is, the DNA in one of your cells is about 2 m long, folded up very small." }
+- { id: virus, name: A flu virus, icon: "🦠", m: 1.2e-7, what: across, fact: "Line up about twenty flu viruses and they would just stretch across one bacterium. Viruses are TINY." }
+- { id: bacterium, name: A bacterium, icon: "🧫", m: 2.0e-6, what: long, fact: "There are more bacteria in your gut than people who have ever lived. Say hello to them." }
+- { id: blood-cell, name: A red blood cell, icon: "🩸", m: 8.0e-6, what: across, fact: "You make about two million new red blood cells every second. Busy, busy." }
+- { id: hair, name: A human hair, icon: "💇", m: 7.0e-5, what: wide, fact: "A hair is about 70 micrometres thick — roughly ten red blood cells side by side." }
+- { id: dust-mite, name: A dust mite, icon: "🕷️", m: 3.0e-4, what: long, fact: "Thousands live in your bed. They eat your skin flakes. Sleep well!" }
+- { id: flea, name: A flea, icon: "🦟", m: 2.5e-3, what: long, fact: "A flea can jump about 100 times its own length. Like you jumping over a football pitch." }
+- { id: ant, name: An ant, icon: "🐜", m: 5.0e-3, what: long, fact: "There are more than a million ants for every person on Earth. They are not organised. Yet." }
+- { id: lego, name: A LEGO brick, icon: "🧱", m: 3.2e-2, what: long, fact: "The 2 × 4 brick: 3.2 cm of pure foot-pain." }
+- { id: mouse, name: A mouse, icon: "🐭", m: 8.0e-2, what: long (not counting the tail), fact: "A mouse can squeeze through a gap the width of a pencil." }
+- { id: pencil, name: A pencil, icon: "✏️", m: 1.9e-1, what: long, fact: "One pencil can draw a line about 50 km long. Nobody has checked. Please don't check." }
+- { id: cat, name: A cat, icon: "🐈", m: 4.6e-1, what: long, fact: "Cats sleep about two thirds of their lives. Professional nappers." }
+- { id: kid, name: A ten-year-old, icon: "🧒", m: 1.4, what: tall, fact: "You! About 1.4 m. You are a very sensible unit of measurement." }
+- { id: giraffe, name: A giraffe, icon: "🦒", m: 5.5, what: tall, fact: "A giraffe's neck has seven bones — the same number as yours. Just much longer ones." }
+- { id: t-rex, name: A T. rex, icon: "🦖", m: 12, what: long, fact: "As long as a bus. Arms as long as yours. Mostly used for waving." }
+- { id: whale, name: A blue whale, icon: "🐋", m: 27, what: long, fact: "The biggest animal that has ever lived. Its heart is the size of a small car." }
+- { id: pitch, name: A football pitch, icon: "⚽", m: 105, what: long, fact: "Around 100 m. That's about 75 kids lying head to toe. Don't try it during a match." }
+- { id: eiffel, name: The Eiffel Tower, icon: "🗼", m: 330, what: tall, fact: "It grows about 15 cm in summer: the iron gets warm and expands." }
+- { id: burj, name: The Burj Khalifa, icon: "🏙️", m: 828, what: tall, fact: "The tallest building in the world: 828 m, with more than 160 floors. Imagine forgetting your lunch on the ground floor." }
+- { id: everest, name: Mount Everest, icon: "🏔️", m: 8849, what: tall (above the sea), fact: "8,849 m. Planes fly only a little higher than its top." }
+- { id: marathon, name: A marathon, icon: "🏃", m: 42195, what: long, fact: "42.195 km. The .195 is there because of a royal family wanting a better view. True story." }
+- { id: canyon, name: The Grand Canyon, icon: "🏜️", m: 446000, what: long, fact: "About 446 km long. It took the Colorado River millions of years to dig it." }
+- { id: moon, name: The Moon, icon: "🌕", m: 3.47e6, what: across, fact: "About a quarter as wide as the Earth. It drifts 4 cm further away every year." }
+- { id: earth, name: The Earth, icon: "🌍", m: 1.27e7, what: across, fact: "12,742 km across. You are currently standing on it. Good job." }
+- { id: earth-moon, name: From the Earth to the Moon, icon: "🚀", m: 3.84e8, what: away, fact: "You could fit every other planet in the gap between the Earth and the Moon." }
+- { id: sun, name: The Sun, icon: "☀️", m: 1.39e9, what: across, fact: "About 109 Earths would fit across the Sun in a row." }
+- { id: earth-sun, name: From the Earth to the Sun, icon: "🌞", m: 1.5e11, what: away, fact: "Light takes about 8 minutes to get here from the Sun. You see the Sun as it was 8 minutes ago." }
+- { id: light-year, name: A light year, icon: "💡", m: 9.46e15, what: long (how far light goes in a year), fact: "Light could go round the Earth seven times in one second. A year of that is a light year." }
+- { id: proxima, name: To the nearest star after the Sun, icon: "✨", m: 4.0e16, what: away, fact: "Proxima Centauri is about 4.2 light years away. Even light needs four years to get there." }
+- { id: milky-way, name: The Milky Way, icon: "🌌", m: 9.5e20, what: across, fact: "Our galaxy: about 100,000 light years across, with hundreds of billions of stars." }
+- { id: andromeda, name: To the Andromeda galaxy, icon: "🌀", m: 2.4e22, what: away, fact: "Our nearest big galaxy neighbour. It's heading our way — in about 4 billion years." }
+- { id: universe, name: The observable universe, icon: "🔭", m: 8.8e26, what: across, fact: "About 93 billion light years across. Everything we could ever see. Including you." }

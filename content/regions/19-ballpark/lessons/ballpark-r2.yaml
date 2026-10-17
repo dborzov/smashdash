@@ -1,0 +1,19 @@
+id: ballpark-r2
+title: "Heroic: Precision Armour"
+beats:
+  - type: say
+    who: ballpark
+    text: >-
+      **Heroic** Ballpark City. Doctor Exactly is back in a suit of Precision Armour. It measures
+      everything to a billionth of a millimetre. It also weighs as much as a small whale.
+  - type: say
+    who: kevin
+    text: I'm going to crawl inside it and unscrew something! Which bit? I'll estimate!
+  - type: input
+    who: tenfold
+    text: "The armour has 38 panels, each held by 19 screws. About how many screws must Kevin undo? (Round first!)"
+    answer: 800
+    nudges:
+      - { value: 80, text: "40 × 20: four times two, then two zeros." }
+      - { value: 722, text: "That's exact! Ballpark it: 40 × 20." }
+    explain: "$38 \\times 19 \\approx 40 \\times 20 = 800$ screws. Kevin brings a very small screwdriver."

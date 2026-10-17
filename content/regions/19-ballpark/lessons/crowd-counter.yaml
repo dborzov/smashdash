@@ -1,0 +1,42 @@
+id: crowd-counter
+title: Crowd Counter
+skill: jar-count
+beats:
+  - type: say
+    who: exactly
+    text: >-
+      Before I unfreeze the stadium, I need the EXACT number of people in it. I have assigned
+      my minion to count them one by one. He's on 46.
+  - type: say
+    who: ballpark
+    text: >-
+      Pfft. Watch. Imagine a grid over the crowd. Count the people in **one** square. Every
+      square has about the same, so multiply by the number of squares. Done.
+  - type: play
+    who: ballpark
+    text: Your turn. Tap one patch to count it, then scale it up.
+    widget: { kind: sampler, n: 240, grid: 4, seed: 4711 }
+    done: "Within a few percent — and you counted fifteen people, not two hundred and forty. That's the trick."
+  - type: input
+    who: tenfold
+    text: A jellybean jar has a 10 by 10 grid on the side. One square shows 23 beans. About how many beans in the jar?
+    answer: 2300
+    atom: scale-up
+    nudges:
+      - { value: 230, text: "10 by 10 is 100 squares, not 10." }
+      - { value: 23, text: "That's just one square." }
+      - { value: 123, text: "Times, not plus: 23 beans in each of 100 squares." }
+    explain: "$10 \\times 10 = 100$ squares × 23 beans = 2,300 beans."
+  - type: ask
+    who: kevin
+    text: "I'm going to count one patch of the concert crowd. Which patch?"
+    options: ['One in the middle of the crowd', 'The packed bit by the stage', 'The empty bit by the toilets']
+    correct: 0
+    atom: sample
+    nudges:
+      "1": "Everyone squashes up by the stage — your estimate would be far too big."
+      "2": "People keep leaving that patch (for obvious reasons). Too few!"
+    explain: "A typical patch gives a fair estimate. Even better: count a few patches and average them."
+  - type: practice
+    skill: jar-count
+    count: 3

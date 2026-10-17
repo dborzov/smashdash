@@ -831,3 +831,107 @@
     - { id: middle, name: '$\times 3$, $\times 4$, $\times 9$, $\times 11$' }
     - { id: tricky, name: '$\times 6$, $\times 7$, $\times 8$, $\times 12$' }
     - { id: infamous, name: 'The infamous six: $6 \times 7$, $6 \times 8$, $6 \times 9$, $7 \times 8$, $7 \times 9$, $8 \times 9$' }
+
+# ---- The Order of Magnitude ------------------------------------------------------
+- id: size-sense
+  name: Size Sense
+  region: hq
+  icon: "🔭"
+  summary: "How big is it, really? Put things on the Scale Ladder: every rung is ten times the last."
+  requires: []
+  atoms:
+    - { id: ladder, name: 'Put things on a powers-of-ten ladder' }
+    - { id: human, name: 'Sizes you can see and hold (1 cm – 100 m)' }
+    - { id: tiny, name: 'Tiny things: smaller than 1 cm, down to atoms' }
+    - { id: huge, name: 'Huge things: buildings, mountains, journeys' }
+    - { id: cosmic, name: 'Planets, stars and galaxies' }
+    - { id: benchmark, name: 'Sanity check: is a giraffe 5 m or 5 km?' }
+    - { id: compare, name: 'About how many times bigger: 10, 100, 1,000?' }
+- id: zoom-levels
+  name: Zoom Levels
+  region: hq
+  icon: "🔍"
+  summary: "$10^4$ is a 1 and four zeros; each zoom is ×10; 47,000 lives between $10^4$ and $10^5$."
+  requires: [size-sense]
+  atoms:
+    - { id: power, name: '$10^4 = 10{,}000$: a 1 and four zeros' }
+    - { id: band, name: '47,000 is between $10^4$ and $10^5$' }
+    - { id: steps, name: 'From 1 m to 1 km is three zooms of ×10' }
+    - { id: times-bigger, name: '$10^7$ is $10^3$ times bigger than $10^4$' }
+    - { id: compare, name: '$2 \times 10^5$ beats $9 \times 10^4$' }
+- id: unit-hop
+  name: Unit Hopper
+  region: hq
+  icon: "📏"
+  summary: "mm, cm, m, km (and g, kg): hop between them, and pick the sensible one."
+  requires: [size-sense]
+  atoms:
+    - { id: cm-mm, name: '1 cm = 10 mm' }
+    - { id: m-cm, name: '1 m = 100 cm' }
+    - { id: km-m, name: '1 km = 1,000 m' }
+    - { id: g-kg, name: '1 kg = 1,000 g' }
+    - { id: which-unit, name: 'Choose the sensible unit; spot unit blunders' }
+- id: round-estimate
+  name: Ballpark It
+  region: ballpark
+  icon: "⚾"
+  summary: "389 × 21 ≈ 400 × 20 = 8,000. Round first, then the sum is easy — and you can catch big mistakes."
+  requires: [zoom-levels]
+  atoms:
+    - { id: round-first, name: 'Round each number to its first digit' }
+    - { id: mul-est, name: 'Multiply round numbers: front digits, then zeros' }
+    - { id: div-est, name: 'Divide with friendly numbers' }
+    - { id: sanity, name: 'Use an estimate to catch a wrong answer' }
+- id: jar-count
+  name: Crowd Counter
+  region: ballpark
+  icon: "🫙"
+  summary: "Too many to count? Count one patch and multiply by the number of patches."
+  requires: [round-estimate]
+  atoms:
+    - { id: patches, name: 'How many patches: a 5 by 5 grid is 25' }
+    - { id: scale-up, name: 'One patch × number of patches' }
+    - { id: sample, name: 'Pick a typical patch (or average a few)' }
+- id: fermi
+  name: Fermi Chains
+  region: ballpark
+  icon: "🍕"
+  summary: "How many slices of pizza does a school eat in a year? Break it into easy guesses and multiply."
+  requires: [jar-count]
+  atoms:
+    - { id: break-down, name: 'Break a big question into small ones' }
+    - { id: sensible, name: 'Pick a sensible guess for each piece' }
+    - { id: multiply-round, name: 'Multiply the round guesses' }
+- id: pow-mul
+  name: Zoom Stacking
+  region: cosmos
+  icon: "🪐"
+  summary: "$10^3 \\times 10^4 = 10^7$: zooms add up. And dividing takes them away."
+  requires: [fermi]
+  atoms:
+    - { id: add-powers, name: '$10^3 \times 10^4 = 10^7$' }
+    - { id: sub-powers, name: '$10^7 \div 10^3 = 10^4$' }
+    - { id: zeros, name: 'Count the zeros: $1{,}000 \times 10{,}000$' }
+    - { id: not-multiply, name: '$10^3 \times 10^4$ is not $10^{12}$' }
+- id: sci-estimate
+  name: Big Number Maths
+  region: cosmos
+  icon: "🌠"
+  summary: "$(3 \\times 10^4) \\times (2 \\times 10^3) = 6 \\times 10^7$: front numbers together, zooms together."
+  requires: [pow-mul]
+  atoms:
+    - { id: front-times, name: 'Multiply the front numbers' }
+    - { id: powers-add, name: 'Add the zoom levels' }
+    - { id: fix-front, name: '$20 \times 10^5 = 2 \times 10^6$' }
+    - { id: divide, name: 'Divide: front numbers, then subtract zooms' }
+- id: how-many-fit
+  name: How Many Fit?
+  region: cosmos
+  icon: "🌍"
+  summary: "How many Earths fit across the Sun? Divide the sizes — same units first."
+  requires: [sci-estimate]
+  atoms:
+    - { id: same-units, name: 'Same units first (1 m = 1,000 mm)' }
+    - { id: ratio, name: 'How many fit = big ÷ small' }
+    - { id: powers, name: 'With powers of ten: subtract the zooms' }
+    - { id: sense, name: 'Is the answer sensible?' }

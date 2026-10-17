@@ -573,3 +573,89 @@
   inShop: false
   from: grid
   desc: "Twelve squares by twelve. Every square is a fact you know by heart."
+
+# --- The Order of Magnitude ----------------------------------------------------------
+- id: hero-bar
+  name: Hero Energy Bar
+  kind: food
+  icon: "🍫"
+  price: 0
+  inShop: false
+  from: hq
+  desc: "From the Order of Magnitude's canteen. Contains roughly 10² calories. Approximately."
+  use: "Your pet eats it and does a heroic pose. It holds the pose for exactly as long as it can."
+  effect: { hunger: 40, joy: 20, bond: 2, sound: eat }
+  drop: 2
+- id: zoom-lens
+  name: Captain Tenfold's Zoom Lens
+  kind: relic
+  icon: "🔍"
+  price: 0
+  inShop: false
+  from: hq
+  desc: "Look through it and everything is ten times clearer. Including the answer, sometimes."
+  relic: { campaign: magnitude, hints: 1 }
+- id: ballpark-hotdog
+  name: Ballpark Hot Dog
+  kind: food
+  icon: "🌭"
+  price: 0
+  inShop: false
+  from: ballpark
+  desc: "About 20 cm long. Ms Ballpark never measures them. That's the point."
+  use: "Your pet eats about all of it. The rest is on its face."
+  effect: { hunger: 55, joy: 15, sound: eat }
+  drop: 2
+- id: lucky-bat
+  name: Ms Ballpark's Lucky Bat
+  kind: relic
+  icon: "🏏"
+  price: 0
+  inShop: false
+  from: ballpark
+  desc: "It has hit a home run in every estimate it ever made. Loot rolls in, roughly 30% more of it."
+  relic: { campaign: magnitude, gold: 30 }
+- id: ballpark-jacket
+  name: Ballpark Jacket
+  kind: cape
+  icon: "🧥"
+  price: 0
+  inShop: false
+  from: ballpark
+  desc: "A red jacket worn cape-style. 'CLOSE ENOUGH' is stitched on the back."
+- id: space-ice-cream
+  name: Freeze-Dried Space Ice Cream
+  kind: food
+  icon: "🍨"
+  price: 0
+  inShop: false
+  from: cosmos
+  desc: "Brought back from the Edge of Everything. Crunchy, sweet, and slightly cosmic."
+  use: "Your pet crunches it and floats a centimetre off the floor for a moment. Probably."
+  effect: { hunger: 35, joy: 35, sound: eat }
+  drop: 2
+- id: cosmic-compass
+  name: Cosmic Compass
+  kind: relic
+  icon: "🧭"
+  price: 0
+  inShop: false
+  from: cosmos
+  desc: "Always points to the right zoom level. Its glow warns you before a hit lands."
+  relic: { campaign: magnitude, ward: true }
+- id: cape-of-magnitude
+  name: Cape of Magnitude
+  kind: cape
+  icon: "🦸"
+  price: 0
+  inShop: false
+  from: cosmos
+  desc: "Blue with gold stars. Officially makes you a full member of the Order of Magnitude."
+- id: star-mask
+  name: Superhero Cap
+  kind: hat
+  icon: "⭐"
+  price: 0
+  inShop: false
+  from: hq
+  desc: "Blue, with a gold star and a red band. Every intern dreams of this hat."

@@ -1,0 +1,22 @@
+id: hq-r3
+title: "Legendary: Bob"
+beats:
+  - type: narrate
+    text: The **Legendary** run. A shadow on the HQ roof. It's the Unit Confuser — but with a goatee.
+  - type: say
+    who: kevin
+    text: Is that the Unit Confuser? He has a goatee. Goatees are evil. That's a known fact.
+  - type: say
+    who: tenfold
+    text: >-
+      That's his evil twin, Bob. The Unit Confuser swaps units. Bob swaps ZEROS. He turned a
+      hundred into a hundred thousand at the bank this morning. The bank is very happy. The bank
+      is very confused.
+  - type: input
+    who: ballpark
+    text: "Bob changed $10^2$ into $10^5$. How many times bigger did he make it?"
+    answer: 1000
+    nudges:
+      - { value: 3, text: "Three zooms — but each zoom is ×10. Ten × ten × ten." }
+      - { value: 7, text: "Bigger by how much? Count the zooms from 2 up to 5." }
+    explain: "From $10^2$ to $10^5$ is three zooms: $10 \\times 10 \\times 10 = 1{,}000$ times bigger."

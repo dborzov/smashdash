@@ -1,0 +1,16 @@
+id: hq-outro
+title: Probation Passed
+beats:
+  - type: say
+    who: tenfold
+    text: >-
+      INTERN! You beat the Unit Confuser! You know your rungs! You know your zooms! You get
+      a badge! It's a sticker. It's about the size of $10^{-2}$ m.
+  - type: say
+    who: ballpark
+    text: >-
+      But Doctor Exactly is still out there. He's taken over Ballpark City and he's making
+      everyone count everything. Exactly. By hand. The traffic lights are stuck on "calculating".
+  - type: say
+    who: kevin
+    text: I've packed snacks! Well — I packed one crumb. At my size it's a feast.

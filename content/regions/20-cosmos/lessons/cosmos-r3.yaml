@@ -1,0 +1,23 @@
+id: cosmos-r3
+title: "Legendary: Infinitely Exact"
+beats:
+  - type: narrate
+    text: >-
+      **Legendary.** Doctor Exactly floats at the very edge of the universe, glowing. He has absorbed
+      "the precision of the cosmos". His lab coat is now very shiny.
+  - type: say
+    who: exactly
+    text: I know where every atom is. I know how many there are. I just need… a little more time to count them.
+  - type: say
+    who: ballpark
+    text: >-
+      There are about $10^{80}$ atoms in the observable universe. If he counts one a second, he'll
+      finish in about $10^{80}$ seconds. The universe is only about $4 \times 10^{17}$ seconds old.
+  - type: ask
+    who: tenfold
+    text: "Can he finish?"
+    options: ["No — it would take vastly longer than the universe has existed", "Yes, if he skips lunch"]
+    correct: 0
+    nudges:
+      "1": "$10^{80}$ seconds against $10^{17}$: that's about $10^{63}$ times longer than the universe has been around. Even skipping lunch."
+    explain: "$10^{80} \\div 10^{17} \\approx 10^{63}$. He should estimate. Somebody tell him."

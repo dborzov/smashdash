@@ -1,0 +1,50 @@
+id: hq-intro
+title: Welcome, Intern
+beats:
+  - type: narrate
+    text: >-
+      A skyscraper shaped like a magnifying glass. On the door: "THE ORDER OF MAGNITUDE — HEROES
+      OF ESTIMATION — PLEASE WIPE YOUR FEET (APPROXIMATELY)".
+  - type: say
+    who: tenfold
+    text: >-
+      INTERN! Welcome! I'm Captain Tenfold. I can grow TEN times bigger. Or ten times smaller. Or
+      ten times bigger again. That's it. That's the power. It's MORE useful than it sounds.
+  - type: say
+    who: ballpark
+    text: >-
+      I'm Ms. Ballpark. My power is getting answers *about right*, really fast. Doctor Exactly
+      wants the exact answer. By the time he's got it, I've already saved everyone and gone for
+      lunch.
+  - type: say
+    who: kevin
+    text: >-
+      Hi! I'm Kevin! I shrink! Mostly by accident! I'm currently the size of a pea. Please
+      don't sit down. Please.
+  - type: choose
+    who: tenfold
+    text: Every intern gets a superhero name. What's yours?
+    options:
+      - { text: "The Estimator!", reply: "Ooh, solid. Strong. About right.", who: ballpark }
+      - { text: "Captain Approximately!", reply: "I LOVE it. You're Captain Approximately. Don't tell the lawyers.", who: tenfold }
+      - { text: "Kevin Two.", reply: "There can only be one Kevin. …Fine, two Kevins. I'm Kevin One.", who: kevin }
+  - type: say
+    who: ballpark
+    text: >-
+      Here's the job. Doctor Exactly — our nemesis — believes every number must be EXACT. His
+      henchmen make chaos and he says "I'll need the exact figure before I can help". While
+      he's counting, we've already fixed it.
+  - type: ask
+    who: tenfold
+    text: A cat is stuck up a tree. How tall is the tree, about? We need the right ladder!
+    options: ['About 10 m', 'About 10 cm', 'About 10 km']
+    correct: 0
+    nudges:
+      "1": "10 cm is shorter than a pencil! The cat could just step off."
+      "2": "10 km is higher than Mount Everest. That's not a tree, that's a disaster."
+    explain: "A big tree is about 10 m. Ladder deployed. Cat saved. Cat ungrateful."
+  - type: say
+    who: tenfold
+    text: >-
+      HA! A natural! Right, intern. First lesson: the SCALE LADDER. Everything in the universe
+      has a rung. Let's climb.

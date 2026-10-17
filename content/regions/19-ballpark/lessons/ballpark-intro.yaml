@@ -1,0 +1,39 @@
+id: ballpark-intro
+title: The City That Stopped
+beats:
+  - type: narrate
+    text: >-
+      Ballpark City is frozen. Not icy — just stopped. Buses wait at green lights. A man holds a
+      hot dog halfway to his mouth. Everyone is muttering numbers.
+  - type: say
+    who: ballpark
+    text: >-
+      Doctor Exactly has put the whole city under his Precision Ray. Nobody can do anything until
+      they know the exact answer. How many steps to the shop? Exactly? They're still counting.
+  - type: say
+    who: exactly
+    text: >-
+      *on every screen in the city* Good afternoon. Do not be alarmed. Simply count everything.
+      Exactly. Once you have, you may continue with your lives. Estimated time: never. No — exact
+      time: never.
+  - type: say
+    who: tenfold
+    text: >-
+      Intern, our weapon is the BALLPARK. "About 8,000" now beats "8,169" next Tuesday. In a crisis,
+      fast and close wins.
+  - type: choose
+    who: kevin
+    text: How should we sneak in?
+    options:
+      - { text: "Kevin shrinks and walks under the ray", reply: "I'm tiny! I'm in! I'm… being chased by a pigeon. THIS IS FINE.", who: kevin }
+      - { text: "Captain Tenfold grows and steps over it", reply: "Stepping over the ray! Stepping on a car! Sorry, car!", who: tenfold }
+      - { text: "We walk in like normal people", reply: "Radical. Nobody expects normal people. Let's go.", who: ballpark }
+  - type: ask
+    who: ballpark
+    text: "A frozen shopkeeper is stuck on $49 \\times 21$. Quick — about how much?"
+    options: ['About 1,000', 'About 100', 'About 10,000']
+    correct: 0
+    nudges:
+      "1": "$50 \\times 20$ — count the zeros: 5 × 2 = 10, then two zeros."
+      "2": "One zero too many. $50 \\times 20 = 1{,}000$."
+    explain: "$49 \\times 21 \\approx 50 \\times 20 = 1{,}000$. The shopkeeper unfreezes and offers you a free hot dog."

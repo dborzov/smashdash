@@ -1,0 +1,49 @@
+id: zoom-stacking
+title: Zoom Stacking
+skill: pow-mul
+beats:
+  - type: say
+    who: tenfold
+    text: >-
+      Watch! I grow ×$10^3$ — that's three zooms. Then ×$10^4$ more — four zooms. How many zooms
+      altogether? SEVEN! I'm ×$10^7$ bigger!
+  - type: show
+    who: ballpark
+    math: '10^3 \times 10^4 = \underbrace{10 \times 10 \times 10}_{3} \times \underbrace{10 \times 10 \times 10 \times 10}_{4} = 10^{7}'
+    text: "Multiplying powers of ten **adds** the zooms. Not multiplies — **adds**."
+  - type: ask
+    who: kevin
+    text: "So $10^3 \\times 10^4$ is…"
+    options: ['$10^7$', '$10^{12}$', '$10^1$']
+    correct: 0
+    atom: not-multiply
+    nudges:
+      "1": "That's multiplying 3 × 4. But you're stacking 3 zooms and 4 zooms: add them!"
+      "2": "That's taking away. Growing more adds zooms."
+    explain: "Three zooms and four zooms: $10^{3 + 4} = 10^7$."
+  - type: input
+    who: tenfold
+    text: "$10^5 \\times 10^6 = 10^{\\box}$"
+    math: '10^5 \times 10^6 = 10^{\box}'
+    answer: 11
+    atom: add-powers
+    nudges:
+      - { value: 30, text: "Add the zooms, don't multiply them: 5 + 6." }
+    explain: "$5 + 6 = 11$: $10^{11}$."
+  - type: say
+    who: kevin
+    text: >-
+      And shrinking takes zooms away! I was $10^7$ and shrank by $10^3$. Seven zooms minus three
+      zooms: $10^4$.
+  - type: input
+    who: kevin
+    text: "$10^9 \\div 10^4 = 10^{\\box}$"
+    math: '10^9 \div 10^4 = 10^{\box}'
+    answer: 5
+    atom: sub-powers
+    nudges:
+      - { value: 13, text: "Dividing takes zooms away — subtract." }
+    explain: "$9 - 4 = 5$: $10^5$."
+  - type: practice
+    skill: pow-mul
+    count: 4

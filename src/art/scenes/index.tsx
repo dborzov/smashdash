@@ -11,6 +11,7 @@ import { Particles, type ParticleKind } from '../../ui/components/Particles';
 import { AshRoad, Muster, Siege, Vault } from './dark';
 import { Svg } from './kit';
 import { Dungeon, GridRoom, SquareHall, Tavern } from './tables';
+import { City, Cosmos, HQ } from './magnitude';
 
 function Cloud({
   x,
@@ -1280,6 +1281,9 @@ export const SCENES: Record<
   dungeon: { Art: Dungeon, particles: 'mote', count: 24 },
   squarehall: { Art: SquareHall, particles: 'spark', count: 20 },
   gridroom: { Art: GridRoom, particles: 'star', count: 24 },
+  hq: { Art: HQ, particles: 'spark', count: 18 },
+  city: { Art: City, particles: 'mote', count: 20 },
+  cosmos: { Art: Cosmos, particles: 'star', count: 30 },
 };
 
 export function Scene({ id, dim = 0 }: { id: string; dim?: number }) {

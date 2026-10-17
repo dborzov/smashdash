@@ -156,7 +156,11 @@ describe.each(Object.keys(generators))('generator %s', (id) => {
           expect(st.tex, ctx).not.toMatch(/undefined|NaN/);
         }
       if (p.facts) for (const [x, y] of p.facts) expect(Number.isInteger(x) && Number.isInteger(y), ctx).toBe(true);
-      for (const t of texts) for (const m of mathBits(t)) renderMath(m, false, true);
+      for (const t of texts) {
+        for (const m of mathBits(t)) renderMath(m, false, true);
+        // Grouped numbers like 4{,}000 only work inside maths.
+        expect(t.replace(/\$[^$]*\$/g, ''), `${ctx}: {,} outside maths in "${t}"`).not.toContain('{,}');
+      }
       if (p.math) renderMath(p.math, true, true);
     }
   });

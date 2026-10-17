@@ -1,0 +1,21 @@
+id: cosmos-outro
+title: About Right, Right Now
+beats:
+  - type: narrate
+    text: >-
+      Professor Googol shrinks to a modest ten-to-the-ninety-nine and floats off to sulk. Doctor
+      Exactly is found hiding behind a comet, counting its ice crystals. He's on 3.
+  - type: say
+    who: tenfold
+    text: >-
+      INTERN! You've done it! From atoms to galaxies! You are no longer an intern! You are a FULL
+      MEMBER of the Order of Magnitude! Your title is… Captain Approximately!
+  - type: say
+    who: ballpark
+    text: >-
+      Remember what we do: get the zoom level right, fast. Then check it. That beats an exact
+      answer that arrives next week.
+  - type: say
+    who: kevin
+    text: >-
+      And come back in a couple of days! The Heroic missions open up! I'll be here! At some size!

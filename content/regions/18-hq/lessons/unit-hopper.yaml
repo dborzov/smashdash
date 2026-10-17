@@ -1,0 +1,53 @@
+id: unit-hopper
+title: Unit Hopper
+skill: unit-hop
+beats:
+  - type: say
+    who: ballpark
+    text: >-
+      The Unit Confuser's trick is swapping units. 2 m becomes 2 km. To stop him, we hop between
+      units like experts. Here's the cheat sheet:
+  - type: show
+    who: ballpark
+    math: '1\text{ cm} = 10\text{ mm} \qquad 1\text{ m} = 100\text{ cm} \qquad 1\text{ km} = 1{,}000\text{ m}'
+    text: "**Kilo** means a thousand. **Centi** means a hundredth. **Milli** means a thousandth."
+  - type: input
+    who: kevin
+    text: My lab bench is 3 m long. How many centimetres?
+    answer: 300
+    atom: m-cm
+    nudges:
+      - { value: 30, text: "100 cm in a metre, not 10." }
+      - { value: 3000, text: "That's millimetres!" }
+    explain: "3 × 100 = 300 cm."
+  - type: input
+    who: tenfold
+    text: I flew 7 km to get here. How many metres?
+    answer: 7000
+    atom: km-m
+    nudges:
+      - { value: 700, text: "Kilo = a thousand. 1 km = 1,000 m." }
+    explain: "7 × 1,000 = 7,000 m."
+  - type: ask
+    who: ballpark
+    text: Which unit would you use for the length of a ladybird?
+    options: [millimetres, kilometres, metres]
+    correct: 0
+    atom: which-unit
+    nudges:
+      "1": "A ladybird would be 0.000007 km. Silly number! Pick a unit that gives a handy one."
+      "2": "0.007 m works but it's fiddly. Millimetres: about 7 mm."
+    explain: "About 7 mm — a handy number. Pick the unit that makes the number friendly."
+  - type: ask
+    who: tenfold
+    text: "The Unit Confuser says a pencil is 19 m long. What did he mean?"
+    options: ['19 cm', '19 km', '19 mm']
+    correct: 0
+    atom: which-unit
+    nudges:
+      "1": "19 km?! That's a pencil the length of a city."
+      "2": "19 mm is shorter than your thumb. Pencils are longer."
+    explain: "A pencil is about 19 cm. He swapped centimetres for metres. Classic Confuser."
+  - type: practice
+    skill: unit-hop
+    count: 4

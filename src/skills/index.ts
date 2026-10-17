@@ -41,6 +41,17 @@ import {
   tablePatterns,
   turnaround,
 } from './tables';
+import {
+  fermi,
+  howManyFit,
+  jarCount,
+  powMul,
+  roundEstimate,
+  sciEstimate,
+  sizeSense,
+  unitHop,
+  zoomLevels,
+} from './magnitude';
 
 export const generators: Record<string, Generator> = {
   notation,
@@ -115,6 +126,16 @@ export const generators: Record<string, Generator> = {
   'table-patterns': tablePatterns,
   'big-tables': bigTables,
   'quick-facts': quickFacts,
+  // The Order of Magnitude
+  'size-sense': sizeSense,
+  'zoom-levels': zoomLevels,
+  'unit-hop': unitHop,
+  'round-estimate': roundEstimate,
+  'jar-count': jarCount,
+  fermi,
+  'pow-mul': powMul,
+  'sci-estimate': sciEstimate,
+  'how-many-fit': howManyFit,
 };
 
 /** Difficulty tier from mastery in [0, 1]. */

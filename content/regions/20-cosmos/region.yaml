@@ -1,0 +1,108 @@
+id: cosmos
+order: 20
+name: The Edge of Everything
+tagline: Doctor Exactly fled to the edge of the universe, where the numbers are too big for anyone. Almost anyone.
+campaign: magnitude
+topic: 'Multiplying powers of ten, estimating with scientific notation, and how many things fit in other things'
+added: '2026-10-17'
+scene: cosmos
+map: { x: 80, y: 30 }
+requires: [ballpark]
+palette: { sky: ["#05020f", "#3a1a6a"], accent: "#c08cff", ground: "#1a0e3a" }
+outro: cosmos-outro
+monsters:
+  - { name: Space Minion, seed: 201, hue: 270, taunts: ["In space, nobody can hear you round!", "My helmet is exactly 30.0000 cm wide!"] }
+  - { name: Zero Swarm, seed: 202, hue: 300, taunts: ["0000000000!", "We are many! We are nothing! We are MANY NOTHINGS!"] }
+  - { name: Comet Gremlin, seed: 203, hue: 180, taunts: ["Whoosh! Ten to the seven kilometres an hour! Or eight! Whoosh!", "Catch me if you can estimate me!"] }
+path:
+  - id: intro
+    type: story
+    title: Ten Zooms Up
+    lesson: cosmos-intro
+  - id: zoom-stacking
+    type: lesson
+    title: Zoom Stacking
+    lesson: zoom-stacking
+  - id: satellite-rescue
+    type: encounter
+    title: Stranded Satellites
+    game: rescue
+    skills: [pow-mul]
+    count: 5
+    monster: { name: Comet Gremlin, seed: 203, hue: 180 }
+  - id: big-number-maths
+    type: lesson
+    title: Big Number Maths
+    lesson: big-number-maths
+  - id: comet-vault
+    type: encounter
+    title: The Comet Vault
+    game: vault
+    skills: [sci-estimate, pow-mul]
+    count: 6
+  - id: how-many-fit
+    type: lesson
+    title: How Many Fit?
+    lesson: how-many-fit-lesson
+  - id: zero-swarm
+    type: encounter
+    title: The Zero Swarm
+    game: battle
+    skills: [how-many-fit, sci-estimate]
+    count: 6
+    monster: { name: Zero Swarm, seed: 202, hue: 300, taunts: ["0000!", "We are MANY NOTHINGS!"] }
+  - id: star-bridge
+    type: encounter
+    title: The Bridge of Stars
+    game: bridge
+    skills: [pow-mul, sci-estimate, how-many-fit]
+    count: 7
+  - id: boss
+    type: boss
+    title: Professor Googol
+    monster: { name: Professor Googol, seed: 2001, hue: 270, art: googol }
+    intro:
+      - "I am PROFESSOR GOOGOL. Ten to the one hundred. A one with a hundred zeros. The biggest number there is!"
+      - "Doctor Exactly hired me to guard the edge of the universe. He's paying me in zeros. I love zeros."
+      - "Nobody can count past me. Nobody can estimate me. I am INFINITE! …I'm not infinite. But I'm close!"
+    phases:
+      - { skills: [pow-mul], count: 3, taunt: "Ten to the fifty times ten to the fifty! That's ten to the two thousand five hundred! …Is it? Don't check." }
+      - { skills: [sci-estimate, pow-mul], count: 3, taunt: "Six times ten to the twenty-three! Big! Bigger than you can estimate!" }
+      - { skills: [how-many-fit, sci-estimate], count: 3, taunt: "How many of ME fit in the universe? NONE! I'm too BIG!" }
+    defeat: "Wait. Googol times ten is BIGGER than me? Ten to the hundred and ONE? …I'm not the biggest. I'm just… big. That's okay. Big is okay."
+ranks:
+  - rank: 2
+    story: cosmos-r2
+    boss:
+      name: Professor Googolplex
+      hue: 200
+      intro:
+        - "My big brother! GOOGOLPLEX! Ten to the power of a GOOGOL! You couldn't write him down if you used every atom in the universe as a pencil!"
+        - "…He's not here, so I'm wearing his hat. It's very big. It keeps falling over my eyes."
+      taunts:
+        - "Zooms add! Zooms add up forever! I am many zooms!"
+        - "Front number times front number! Zoom plus zoom! Hat over eyes!"
+        - "How many atoms fit in a hair? A MILLION! Or more! I can't see, my hat!"
+        - "EVERYTHING! BIG! VERY BIG!"
+      defeat: "Ow. Hat fell off. I'm going home. I'll tell my brother you said hello. He's very far away. About ten to the a lot."
+    nodes:
+      - { id: comet-chase, type: encounter, title: The Comet Chase, game: rescue, skills: [how-many-fit, pow-mul], count: 6 }
+  - rank: 3
+    story: cosmos-r3
+    boss:
+      name: Doctor Exactly, Infinitely Exact
+      seed: 2002
+      hue: 50
+      intro:
+        - "I have absorbed the power of the edge of the universe. I am now INFINITELY EXACT. I know the position of every atom. Including the ones in your nose."
+        - "Estimate THIS: exactly how many atoms are in me? …Don't. I'm sensitive about my weight."
+      taunts:
+        - "Ten to the eighty atoms in the universe! EXACTLY ten to the eighty! Well — ish."
+        - "My precision is infinite! My patience is not!"
+        - "How many Earths fit in the Sun? EXACTLY 1,301,234! …About a million. Fine. About a million."
+        - "INFINITE PRECISION! INFINITE POWER! INFINITE… paperwork…"
+      defeat: "Perhaps… perhaps 'about right, right now' is better than 'exactly right, never'. Don't quote me. I'll deny it. Exactly."
+treasures:
+  - { item: space-ice-cream, rank: 2 }
+  - { item: cosmic-compass, rank: 3 }
+  - { item: cape-of-magnitude, flawless: 5 }

@@ -1,0 +1,43 @@
+id: fermi-chains
+title: Fermi Chains
+skill: fermi
+beats:
+  - type: say
+    who: ballpark
+    text: >-
+      A scientist called Enrico Fermi loved impossible questions. "How many piano tuners are in
+      Chicago?" Nobody knows! But you can break it into guesses you CAN make, and multiply them.
+  - type: say
+    who: exactly
+    text: That is NOT SCIENCE. That is GUESSING. Guessing is for — *checks notes* — "scientists who get things done". Hmm.
+  - type: play
+    who: ballpark
+    text: "How many slices of pizza do the 300 kids at Ballpark School eat in a school year? Each kid eats about 2 slices a week."
+    widget:
+      kind: chain
+      steps:
+        - { tex: '300 \times 2 = \box \text{ slices a week}', answer: 600 }
+        - tex: '\text{Weeks in a school year: about}'
+          options: ['$4$', '$40$', '$400$']
+          answer: 1
+          nudges: [{ value: 0, text: "4 weeks is one month of school. Lucky kids." }, { value: 2, text: "400 weeks is about 8 years!" }]
+        - { tex: '600 \times 40 = \box', answer: 24000, nudges: [{ value: 2400, text: "Count the zeros: 600 has two, 40 has one." }] }
+    done: "About 24,000 slices. Doctor Exactly is still counting school days."
+  - type: ask
+    who: tenfold
+    text: "Fermi question: how many times do you blink in a day? Which pieces do you need?"
+    options: ['Blinks a minute, and minutes awake in a day', 'How many eyes you have', 'Blinks in a year, divided by your age']
+    correct: 0
+    atom: break-down
+    nudges:
+      "1": "Two eyes blink together — that doesn't change the count."
+      "2": "Nobody knows their blinks in a year — that's the hard question again!"
+    explain: "About 15 blinks a minute × about 1,000 minutes awake ≈ 15,000 blinks a day."
+  - type: say
+    who: ballpark
+    text: >-
+      The aim isn't the exact answer. It's the right **zoom level**: is it about a hundred, or a
+      thousand, or a million? If you get the zoom level right, you're a Fermi hero.
+  - type: practice
+    skill: fermi
+    count: 3

@@ -1,0 +1,44 @@
+id: big-number-maths
+title: Big Number Maths
+skill: sci-estimate
+beats:
+  - type: say
+    who: ballpark
+    text: >-
+      Space numbers have two parts: a **front number** (under 10) and a **zoom level**. The Sun is
+      about $1.4 \times 10^9$ m across. To multiply two space numbers: front numbers together,
+      zooms together.
+  - type: play
+    who: ballpark
+    text: "There are about $2 \\times 10^{11}$ stars in our galaxy, and about $3 \\times 10^{2}$ hours in a fortnight. Silly question: multiply them!"
+    widget:
+      kind: chain
+      steps:
+        - { tex: '2 \times 3 = \box', answer: 6, nudges: [{ value: 5, text: "Multiply the front numbers: 2 × 3." }] }
+        - { tex: '10^{11} \times 10^{2} = 10^{\box}', answer: 13, nudges: [{ value: 22, text: "Add the zooms: 11 + 2." }], note: "$6 \\times 10^{13}$. Big. Very big. Pointless, but big." }
+    done: "Front numbers together, zooms together: $6 \\times 10^{13}$."
+  - type: say
+    who: tenfold
+    text: >-
+      But sometimes the front number gets too big! $5 \times 4 = 20$. The front must be under 10,
+      so $20 = 2 \times 10$ — and that extra ×10 joins the zooms.
+  - type: input
+    who: tenfold
+    text: "$20 \\times 10^5 = 2 \\times 10^{\\box}$"
+    math: '20 \times 10^5 = 2 \times 10^{\box}'
+    answer: 6
+    atom: fix-front
+    nudges:
+      - { value: 5, text: "20 is $2 \\times 10$ — that extra ten adds one more zoom." }
+    explain: "$20 \\times 10^5 = 2 \\times 10 \\times 10^5 = 2 \\times 10^6$."
+  - type: input
+    who: kevin
+    text: "$(8 \\times 10^9) \\div (2 \\times 10^3)$: the front numbers give $8 \\div 2$. What's the zoom level? $10^{\\box}$"
+    answer: 6
+    atom: divide
+    nudges:
+      - { value: 12, text: "Dividing subtracts zooms: 9 − 3." }
+    explain: "$4 \\times 10^{9 - 3} = 4 \\times 10^6$."
+  - type: practice
+    skill: sci-estimate
+    count: 4

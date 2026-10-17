@@ -1,0 +1,22 @@
+id: hq-r2
+title: "Heroic: Bring Your Villain to Work Day"
+beats:
+  - type: say
+    who: tenfold
+    text: >-
+      **Heroic** mode, intern! Bad news: the Unit Confuser escaped. Worse news: it's "Bring Your
+      Villain to Work Day" and Doctor Exactly has come to "help".
+  - type: say
+    who: exactly
+    text: >-
+      I will be checking your work. Every answer. Precisely. I will tell you whether you are
+      correct to fourteen decimal places. (I am usually wrong. Please don't tell anyone.)
+  - type: ask
+    who: ballpark
+    text: "Warm-up. Doctor Exactly says a flea is about 2.5 **metres** long. Right?"
+    options: ['No — about 2.5 mm', 'Yes, fleas are huge', 'No — about 2.5 km']
+    correct: 0
+    nudges:
+      "1": "A 2.5-metre flea would be a horror film."
+      "2": "A 2.5-km flea would be a horror franchise."
+    explain: "About 2.5 mm. Doctor Exactly writes this down. Exactly. Wrongly."

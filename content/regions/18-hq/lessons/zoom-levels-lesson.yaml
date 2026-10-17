@@ -1,0 +1,56 @@
+id: zoom-levels-lesson
+title: Zoom Levels
+skill: zoom-levels
+beats:
+  - type: say
+    who: tenfold
+    text: >-
+      Intern, a number's **zoom level** is which rung it's on. 47,000 zombies? That's at least
+      10,000 but less than 100,000: between $10^4$ and $10^5$.
+  - type: say
+    who: ballpark
+    text: >-
+      Quick trick: count the digits. 47,000 has 5 digits, so it's in the **ten-thousands**:
+      $10^4$, one fewer than the number of digits.
+  - type: input
+    who: tenfold
+    text: "What is $10^5$ as an ordinary number?"
+    answer: 100000
+    atom: power
+    nudges:
+      - { value: 50, text: "That's $10 \\times 5$. $10^5$ is five tens multiplied: a 1 with five zeros." }
+      - { value: 1000000, text: "One zero too many: five zeros." }
+    explain: "$10^5 = 10 \\times 10 \\times 10 \\times 10 \\times 10 = 100{,}000$."
+  - type: ask
+    who: ballpark
+    text: "Doctor Exactly's robot army has **3,800,000** robots. Between which zoom levels?"
+    options: ['$10^6$ and $10^7$', '$10^5$ and $10^6$', '$10^7$ and $10^8$']
+    correct: 0
+    atom: band
+    nudges:
+      "1": "Count the digits: 7. A 7-digit number is in the millions: at least $10^6$."
+      "2": "Too high — it hasn't reached $10^7$ = ten million yet."
+    explain: "3,800,000 has 7 digits: between $10^6$ (a million) and $10^7$ (ten million)."
+  - type: play
+    who: kevin
+    text: "I'm 1 mm tall (that's $10^{-3}$ m). Captain Tenfold zooms me up to 1 m ($10^0$ m). How many zooms of ×10?"
+    widget:
+      kind: chain
+      steps:
+        - tex: '10^{-3} \to 10^{-2} \to 10^{-1} \to 10^{0}: \ \box \text{ zooms}'
+          answer: 3
+          nudges: [{ value: 1000, text: "That's how many times bigger he got. Count the arrows — each one is a zoom." }]
+          note: "Three zooms of ×10 is ×1,000. A millimetre to a metre."
+    done: "Three zooms. Kevin is back to normal. He's a bit dizzy."
+  - type: ask
+    who: tenfold
+    text: "Which is bigger: $2 \\times 10^5$ or $9 \\times 10^4$?"
+    options: ['$2 \times 10^5$', '$9 \times 10^4$']
+    correct: 0
+    atom: compare
+    nudges:
+      "1": "9 beats 2 — but look at the zoom level first! $10^5$ is ten times $10^4$. $2 \\times 10^5 = 200{,}000$; $9 \\times 10^4 = 90{,}000$."
+    explain: "Check the zoom level first: $200{,}000 > 90{,}000$."
+  - type: practice
+    skill: zoom-levels
+    count: 4

@@ -1,0 +1,18 @@
+id: cosmos-r2
+title: "Heroic: The Hat"
+beats:
+  - type: say
+    who: ballpark
+    text: >-
+      **Heroic** Edge of Everything. Professor Googol is back, wearing his big brother's hat. His big
+      brother is Googolplex. That's ten to the power of a googol. The hat is… large.
+  - type: say
+    who: kevin
+    text: I'm going to shrink and live inside the hat. Nobody will ever find me. I'll have a little hat house.
+  - type: input
+    who: tenfold
+    text: "Googol is $10^{100}$. Googol times googol is $10^{100} \\times 10^{100} = 10^{\\box}$."
+    answer: 200
+    nudges:
+      - { value: 10000, text: "Add the zooms, don't multiply them: 100 + 100." }
+    explain: "$10^{100 + 100} = 10^{200}$. Still nowhere near a googolplex. Numbers are wild."
