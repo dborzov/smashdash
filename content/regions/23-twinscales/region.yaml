@@ -1,0 +1,105 @@
+id: twinscales
+order: 23
+name: The Twin Scales
+tagline: Two giant balances, two twins who never agree, and boxes on BOTH sides.
+campaign: sequel
+topic: 'Equations with $x$ on both sides: on the balance, on the slate, and with brackets'
+added: '2026-10-17'
+scene: twinscales
+map: { x: 62, y: 34 }
+requires: [lostfound]
+palette: { sky: ["#1a2a5a", "#ffd166"], accent: "#ffd166", ground: "#d9c9a0" }
+outro: twinscales-outro
+monsters:
+  - { name: Tilt Gremlin, seed: 231, hue: 50, taunts: ["I put a box on ONE side! Only one! Wheee, tilt!", "Balance is overrated!"] }
+  - { name: Mirror Twin, seed: 232, hue: 210, taunts: ["Whatever you do, I do the opposite!", "x on the left? I'll put x on the right!"] }
+  - { name: Weight Watcher, seed: 233, hue: 0, taunts: ["I'm watching your weights. Very closely. Creepily.", "That's not balanced. That's not balanced at ALL."] }
+path:
+  - id: intro
+    type: story
+    title: The Twin Scales
+    lesson: twinscales-intro
+  - id: boxes-both
+    type: lesson
+    title: Boxes on Both Pans
+    lesson: boxes-both
+  - id: tilt-gremlins
+    type: encounter
+    title: Tilt Gremlins
+    game: battle
+    skills: [boxes-both]
+    count: 5
+    monster: { name: Tilt Gremlin, seed: 231, hue: 50, taunts: ["Tilt! Tilt! TILT!", "Boxes off ONE side only! That's my rule!"] }
+  - id: two-sided
+    type: lesson
+    title: The Two-Sided Slate
+    lesson: two-sided
+  - id: mirror-duel
+    type: encounter
+    title: Duel of the Mirror Twins
+    game: duel
+    skills: [both-sides-solve]
+    count: 5
+  - id: bracket-eq
+    type: lesson
+    title: Brackets on the Scales
+    lesson: bracket-eq
+  - id: weight-vault
+    type: encounter
+    title: The Weighing Room
+    game: vault
+    skills: [bracket-eq, both-sides-solve]
+    count: 5
+  - id: beam-bridge
+    type: encounter
+    title: Across the Balance Beam
+    game: bridge
+    skills: [boxes-both, both-sides-solve, simplify]
+    count: 6
+  - id: boss
+    type: boss
+    title: The Muddler
+    monster: { name: The Muddler, seed: 2301, hue: 280, art: muddler }
+    intro:
+      - "So! You've come at last! I've been waiting on this balance for HOURS. My legs have gone to sleep."
+      - "Behold: boxes on BOTH sides! You can't take the x away from one side, it'll tip! You're TRAPPED in my perfectly balanced trap!"
+      - "Also I've got TWO hats now. Did I mention? I'll mention it again. Two hats."
+    phases:
+      - { skills: [boxes-both], count: 3, taunt: "Take boxes off ONE side! Go on! Nothing bad will happen! (Something bad will happen.)" }
+      - { skills: [both-sides-solve], count: 3, taunt: "Five x plus three equals two x plus fifteen! Unsolvable! I checked! On my fingers!" }
+      - { skills: [bracket-eq, both-sides-solve], count: 3, taunt: "A bracket AND x on both sides! The ultimate weapon! I call it… the Muddle-Bomb!" }
+    defeat: "No… not like this… balanced… both sides… EQUAL… Fine! But I have one more trick! I'm calling… my MUM!"
+ranks:
+  - rank: 2
+    story: twinscales-r2
+    boss:
+      name: The Muddler (Director's Cut)
+      intro:
+        - "This is the DIRECTOR'S CUT. It's got extra scenes. Mostly of me. Winning."
+        - "Negative answers! x on the RIGHT! You'll never see it coming! (It's coming now.)"
+      taunts:
+        - "x on both sides? Just cross one out! Problem solved!"
+        - "If the x ends up on the right, you've done it WRONG! …Haven't you?"
+        - "A negative answer can't be right! Boxes can't weigh minus three! …Can they?"
+        - "DIRECTOR'S CUT! EXTRA MUDDLE!"
+      defeat: "Cut! CUT! That's a wrap! I'm going to need a stunt double for the next one."
+    nodes:
+      - { id: twin-siege, type: encounter, title: Siege of the Twin Towers of Weight, game: siege, skills: [both-sides-solve, bracket-eq], count: 7 }
+  - rank: 3
+    story: twinscales-r3
+    boss:
+      name: Evil Bal & Evil Ance
+      hue: 330
+      intro:
+        - "We are the EVIL twins! From the mirror universe! You can tell because of our goatees!"
+        - "In our universe, you do things to ONE side only. Our scales are always wonky. It's very hard to weigh fruit."
+      taunts:
+        - "Subtract x from the LEFT only! Mirror rules!"
+        - "Brackets? Just ignore the number outside! Mirror rules!"
+        - "Negative times negative is negative! MIRROR RULES!"
+        - "DOUBLE TROUBLE!"
+      defeat: "Our goatees… are falling off… they were just drawn on… with marker…"
+treasures:
+  - { item: balance-biscuit, rank: 2 }
+  - { item: twin-shield, rank: 3 }
+  - { item: zero-cape, flawless: 5 }

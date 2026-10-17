@@ -1,0 +1,44 @@
+id: subzero-intro
+title: The Muddler Strikes Back
+beats:
+  - type: narrate
+    text: >-
+      *In a world… where numbers go BELOW ZERO… one hero… must face… the SEQUEL.* (A deep voice.
+      Dramatic music. Somebody drops a box of popcorn.)
+  - type: say
+    who: grimble
+    text: >-
+      Hello again, hero. Yes, it's me. The frog. I was promised a nice long retirement in a pond.
+      It lasted eleven days.
+  - type: say
+    who: muddler
+    text: >-
+      MWAHAHA! Did you think you'd seen the last of me? Every great villain comes back for the
+      sequel! It's in my contract! I have a NEW HAT! It's TWO hats, stacked!
+  - type: say
+    who: grimble
+    text: >-
+      He's back, he's darker, and he's brought negative numbers. Every sequel is darker. That's the
+      rule. Next it'll be a gritty reboot.
+  - type: say
+    who: muddler
+    text: >-
+      My admiral has stolen every PLUS SIGN in the kingdom. The hot springs of Subzero have frozen
+      solid. The thermometers only go DOWN! Who's going to stop me? A child? AGAIN?
+  - type: choose
+    who: grimble
+    text: What do you say to the Muddler?
+    options:
+      - { text: "Nice hats.", reply: "…Thank you. Nobody ever compliments the hats. I'm still going to defeat you.", who: muddler }
+      - { text: "Didn't I already beat you?", reply: "That was the FIRST film! This is the SEQUEL! Totally different! I have TWO hats!", who: muddler }
+      - { text: "Grimble, is this educational?", reply: "Painfully. Let's go.", who: grimble }
+  - type: ask
+    who: grimble
+    text: Warm-up. The thermometer reads 3 degrees. It drops 5 degrees. What does it read now?
+    options: ['$-2$', '$2$', '$8$', '$-8$']
+    correct: 0
+    nudges:
+      "1": "From 3, drop 3 to reach zero… and you still have 2 more degrees to drop. Below zero!"
+      "2": "That's going UP 5. It dropped."
+      "3": "Start at 3, not 0: 3 down to 0, then 2 more down."
+    explain: "$3 - 5 = -2$: two degrees below zero. Pack a scarf."

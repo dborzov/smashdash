@@ -1,0 +1,32 @@
+id: bracket-eq
+title: Brackets on the Scales
+skill: bracket-eq
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      The Muddler's favourite trick: **brackets**. $3(x + 2) = 21$. Three bags, each with a box and
+      two coins, balance 21 coins.
+  - type: say
+    who: balance
+    text: >-
+      Easy. — Easy-peasy. — Three equal bags weigh 21. — So ONE bag weighs 7. — Divide by 3 first!
+      — The bracket is just "one bag". — That's what I said. — You said it worse.
+  - type: play
+    who: grimble
+    text: "Solve $3(x + 2) = 21$ on the slate. What's on the outside of the box? Undo that first."
+    widget: { kind: eqcanvas, mode: solve, equation: '3(x+2)=21' }
+    done: "Divide by 3: $x + 2 = 7$, so $x = 5$. (You could expand first too: $3x + 6 = 21$. Both work!)"
+  - type: say
+    who: grimble
+    text: >-
+      And the full Muddle: a bracket AND $x$ on both sides. $2(x + 1) = x + 9$. Get rid of the
+      $x$ on the right first — the slate will empty the bag for you when it tidies up.
+  - type: play
+    who: balance
+    text: "Solve $2(x + 1) = x + 9$."
+    widget: { kind: eqcanvas, mode: solve, equation: '2(x+1)=x+9', hints: ["Subtract $x$ from both sides first."] }
+    done: "$2(x + 1) - x = x + 2$, so $x + 2 = 9$ and $x = 7$. Check: $2 \\times 8 = 16$ and $7 + 9 = 16$ ✓"
+  - type: practice
+    skill: bracket-eq
+    count: 3

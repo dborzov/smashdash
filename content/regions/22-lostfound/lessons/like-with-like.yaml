@@ -1,0 +1,53 @@
+id: like-with-like
+title: Like with Like
+skill: like-terms
+beats:
+  - type: say
+    who: marge
+    text: >-
+      The first rule of the Lost & Found: **like goes with like.** Socks with socks. Umbrellas with
+      umbrellas. Mystery boxes ($x$) with mystery boxes. Plain numbers with plain numbers.
+  - type: say
+    who: grimble
+    text: >-
+      So $3x + 2x$ is just $5x$ — five boxes. But $3x + 2$ is three boxes and two coins. You can't
+      squash those together. That's like saying three socks and two lunchboxes is five "slunchboxes".
+  - type: play
+    who: marge
+    text: "Sort this little pile: drag each thing onto its pile, then count each pile."
+    widget: { kind: sorter, terms: ['3x', '2', 'x', '5'] }
+    done: "Boxes: $3x + x = 4x$. Coins: $2 + 5 = 7$. So $3x + 2 + x + 5 = 4x + 7$. Neat as a pin."
+  - type: say
+    who: muddler
+    text: >-
+      HA! But what about the MINUS ones? A minus box! A minus coin! Your piles will be
+      haunted by minuses!
+  - type: play
+    who: marge
+    text: "Minus ones go on the same pile — they just take away. Sort it."
+    widget: { kind: sorter, terms: ['5x', '-2x', '6', '-1'] }
+    done: "$5x - 2x = 3x$ and $6 - 1 = 5$. A minus term is still a box (or a coin) — just one that's owed."
+  - type: say
+    who: grimble
+    text: >-
+      And here's the trap. $x^2$ means $x \times x$ — a box **of** boxes. It's a completely
+      different thing from $x$. Like a sock and a whole drawer of socks. Separate pile!
+  - type: play
+    who: marge
+    text: "Three piles this time: boxes, boxes-of-boxes ($x^2$) and plain numbers."
+    widget: { kind: sorter, terms: ['x^2', '2x', '3', 'x^2', 'x'] }
+    done: "$2x^2 + 3x + 3$. The $x^2$'s only go with $x^2$'s."
+  - type: ask
+    who: marge
+    text: "Which one can't be tidied any further?"
+    options: ['$4x + 3$', '$4x + 3x$', '$4 + 3$', '$4x^2 + 3x^2$']
+    correct: 0
+    atom: unlike
+    nudges:
+      "1": "Boxes and boxes: that tidies to $7x$."
+      "2": "Two plain numbers: that's just 7."
+      "3": "Both are $x^2$ — they're like terms: $7x^2$."
+    explain: "$4x + 3$ is boxes and coins. Different piles. It's already as tidy as it gets."
+  - type: practice
+    skill: like-terms
+    count: 4

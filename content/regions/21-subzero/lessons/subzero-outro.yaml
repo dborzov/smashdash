@@ -1,0 +1,15 @@
+id: subzero-outro
+title: Thaw
+beats:
+  - type: narrate
+    text: >-
+      The plus signs flutter back across the kingdom like butterflies. The hot springs bubble.
+      Admiral Waddles sulks in a puddle that used to be his iceberg.
+  - type: say
+    who: grimble
+    text: >-
+      The Muddler's next stop: the Lost & Found Hall. He's mixed up everything in it. Boxes with
+      coins. Coins with boxes. Socks with… other things. Mostly socks.
+  - type: say
+    who: muddler
+    text: You'll never sort it out! There are TOO MANY THINGS! Some of them are SQUARED!

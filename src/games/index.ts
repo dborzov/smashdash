@@ -352,9 +352,25 @@ export function fruitsIn(spec: FruitSpec): string[] {
 export const rowHolds = (row: FruitSpec['rows'][number], v: Record<string, number>) =>
   sameNumber(row.items.reduce((a, f) => a + (v[f] ?? NaN), 0), row.total);
 
-/** Could this fruit be worked out once `known` fruit are known? (a row where it's the only unknown) */
+/** What row b has that row a hasn't (when a's fruit are all inside b), else null. */
+function rowExtra(a: FruitSpec['rows'][number], b: FruitSpec['rows'][number]): string[] | null {
+  const rest = [...b.items];
+  for (const f of a.items) {
+    const i = rest.indexOf(f);
+    if (i < 0) return null;
+    rest.splice(i, 1);
+  }
+  return rest.length ? rest : null;
+}
+
+/**
+ * Could this fruit be worked out once `known` fruit are known? Either a row where it's the only
+ * unknown, or two rows where the bigger one only adds this fruit (compare the rows).
+ */
 export function solvableNext(spec: FruitSpec, fruit: string, known: string[]): boolean {
-  return spec.rows.some((r) => r.items.includes(fruit) && r.items.every((f) => f === fruit || known.includes(f)));
+  const only = (items: string[]) => items.includes(fruit) && items.every((f) => f === fruit || known.includes(f));
+  if (spec.rows.some((r) => only(r.items))) return true;
+  return spec.rows.some((a) => spec.rows.some((b) => a !== b && only(rowExtra(a, b) ?? [])));
 }
 
 export function fruitVerdict(spec: FruitSpec, fruit: string, given: number, known: string[]): Verdict {
@@ -372,6 +388,19 @@ export function fruitVerdict(spec: FruitSpec, fruit: string, given: number, know
     if (rest > 0 && sameNumber(given, (row.total + rest) / n))
       return { ok: false, near: true, text: `Take the other fruit **away** from the total, don't add them.` };
   }
+  // Two rows that differ only by this fruit: the difference in totals is what it's worth.
+  for (const a of spec.rows)
+    for (const b of spec.rows) {
+      const extra = a !== b ? rowExtra(a, b) : null;
+      if (!extra || !extra.every((f) => f === fruit)) continue;
+      const diff = b.total - a.total;
+      if (sameNumber(given, diff * extra.length) || sameNumber(given, b.total) || sameNumber(given, a.total))
+        return {
+          ok: false,
+          near: true,
+          text: `Compare the two rows: the longer one has ${extra.length > 1 ? `${extra.length} extra` : 'one extra'} ${fruit} and is worth ${diff} more.`,
+        };
+    }
   return { ok: false, text: `Check it: put ${given} in for ${fruit} — does a row still add up?` };
 }
 

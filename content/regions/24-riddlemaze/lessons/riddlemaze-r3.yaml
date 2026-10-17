@@ -1,0 +1,26 @@
+id: riddlemaze-r3
+title: "Legendary: Great-Granny"
+beats:
+  - type: narrate
+    text: >-
+      **Legendary.** A bath chair rolls into the centre of the maze. In it sits the oldest woman
+      anyone has ever seen. She is holding an ear trumpet, a walking stick, and a grudge.
+  - type: say
+    who: ptolemeow
+    text: >-
+      Great-Granny Muddler. Four hundred and twelve years old. She muddled the Romans so badly
+      they never invented zero. She once told Pythagoras his triangle was "a bit pointy".
+  - type: say
+    who: grimble
+    text: >-
+      Everything at once now: patterns, fruit, tipping scales and a flip or two. Keep calm. Write
+      it down. And speak up — she's a bit deaf.
+  - type: ask
+    who: ptolemeow
+    text: "Granny shouts: \"$-3x > 12$, SO $x > -4$!\" Is she right?"
+    options: ['No: $x < -4$', 'Yes', 'No: $x > 4$']
+    correct: 0
+    nudges:
+      "1": "Try $x = 0$: is $-3 \\times 0 > 12$? No! So $x > -4$ can't be right. She forgot to flip."
+      "2": "$12 \\div (-3) = -4$, so the number is right — but the sign has to flip."
+    explain: "Divide by $-3$ and flip: $x < -4$. Check $x = -5$: $-3 \\times (-5) = 15 > 12$ ✓."

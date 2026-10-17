@@ -1,0 +1,26 @@
+id: riddlemaze-outro
+title: The End (Of the Sequel)
+beats:
+  - type: narrate
+    text: >-
+      The fog lifts from the maze. Mumsy Muddler packs her handbag (it contains a sofa). The
+      Muddler follows her out, holding both his hats, looking about nine years old.
+  - type: say
+    who: muddler
+    text: >-
+      This isn't over! There'll be a THIRD one! A trilogy! Trilogies are the best ones! …Mum, can
+      we stop for chips?
+  - type: say
+    who: ptolemeow
+    text: >-
+      You have solved every riddle in my maze. Negative numbers, both sides, brackets, patterns,
+      fruit, the flipping sign. Honestly? You are better at this than most grown-ups. Do not tell them.
+  - type: say
+    who: grimble
+    text: >-
+      And that's the sequel. Roll the credits. Hero: you. Frog: me. Best boy: also me. Catering:
+      a sphinx, but she only brought mice.
+  - type: narrate
+    text: >-
+      *Post-credits scene:* somewhere in the dark, a third hat lands on top of the other two.
+      Somebody whispers: "*Part Three…*"

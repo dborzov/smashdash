@@ -488,7 +488,8 @@ export function tidy(e: Expr): Expr {
         b = tidy(e.b);
       const n = bin(e.t, a, b);
       const l = linear(n);
-      if (l && flat(n)) return canon(l);
+      // x-terms on both parts get collected: 2(x + 1) − x is x + 2.
+      if (l && (flat(n) || (hasX(a) && hasX(b)))) return canon(l);
       if (isNum(b)) {
         const [g, c] = splitConst(a);
         return withConst(g, e.t === '+' ? fAdd(c, b.v) : fSub(c, b.v));
@@ -553,19 +554,25 @@ export interface Move {
   op: OpSym;
   /** A number, or x itself ("subtract x from both sides"). */
   k: Frac | 'x';
+  /** With k = 'x': how many x ("subtract 2x from both sides"). Default 1. */
+  c?: Frac;
 }
 
-const kExpr = (m: Move): Expr => (m.k === 'x' ? X : num(m.k));
+/** 2x, x, \frac{1}{2}x — an x-term with coefficient c, in LaTeX. */
+const xTex = (c: Frac | undefined) => (!c || fEq(c, ONE) ? 'x' : `${fracTex(c)}x`);
+
+const kExpr = (m: Move): Expr =>
+  m.k === 'x' ? (!m.c || fEq(m.c, ONE) ? X : bin('*', num(m.c), X, { implicit: true })) : num(m.k);
 
 export function moveTex(m: Move): string {
-  const k = m.k === 'x' ? 'x' : fracTex(m.k);
+  const k = m.k === 'x' ? xTex(m.c) : fracTex(m.k);
   const kk = m.k !== 'x' && m.k.n < 0 ? `(${k})` : k;
   return { '+': `+ ${kk}`, '-': `- ${kk}`, '*': `\\times ${kk}`, '/': `\\div ${kk}` }[m.op];
 }
 
 /** In words, for buttons and the work log: "subtract 3 from both sides". */
 export function moveWords(m: Move): string {
-  const k = m.k === 'x' ? '$x$' : `$${fracTex(m.k)}$`;
+  const k = m.k === 'x' ? `$${xTex(m.c)}$` : `$${fracTex(m.k)}$`;
   return {
     '+': `add ${k} to both sides`,
     '-': `subtract ${k} from both sides`,
@@ -663,9 +670,13 @@ export function bestMove(eq: Equation): Move | null {
     const l = linear(eq.l),
       r = linear(eq.r);
     if (!l || !r) return null;
-    const side = fVal(l.a) <= fVal(r.a) ? l : r;
-    if (!fEq(side.a, ONE)) return null;
-    return { op: '-', k: 'x' };
+    // Take the smaller x-term away from both sides (add it, if it's a minus).
+    const c = fVal(l.a) <= fVal(r.a) ? l.a : r.a;
+    if (fZero(c)) return null;
+    const abs = frac(Math.abs(c.n), c.d);
+    const m: Move = { op: c.n > 0 ? '-' : '+', k: 'x' };
+    if (!fEq(abs, ONE)) m.c = abs;
+    return m;
   }
   const o = outerLayer(eq);
   if (!o) return null;
@@ -716,7 +727,7 @@ export function assessMove(before: Equation, m: Move): Assessment {
   if (v) return { kind: 'solved', text: `That's the last layer — $x$ is free!` };
   const tb = tangle(before),
     ta = tangle(after);
-  const kTex = m.k === 'x' ? 'x' : fracTex(m.k);
+  const kTex = m.k === 'x' ? xTex(m.c) : fracTex(m.k);
   if (m.k === 'x' || ta >= 50) {
     if (ta < tb) return { kind: 'good', text: `Now $x$ is only on one side. Much better!` };
     return {
@@ -763,7 +774,16 @@ export function assessMove(before: Equation, m: Move): Assessment {
 export function tidyNote(applied: Expr, tidied: Expr, m: Move): string | null {
   if (applied.t === 'num' || applied.t === 'x') return null;
   const inner = applied.a;
-  if (m.k === 'x' || !hasX(inner)) return null;
+  if (m.k === 'x') {
+    // Collecting the x-terms: 5x − 2x = 3x, or they cancel out.
+    const before = linear(inner);
+    const after = linear(tidied);
+    if (!before || !after || fZero(before.a)) return null;
+    const sym = m.op === '-' ? '-' : '+';
+    if (fZero(after.a)) return `$${xTex(before.a)} ${sym} ${xTex(m.c)}$: the $x$ terms cancel out — poof!`;
+    return `$${xTex(before.a)} ${sym} ${xTex(m.c)} = ${xTex(after.a)}$.`;
+  }
+  if (!hasX(inner)) return null;
   const k = fracTex(m.k);
   if ((m.op === '+' || m.op === '-') && (inner.t === '+' || inner.t === '-')) {
     const [g, c] = splitConst(inner);

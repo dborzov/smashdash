@@ -1,0 +1,47 @@
+id: fruit-salad
+title: Fruit Salad
+skill: fruit-puzzles
+beats:
+  - type: say
+    who: ptolemeow
+    text: >-
+      My fruit riddles. You have seen these on the internet. "Only a genius can solve this!" Every
+      grown-up in the world shared one, and most of them got it wrong. You will not.
+  - type: say
+    who: grimble
+    text: >-
+      Each fruit stands for a number. Same fruit, same number. It's just algebra wearing a fruit
+      costume. Find a row with only **one** kind of fruit and start there.
+  - type: play
+    who: ptolemeow
+    text: "Crack my riddle: work out each fruit, one at a time."
+    widget:
+      kind: fruit
+      rows:
+        - { items: ['🍎', '🍎', '🍎'], total: 30 }
+        - { items: ['🍎', '🍌', '🍌'], total: 18 }
+      values: { '🍎': 10, '🍌': 4 }
+    done: "🍎 + 🍎 + 🍎 = 30 means 🍎 = 10. Swap it into row 2: 10 + 🍌 + 🍌 = 18, so 🍌 + 🍌 = 8 and 🍌 = 4."
+  - type: say
+    who: muddler
+    text: >-
+      MWAHAHA! What if NO row has just one fruit? Then you're STUCK! Stuck forever in fruit!
+  - type: say
+    who: grimble
+    text: >-
+      Then **compare two rows.** If one row is the same as another plus one extra fruit, the
+      difference in totals is what that extra fruit is worth.
+  - type: play
+    who: ptolemeow
+    text: "Row 2 is row 1 with one extra 🍇. Use that!"
+    widget:
+      kind: fruit
+      rows:
+        - { items: ['🍓', '🍇'], total: 11 }
+        - { items: ['🍓', '🍇', '🍇'], total: 15 }
+      values: { '🍓': 7, '🍇': 4 }
+      ask: ['🍇', '🍓']
+    done: "One extra 🍇 makes it 4 more, so 🍇 = 4. Then 🍓 = 11 − 4 = 7. No guessing needed."
+  - type: practice
+    skill: fruit-puzzles
+    count: 3

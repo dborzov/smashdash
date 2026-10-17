@@ -659,3 +659,117 @@
   inShop: false
   from: hq
   desc: "Blue, with a gold star and a red band. Every intern dreams of this hat."
+
+# --- The Muddler Strikes Back --------------------------------------------------------
+- id: penguin-popsicle
+  name: Penguin Popsicle
+  kind: food
+  icon: "🍧"
+  price: 0
+  inShop: false
+  from: subzero
+  desc: "A fish-flavoured ice lolly from Admiral Waddles' freezer. −18 °C. Lick carefully."
+  use: "Your pet licks it and its tongue sticks. It is fine. It is a bit annoyed."
+  effect: { hunger: 30, joy: 30, sound: eat }
+  drop: 2
+- id: plus-sign-amulet
+  name: The Last Plus Sign
+  kind: relic
+  icon: "➕"
+  price: 0
+  inShop: false
+  from: subzero
+  desc: "The one plus sign the Admiral never caught. Wear it and you bounce back faster: a heart back after only 2 clean answers."
+  relic: { campaign: sequel, rally: 2 }
+- id: bobble-hat
+  name: Bobble Hat of Subzero
+  kind: hat
+  icon: "🧶"
+  price: 0
+  inShop: false
+  from: subzero
+  desc: "Knitted by penguins. Rated for −40 °C. The bobble is the warmest bit, for some reason."
+- id: lost-sock
+  name: The Lost Sock
+  kind: toy
+  icon: "🧦"
+  price: 0
+  inShop: false
+  from: lostfound
+  desc: "The single most famous lost sock in the kingdom. Its other half is out there. Somewhere."
+  use: "Your pet wrestles the sock, wins, and wears it as a trophy. Then a hat. Then a sock again."
+  effect: { joy: 45, bond: 2, sound: squawk }
+  drop: 2
+- id: margies-label-maker
+  name: Madame Marge's Label Maker
+  kind: relic
+  icon: "🏷️"
+  price: 0
+  inShop: false
+  from: lostfound
+  desc: "Click-click-CLICK. It labels anything. Including the answer, if you ask nicely: +1 free hint in every sequel fight."
+  relic: { campaign: sequel, hints: 1 }
+- id: lost-property-box
+  name: Lost Property Box
+  kind: decor
+  icon: "📦"
+  price: 0
+  inShop: false
+  from: lostfound
+  desc: "Full of things nobody claimed. A trumpet. A wig. Seventeen left gloves. Your pet sleeps in it now."
+- id: balance-biscuit
+  name: Perfectly Balanced Biscuit
+  kind: food
+  icon: "🍪"
+  price: 0
+  inShop: false
+  from: twinscales
+  desc: "Bal & Ance bake it so both halves weigh exactly the same. They still argue over who gets which half."
+  use: "Your pet snaps it in two and eats both halves. Fair is fair."
+  effect: { hunger: 40, joy: 20, bond: 3, sound: eat }
+  drop: 2
+- id: twin-shield
+  name: The Twin Shield
+  kind: relic
+  icon: "🛡️"
+  price: 0
+  inShop: false
+  from: twinscales
+  desc: "Two shields welded together. Whatever hits one side, the other side shrugs off: start every fight with a ward up."
+  relic: { campaign: sequel, ward: true }
+- id: zero-cape
+  name: Zero-Pair Cape
+  kind: cape
+  icon: "🦓"
+  price: 0
+  inShop: false
+  from: twinscales
+  desc: "Stripes of +1 and −1, perfectly cancelled out. It weighs exactly nothing. You can still see it."
+- id: fruit-salad
+  name: Ptolemeow's Fruit Salad
+  kind: food
+  icon: "🥗"
+  price: 0
+  inShop: false
+  from: riddlemaze
+  desc: "Every fruit from every riddle. 🍎 is worth 10, 🍌 is worth 4, and the whole bowl is worth a lot."
+  use: "Your pet eats the 🍎, then the 🍌, then works out what the bowl was worth. Clever pet."
+  effect: { hunger: 50, joy: 25, sound: eat }
+  drop: 2
+- id: sphinx-riddle-book
+  name: The Sphinx's Riddle Book
+  kind: relic
+  icon: "📕"
+  price: 0
+  inShop: false
+  from: riddlemaze
+  desc: "Every riddle the sphinx ever asked, with the answers in invisible ink. Reading it makes you wiser: +30% XP for sequel wins."
+  relic: { campaign: sequel, xp: 30 }
+- id: tiny-maze
+  name: Tiny Hedge Maze
+  kind: decor
+  icon: "🌳"
+  price: 0
+  inShop: false
+  from: riddlemaze
+  desc: "A hedge maze the size of a doormat. Your pet gets lost in it twice a day and loves it."

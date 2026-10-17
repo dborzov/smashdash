@@ -1,0 +1,22 @@
+id: twinscales-r2
+title: "Heroic: The Director's Cut"
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      **Heroic** Twin Scales. The Muddler has released the Director's Cut: longer, louder, with
+      negative answers and $x$ ending up on the wrong side. He also added a laugh track.
+  - type: say
+    who: intern
+    text: >-
+      I checked them all for you! If the answer's negative it's wrong, because boxes can't weigh
+      minus anything! I'm basically a genius! Ha ha ha! (That's the laugh track. They make me do it.)
+  - type: ask
+    who: grimble
+    text: "$x + 10 = 3x + 16$. Can the answer really be negative?"
+    options: ['Yes: $x = -3$', 'No — something went wrong', 'Yes: $x = 3$']
+    correct: 0
+    nudges:
+      "1": "Try it! Subtract $x$: $10 = 2x + 16$. Subtract 16: $-6 = 2x$. Divide: $x = -3$. Nothing went wrong!"
+      "2": "That's positive. Check it: $3 + 10 = 13$, but $3 \\times 3 + 16 = 25$. Not equal."
+    explain: "$x = -3$: $-3 + 10 = 7$ and $3 \\times (-3) + 16 = 7$ ✓. On a slate, a box can weigh minus three. The intern is wrong. Again."

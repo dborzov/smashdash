@@ -65,6 +65,9 @@ const DECOR_SPOTS: Record<string, { left: string; top?: string; bottom?: string;
   feeder: { left: '78%', bottom: '8%', size: '2rem' },
   'toy-chest': { left: '92%', bottom: '8%', size: '2.2rem' },
   'poop-bucket': { left: '6%', bottom: '8%', size: '2rem' },
+  'square-rug': { left: '34%', bottom: '3%', size: '2rem' },
+  'lost-property-box': { left: '66%', bottom: '6%', size: '2.4rem' },
+  'tiny-maze': { left: '30%', top: '14%', size: '2.2rem' },
 };
 
 function Den({

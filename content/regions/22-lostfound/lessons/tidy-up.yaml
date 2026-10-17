@@ -1,0 +1,61 @@
+id: tidy-up
+title: Bust the Bracket, Tidy the Pile
+skill: simplify
+beats:
+  - type: say
+    who: marge
+    text: >-
+      Some lost things come in **bags**. $3(x + 2)$ is three bags, and each bag holds a box and two
+      coins. Before you can sort them, you have to empty the bags out.
+  - type: say
+    who: grimble
+    text: >-
+      You know this one: bust the bracket. The 3 multiplies **everything** inside. $3(x + 2) = 3x + 6$.
+      Then it's just a messy pile, and you know how to sort a messy pile.
+  - type: play
+    who: marge
+    text: "Tidy up $3(x + 2) + 4x$, one step at a time."
+    widget:
+      kind: chain
+      steps:
+        - tex: '3(x + 2) = 3x + \box'
+          answer: 6
+          nudges: [{ value: 2, text: "Halfcopy alert! The 3 multiplies the 2 as well." }]
+        - tex: '3x + 6 + 4x = \box x + 6'
+          answer: 7
+          nudges: [{ value: 12, text: "We're adding boxes, not multiplying: $3 + 4$." }]
+    done: "$3(x + 2) + 4x = 7x + 6$. Bags emptied, piles sorted."
+  - type: say
+    who: muddler
+    text: >-
+      Mwahaha! Now try my SPECIAL bag. $6x - (x + 4)$. A minus in front of a bracket! The minus only
+      takes away the $x$. The 4 gets to stay! I've decided!
+  - type: say
+    who: grimble
+    text: >-
+      He hasn't decided anything. The minus means **take away the whole bag**. Take away the box AND
+      the four coins inside it. Both of them go.
+  - type: play
+    who: marge
+    text: "Tidy up $6x - (x + 4)$."
+    widget:
+      kind: chain
+      steps:
+        - tex: '6x - (x + 4) = 6x - x - \box'
+          answer: 4
+          say: "Take away the whole bag: the $x$ AND the 4."
+        - tex: '6x - x - 4 = \box x - 4'
+          answer: 5
+          nudges: [{ value: 6, text: "Six boxes, take away one box." }]
+    done: "$6x - (x + 4) = 5x - 4$. Not $5x + 4$! The minus takes the whole bag."
+  - type: input
+    who: marge
+    text: "Last one: $2(x + 5) + 3x$ tidies to $5x + \\square$. What's in the square?"
+    answer: 10
+    atom: expand-collect
+    nudges:
+      - { value: 5, text: "The 2 multiplies the 5 too: two bags with five coins each." }
+    explain: "$2(x + 5) + 3x = 2x + 10 + 3x = 5x + 10$."
+  - type: practice
+    skill: simplify
+    count: 4

@@ -1,0 +1,39 @@
+id: lostfound-intro
+title: The Hall of Lost Things
+beats:
+  - type: narrate
+    text: >-
+      The Lost & Found Hall: where every lost thing in the kingdom ends up. Umbrellas. Lunchboxes.
+      A wizard's hat. Several wizards. And socks. So many socks. Never a pair.
+  - type: say
+    who: marge
+    text: >-
+      SHHH. This is a lost property office, not a disco. I am Madame Marge. I have run this hall for
+      forty years and I have never, EVER, lost a thing. Except my temper. Today.
+  - type: say
+    who: marge
+    text: >-
+      The Muddler came in with a sack of $x$'s and a sack of numbers and tipped them ALL OVER MY
+      FLOOR. Mixed! Boxes in with coins! Coins in with boxes! And now the mess has come alive.
+  - type: say
+    who: grimble
+    text: >-
+      That's the Clutterbeast. It happens when a pile gets messy enough. Same thing is living under
+      your bed, probably. Don't look.
+  - type: choose
+    who: marge
+    text: Can you help me sort it out?
+    options:
+      - { text: "I'm great at tidying!", reply: "Your mother would like a word about that.", who: grimble }
+      - { text: "What's in it for me?", reply: "A sock. Possibly matching. Don't get your hopes up.", who: marge }
+      - { text: "Can't we just buy a new hall?", reply: "SHHHH.", who: marge }
+  - type: ask
+    who: marge
+    text: "Warm-up. There are 4 umbrellas, then 3 more umbrellas turn up. How many umbrellas? (In maths: $4u + 3u$.)"
+    options: ['$7u$', '$12u$', '$7$', '$7u^2$']
+    correct: 0
+    nudges:
+      "1": "That's multiplying. 4 umbrellas and 3 more umbrellas…"
+      "2": "Seven what? Seven umbrellas: $7u$."
+      "3": "Adding umbrellas to umbrellas gives you more umbrellas, not squared umbrellas."
+    explain: "$4u + 3u = 7u$: seven umbrellas. Things of the same kind just add up."

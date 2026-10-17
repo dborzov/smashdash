@@ -34,8 +34,10 @@ import {
   frac,
   fracTex,
   fVal,
+  fZero,
   hasX,
   layerTex,
+  linear,
   moveTex,
   moveWords,
   outerLayer,
@@ -241,6 +243,8 @@ export function EqCanvas({
   const [lines, setLines] = useState<Line[]>(() => (building ? [] : [{ eq: target }]));
   const [op, setOp] = useState<OpSym | null>(null);
   const [amt, setAmt] = useState<Frac | 'x' | null>(null);
+  /** How many x, when the amount is an x-term (2x). */
+  const [xc, setXc] = useState<Frac>(frac(1));
   const [custom, setCustom] = useState<string | null>(null);
   const [pending, setPending] = useState<Pending | null>(null);
   const [askIn, setAskIn] = useState('');
@@ -437,7 +441,8 @@ export function EqCanvas({
   // ======================================================================
   // Solve: moves on both sides
 
-  const move: Move | null = op && amt !== null ? { op, k: amt } : null;
+  const move: Move | null =
+    op && amt !== null ? (amt === 'x' && !fEq(xc, frac(1)) ? { op, k: amt, c: xc } : { op, k: amt }) : null;
   const blockMsg = move ? blocked(move) : null;
   const preview = move && !blockMsg ? applyMove(cur, move) : null;
 
@@ -448,6 +453,17 @@ export function EqCanvas({
       if (a.n !== 0 && !seen.some((s) => fEq(s, a))) seen.push(a);
     }
     return seen;
+  }, [cur]);
+  /** The x-terms on the slate (2x, 5x), as amounts to add or take away. Always offers x. */
+  const xTerms = useMemo(() => {
+    const out: Frac[] = [frac(1)];
+    for (const side of [cur.l, cur.r]) {
+      const l = linear(side);
+      if (!l || fZero(l.a)) continue;
+      const a = frac(Math.abs(l.a.n), l.a.d);
+      if (!out.some((s) => fEq(s, a))) out.push(a);
+    }
+    return out;
   }, [cur]);
 
   const commit = (p: Pending, extra?: string) => {
@@ -693,6 +709,7 @@ export function EqCanvas({
         );
         setOp(best.op);
         setAmt(best.k);
+        setXc(best.c ?? frac(1));
         return;
       }
       setSay(null);
@@ -1096,19 +1113,22 @@ export function EqCanvas({
                       {a.d === 1 ? a.n : <MathSpan tex={fracTex(a)} />}
                     </button>
                   ))}
-                  {(op === '+' || op === '-') && (
-                    <button
-                      class={`eqc-tile x ${amt === 'x' ? 'on' : ''}`}
-                      disabled={demo}
-                      onClick={() => {
-                        sfx('click');
-                        setCustom(null);
-                        setAmt('x');
-                      }}
-                    >
-                      x
-                    </button>
-                  )}
+                  {(op === '+' || op === '-') &&
+                    xTerms.map((c) => (
+                      <button
+                        key={plainValue(c)}
+                        class={`eqc-tile x ${amt === 'x' && fEq(xc, c) ? 'on' : ''}`}
+                        disabled={demo}
+                        onClick={() => {
+                          sfx('click');
+                          setCustom(null);
+                          setAmt('x');
+                          setXc(c);
+                        }}
+                      >
+                        {fEq(c, frac(1)) ? 'x' : <MathSpan tex={`${fracTex(c)}x`} />}
+                      </button>
+                    ))}
                   <button
                     class={`eqc-tile other ${custom !== null ? 'on' : ''}`}
                     disabled={demo}

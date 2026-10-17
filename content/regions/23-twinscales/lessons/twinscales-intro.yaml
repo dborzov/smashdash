@@ -1,0 +1,39 @@
+id: twinscales-intro
+title: The Twin Scales
+beats:
+  - type: narrate
+    text: >-
+      Two enormous balances stand in a marble hall. Next to them, two identical scale-keepers glare
+      at each other. They are twins. They have been arguing since birth.
+  - type: say
+    who: balance
+    text: >-
+      I'm Bal. She's Ance. — I'm Ance. He's Bal. — Together we're Bal & Ance. — We weigh things.
+      — We've weighed everything in the kingdom. Twice. — Three times. — TWICE.
+  - type: say
+    who: balance
+    text: >-
+      The Muddler put boxes on BOTH pans of our scales. — Mystery boxes on the left AND the right!
+      — The scales still balance, but nobody knows what's in the boxes. — It's driving us mad. — Madder.
+  - type: say
+    who: grimble
+    text: >-
+      One side with boxes, we can do. Peel the numbers off, divide, done. But boxes on both sides?
+      This is new. This is the big one.
+  - type: choose
+    who: balance
+    text: Which twin is right about everything?
+    options:
+      - { text: "Bal.", reply: "THANK you. — Traitor. — He's right, I'm usually right. — I'M usually right.", who: balance }
+      - { text: "Ance.", reply: "Obviously. — Rigged! — The truth is never rigged. — It is if you rig it.", who: balance }
+      - { text: "You're both equal.", reply: "…That's annoyingly balanced. — Annoyingly. — We hate it. — We love it.", who: balance }
+  - type: ask
+    who: grimble
+    text: "Warm-up: on one pan, $3$ boxes and $2$ coins. If you take $1$ box off this pan, what's left?"
+    options: ['$2x + 2$', '$3x + 1$', '$x + 2$', '$2x + 1$']
+    correct: 0
+    nudges:
+      "1": "We took a box off, not a coin."
+      "2": "Three boxes, take away one box: two boxes left."
+      "3": "The coins are still there. Only a box came off."
+    explain: "$3x + 2$ take away one box is $2x + 2$."

@@ -1,0 +1,43 @@
+id: boxes-both
+title: Boxes on Both Pans
+skill: boxes-both
+beats:
+  - type: say
+    who: balance
+    text: >-
+      Here's our first problem. — Left pan: three boxes and two coins. — Right pan: one box and
+      eight coins. — Balanced. — Perfectly balanced. — Like us. — Shush.
+  - type: say
+    who: grimble
+    text: >-
+      The rule hasn't changed: **whatever you do to one pan, do to the other.** And boxes are just
+      things on a pan. You can take a box off — as long as you take a box off the other pan too.
+  - type: play
+    who: balance
+    text: "Take a box off **both** pans, and keep going until the boxes are only on one side. Then finish it off!"
+    widget: { kind: balance, left: { x: 3, c: 2 }, right: { x: 1, c: 8 }, value: 3, goal: isolate, tools: [boxes, both, divide] }
+    done: "Take a box off both pans: $2x + 2 = 8$. Then 2 coins off both: $2x = 6$. Share out: $x = 3$!"
+  - type: ask
+    who: balance
+    text: "$5x + 1 = 2x + 13$. How many boxes should you take off each pan?"
+    options: ['$2$', '$5$', '$1$', '$7$']
+    correct: 0
+    atom: smaller-side
+    nudges:
+      "1": "The right pan only has 2 boxes — you can't take 5 off it!"
+      "2": "One is fine, but then there are still boxes on both pans. Take off as many as the smaller side has."
+      "3": "Take boxes **off**, don't count them all up."
+    explain: "Take off 2 boxes — as many as the right pan has. Then the boxes are only on the left: $3x + 1 = 13$."
+  - type: play
+    who: balance
+    text: "Your turn: $4x + 3 = x + 12$. Boxes first, then coins, then share out."
+    widget: { kind: balance, left: { x: 4, c: 3 }, right: { x: 1, c: 12 }, value: 3, goal: isolate, tools: [boxes, both, divide] }
+    done: "$4x + 3 = x + 12 \\Rightarrow 3x + 3 = 12 \\Rightarrow 3x = 9 \\Rightarrow x = 3$. Check: $4 \\times 3 + 3 = 15$, and $3 + 12 = 15$ ✓"
+  - type: say
+    who: muddler
+    text: >-
+      Mwahaha! Who needs balances anyway? I'll just cross out the $x$ on the right. Done!
+      …Why is the scale on fire?
+  - type: practice
+    skill: boxes-both
+    count: 4

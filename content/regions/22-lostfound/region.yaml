@@ -1,0 +1,101 @@
+id: lostfound
+order: 22
+name: Lost & Found Hall
+tagline: Ten thousand lost socks, one furious librarian, and a monster made entirely of clutter.
+campaign: sequel
+topic: 'Like terms: boxes with boxes, numbers with numbers, $x^2$ on its own; expanding and tidying up'
+added: '2026-10-17'
+scene: lostfound
+map: { x: 40, y: 62 }
+requires: [subzero]
+palette: { sky: ["#3a2a4a", "#c9a26a"], accent: "#ffb3d1", ground: "#e8d5b0" }
+outro: lostfound-outro
+monsters:
+  - { name: Sock Goblin, seed: 221, hue: 300, taunts: ["One sock! Where's the other one? NOBODY KNOWS!", "I add socks to umbrellas! Seven sockbrellas!"] }
+  - { name: Dust Bunny, seed: 222, hue: 30, taunts: ["Achoo! Three x plus two equals five x! Achoo!", "I live under the sofa. With your x squared."] }
+  - { name: Umbrella Mimic, seed: 223, hue: 260, taunts: ["I'm not a monster, I'm an umbrella! …Bite.", "Boxes and coins in one pile! Lovely! Messy!"] }
+path:
+  - id: intro
+    type: story
+    title: The Hall of Lost Things
+    lesson: lostfound-intro
+  - id: like-with-like
+    type: lesson
+    title: Like with Like
+    lesson: like-with-like
+  - id: sock-goblins
+    type: encounter
+    title: Sock Goblins
+    game: battle
+    skills: [like-terms]
+    count: 5
+    monster: { name: Sock Goblin, seed: 221, hue: 300, taunts: ["Socks with socks? BORING!", "I've got one sock and one x. That's two sox!"] }
+  - id: umbrella-chest
+    type: encounter
+    title: The Umbrella Stand
+    game: chest
+    skills: [like-terms]
+    count: 6
+  - id: tidy-up
+    type: lesson
+    title: Bust the Bracket, Tidy the Pile
+    lesson: tidy-up
+  - id: dust-vault
+    type: encounter
+    title: Under the Sofa
+    game: vault
+    skills: [simplify, like-terms]
+    count: 6
+  - id: shelf-bridge
+    type: encounter
+    title: The Wobbly Shelves
+    game: bridge
+    skills: [like-terms, simplify, neg-add]
+    count: 7
+  - id: boss
+    type: boss
+    title: The Clutterbeast
+    monster: { name: The Clutterbeast, seed: 2201, hue: 35, art: clutter }
+    intro:
+      - "RAAARGH! I AM THE CLUTTERBEAST! I am made of everything anyone ever lost! Three umbrellas, a trombone, and forty-one left socks!"
+      - "The Muddler fed me every x and every number in the kingdom, ALL MIXED UP. I will never be tidied!"
+      - "Your bedroom looks like me. Don't deny it. I can SMELL it."
+    phases:
+      - { skills: [like-terms], count: 3, taunt: "Three x plus two is five x! Lump it ALL together! LUMPS!" }
+      - { skills: [like-terms, simplify], count: 3, taunt: "x squared and x are the SAME! Just one's a bit… squarer!" }
+      - { skills: [simplify], count: 3, taunt: "A minus in front of a bracket only takes away the FIRST thing! Everyone knows that!" }
+    defeat: "Nooo… you've sorted me… into neat little piles… I feel… organised… It's HORRIBLE. Is that a drawer? Am I in a DRAWER?"
+ranks:
+  - rank: 2
+    story: lostfound-r2
+    boss:
+      name: The Clutterbeast (Spring Clean Edition)
+      intro:
+        - "I'm BACK! I ate a jumble sale! And a car boot sale! And a garage! And the car in the garage!"
+        - "Now I've got x squareds in my x's and minus signs in my brackets!"
+      taunts:
+        - "Five x plus five is ten x! TEN! The biggest number!"
+        - "x squared plus x squared is x to the FOUR! Doubling the power! POWER!"
+        - "Minus bracket x plus three is minus x PLUS three! The minus got bored and left!"
+        - "MORE STUFF! MORE MESS! MORE SOCKS!"
+      defeat: "You folded me. You FOLDED me. Like a fitted sheet. Nobody can fold a fitted sheet. Who ARE you?"
+    nodes:
+      - { id: jumble-siege, type: encounter, title: Siege of the Jumble Sale, game: siege, skills: [simplify, like-terms], count: 7 }
+  - rank: 3
+    story: lostfound-r3
+    boss:
+      name: The Clutterqueen
+      hue: 300
+      intro:
+        - "My child the Clutterbeast is in a DRAWER. Labelled. With a little label maker."
+        - "I am the Clutterqueen. I am every lost homework in history. 'The dog ate it.' I AM THE DOG."
+      taunts:
+        - "Two brackets! Expand one, ignore the other! Saves time!"
+        - "x squared is just x but showing off!"
+        - "Minus, minus, minus! Which one goes where? Chaos!"
+        - "TIDY THIS!"
+      defeat: "Fine. FINE. Here's your homework back. All of it. From every year. It's slightly chewed."
+treasures:
+  - { item: lost-sock, rank: 2 }
+  - { item: margies-label-maker, rank: 3 }
+  - { item: lost-property-box, flawless: 5 }

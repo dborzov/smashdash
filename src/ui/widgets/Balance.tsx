@@ -148,6 +148,11 @@ export function BalanceWidget({
     if (which !== 'left') setR((p) => ({ ...p, c: Math.max(0, p.c + d) }));
     if (goal === 'tip' && which !== 'both') sfx('hit');
   };
+  const boxOff = () => {
+    sfx('click');
+    setL((p) => ({ ...p, x: Math.max(0, p.x - 1) }));
+    setR((p) => ({ ...p, x: Math.max(0, p.x - 1) }));
+  };
   const n = L.x > 1 ? L.x : R.x > 1 ? R.x : 0;
   const canDivide = n > 1 && L.x % n === 0 && R.x % n === 0 && L.c % n === 0 && R.c % n === 0;
   const divide = () => {
@@ -274,6 +279,11 @@ export function BalanceWidget({
               </button>
             </>
           )}
+          {tools.includes('boxes') && (
+            <button class="btn small gold" disabled={L.x === 0 || R.x === 0} onClick={boxOff}>
+              −1 box from both
+            </button>
+          )}
           {tools.includes('left') && (
             <button class="btn small ghost" disabled={L.c === 0} onClick={() => change('left', -1)}>
               −1 coin from left
@@ -293,7 +303,7 @@ export function BalanceWidget({
               Split both into {n || '…'} equal groups
             </button>
           )}
-          {(goal !== 'tip' || !balanced) && (L.c !== l0.c || R.c !== r0.c || L.x !== l0.x) && (
+          {(goal !== 'tip' || !balanced) && (L.c !== l0.c || R.c !== r0.c || L.x !== l0.x || R.x !== r0.x) && (
             <button
               class="btn small ghost"
               onClick={() => {

@@ -1,0 +1,20 @@
+id: lostfound-outro
+title: A Place for Everything
+beats:
+  - type: narrate
+    text: >-
+      The Lost & Found Hall gleams. Every sock is paired (well, every pair is a pair; there are 4,018
+      single socks in a box marked "SINGLES"). Madame Marge smiles. It is terrifying.
+  - type: say
+    who: marge
+    text: >-
+      Like with like. Bags emptied before sorting. Minus means the whole bag. You'd make a
+      tremendous librarian. That is the highest compliment I give.
+  - type: say
+    who: grimble
+    text: >-
+      The Muddler's run off to the Twin Scales. Two giant balances, run by twins who argue about
+      everything. He's putting boxes on BOTH sides.
+  - type: say
+    who: muddler
+    text: x on BOTH sides! You'll never solve it! You only know how to do ONE side! Mwahaha! (Please don't.)

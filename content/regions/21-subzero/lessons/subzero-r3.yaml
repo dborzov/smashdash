@@ -1,0 +1,20 @@
+id: subzero-r3
+title: "Legendary: Big Sister"
+beats:
+  - type: narrate
+    text: >-
+      **Legendary.** The temperature plunges. Minus ten. Minus twenty. A second penguin arrives,
+      twice as tall, with two eyepatches.
+  - type: say
+    who: grimble
+    text: >-
+      Two eyepatches? How does she see? …She doesn't. She just shouts. That's Commodore Chilly,
+      the Admiral's big sister.
+  - type: input
+    who: grimble
+    text: "She drops the temperature from $-8$ °C by another 15 degrees. What's the temperature now?"
+    answer: -23
+    nudges:
+      - { value: 7, text: "Dropping takes you further DOWN from $-8$." }
+      - { value: -7, text: "$-8$ then down 15 more: further below zero." }
+    explain: "$-8 - 15 = -23$. Bring a very big scarf."

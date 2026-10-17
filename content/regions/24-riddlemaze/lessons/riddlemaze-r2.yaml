@@ -1,0 +1,21 @@
+id: riddlemaze-r2
+title: "Heroic: Mumsy Redecorates"
+beats:
+  - type: say
+    who: ptolemeow
+    text: >-
+      **Heroic** Riddle Maze. She is back from her cruise. She has redecorated. There are doilies on
+      the hedges. There are doilies on ME.
+  - type: say
+    who: intern
+    text: >-
+      Hi! I'm helping Mrs. Muddler! She says stage 100 always has 100 sticks, and I believe her,
+      because she gave me a biscuit!
+  - type: input
+    who: ptolemeow
+    text: "Triangles in a row: stage $n$ uses $2n + 1$ sticks. How many sticks does stage 100 use?"
+    answer: 201
+    nudges:
+      - { value: 100, text: "That's what the intern said. Use the rule: $2 \\times 100 + 1$." }
+      - { value: 200, text: "Don't forget the $+ 1$!" }
+    explain: "$2 \\times 100 + 1 = 201$. The intern is still eating the biscuit."

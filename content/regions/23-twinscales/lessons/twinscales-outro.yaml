@@ -1,0 +1,21 @@
+id: twinscales-outro
+title: Balanced
+beats:
+  - type: narrate
+    text: >-
+      Both scales settle, perfectly level. For the first time in their lives, Bal and Ance have
+      nothing to argue about. It lasts four seconds.
+  - type: say
+    who: balance
+    text: >-
+      We did it! — YOU did it. — I helped. — You did not. — Hero, you can weigh anything now. Boxes
+      on the left, boxes on the right, bags of boxes. — We'll put up a statue. — A balanced one.
+  - type: say
+    who: muddler
+    text: >-
+      MUMMY! MUUUMMY! The child solved both sides! They're being MEAN to me!
+  - type: say
+    who: grimble
+    text: >-
+      …Did he just call his mum? Oh no. Oh no no no. If she's who I think she is, we're going to
+      the Riddle Maze. And it's going to involve fruit.

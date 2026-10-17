@@ -52,6 +52,10 @@ import {
   unitHop,
   zoomLevels,
 } from './magnitude';
+import { negAdd, negMul, negNumbers } from './negatives';
+import { likeTerms, simplify } from './terms';
+import { bothSidesSolve, boxesBoth, bracketEq } from './twosides';
+import { fruitPuzzles, inequalities, patternRule } from './puzzles';
 
 export const generators: Record<string, Generator> = {
   notation,
@@ -136,6 +140,18 @@ export const generators: Record<string, Generator> = {
   'pow-mul': powMul,
   'sci-estimate': sciEstimate,
   'how-many-fit': howManyFit,
+  // The Muddler Strikes Back
+  'neg-numbers': negNumbers,
+  'neg-add': negAdd,
+  'neg-mul': negMul,
+  'like-terms': likeTerms,
+  simplify,
+  'boxes-both': boxesBoth,
+  'both-sides-solve': bothSidesSolve,
+  'bracket-eq': bracketEq,
+  'pattern-rule': patternRule,
+  'fruit-puzzles': fruitPuzzles,
+  inequalities,
 };
 
 /** Difficulty tier from mastery in [0, 1]. */

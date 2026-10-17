@@ -215,11 +215,11 @@ export const decWrite: Generator = (rng, level) => {
       ...numeric(v, [
         [
           clean(n / pow10(q - 1)),
-          `Dividing by ${texg(pow10(q))} moves the digits ${q} places right of the point — count the zeros.`,
+          `Dividing by $${texg(pow10(q))}$ moves the digits ${q} places right of the point — count the zeros.`,
         ],
         [
           clean(n / pow10(q + 1)),
-          `Dividing by ${texg(pow10(q))} moves the digits exactly ${q} places — count the zeros.`,
+          `Dividing by $${texg(pow10(q))}$ moves the digits exactly ${q} places — count the zeros.`,
         ],
         [n, `That's the top number. The bottom says how many places after the point.`],
       ]),

@@ -1,0 +1,25 @@
+id: lostfound-r3
+title: "Legendary: The Clutterqueen"
+beats:
+  - type: narrate
+    text: >-
+      **Legendary.** Every lost homework in history has come back at once. It forms a crown. It forms
+      a face. It forms a queen.
+  - type: say
+    who: marge
+    text: >-
+      The Clutterqueen. Mother of all mess. I last saw her in 1987, when somebody lost the
+      instructions to a flat-pack wardrobe. We lost three librarians.
+  - type: say
+    who: grimble
+    text: >-
+      Two brackets at once, minus signs everywhere, $x^2$ hiding in the piles. Empty every bag. Sort
+      every pile. And don't lose anything — we're in a Lost & Found, it'd be embarrassing.
+  - type: input
+    who: marge
+    text: "First, a test of nerve: $2(x + 3) + 3(x + 1)$ tidies to $5x + \\square$. What's in the square?"
+    answer: 9
+    nudges:
+      - { value: 4, text: "Bust BOTH bags properly: $2 \\times 3$ and $3 \\times 1$." }
+      - { value: 6, text: "That's only the first bag. The second bag has coins too." }
+    explain: "$2x + 6 + 3x + 3 = 5x + 9$."

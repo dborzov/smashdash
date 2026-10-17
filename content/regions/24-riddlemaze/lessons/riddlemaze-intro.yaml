@@ -1,0 +1,39 @@
+id: riddlemaze-intro
+title: The Riddle Maze
+beats:
+  - type: narrate
+    text: >-
+      A hedge maze, older than the kingdom. At the gate sits a sphinx: lion's body, cat's attitude,
+      a pair of reading glasses on a chain.
+  - type: say
+    who: ptolemeow
+    text: >-
+      Ah. The hero. I remember you. I asked you riddles at the Bazaar. You answered them. It was
+      INFURIATING. I have had to write all new riddles. With fruit.
+  - type: say
+    who: ptolemeow
+    text: >-
+      Someone has taken over my maze. She arrived with a handbag the size of a cow and started
+      rearranging the hedges. She calls me "kitty". I am a SPHINX.
+  - type: say
+    who: grimble
+    text: >-
+      That'll be the Muddler's mum. He called for her. Of course he did. Every villain's got a
+      mum, and she's always worse.
+  - type: choose
+    who: ptolemeow
+    text: "Before you enter: are you ready for riddles that need algebra?"
+    options:
+      - { text: "Born ready.", reply: "Nobody is born ready. Babies cannot even hold a pencil.", who: ptolemeow }
+      - { text: "Do I get a hint?", reply: "You get a frog. That is better than a hint. Barely.", who: ptolemeow }
+      - { text: "Can I pet you?", reply: "…Once. Behind the ears. Then we never speak of it.", who: ptolemeow }
+  - type: ask
+    who: ptolemeow
+    text: "Warm-up riddle: I'm thinking of a number. Double it and add 3, and you get 17. What's my number?"
+    options: ['$7$', '$10$', '$8.5$', '$4$']
+    correct: 0
+    nudges:
+      "1": "Check it: $2 \\times 10 + 3 = 23$, not 17. Undo the steps backwards: take away 3, then halve."
+      "2": "Close — but you halved 17 before taking away the 3. Undo in reverse order: last on, first off."
+      "3": "Check it: $2 \\times 4 + 3 = 11$, not 17."
+    explain: "$2x + 3 = 17$, so $2x = 14$ and $x = 7$. Last on, first off."

@@ -1,0 +1,105 @@
+id: riddlemaze
+order: 24
+name: The Riddle Maze
+tagline: A sphinx, a maze made of matchsticks, a fruit bowl of doom, and the Muddler's mum.
+campaign: sequel
+topic: 'Algebra puzzles: growing patterns and their rules, fruit-picture equations, and inequalities'
+added: '2026-10-17'
+scene: riddlemaze
+map: { x: 82, y: 60 }
+requires: [twinscales]
+palette: { sky: ["#2a1a0a", "#ffcf5a"], accent: "#ffcf5a", ground: "#e6c98a" }
+outro: riddlemaze-outro
+monsters:
+  - { name: Matchstick Minion, seed: 241, hue: 20, taunts: ["I'm made of sticks! Count me! You can't! I keep growing!", "Stage one hundred! Count all of THAT!"] }
+  - { name: Fruit Fiend, seed: 242, hue: 120, taunts: ["Apple plus banana equals… SMOOTHIE!", "I'm worth seven! Or nine! Guess!"] }
+  - { name: Tipping Troll, seed: 243, hue: 280, taunts: ["x is bigger than four! So x is FIVE! Only five! Ever!", "Divide by minus two! Nothing happens! …Something happens."] }
+path:
+  - id: intro
+    type: story
+    title: The Riddle Maze
+    lesson: riddlemaze-intro
+  - id: pattern-spotter
+    type: lesson
+    title: Pattern Spotter
+    lesson: pattern-spotter
+  - id: stick-minions
+    type: encounter
+    title: Matchstick Minions
+    game: battle
+    skills: [pattern-rule]
+    count: 5
+    monster: { name: Matchstick Minion, seed: 241, hue: 20, taunts: ["I grow by three every time!", "Stage FIFTY! Haha! Count it!"] }
+  - id: fruit-salad
+    type: lesson
+    title: Fruit Salad
+    lesson: fruit-salad
+  - id: fruit-rescue
+    type: encounter
+    title: Rescue the Fruit Bowl
+    game: rescue
+    skills: [fruit-puzzles]
+    count: 5
+  - id: tipping-scales
+    type: lesson
+    title: Tipping Scales
+    lesson: tipping-scales
+  - id: tipping-vault
+    type: encounter
+    title: The Vault of Not-Quite-Equal
+    game: vault
+    skills: [inequalities, pattern-rule]
+    count: 6
+  - id: maze-bridge
+    type: encounter
+    title: The Heart of the Maze
+    game: bridge
+    skills: [pattern-rule, fruit-puzzles, inequalities, both-sides-solve]
+    count: 7
+  - id: boss
+    type: boss
+    title: Mumsy Muddler
+    monster: { name: Mumsy Muddler, seed: 2401, hue: 330, art: mumsy }
+    intro:
+      - "Ooh, hello dear! You must be the one who's been upsetting my little Muddly-wuddly. He's been crying into his two hats."
+      - "Now. I'm going to be honest with you, pet. It was me. ALL OF IT. I taught him to muddle. Who do you think made the fog?"
+      - "Muddling runs in the family. His granny muddled. HER granny muddled the Romans so badly they forgot zero! Now sit down and have a biscuit. A POISONED biscuit. …Joking! It's just stale."
+    phases:
+      - { skills: [pattern-rule], count: 3, taunt: "Stage one hundred has a hundred sticks, dear. Obviously. Don't argue with your elders." }
+      - { skills: [fruit-puzzles], count: 3, taunt: "Apple plus apple plus apple is apple-apple-apple! That's not a number, that's a crumble!" }
+      - { skills: [inequalities, both-sides-solve], count: 3, taunt: "x is more than three means x is four. Only four. Four is a lovely number. Wear a vest." }
+    defeat: "Oh! Oh my. You've un-muddled me. I feel so… clear. Is this what thinking feels like? It's lovely. Muddly, come here, we're going on a CRUISE."
+ranks:
+  - rank: 2
+    story: riddlemaze-r2
+    boss:
+      name: Mumsy Muddler (Sunday Best)
+      intro:
+        - "I'm back from my cruise, dear! It was awful. The captain kept solving things."
+        - "So I've redecorated the maze. With MORE fruit. And bigger patterns. And negative numbers in the cushions."
+      taunts:
+        - "Which stage uses a hundred sticks? Stage one hundred! Obviously! Have a biscuit!"
+        - "Two rows, one extra banana — that tells you nothing, dear. NOTHING."
+        - "Multiply by minus one and the sign stays the same! Like my hair! Since 1974!"
+        - "MUMSY KNOWS BEST!"
+      defeat: "Well. You're very clever. Have you thought about becoming a dentist? Lovely steady job."
+    nodes:
+      - { id: maze-siege, type: encounter, title: Siege of the Hedge Fortress, game: siege, skills: [fruit-puzzles, inequalities], count: 7 }
+  - rank: 3
+    story: riddlemaze-r3
+    boss:
+      name: Great-Granny Muddler
+      hue: 260
+      intro:
+        - "WHAT? WHAT DID YOU SAY? SPEAK UP! I'M FOUR HUNDRED AND TWELVE!"
+        - "I muddled Pythagoras! I hid his triangle! He found it under a sofa! I'LL HIDE YOURS!"
+      taunts:
+        - "IN MY DAY WE DIDN'T HAVE NEGATIVE NUMBERS! WE HAD TO OWE PEOPLE GOATS!"
+        - "A PATTERN? I'LL GIVE YOU A PATTERN! TAPESTRY! THREE HUNDRED FEET!"
+        - "BACK IN MY DAY X WAS ALWAYS SEVEN!"
+        - "NOW EAT YOUR GREENS!"
+      defeat: "OH! You're a GOOD one. A clear thinker. We haven't had one of those in the family for… ever. Here, take a sweet. It's from 1890."
+treasures:
+  - { item: fruit-salad, rank: 2 }
+  - { item: sphinx-riddle-book, rank: 3 }
+  - { item: tiny-maze, flawless: 5 }

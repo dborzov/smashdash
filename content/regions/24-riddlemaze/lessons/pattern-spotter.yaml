@@ -1,0 +1,59 @@
+id: pattern-spotter
+title: Pattern Spotter
+skill: pattern-rule
+beats:
+  - type: say
+    who: ptolemeow
+    text: >-
+      The maze walls are made of matchsticks. They grow. Look: one square takes 4 sticks. Two
+      squares in a row take 7. Three take 10.
+  - type: show
+    who: ptolemeow
+    widget: { kind: matchsticks, shape: squares, stages: 3 }
+    text: "Why 7 and not 8? Because the second square **shares** a stick with the first. Each new square only needs 3 new sticks."
+  - type: input
+    who: ptolemeow
+    text: "So how many sticks for stage 4?"
+    answer: 13
+    atom: next-term
+    nudges:
+      - { value: 16, text: "Shared sticks! Each new square only adds 3." }
+      - { value: 11, text: "Each stage adds 3, not 1." }
+    explain: "$4, 7, 10, 13$: up 3 each time."
+  - type: say
+    who: grimble
+    text: >-
+      Now the clever bit. You **could** count up to stage 100, one at a time. It would take all
+      day. Or: find the **rule**. Up 3 each time means $3n$. Stage 1 has 4 sticks, and $3 \times 1$
+      is 3, so we need 1 more: the rule is $3n + 1$.
+  - type: play
+    who: ptolemeow
+    text: "Check the rule on every stage."
+    widget:
+      kind: chain
+      steps:
+        - { tex: 'n = 1: \; 3 \times 1 + 1 = \box', answer: 4 }
+        - { tex: 'n = 2: \; 3 \times 2 + 1 = \box', answer: 7 }
+        - { tex: 'n = 3: \; 3 \times 3 + 1 = \box', answer: 10 }
+        - tex: 'n = 100: \; 3 \times 100 + 1 = \box'
+          answer: 301
+          nudges: [{ value: 400, text: "Not 4 sticks per square — they share! $3 \\times 100 + 1$." }]
+          note: "Stage 100 in one go. Counting would have taken you until Thursday."
+    done: "The rule $3n + 1$: the 3 is the step, and the $+ 1$ is the extra stick at the very start."
+  - type: say
+    who: muddler
+    text: >-
+      HA! But which stage uses exactly 100 sticks? You'll have to count backwards! For HOURS!
+  - type: say
+    who: grimble
+    text: >-
+      No we won't. Stage $x$ uses $3x + 1$ sticks. We want that to be 100. That's an **equation**.
+      $3x + 1 = 100$. You've solved a hundred of those.
+  - type: play
+    who: ptolemeow
+    text: "Solve $3x + 1 = 100$ on the slate to find the stage."
+    widget: { kind: eqcanvas, mode: solve, equation: '3x+1=100' }
+    done: "$3x = 99$, so $x = 33$: **stage 33** uses exactly 100 sticks. Patterns + equations = sphinx-proof."
+  - type: practice
+    skill: pattern-rule
+    count: 4

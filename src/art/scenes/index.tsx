@@ -12,6 +12,7 @@ import { AshRoad, Muster, Siege, Vault } from './dark';
 import { Svg } from './kit';
 import { Dungeon, GridRoom, SquareHall, Tavern } from './tables';
 import { City, Cosmos, HQ } from './magnitude';
+import { LostFound, RiddleMaze, Subzero, TwinScales } from './sequel';
 
 function Cloud({
   x,
@@ -1284,6 +1285,10 @@ export const SCENES: Record<
   hq: { Art: HQ, particles: 'spark', count: 18 },
   city: { Art: City, particles: 'mote', count: 20 },
   cosmos: { Art: Cosmos, particles: 'star', count: 30 },
+  subzero: { Art: Subzero, particles: 'snow', count: 44 },
+  lostfound: { Art: LostFound, particles: 'mote', count: 26 },
+  twinscales: { Art: TwinScales, particles: 'spark', count: 18 },
+  riddlemaze: { Art: RiddleMaze, particles: 'firefly', count: 20 },
 };
 
 export function Scene({ id, dim = 0 }: { id: string; dim?: number }) {

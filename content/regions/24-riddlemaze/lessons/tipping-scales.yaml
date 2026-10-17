@@ -1,0 +1,62 @@
+id: tipping-scales
+title: Tipping Scales
+skill: inequalities
+beats:
+  - type: say
+    who: ptolemeow
+    text: >-
+      Not everything is equal. Some things are just **more**. $x > 4$ means "$x$ is more than 4".
+      That's not one answer. It's a whole crowd: 5, 6, 4.5, a million, 4.0001…
+  - type: say
+    who: grimble
+    text: >-
+      On a number line we show the crowd with a dot and an arrow. An **open** dot at 4 means "4
+      itself doesn't count". A **filled** dot means it does: that's $x \ge 4$, "4 or more".
+  - type: play
+    who: ptolemeow
+    text: "Show $x > 4$: pick the right dot, then shade the side where the crowd lives."
+    widget: { kind: ineqline, min: -2, max: 10, value: 4, op: '>' }
+    done: "Open dot at 4 (4 isn't more than 4), shading to the right."
+  - type: play
+    who: ptolemeow
+    text: "And $x \\le 1$: one or less."
+    widget: { kind: ineqline, min: -6, max: 6, value: 1, op: '<=' }
+    done: "Filled dot at 1 (1 counts!), shading to the left."
+  - type: say
+    who: grimble
+    text: >-
+      Solving one is just like solving an equation. $x + 3 > 7$: take 3 from both sides and it
+      stays true. $x > 4$. The scales stay tipped the same way.
+  - type: input
+    who: ptolemeow
+    text: "$2x + 1 > 11$ means $x > \\square$. What's in the square?"
+    answer: 5
+    atom: solve
+    nudges:
+      - { value: 6, text: "Subtract 1 first, then divide by 2." }
+      - { value: 10, text: "Then divide by 2: $2x > 10$ means $x > 5$." }
+    explain: "$2x + 1 > 11 \\Rightarrow 2x > 10 \\Rightarrow x > 5$."
+  - type: say
+    who: muddler
+    text: >-
+      Wait wait wait. What if I divide by a NEGATIVE number? It does something weird! Something
+      nobody understands! Ha!
+  - type: say
+    who: grimble
+    text: >-
+      It does do something. $3 > 1$, true. Multiply both by $-1$: $-3$ and $-1$. Now which is
+      bigger? $-1$ is! The order flips. So when you multiply or divide by a negative, **flip the sign**.
+  - type: ask
+    who: ptolemeow
+    text: "$-2x < 6$. Divide both sides by $-2$. What do you get?"
+    options: ['$x > -3$', '$x < -3$', '$x > 3$', '$x < 3$']
+    correct: 0
+    atom: flip
+    nudges:
+      "1": "Divided by a negative — the sign has to flip!"
+      "2": "$6 \\div (-2)$ is $-3$, not 3."
+      "3": "Two things to fix: $6 \\div (-2) = -3$, and the sign flips."
+    explain: "Dividing by $-2$ flips the sign: $x > -3$. Check: $x = 0$ gives $0 < 6$ ✓."
+  - type: practice
+    skill: inequalities
+    count: 3

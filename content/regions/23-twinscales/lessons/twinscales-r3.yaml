@@ -1,0 +1,25 @@
+id: twinscales-r3
+title: "Legendary: The Mirror Twins"
+beats:
+  - type: narrate
+    text: >-
+      **Legendary.** The marble hall's mirror cracks. Out step two more twins. They look exactly
+      like Bal and Ance, except for the goatees. Even Ance has a goatee.
+  - type: say
+    who: balance
+    text: >-
+      Oh no. — Oh NO. — It's our evil mirror selves. — In the mirror universe they do things to ONE
+      side only. — Their bakery has to throw away every cake. — The cakes are all wonky.
+  - type: say
+    who: grimble
+    text: >-
+      Only one rule beats the mirror universe: **both sides, every time.** Expect brackets, $x$ on
+      both sides, and negative numbers. Probably all at once.
+  - type: input
+    who: grimble
+    text: "Evil Bal says: $3(x - 2) = x + 4$. Solve it (in your head, or on scrap paper). $x = $?"
+    answer: 5
+    nudges:
+      - { value: 1, text: "Careful with the bracket: $3(x - 2) = 3x - 6$. Then subtract $x$: $2x - 6 = 4$." }
+      - { value: -1, text: "The bracket has a minus inside: $3x - 6$. Then add 6 to both sides." }
+    explain: "$3x - 6 = x + 4 \\Rightarrow 2x - 6 = 4 \\Rightarrow 2x = 10 \\Rightarrow x = 5$."

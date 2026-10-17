@@ -1,0 +1,28 @@
+id: lostfound-r2
+title: "Heroic: The Jumble Sale"
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      **Heroic** Lost & Found. The Clutterbeast has escaped from its drawer and eaten a jumble sale.
+      It's bigger, it's smellier, and it's figured out brackets.
+  - type: say
+    who: marge
+    text: >-
+      It has eaten my filing cabinet. Forty years of filing. Alphabetical. It's in there,
+      somewhere, between a trombone and a bucket of $x^2$.
+  - type: say
+    who: intern
+    text: >-
+      Hi! The intern again! I tidied the whole thing for you! $x^2 + x^2 = x^4$, and
+      $5x + 5 = 10x$! You're welcome! Is it lunch?
+  - type: ask
+    who: grimble
+    text: "Quick: what is $x^2 + x^2$, really?"
+    options: ['$2x^2$', '$x^4$', '$2x$', '$x^2$']
+    correct: 0
+    nudges:
+      "1": "That's what the intern said. Two boxes-of-boxes is $2x^2$ — adding doesn't change what kind of thing it is."
+      "2": "They're $x^2$'s, not $x$'s. Two of them: $2x^2$."
+      "3": "There are two of them!"
+    explain: "One $x^2$ plus another $x^2$ is two $x^2$'s: $2x^2$. Same pile, so they add up — the power stays."

@@ -1,0 +1,57 @@
+id: sign-rules
+title: The Sign Rules
+skill: neg-mul
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      Multiplying with negatives. $4 \times (-3)$ is four lots of $-3$: four bundles of 3 sandbags.
+      Down 12. So $4 \times (-3) = -12$.
+  - type: input
+    who: grimble
+    text: "$5 \\times (-2)$?"
+    answer: -10
+    atom: pos-neg
+    nudges:
+      - { value: 10, text: "Five bundles of 2 sandbags. Down, not up!" }
+      - { value: 3, text: "That's adding. Five lots of $-2$." }
+    explain: "$5 \\times (-2) = -10$."
+  - type: say
+    who: muddler
+    text: >-
+      And NEGATIVE times NEGATIVE? Nobody knows! It's one of the great mysteries! Like where socks
+      go! Like why I keep losing!
+  - type: play
+    who: grimble
+    text: "We don't need a rule. We need a **pattern**. Each line, the first number goes down 1…"
+    widget:
+      kind: chain
+      steps:
+        - { tex: '3 \times (-4) = \box', answer: -12 }
+        - { tex: '2 \times (-4) = \box', answer: -8, say: "Each answer is 4 more than the last." }
+        - { tex: '1 \times (-4) = \box', answer: -4 }
+        - { tex: '0 \times (-4) = \box', answer: 0 }
+        - tex: '(-1) \times (-4) = \box'
+          answer: 4
+          nudges: [{ value: -4, text: "Keep the pattern going: $-12, -8, -4, 0$… up 4 each time." }]
+          note: "The pattern can only carry on one way: **negative × negative = positive**."
+    done: "Not magic. Not a rule to memorise. Just the only way the pattern can go."
+  - type: input
+    who: grimble
+    text: "$(-6) \\times (-7)$?"
+    answer: 42
+    atom: neg-neg
+    nudges:
+      - { value: -42, text: "Two negatives multiplied: positive!" }
+    explain: "$(-6) \\times (-7) = 42$."
+  - type: input
+    who: grimble
+    text: "Division follows the same rules. $(-20) \\div 4$?"
+    answer: -5
+    atom: divide
+    nudges:
+      - { value: 5, text: "Different signs → negative." }
+    explain: "$4 \\times (-5) = -20$, so $(-20) \\div 4 = -5$."
+  - type: practice
+    skill: neg-mul
+    count: 4

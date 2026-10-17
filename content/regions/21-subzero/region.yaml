@@ -1,0 +1,105 @@
+id: subzero
+order: 21
+name: Subzero Springs
+tagline: The hot springs have frozen, the plus signs are missing, and a penguin is wearing an eyepatch.
+campaign: sequel
+topic: 'Negative numbers: below zero, adding and subtracting them (balloons and sandbags), and the sign rules'
+added: '2026-10-17'
+scene: subzero
+map: { x: 20, y: 34 }
+requires: []
+palette: { sky: ["#0a2a4a", "#7dd3fc"], accent: "#bfe6ff", ground: "#dff2ff" }
+outro: subzero-outro
+monsters:
+  - { name: Snow Imp, seed: 211, hue: 200, taunts: ["Brrr! Minus five! Minus SIX! I love it!", "Below zero is the BEST zero!"] }
+  - { name: Ice Goblin, seed: 212, hue: 180, taunts: ["I stole a plus sign! Now everything is MINUS!", "Minus a minus? That's just… minus! (It isn't.)"] }
+  - { name: Penguin Pirate, seed: 213, hue: 220, taunts: ["Arr! Shiver me timbers! Literally, it's cold!", "Walk the plank! It's minus three degrees!"] }
+path:
+  - id: intro
+    type: story
+    title: The Muddler Strikes Back
+    lesson: subzero-intro
+  - id: below-zero
+    type: lesson
+    title: Below Zero
+    lesson: below-zero
+  - id: ice-imps
+    type: encounter
+    title: Snow Imps
+    game: battle
+    skills: [neg-numbers]
+    count: 5
+    monster: { name: Snow Imp, seed: 211, hue: 200, taunts: ["Brrr!", "Minus six! Minus SEVEN!"] }
+  - id: balloons-and-sandbags
+    type: lesson
+    title: Balloons and Sandbags
+    lesson: balloons-and-sandbags
+  - id: penguin-chest
+    type: encounter
+    title: The Penguins' Treasure Chest
+    game: chest
+    skills: [neg-add, neg-numbers]
+    count: 6
+  - id: sign-rules
+    type: lesson
+    title: The Sign Rules
+    lesson: sign-rules
+  - id: ice-vault
+    type: encounter
+    title: The Ice Vault
+    game: vault
+    skills: [neg-mul, neg-add]
+    count: 6
+  - id: sled-bridge
+    type: encounter
+    title: The Sledge Run
+    game: bridge
+    skills: [neg-numbers, neg-add, neg-mul]
+    count: 7
+  - id: boss
+    type: boss
+    title: Admiral Waddles
+    monster: { name: Admiral Waddles, seed: 2101, hue: 200, art: waddles }
+    intro:
+      - "Arrr! I be ADMIRAL WADDLES, terror of the frozen seas! I've stolen every plus sign in the kingdom!"
+      - "Without plus signs, everything is MINUS! Minus fun! Minus warmth! Minus… wait, I can't add any more threats. I stole the plus."
+      - "The Muddler pays me in fish. Negative fish. I owe him fish. It's complicated."
+    phases:
+      - { skills: [neg-numbers], count: 3, taunt: "Minus ten is bigger than minus two! Ten is a bigger number! Arr! …Isn't it?" }
+      - { skills: [neg-add, neg-numbers], count: 3, taunt: "Minus a minus is just MORE minus! That's pirate maths! Arrr!" }
+      - { skills: [neg-mul, neg-add], count: 3, taunt: "Minus times minus is minus! Everyone knows that! …Why are you shaking your head?" }
+    defeat: "Arrr… ye took back the plus signs. And ye took away me minus signs from me minus signs. That makes… a plus. A PLUS FOR YOU. Curses."
+ranks:
+  - rank: 2
+    story: subzero-r2
+    boss:
+      name: Admiral Waddles (Ice Armada)
+      intro:
+        - "I've brought me fleet! Seventeen icebergs! Well, sixteen. One melted. Minus one iceberg!"
+        - "And this time I stole the EQUALS signs too! Nothing equals anything! Chaos!"
+      taunts:
+        - "Minus forty is warmer than minus four! Because forty is more!"
+        - "Take away a sandbag and ye SINK! Arr! (Ye float up. Don't tell anyone.)"
+        - "Minus three times minus four is minus twelve! The pattern says — no, don't look at the pattern!"
+        - "ALL HANDS ON DECK! ALL MINUSES ON DECK!"
+      defeat: "Me armada! Me icebergs are melting! Above zero! Curse ye and yer positive attitude!"
+    nodes:
+      - { id: iceberg-siege, type: encounter, title: Siege of the Icebergs, game: siege, skills: [neg-add, neg-mul], count: 7 }
+  - rank: 3
+    story: subzero-r3
+    boss:
+      name: Commodore Chilly, Waddles' Big Sister
+      hue: 300
+      intro:
+        - "My little brother lost to a CHILD? Again? Pathetic. I am Commodore Chilly. I don't steal plus signs. I steal TEMPERATURE."
+        - "I'll take the whole kingdom down to minus a thousand. Then minus a thousand minus a thousand."
+      taunts:
+        - "Minus a thousand is a BIG number! Very big! Very cold!"
+        - "Add sandbags! Pop balloons! Down, down, DOWN!"
+        - "Negative times negative! Positive! …Ugh, even I know that one."
+        - "EVERYTHING FREEZES!"
+      defeat: "Hmph. You warmed my frozen heart. By about ten degrees. Don't make it weird."
+treasures:
+  - { item: penguin-popsicle, rank: 2 }
+  - { item: plus-sign-amulet, rank: 3 }
+  - { item: bobble-hat, flawless: 5 }

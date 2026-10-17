@@ -1,0 +1,37 @@
+id: two-sided
+title: The Two-Sided Slate
+skill: both-sides-solve
+beats:
+  - type: say
+    who: grimble
+    text: >-
+      Balances are great until the numbers get big, or negative. Then you'd need a balance the size
+      of a football pitch and some coins that weigh minus three grams. So: the slate.
+  - type: say
+    who: grimble
+    text: >-
+      Same idea. $5x + 3 = 2x + 15$. **First move:** take the smaller $x$-term away from both sides.
+      Subtract $2x$. Then $x$ is only on one side, and it's an equation you already know how to do.
+  - type: play
+    who: balance
+    text: "Watch first. Tap **Next step** to see each move — on both sides, every time."
+    widget: { kind: eqcanvas, mode: solve, demo: true, equation: '5x+3=2x+15' }
+    done: "$5x + 3 = 2x + 15 \\Rightarrow 3x + 3 = 15 \\Rightarrow 3x = 12 \\Rightarrow x = 4$."
+  - type: play
+    who: balance
+    text: "Your turn on the slate. First get the $x$'s onto one side. Pick the move, choose the number, and apply it to both sides."
+    widget: { kind: eqcanvas, mode: solve, equation: '4x+1=x+10', hints: ["There's $x$ on both sides. The smaller $x$-term is on the right: subtract $x$ from both sides."] }
+    done: "$4x + 1 = x + 10 \\Rightarrow 3x + 1 = 10 \\Rightarrow 3x = 9 \\Rightarrow x = 3$."
+  - type: say
+    who: balance
+    text: >-
+      Sometimes the bigger $x$-term is on the **right**. — That's fine. — It's MORE than fine. —
+      Take the smaller one away anyway, and you'll get something like $9 = 3x$. — $x$ on the right is still $x$.
+  - type: play
+    who: balance
+    text: "Try one where the $x$ ends up on the right: $2x + 9 = 5x$."
+    widget: { kind: eqcanvas, mode: solve, equation: '2x+9=5x' }
+    done: "$2x + 9 = 5x \\Rightarrow 9 = 3x \\Rightarrow x = 3$. Reads backwards, works fine."
+  - type: practice
+    skill: both-sides-solve
+    count: 3
