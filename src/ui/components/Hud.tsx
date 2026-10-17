@@ -4,7 +4,7 @@ import { levelFromXp, xpForLevel } from '../../engine/profile';
 import { Avatar } from '../../art/Avatar';
 import { Bar } from './Bits';
 import { go } from '../router';
-import { petMood } from '../../engine/pet';
+import { isAway, petMood } from '../../engine/pet';
 import { news } from '../../content';
 import { update } from '../../engine/store';
 import { setMuted, sfx } from '../../audio/sfx';
@@ -105,11 +105,13 @@ export function Tabs({ p, active }: { p: Profile; active: string }) {
     p.eggs > 0 || (p.pet && ['dead', 'sick', 'hungry', 'grumpy', 'bored'].includes(petMood(p.pet)));
   const unreadNews = news.some((n) => n.date > (p.newsSeen ?? ''));
   const questReady = p.quests?.list.some((q) => q.have >= q.goal && !q.claimed) ?? false;
+  const petBack = !!p.pet?.away && !isAway(p.pet);
   const tabs = [
     { id: 'map', icon: '🗺️', label: 'Adventures', to: '/map', dot: unreadNews || questReady },
     { id: 'skills', icon: '🌳', label: 'Skills', to: '/skills' },
     { id: 'hero', icon: '🧙', label: 'Hero', to: '/hero' },
-    { id: 'pet', icon: '🐾', label: 'Pet Den', to: '/pet', dot: petAlert },
+    { id: 'trophies', icon: '🏆', label: 'Trophies', to: '/trophies' },
+    { id: 'pet', icon: '🐾', label: 'Pet', to: '/pet', dot: petAlert || petBack },
     { id: 'shop', icon: '🛒', label: 'Shop', to: '/shop' },
   ];
   return (

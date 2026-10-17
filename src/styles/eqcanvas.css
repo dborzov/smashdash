@@ -464,6 +464,7 @@
   gap: 6px;
   max-width: 520px;
   flex: 1;
+  margin-inline: auto;
 }
 .mini-pad .key {
   min-height: 50px;

@@ -71,7 +71,7 @@ const DECOR_SPOTS: Record<string, { left: string; top?: string; bottom?: string;
   'poop-bucket': { left: '6%', bottom: '8%', size: '2rem' },
   'square-rug': { left: '34%', bottom: '3%', size: '2rem' },
   'lost-property-box': { left: '66%', bottom: '6%', size: '2.4rem' },
-  'tiny-maze': { left: '30%', top: '14%', size: '2.2rem' },
+  'tiny-maze': { left: '90%', bottom: '18%', size: '2.2rem' },
   anvil: { left: '26%', bottom: '30%', size: '2rem' },
   'lily-pond': { left: '74%', bottom: '24%', size: '2.2rem' },
   'flying-carpet': { left: '16%', top: '30%', size: '2.4rem' },

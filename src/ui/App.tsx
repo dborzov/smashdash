@@ -15,6 +15,7 @@ import { campaignById } from '../content';
 import { RegionScreen } from './screens/Region';
 import { HeroScreen } from './screens/Hero';
 import { PetScreen } from './screens/Pet';
+import { TrophyRoom } from './screens/Trophies';
 import { ShopScreen } from './screens/Shop';
 import { PlayNode, PlayRank, PlaySkill, PlayStory, PlayWanderer } from './screens/Play';
 import { Preview } from './screens/Preview';
@@ -72,8 +73,11 @@ export function App() {
     screen = <SkillTree p={p} />;
     tab = 'skills';
   } else if (a === 'hero') {
-    screen = <HeroScreen p={p} />;
+    screen = <HeroScreen p={p} tab={b} />;
     tab = 'hero';
+  } else if (a === 'trophies') {
+    screen = <TrophyRoom p={p} />;
+    tab = 'trophies';
   } else if (a === 'pet') {
     screen = <PetScreen p={p} />;
     tab = 'pet';

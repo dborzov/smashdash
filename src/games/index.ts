@@ -136,9 +136,14 @@ export const sizeExp = (m: number) => Math.round(Math.log10(m));
 
 /** "5 mm", "1.4 m", "12,742 km", "about 100,000 light years". */
 export function sizeText(m: number): string {
-  const nice = (v: number) => {
-    const s = v >= 100 ? Math.round(v).toLocaleString('en-US') : fmt(parseFloat(v.toPrecision(2)));
-    return s;
+  // Sizes are rough, so say them roughly: 3 significant figures at most, and big counts in words
+  // ("93 billion light years", not "93,013,423,528 light years").
+  const nice = (v: number): string => {
+    if (v >= 1e12) return `${nice(v / 1e12)} trillion`;
+    if (v >= 1e9) return `${nice(v / 1e9)} billion`;
+    if (v >= 1e6) return `${nice(v / 1e6)} million`;
+    if (v >= 100) return Number(v.toPrecision(3)).toLocaleString('en-US');
+    return fmt(parseFloat(v.toPrecision(2)));
   };
   const LY = 9.461e15;
   if (m >= LY / 10) return `${nice(m / LY)} light years`;
@@ -149,7 +154,8 @@ export function sizeText(m: number): string {
   if (m >= 0.001) return `${nice(m * 1000)} mm`;
   if (m >= 1e-6) return `${nice(m * 1e6)} micrometres`;
   if (m >= 1e-9) return `${nice(m * 1e9)} nanometres`;
-  return `${nice(m * 1e12)} picometres`;
+  if (m >= 1e-12) return `${nice(m * 1e12)} picometres`;
+  return `${nice(m * 1e15)} femtometres`;
 }
 
 /** Label for a stop on the Scale Ladder: "1 mm", "10 km", … */

@@ -9,6 +9,7 @@ import {
   ineqVerdict,
   parseTerm,
   solvableNext,
+  sizeText,
   sortTotals,
   stepVerdict,
   sticks,
@@ -134,5 +135,16 @@ describe('validateGame', () => {
       values: { '🍎': 4, '🍌': 5 },
     };
     expect(validateGame(stuck)).not.toBeNull();
+  });
+});
+
+describe('sizes in words', () => {
+  it('says rough sizes roughly', () => {
+    expect(sizeText(828)).toBe('828 m');
+    expect(sizeText(1.27e7)).toBe('12,700 km');
+    expect(sizeText(1.5e11)).toBe('150 million km');
+    expect(sizeText(9.461e15 * 2.537e6)).toBe('2.5 million light years');
+    expect(sizeText(8.8e26)).toBe('93 billion light years');
+    expect(sizeText(1.7e-15)).toBe('1.7 femtometres');
   });
 });

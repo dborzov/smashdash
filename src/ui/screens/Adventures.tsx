@@ -4,15 +4,17 @@
  *  - Continue: the adventure in progress and its next step.
  *  - Today's bounties and the dispatch feed (what's new in the game).
  *  - Wandering monsters (spaced review).
- *  - Every region as a card, grouped by campaign: what it teaches, progress, stars, time spent,
- *    accuracy, mastery, NEW / REVIEW badges, and what unlocks it. Filter and sort.
+ *  - Ranks ready to play (regions whose next rank's cooldown is over).
+ *  - Every region as a card, one campaign tab at a time: what it teaches, progress, rank crest,
+ *    stars, time spent, accuracy, mastery, NEW / REVIEW badges, and what unlocks it.
  */
 import { useState } from 'preact/hooks';
 import type { Region } from '../../content/schema';
 import type { Profile } from '../../engine/profile';
-import { campaigns, news, regions, skills, skillById } from '../../content';
+import { campaignById, campaigns, news, regionById, regions, skills, skillById } from '../../content';
 import { regionStats, formatTime, type RegionStats } from '../../engine/regionStats';
-import { currentRegion } from '../../engine/progress';
+import { campaignOpen, currentRegion } from '../../engine/progress';
+import { nextRank, opensIn, rankInfo, rankOf, rankReady, readyRanks } from '../../engine/ranks';
 import { learnedSkills } from '../../engine/mastery';
 import { update } from '../../engine/store';
 import { go } from '../router';
@@ -58,6 +60,63 @@ function Badge({ st }: { st: RegionStats }) {
   return <span class="badge">Not started</span>;
 }
 
+/** The region's rank crest, and whether the next rank is open (or when it opens). */
+function RankBadge({ p, r }: { p: Profile; r: Region }) {
+  const have = rankOf(p, r);
+  if (have < 1) return null;
+  const next = nextRank(p, r);
+  const info = rankInfo(have);
+  return (
+    <span class="rc-rank" title={`Cleared on ${info.name}`}>
+      <span class="rank-crest" style={{ '--crest': info.color } as Record<string, string>}>
+        {info.icon}
+      </span>
+      {next && (rankReady(p, r) ? <b class="rc-ready">{rankInfo(next).name} open!</b> : <small>{rankInfo(next).name} {opensIn(p, r)}</small>)}
+    </span>
+  );
+}
+
+function RankUps({ p }: { p: Profile }) {
+  const ready = readyRanks(p);
+  if (!ready.length) return null;
+  return (
+    <div class="panel rank-ups">
+      <div class="section-title" style={{ margin: 0 }}>
+        🏅 Ready to rank up{' '}
+        <span class="muted" style={{ fontSize: '.85rem' }}>
+          · harder problems, plot twists, treasure
+        </span>
+      </div>
+      <div class="rank-up-row">
+        {ready.map((r) => {
+          const n = nextRank(p, r)!;
+          const info = rankInfo(n);
+          return (
+            <button key={r.id} class="rank-up" onClick={() => go(`/region/${r.id}`)} style={{ '--accent': r.palette.accent } as Record<string, string>}>
+              <span class="rank-crest" style={{ '--crest': info.color } as Record<string, string>}>
+                {info.icon}
+              </span>
+              <span style={{ minWidth: 0 }}>
+                <b>{r.name}</b>
+                <small>{info.name} is open</small>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+const TAB_KEY = 'smashdash.board.campaign';
+function savedTab(): string | null {
+  try {
+    return localStorage.getItem(TAB_KEY);
+  } catch {
+    return null;
+  }
+}
+
 export function RegionCard({ p, r }: { p: Profile; r: Region }) {
   const st = regionStats(p, r);
   const locked = st.status === 'locked';
@@ -76,6 +135,7 @@ export function RegionCard({ p, r }: { p: Profile; r: Region }) {
       <div class="rc-body">
         <div class="rc-top">
           <Badge st={st} />
+          <RankBadge p={p} r={r} />
           {st.maxStars > 0 && st.stars > 0 && (
             <span class="rc-stars" title="Stars earned">
               ⭐ {st.stars}/{st.maxStars}
@@ -286,6 +346,19 @@ function Threats({ p }: { p: Profile }) {
 export function Adventures({ p }: { p: Profile }) {
   const [filter, setFilter] = useState<Filter>('all');
   const [sort, setSort] = useState<Sort>('story');
+  const [tab, setTab] = useState<string>(() => {
+    const t = savedTab();
+    return t === 'all' || (t && campaignById[t]) ? t : currentRegion(p).campaign;
+  });
+  const pickTab = (t: string) => {
+    sfx('click');
+    setTab(t);
+    try {
+      localStorage.setItem(TAB_KEY, t);
+    } catch {
+      /* private mode: the tab just isn't remembered */
+    }
+  };
   const match = (st: RegionStats) =>
     filter === 'all' ||
     (filter === 'active' && st.status === 'started') ||
@@ -302,6 +375,33 @@ export function Adventures({ p }: { p: Profile }) {
             <Dispatches p={p} />
           </div>
           <Threats p={p} />
+          <RankUps p={p} />
+          <div class="campaign-tabs" role="tablist">
+            {campaigns.map((c) => {
+              const open = campaignOpen(p, c.id);
+              const all = regions.filter((r) => r.campaign === c.id);
+              const doneN = all.filter((r) => regionStats(p, r).status === 'done').length;
+              return (
+                <button
+                  key={c.id}
+                  role="tab"
+                  aria-selected={tab === c.id}
+                  class={`campaign-tab ${tab === c.id ? 'on' : ''} ${open ? '' : 'locked'}`}
+                  onClick={() => pickTab(c.id)}
+                >
+                  <span class="campaign-tab-icon">{open ? c.icon : '🔒'}</span>
+                  <span class="campaign-tab-name">{c.name}</span>
+                  <small>
+                    {doneN}/{all.length}
+                  </small>
+                </button>
+              );
+            })}
+            <button class={`campaign-tab ${tab === 'all' ? 'on' : ''}`} onClick={() => pickTab('all')} role="tab" aria-selected={tab === 'all'}>
+              <span class="campaign-tab-icon">📚</span>
+              <span class="campaign-tab-name">Everything</span>
+            </button>
+          </div>
           <div class="row wrap filters">
             {FILTERS.map((f) => (
               <button
@@ -320,7 +420,8 @@ export function Adventures({ p }: { p: Profile }) {
               ↕ {sort === 'story' ? 'Story order' : 'Recently played'}
             </button>
           </div>
-          {campaigns.map((c) => {
+          {campaigns.filter((c) => tab === 'all' || c.id === tab).map((c) => {
+            const open = campaignOpen(p, c.id);
             let rs = regions
               .filter((r) => r.campaign === c.id)
               .map((r) => ({ r, st: regionStats(p, r) }))
@@ -343,6 +444,12 @@ export function Adventures({ p }: { p: Profile }) {
                     🗺️ Map
                   </button>
                 </div>
+                {!open && (
+                  <p class="campaign-lock">
+                    🔒 Opens once you finish {c.requires.map((id) => regionById[id]?.name ?? id).join(' and ')}.
+                    {c.grades && <span class="muted"> · Best for {c.grades}</span>}
+                  </p>
+                )}
                 {rs.length === 0 ? (
                   <p class="muted">Nothing here with this filter.</p>
                 ) : (

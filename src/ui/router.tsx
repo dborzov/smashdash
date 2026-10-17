@@ -18,6 +18,9 @@ export function useRoute(): string[] {
     const on = () => setPath(currentPath());
     window.addEventListener('hashchange', on);
     window.addEventListener('popstate', on);
+    // A child's <Redirect> may already have moved on before this listener existed (child
+    // effects run first on the first render), so catch up.
+    on();
     return () => {
       window.removeEventListener('hashchange', on);
       window.removeEventListener('popstate', on);

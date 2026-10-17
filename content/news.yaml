@@ -1,4 +1,40 @@
 # The dispatch feed on the adventure board, newest first. `region` links to a region.
+- date: '2026-10-17'
+  icon: "🏅"
+  title: "Ranks: every adventure, harder, again"
+  text: >-
+    Finished a region? Come back two sleeps later for **Heroic**, then **Legendary**, then
+    **Mythic**, then **Ridiculous**. Harder problems, a plot twist, a Mistake Hunt where someone
+    else answers first and YOU check them, a boss with an extra phase — and treasure only that
+    region gives. Look for "Ready to rank up" on the board.
+- date: '2026-10-17'
+  icon: "🎬"
+  title: "New campaign: The Muddler Strikes Back"
+  region: subzero
+  text: >-
+    He's back. He has two hats. Negative numbers with balloons and sandbags, like terms, $x$ on
+    both sides of the scales, matchstick patterns, fruit puzzles and inequalities. Also his mum.
+- date: '2026-10-17'
+  icon: "🦸"
+  title: "New campaign: The Order of Magnitude"
+  region: hq
+  text: >-
+    Superhero school for estimating. Zoom from an atom to the edge of the universe on the Scale
+    Ladder, do Fermi estimates in Ballpark City, and fill the Scale Museum with cards.
+- date: '2026-10-17'
+  icon: "🎲"
+  title: "New campaign: Dungeons & Times Tables"
+  region: tavern
+  text: >-
+    A tavern, a gelatinous cube and a Dungeon Master who is very upset. Gem grids, doubling,
+    square numbers and the patterns hiding in the times table. Watch your Fact Map light up.
+- date: '2026-10-17'
+  icon: "🏆"
+  title: "The Trophy Room, relics and pet expeditions"
+  text: >-
+    Trophies have a room of their own, with trophies only one adventure can give. Wear two
+    **relics** from Legendary runs. Send your pet on **expeditions** to regions you've cleared —
+    it comes back with souvenirs. Pet hats now actually sit on pet heads. (Sorry, pets.)
 - date: '2026-10-13'
   icon: "⚔️"
   title: "New campaign: The Long Count"

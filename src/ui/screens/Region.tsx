@@ -11,6 +11,7 @@ import {
   nodeUnlocked,
   nextNodeIndex,
   nodeKey,
+  regionDone,
   regionUnlocked,
 } from '../../engine/progress';
 import { atomStatus, masteryStars, TIER_NAMES, type Tier } from '../../engine/mastery';
@@ -21,21 +22,17 @@ import { go } from '../router';
 import { Stars } from '../components/Bits';
 import { RichInline } from '../components/Rich';
 import { campaignById, lessons, skillById, skills } from '../../content';
+import { GAME_ICON, RankTrack, RegionLoot } from './RegionRanks';
 import { sfx } from '../../audio/sfx';
 
-const GAME_ICON: Record<string, string> = {
-  chest: '🧰',
-  bridge: '🌉',
-  siege: '🏰',
-  vault: '🔐',
-  battle: '⚔️',
-};
 const GAME_NAME: Record<string, string> = {
   chest: 'Treasure chest',
   bridge: 'Rickety bridge',
   siege: 'Hold the wall',
   vault: 'Crack the vault',
   battle: 'Battle',
+  duel: 'Quick-draw duel',
+  rescue: 'Rescue mission',
 };
 
 export function nodeIcon(n: PathNode): string {
@@ -61,6 +58,8 @@ export function RegionScreen({ p, region }: { p: Profile; region: Region }) {
   const st = regionStats(p, region);
   const dark = campaignById[region.campaign]?.mood === 'dark';
   const regionSkills = skills.filter((s) => s.region === region.id);
+  // Once the story is done, the ranks are what's next: show them first.
+  const storyDone = regionDone(p, region);
 
   useEffect(() => {
     if (unlocked && !p.visited[region.id])
@@ -119,6 +118,7 @@ export function RegionScreen({ p, region }: { p: Profile; region: Region }) {
               </p>
             </div>
           )}
+          {unlocked && storyDone && <RankTrack p={p} region={region} />}
           <div class="path-wrap">
             {region.path.map((n, i) => {
               const open = nodeUnlocked(p, region, i);
@@ -155,6 +155,7 @@ export function RegionScreen({ p, region }: { p: Profile; region: Region }) {
               );
             })}
           </div>
+          {unlocked && !storyDone && <RankTrack p={p} region={region} />}
           {regionSkills.some((s) => p.skills[s.id]) && (
             <div class="panel" style={{ marginBottom: '20px' }}>
               <div class="section-title" style={{ marginTop: 0 }}>
@@ -208,6 +209,7 @@ export function RegionScreen({ p, region }: { p: Profile; region: Region }) {
               </button>
             </div>
           )}
+          {unlocked && <RegionLoot p={p} region={region} />}
         </div>
       </div>
     </div>

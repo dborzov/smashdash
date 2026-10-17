@@ -119,10 +119,29 @@
   align-items: center;
   justify-content: center;
   gap: 2px;
-  width: 92px;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 92px;
   border-radius: 14px;
   cursor: pointer;
   position: relative;
+  white-space: nowrap;
+}
+@media (max-width: 520px) {
+  .tabs {
+    gap: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+  .tab {
+    font-size: 0.68rem;
+  }
+  .tab .tab-icon {
+    font-size: 1.4rem;
+  }
+  .tab .dot {
+    right: 8px;
+  }
 }
 .tab .tab-icon {
   font-size: 1.6rem;

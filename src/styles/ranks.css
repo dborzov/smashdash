@@ -22,3 +22,355 @@
   filter: grayscale(1);
   opacity: 0.45;
 }
+
+.rank-panel {
+  margin: 16px 0;
+}
+.rank-track {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  margin: 4px 0 8px;
+}
+.rank-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  text-align: center;
+}
+.rank-step small {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+.rank-step.got small {
+  opacity: 1;
+  color: var(--gold);
+}
+.rank-step.next .rank-crest {
+  animation: pulse 1.6s ease-in-out infinite;
+  filter: none;
+  opacity: 0.85;
+}
+.rank-wait {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(120, 140, 255, 0.12);
+}
+.rank-nodes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 8px;
+}
+.rank-node {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  border: 2px solid var(--panel-edge);
+  background: var(--panel-solid);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.rank-node:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.rank-node.done {
+  border-color: var(--mint, #5ee6a8);
+}
+.rank-node.current {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(255, 209, 102, 0.25);
+}
+.rank-node-icon {
+  font-size: 1.5rem;
+}
+.treasure-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+}
+.treasure {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px dashed var(--panel-edge);
+}
+.treasure.got {
+  border-style: solid;
+  border-color: var(--gold);
+  background: rgba(255, 209, 102, 0.08);
+}
+.treasure-icon {
+  font-size: 2rem;
+  flex: none;
+}
+.treasure-tick {
+  margin-left: auto;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* Adventure board: rank badges, the rank-up strip, campaign tabs */
+.rc-rank {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+}
+.rc-rank .rank-crest {
+  font-size: 0.8rem;
+}
+.rc-ready {
+  color: var(--gold);
+}
+.rank-up-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 2px 4px;
+  -webkit-overflow-scrolling: touch;
+}
+.rank-up {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+  min-height: 56px;
+  padding: 8px 14px;
+  border-radius: 14px;
+  border: 2px solid var(--accent, var(--gold));
+  background: var(--panel-solid);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.rank-up b,
+.rank-up small {
+  display: block;
+}
+.rank-up small {
+  opacity: 0.75;
+}
+.campaign-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 6px;
+  -webkit-overflow-scrolling: touch;
+}
+.campaign-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  min-height: 52px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 2px solid var(--panel-edge);
+  background: var(--panel-solid);
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.campaign-tab.on {
+  border-color: var(--gold);
+  background: rgba(255, 209, 102, 0.16);
+}
+.campaign-tab.locked {
+  opacity: 0.6;
+}
+.campaign-tab-icon {
+  font-size: 1.3rem;
+}
+.campaign-tab small {
+  opacity: 0.7;
+  font-weight: 400;
+}
+.campaign-lock {
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Trophy Room */
+.trophy-head {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.trophy-region + .trophy-region {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--panel-edge);
+}
+.trophy-region-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.trophy-region-head b {
+  color: var(--accent, inherit);
+}
+.trophy-go {
+  margin-top: 6px;
+}
+
+/* Collections: Fact Map, Scale Museum, Treasure Cabinet */
+.factmap {
+  display: grid;
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+  gap: 3px;
+  max-width: 640px;
+  margin: 0 auto;
+  font-family: var(--font-display);
+}
+.fm-corner,
+.fm-head {
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: var(--gold);
+  font-size: 0.85rem;
+  aspect-ratio: 1;
+}
+.fm-head.row-done {
+  background: rgba(255, 209, 102, 0.2);
+  border-radius: 6px;
+}
+.fm-cell {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  font-size: clamp(0.55rem, 1.6vw, 0.85rem);
+  font-style: normal;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.45);
+}
+.fm-cell.shaky {
+  background: #ff6b6b;
+  color: #2a0a0a;
+}
+.fm-cell.learning {
+  background: #7dd3fc;
+  color: #0a2a3a;
+}
+.fm-cell.solid {
+  background: var(--mint);
+  color: #0a2a1a;
+}
+.fm-cell.mastered {
+  background: var(--gold);
+  color: #3a2a00;
+  box-shadow: 0 0 6px var(--gold);
+}
+.fm-legend {
+  justify-content: center;
+  margin-top: 10px;
+  font-size: 0.85rem;
+}
+.museum {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+.museum-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 6px;
+  border-radius: 12px;
+  border: 1px dashed var(--panel-edge);
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+.museum-card.got {
+  opacity: 1;
+  border: 2px solid #c98a3c;
+  background: linear-gradient(#fff4dc, #f0dcb0);
+  color: #3a2414;
+}
+.museum-card small {
+  font-size: 0.72rem;
+  opacity: 0.8;
+}
+.museum-icon {
+  font-size: 2rem;
+}
+.cabinet-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+.cabinet-region {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--panel-edge);
+  background: var(--panel-solid);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.cabinet-region:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.cabinet-region span {
+  display: flex;
+  gap: 6px;
+  font-size: 1.5rem;
+}
+.cabinet-region i {
+  font-style: normal;
+  opacity: 0.4;
+}
+.cabinet-region i.got {
+  opacity: 1;
+}
+.hero-tabs {
+  margin: 12px 0 4px;
+}
+.relic-slots {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.relic-slot {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 74px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 2px dashed var(--panel-edge);
+}
+.relic-slot.full {
+  border-style: solid;
+  border-color: var(--gold);
+  background: rgba(255, 209, 102, 0.08);
+}
+.relic-icon {
+  font-size: 2.2rem;
+  flex: none;
+}
