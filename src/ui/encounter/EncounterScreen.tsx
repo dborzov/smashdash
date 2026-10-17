@@ -248,7 +248,7 @@ export function EncounterScreen({
         cards: problem.cards,
       });
       if (fast) fx.push(...grant(q, { xp: 2 }), ...track(q, 'quick'));
-      if (critic?.caught) fx.push(...track(q, 'hunt'));
+      if (critic?.caught) fx.push(...track(q, 'hunt', 1, Date.now(), spec.region));
       return fx;
     });
     if (fast) {

@@ -66,3 +66,48 @@ path:
       - { skills: [inverse-ops], count: 3, taunt: "You can't undo Tipsy!" }
       - { skills: [pick-move, both-sides], count: 3, taunt: "Box stays STUCK forever! Hur!" }
     defeat: "Ow. Okay. Tipsy sit down now. Tipsy feel… balanced. Weird."
+ranks:
+- rank: 2
+  story: ironhold-r2
+  boss:
+    name: Tipsy the Troll (Now With Magnets)
+    intro:
+    - Hur hur! Tipsy has MAGNETS now! Magnets make everything stick! Especially to one side!
+    - You do thing to one side, Tipsy do thing to other side! Different thing! TIP!
+    taunts:
+    - Me put magnet on left pan only! Is fair! Is TIPSY fair!
+    - You subtract, Tipsy add! Undo the undo! HUR!
+    - Box stuck to magnet FOREVER!
+    - ALL THE MAGNETS!
+    defeat: Magnets… all stuck to Tipsy… Tipsy is now one big fridge. Hur. Hur. Help.
+  nodes:
+  - id: magnet-siege
+    type: encounter
+    title: Siege of the Magnet Forge
+    game: siege
+    skills:
+    - balance-rule
+    - both-sides
+    - inverse-ops
+    count: 7
+- rank: 3
+  story: ironhold-r3
+  boss:
+    name: Wobbly, the Troll Who Leans
+    hue: 80
+    intro:
+    - Wobbly not drunk. Wobbly just like this. Everything should lean. Like Wobbly.
+    - Wobbly will tip the whole mountain. Then mountain lean too. Then we friends.
+    taunts:
+    - Do it to one side! Lean, lean, lean!
+    - Inverse? Wobbly never go back. Only forward. And sideways.
+    - Wobbly pick WRONG move for you! Is gift!
+    - TIMBERRRR!
+    defeat: Huh. Wobbly standing straight. First time. Is… nice. Wobbly see much further from up here.
+treasures:
+- item: troll-rock-candy
+  rank: 2
+- item: brokkas-hammer
+  rank: 3
+- item: anvil
+  flawless: 5

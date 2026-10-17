@@ -1,0 +1,21 @@
+id: greyhaven-r2
+title: "Heroic: Written in Another Hand"
+beats:
+- type: say
+  who: wren
+  text: Someone has been in the archive. Not the Wraith — the Wraith's ink is grey. This ink is red. Every
+    ledger in Greyhaven has been altered. Zeros added. Zeros taken away.
+- type: say
+  who: hobb
+  text: A city that can't trust its own numbers is a city waiting to fall. We've seen it before. We'll
+    not see it again.
+- type: input
+  who: wren
+  text: "Check one entry: in $3\\,725\\,104$, what is the 7 worth?"
+  answer: 700000
+  nudges:
+  - value: 70000
+    text: "Count the places: ones, tens, hundreds, thousands, ten-thousands, **hundred**-thousands."
+  - value: 7
+    text: It's not just 7. Where it sits makes it worth more.
+  explain: "The 7 is in the hundred-thousands place: $700\\,000$."

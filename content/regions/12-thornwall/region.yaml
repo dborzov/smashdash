@@ -72,3 +72,48 @@ path:
       - { skills: [round-range, estimate], count: 3, taunt: "Your scout said 'about forty thousand'. How many could that BE?" }
       - { skills: [pow10-places, estimate], count: 3, taunt: "Ten. A hundred. A thousand. Each rank ten times the last. Do you feel small yet?" }
     defeat: "*Sere's horse rears, its mane guttering out like a wet torch. The Ash Riders turn and flee into the dark, and for the first time in a week, the wall is quiet.*"
+ranks:
+- rank: 2
+  story: thornwall-r2
+  boss:
+    name: Captain Sere, Night Assault
+    intro:
+    - Night falls. Torches move. How many? You will have to guess. And guess well.
+    - Round us up. Round us down. We are still at your gate.
+    taunts:
+    - Ten, a hundred, a thousand. Each rank ten times the last. Feel small yet?
+    - "\"About forty thousand.\" How many could that BE?"
+    - Round the small things. Forget the big ones. That is how walls fall.
+    - THE NIGHT IS LONG.
+    defeat: Dawn. Your wall still stands. I counted wrong. I never count wrong.
+  nodes:
+  - id: night-rescue
+    type: encounter
+    title: Rescue the Night Watch
+    game: rescue
+    skills:
+    - round-big
+    - round-range
+    - estimate
+    count: 7
+- rank: 3
+  story: thornwall-r3
+  boss:
+    name: Lord Cinder, Who Counts
+    hue: 350
+    intro:
+    - I have counted every brick in your wall. Every arrow. Every hero. You are one.
+    - My captain guessed. I do not guess. I estimate. There is a difference. Do you know it?
+    taunts:
+    - Your estimate is a hundred times too small. I can tell from here.
+    - Nearest thousand? Nearest ten thousand? It matters, child.
+    - A range, not a number. Learn that, or lose.
+    - ASH AND ARITHMETIC.
+    defeat: You estimated me correctly. Nobody has done that. I shall… withdraw. And recount.
+treasures:
+- item: siege-stew
+  rank: 2
+- item: thornwall-shield
+  rank: 3
+- item: thorn-cape
+  flawless: 5

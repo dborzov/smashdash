@@ -74,3 +74,49 @@ path:
       - { skills: [current, resistance], count: 3, taunt: "MY ARMOUR IS PURE MUD. MAXIMUM OHMS. MAXIMUM SQUEEZE." }
       - { skills: [ohm-current, ohm-solve], count: 3, taunt: "CALCULATING… CALCULATING… ERROR: SMALL HUMAN IS BETTER AT OHM'S LAW." }
     defeat: "*Nugget rams so hard that Clankenstein's batteries pop out and roll away like marbles.* CLANK… clank… cl… *beep.* I WOULD LIKE TO BE A TOASTER NOW."
+ranks:
+- rank: 2
+  story: junkyard-r2
+  boss:
+    name: Clankenstein 2.0 (Beta)
+    intro:
+    - "UPDATE COMPLETE. NEW FEATURES: SHOUTING. CUP HOLDER. NOW 40% MORE CLANK."
+    - "KNOWN BUGS: THINKS VOLTS ARE BISCUITS. THINKS SMALL HUMAN CANNOT DO OHM'S LAW."
+    taunts:
+    - "OPEN LOOP? CLOSED LOOP? ERROR: LOOP NOT FOUND."
+    - "MORE RESISTANCE = MORE CURRENT. (CONFIDENCE: 2%)"
+    - CALCULATING… V EQUALS I PLUS R… SEEMS RIGHT.
+    - INSTALLING MAXIMUM CLANK!
+    defeat: UPDATE FAILED. ROLLING BACK TO VERSION 1.0. PLEASE DO NOT TELL THE OTHER ROBOTS.
+  nodes:
+  - id: fuse-rescue
+    type: encounter
+    title: Rescue the Robot Dogs
+    game: rescue
+    skills:
+    - current
+    - resistance
+    - ohm-current
+    count: 7
+- rank: 3
+  story: junkyard-r3
+  boss:
+    name: MEGA-CLANKENSTEIN
+    hue: 40
+    intro:
+    - I AM EVERY MACHINE. I AM THE FRIDGE. I AM THE TUBA. THE TOASTER IS MY HEART.
+    - MY CURRENT IS INFINITE. MY RESISTANCE IS FUTILE. MY TOAST IS SLIGHTLY BURNT.
+    taunts:
+    - TUBA ATTACK! *PARP*
+    - FRIDGE ARMOUR! MAXIMUM COLD! MAXIMUM OHMS!
+    - TOASTER HEART OVERLOADING… DING! TOAST!
+    - MEGA-CLANK!
+    defeat: "SYSTEMS… SHUTTING… DOWN… THE TOASTER WISHES TO SAY: WELL DONE. *a single slice of toast pops\
+      \ out*"
+treasures:
+- item: battery-biscuit
+  rank: 2
+- item: spare-fuse
+  rank: 3
+- item: tesla-coil
+  flawless: 5

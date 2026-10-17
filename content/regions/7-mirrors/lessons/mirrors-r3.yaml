@@ -1,0 +1,20 @@
+id: mirrors-r3
+title: "Legendary: Fullcopy"
+beats:
+- type: narrate
+  text: Every mirror in the caves shows the same face. It is not your face. It is a big, smug imp with
+    a clipboard.
+- type: say
+  who: ogre
+  text: That's Fullcopy. Halfcopy's big brother. He copies EVERYTHING. Including mistakes. He's copied
+    every mistake ever made in these caves. He has a filing cabinet of them.
+- type: input
+  who: grimble
+  text: "Show Fullcopy a clever shortcut: $6 \\times 19 = 6 \\times 20 - 6$. What is it?"
+  answer: 114
+  nudges:
+  - value: 120
+    text: "That's $6 \\times 20$. Now take away the extra 6."
+  - value: 126
+    text: "Take away the extra 6, don't add it: 19 is one less than 20."
+  explain: "$6 \\times 20 = 120$, minus one 6: $114$."

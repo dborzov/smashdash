@@ -1,0 +1,20 @@
+id: bay-r2
+title: "Heroic: Inkbert Gets Glasses"
+beats:
+- type: say
+  who: polly
+  text: Squawk! Big trouble! Inkbert the Kraken got READING GLASSES! Now he can read the rules painted
+    on the ships — and he's painting them over with wrong ones!
+- type: say
+  who: grimble
+  text: A rule is a rule, wherever it is painted. Work it out from the numbers, not from the paint.
+- type: input
+  who: polly
+  text: The real rule is $y = 2x + 1$. What is $y$ when $x = 5$? Squawk!
+  answer: 11
+  nudges:
+  - value: 10
+    text: Don't forget the $+1$!
+  - value: 8
+    text: "$2x$ means 2 times $x$: $2 \\times 5$, then add 1."
+  explain: "$y = 2 \\times 5 + 1 = 11$."

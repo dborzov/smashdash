@@ -77,3 +77,48 @@ path:
       - { skills: [eval-two, eval-parens], count: 3, taunt: "Brackets! BRACKETS! Feel my bracket power!" }
       - { skills: [words-to-expr, eval-two], count: 3, taunt: "Gibberish! Glorp! Snarfle! TRANSLATE THAT!" }
     defeat: "Nooo! My boxes! My beautiful boxes! …Fine. They're all open. Happy now?"
+ranks:
+- rank: 2
+  story: bramblebottom-r2
+  boss:
+    name: Grub the Unboxable (Mayor Edition)
+    intro:
+    - I am the MAYOR now! I have a hat AND a moustache! Both slightly sticky!
+    - "New law: everything is worked out left to right! Even brackets! ESPECIALLY brackets!"
+    taunts:
+    - Three plus two times four is TWENTY! By order of the Mayor!
+    - Brackets are just decorations! Like my moustache!
+    - Words into maths? I only speak SLIME! Glorp!
+    - "MAYORAL POWERS: ACTIVATE!"
+    defeat: My moustache… it fell in the pond… I am just a slime again. A slime with a very nice hat.
+      Can I keep the hat? …No? Fine.
+  nodes:
+  - id: grub-duel
+    type: encounter
+    title: Duel at the Village Pump
+    game: duel
+    skills:
+    - eval-two
+    - eval-parens
+    count: 7
+- rank: 3
+  story: bramblebottom-r3
+  boss:
+    name: Grubzilla the Unboxable-er
+    hue: 130
+    intro:
+    - GRUBZILLA HUNGRY. GRUBZILLA EAT BOX. GRUBZILLA EAT YOUR SUMS.
+    - MY LITTLE BROTHER SAYS YOU ARE GOOD AT MATHS. GRUBZILLA IS BETTER. GRUBZILLA IS BIGGER.
+    taunts:
+    - BIG NUMBERS! BIG SLIME!
+    - BRACKETS CRUNCHY! GRUBZILLA EAT BRACKETS!
+    - "GRUBZILLA TRANSLATE: \"BLORP\"! YOU TRANSLATE BACK!"
+    - GRUBZILLA STOMP!
+    defeat: GRUBZILLA… FULL. GRUBZILLA… NAP NOW. *A burp shakes three villages*
+treasures:
+- item: mystery-pie
+  rank: 2
+- item: grubs-box
+  rank: 3
+- item: bramble-cape
+  flawless: 5

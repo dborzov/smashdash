@@ -70,3 +70,49 @@ path:
       - { skills: [table-rule, step-pattern], count: 3, taunt: "My ships follow a SECRET rule! …It's painted on the side of the ships. I should fix that." }
       - { skills: [line-rule, table-rule], count: 3, taunt: "Behold my mighty beam of FOG! Why are you reading its rule?! STOP THAT!" }
     defeat: "Blorp… okay, okay. I'll go back to the deep. I only came up because it's lonely down there. …Can I visit on Sundays?"
+ranks:
+- rank: 2
+  story: bay-r2
+  boss:
+    name: Inkbert (Now With Reading Glasses)
+    intro:
+    - I CAN SEE! I can see EVERYTHING! Especially your rules! And now they are MY rules!
+    - I have painted new rules on every ship! "y equals banana"! Try plotting THAT!
+    taunts:
+    - The rule is whatever I painted last! Fresh paint!
+    - Along or up? I ink them both! Splat!
+    - My pattern goes 2, 4, 6… SEVENTEEN! Surprise!
+    - MAXIMUM INK!
+    defeat: My glasses… they are covered in ink… I cannot see the rules… I can only see… that I lost.
+      Very clearly, unfortunately.
+  nodes:
+  - id: ink-siege
+    type: encounter
+    title: Siege of the Ink Fleet
+    game: siege
+    skills:
+    - line-rule
+    - table-rule
+    - read-point
+    count: 7
+- rank: 3
+  story: bay-r3
+  boss:
+    name: The Great Squiddo
+    hue: 260
+    intro:
+    - Fifty arms. Fifty pens. Fifty wrong graphs. Welcome to my bay, little hero.
+    - My nephew is a disgrace. He needed GLASSES. I can read a rule with my eyes shut.
+    taunts:
+    - Up first, then along! Squid rules!
+    - Fifty arms, fifty points, all in the wrong place!
+    - The table goes up by three! Or by fifty! I have fifty arms!
+    - THE INK OF AGES!
+    defeat: Hmph. You read my rules better than I do. Take this map. I never used it. I just pointed.
+treasures:
+- item: ink-pasta
+  rank: 2
+- item: pollys-feather
+  rank: 3
+- item: sailcloth-cape
+  flawless: 5

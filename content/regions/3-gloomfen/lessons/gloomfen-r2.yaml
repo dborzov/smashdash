@@ -1,0 +1,18 @@
+id: gloomfen-r2
+title: "Heroic: The Burpening"
+beats:
+- type: say
+  who: nettle
+  text: Hero! It's King Slurp. He's been eating swamp gas. His burps are so big now they make SUMS appear
+    in the air. Wrong ones. Floating, smelly, wrong sums.
+- type: say
+  who: grimble
+  text: I can confirm. One just floated past me. It said $5 + 3 = 53$. And it smelled of eggs.
+- type: input
+  who: nettle
+  text: "Pop this burp-sum: $x - 9 = 14$. What is $x$?"
+  answer: 23
+  nudges:
+  - value: 5
+    text: Undo **minus** 9 by **adding** 9 to both sides.
+  explain: "Add 9 to both sides: $x = 23$. Check: $23 - 9 = 14$ ✓."

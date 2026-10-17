@@ -1,0 +1,23 @@
+id: bay-r3
+title: "Legendary: The Great Squiddo"
+beats:
+- type: narrate
+  text: "The bay goes dark. Not night-dark: ink-dark. Something enormous and very old has woken up beneath\
+    \ the lighthouse."
+- type: say
+  who: polly
+  text: Inkbert's auntie! The Great Squiddo! She has fifty arms! She's never once used a map! She just
+    points!
+- type: say
+  who: grimble
+  text: Along the corridor, up the stairs. Along first. Every time. Even when a squid is pointing at you.
+- type: input
+  who: polly
+  text: Squiddo hides the treasure at the point $(3, 4)$. How far **along** is it?
+  answer: 3
+  nudges:
+  - value: 4
+    text: "That's the up. Along the corridor first, then up the stairs: the **first** number."
+  - value: 7
+    text: "Just the along part: the first number."
+  explain: "In $(3, 4)$ the first number is along: 3."

@@ -1,0 +1,21 @@
+id: thornwall-r2
+title: "Heroic: The Night Assault"
+beats:
+- type: say
+  who: voss
+  text: They are coming again. At night this time. Captain Sere wants us guessing at shadows. Our scouts
+    can only give rough numbers in the dark.
+- type: say
+  who: wren
+  text: Rough numbers are still numbers. We round them, we know how far off they could be, and we plan
+    for the worst.
+- type: input
+  who: voss
+  text: "Scouts count $46\\,382$ torches. Round that to the nearest thousand."
+  answer: 46000
+  nudges:
+  - value: 47000
+    text: "Look at the hundreds digit: 3. That rounds **down**."
+  - value: 50000
+    text: Nearest **thousand**, not ten thousand.
+  explain: "The hundreds digit is 3, so round down: $46\\,000$."

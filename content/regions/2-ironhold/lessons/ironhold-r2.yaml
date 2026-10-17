@@ -1,0 +1,19 @@
+id: ironhold-r2
+title: "Heroic: Tipsy Gets Magnets"
+beats:
+- type: say
+  who: brokka
+  text: Hero! Bad news from the forge. Tipsy the Troll has found a box of MAGNETS. He's been sticking
+    them under the scales. Nothing balances! The whole mountain is wonky!
+- type: say
+  who: grimble
+  text: A magnet under one pan is cheating, which means Tipsy is doing something to one side only. You
+    know what we do about that.
+- type: input
+  who: brokka
+  text: "Quick, while Tipsy is looking for more magnets: $x + 7 = 15$. What is $x$?"
+  answer: 8
+  nudges:
+  - value: 22
+    text: "Undo the $+7$: **subtract** 7 from both sides."
+  explain: "Subtract 7 from both sides: $x = 8$. The scales stop wobbling. Tipsy sulks."

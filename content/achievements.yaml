@@ -1,7 +1,10 @@
 # Trophies. `stat` is a counter bumped by game events (src/engine/events.ts) or a derived stat
 # (src/engine/achievements.ts: level, streak, regions, skills, masters, atomsMastered,
-# atomsSolid, bosses, wins, graves, petAge, bond, gold, hats, decor, hours, campaign:<id>,
-# region:<id>). `title` unlocks a title the hero can wear. `secret` hides it until earned.
+# atomsSolid, bosses, wins, graves, petAge, bond, gold, hats, decor, hours, heroics, legendaries,
+# mythics, facts, rows, cards, relics) or a per-id stat: campaign:<id>, region:<id>, rank:<region>,
+# win:<region>, flawless:<region>, boss:<region>, hunt:<region>. Region trophies (cat: region)
+# name their `region`: the Trophy Room groups them and links there. `title` unlocks a title the
+# hero can wear. `secret` hides it until earned.
 
 # --- Learning -------------------------------------------------------------
 - { id: first-steps, name: First Steps, icon: "👣", desc: "Answer your first question right.", stat: right, goal: 1, gold: 5, cat: learning }
@@ -67,3 +70,67 @@
 - { id: hat-collector, name: Hat Collector, icon: "🎩", desc: "Own 5 hats.", stat: hats, goal: 5, gold: 40, title: the Well-Dressed, cat: stuff }
 - { id: big-spender, name: Big Spender, icon: "🛍️", desc: "Buy 20 things in the shop.", stat: buy, goal: 20, gold: 20, cat: stuff }
 - { id: dragons-hoard, name: "Dragon's Hoard", icon: "🐲", desc: "Have 1,000 gold at once.", stat: gold, goal: 1000, title: the Hoarder, secret: true, cat: stuff }
+
+# --- Campaigns, ranks and collections ----------------------------------------------
+- { id: table-champion, name: Champion of the 144 Rooms, icon: "🐉", desc: "Finish Dungeons & Times Tables.", stat: "campaign:tables", goal: 1, gold: 250, title: of the 144 Rooms, cat: journey }
+- { id: order-member, name: Order of Magnitude, icon: "🦸", desc: "Finish The Order of Magnitude.", stat: "campaign:magnitude", goal: 1, gold: 250, title: the Approximately Awesome, cat: journey }
+- { id: sequel-survivor, name: Sequel Survivor, icon: "🎬", desc: "Finish The Muddler Strikes Back.", stat: "campaign:sequel", goal: 1, gold: 250, title: the Unmuddled, cat: journey }
+- { id: heroic-hero, name: Heroic Hero, icon: "🛡️", desc: "Clear any region on Heroic.", stat: heroics, goal: 1, gold: 40, cat: fighting }
+- { id: legend-in-making, name: Legend in the Making, icon: "👑", desc: "Clear 5 regions on Legendary.", stat: legendaries, goal: 5, gold: 150, title: the Legendary, cat: fighting }
+- { id: mythical, name: Mythical, icon: "🔮", desc: "Clear a region on Mythic.", stat: mythics, goal: 1, gold: 120, secret: true, cat: fighting }
+- { id: quick-draw, name: Quickest Pencil in the West, icon: "⚡", desc: "Make 50 quick-draw answers in duels.", stat: quick, goal: 50, gold: 60, cat: fighting }
+- { id: mistake-hunter, name: Mistake Hunter, icon: "🔎", desc: "Catch 25 mistakes in Mistake Hunts.", stat: hunt, goal: 25, gold: 60, title: the Fact-Checker, cat: learning }
+- { id: fact-finder, name: Fact Finder, icon: "✖️", desc: "Know 40 times-table facts by heart (see the Fact Map).", stat: facts, goal: 40, gold: 50, cat: learning }
+- { id: globe-trotter-pet, name: Globe-Trotting Pet, icon: "🎒", desc: "Send your pet on 10 expeditions.", stat: expedition, goal: 10, gold: 50, cat: pet }
+- { id: relic-hunter, name: Relic Hunter, icon: "🏺", desc: "Own 3 relics.", stat: relics, goal: 3, gold: 60, cat: stuff }
+
+# --- Region trophies: only one adventure gives each of these --------------------------
+- { id: r-bramblebottom-3, region: bramblebottom, name: Grubzilla Tamer, icon: "🟢", desc: "Clear Bramblebottom on Legendary.", stat: "rank:bramblebottom", goal: 3, gold: 60, cat: region }
+- { id: r-bramblebottom-f, region: bramblebottom, name: Box Clever, icon: "📦", desc: "Win 10 fights in Bramblebottom without a single mistake.", stat: "flawless:bramblebottom", goal: 10, gold: 40, cat: region }
+- { id: r-ironhold-3, region: ironhold, name: Level-Headed, icon: "⚖️", desc: "Clear Ironhold on Legendary (and straighten out Wobbly).", stat: "rank:ironhold", goal: 3, gold: 60, cat: region }
+- { id: r-ironhold-f, region: ironhold, name: Troll Toppler, icon: "🧌", desc: "Beat the Ironhold boss 5 times (any rank).", stat: "boss:ironhold", goal: 5, gold: 40, cat: region }
+- { id: r-gloomfen-3, region: gloomfen, name: Burp Diplomat, icon: "🐸", desc: "Clear Gloomfen Marsh on Legendary.", stat: "rank:gloomfen", goal: 3, gold: 60, cat: region }
+- { id: r-gloomfen-f, region: gloomfen, name: Frog Whisperer, icon: "🪷", desc: "Win 10 fights in Gloomfen without a mistake.", stat: "flawless:gloomfen", goal: 10, gold: 40, cat: region }
+- { id: r-dragonspine-3, region: dragonspine, name: "Granny's Favourite", icon: "🔥", desc: "Clear Dragonspine Peaks on Legendary.", stat: "rank:dragonspine", goal: 3, gold: 60, cat: region }
+- { id: r-dragonspine-f, region: dragonspine, name: Fireproof, icon: "🧯", desc: "Win 10 fights in Dragonspine without a mistake.", stat: "flawless:dragonspine", goal: 10, gold: 40, cat: region }
+- { id: r-bazaar-3, region: bazaar, name: Vizier Vanquisher, icon: "🪔", desc: "Clear the Bazaar of Whispers on Legendary.", stat: "rank:bazaar", goal: 3, gold: 60, cat: region }
+- { id: r-bazaar-f, region: bazaar, name: Haggler Supreme, icon: "🐪", desc: "Win 30 fights in the Bazaar.", stat: "win:bazaar", goal: 30, gold: 40, cat: region }
+- { id: r-tower-3, region: tower, name: Infinitely Right, icon: "🗼", desc: "Clear the Tower of Tens on Legendary.", stat: "rank:tower", goal: 3, gold: 60, cat: region }
+- { id: r-tower-f, region: tower, name: Zero Hero, icon: "0️⃣", desc: "Win 10 fights in the Tower of Tens without a mistake.", stat: "flawless:tower", goal: 10, gold: 40, cat: region }
+- { id: r-mirrors-3, region: mirrors, name: The Empty Folder, icon: "🗂️", desc: "Clear the Mirrormaze Caves on Legendary.", stat: "rank:mirrors", goal: 3, gold: 60, cat: region }
+- { id: r-mirrors-f, region: mirrors, name: Full Copy, icon: "🪞", desc: "Win 10 fights in the Mirrormaze without a mistake.", stat: "flawless:mirrors", goal: 10, gold: 40, cat: region }
+- { id: r-bay-3, region: bay, name: Squid Pro Quo, icon: "🦑", desc: "Clear Beamhook Bay on Legendary.", stat: "rank:bay", goal: 3, gold: 60, cat: region }
+- { id: r-bay-f, region: bay, name: Ink-credible, icon: "🖋️", desc: "Beat the Beamhook Bay boss 5 times.", stat: "boss:bay", goal: 5, gold: 40, cat: region }
+- { id: r-junkyard-3, region: junkyard, name: Toast of the Town, icon: "🍞", desc: "Clear Sparkwick Junkyard on Legendary.", stat: "rank:junkyard", goal: 3, gold: 60, cat: region }
+- { id: r-junkyard-f, region: junkyard, name: Ohm Sweet Ohm, icon: "⚡", desc: "Win 10 fights in the Junkyard without a mistake.", stat: "flawless:junkyard", goal: 10, gold: 40, cat: region }
+- { id: r-greyhaven-3, region: greyhaven, name: The Clean Page, icon: "📜", desc: "Clear Greyhaven on Legendary.", stat: "rank:greyhaven", goal: 3, gold: 60, cat: region }
+- { id: r-greyhaven-f, region: greyhaven, name: Keeper of the Archive, icon: "🗃️", desc: "Win 10 fights in Greyhaven without a mistake.", stat: "flawless:greyhaven", goal: 10, gold: 40, cat: region }
+- { id: r-ashroad-3, region: ashroad, name: "Baker's Apprentice", icon: "🥖", desc: "Clear the Ashen Road on Legendary.", stat: "rank:ashroad", goal: 3, gold: 60, cat: region }
+- { id: r-ashroad-f, region: ashroad, name: Roadwarden, icon: "🛡️", desc: "Win 30 fights on the Ashen Road.", stat: "win:ashroad", goal: 30, gold: 40, cat: region }
+- { id: r-thornwall-3, region: thornwall, name: Counted Correctly, icon: "🏰", desc: "Clear the Siege of Thornwall on Legendary.", stat: "rank:thornwall", goal: 3, gold: 60, cat: region }
+- { id: r-thornwall-f, region: thornwall, name: The Wall Holds, icon: "🧱", desc: "Win 10 fights at Thornwall without a mistake.", stat: "flawless:thornwall", goal: 10, gold: 40, cat: region }
+- { id: r-vaults-3, region: vaults, name: Crumbs Returned, icon: "⚖️", desc: "Clear the Glass Vaults on Legendary.", stat: "rank:vaults", goal: 3, gold: 60, cat: region }
+- { id: r-vaults-f, region: vaults, name: Steady Hands, icon: "🔍", desc: "Win 10 fights in the Glass Vaults without a mistake.", stat: "flawless:vaults", goal: 10, gold: 40, cat: region }
+- { id: r-tavern-3, region: tavern, name: "Gerald's Best Mate", icon: "🟩", desc: "Clear the Tavern of Arrays on Legendary.", stat: "rank:tavern", goal: 3, gold: 60, cat: region }
+- { id: r-tavern-f, region: tavern, name: Table Service, icon: "🍺", desc: "Win 10 fights in the Tavern without a mistake.", stat: "flawless:tavern", goal: 10, gold: 40, cat: region }
+- { id: r-doubling-3, region: doubling, name: Hydra Hairdresser, icon: "🐍", desc: "Clear the Doubling Dungeon on Legendary.", stat: "rank:doubling", goal: 3, gold: 60, cat: region }
+- { id: r-doubling-f, region: doubling, name: Double Trouble, icon: "✌️", desc: "Beat the Hydra 5 times (any rank).", stat: "boss:doubling", goal: 5, gold: 40, cat: region }
+- { id: r-squares-3, region: squares, name: Square Deal, icon: "🟪", desc: "Clear the Hall of Squares on Legendary.", stat: "rank:squares", goal: 3, gold: 60, cat: region }
+- { id: r-squares-f, region: squares, name: Perfectly Square, icon: "👁️", desc: "Win 10 fights in the Hall of Squares without a mistake.", stat: "flawless:squares", goal: 10, gold: 40, cat: region }
+- { id: r-grid-3, region: grid, name: Dungeon Mastered, icon: "🎲", desc: "Clear the Grid of 144 Rooms on Legendary.", stat: "rank:grid", goal: 3, gold: 60, cat: region }
+- { id: r-grid-f, region: grid, name: Times Table Ace, icon: "💯", desc: "Know all 78 times-table facts by heart. Every square on the Fact Map glowing.", stat: facts, goal: 78, gold: 150, title: the Times Table Ace, cat: region }
+- { id: r-grid-rows, region: grid, name: Row Master, icon: "📏", desc: "Know every fact in all 12 rows of the table.", stat: rows, goal: 12, gold: 80, cat: region }
+- { id: r-hq-3, region: hq, name: Full Member, icon: "🦸", desc: "Clear Hero HQ on Legendary.", stat: "rank:hq", goal: 3, gold: 60, cat: region }
+- { id: r-hq-f, region: hq, name: Unit Unconfused, icon: "📐", desc: "Win 10 fights at Hero HQ without a mistake.", stat: "flawless:hq", goal: 10, gold: 40, cat: region }
+- { id: r-ballpark-3, region: ballpark, name: Close Enough, icon: "⚾", desc: "Clear Ballpark City on Legendary.", stat: "rank:ballpark", goal: 3, gold: 60, cat: region }
+- { id: r-ballpark-f, region: ballpark, name: "Fermi's Friend", icon: "🌭", desc: "Win 30 fights in Ballpark City.", stat: "win:ballpark", goal: 30, gold: 40, cat: region }
+- { id: r-cosmos-3, region: cosmos, name: Officially Edgy, icon: "🌌", desc: "Clear the Edge of Everything on Legendary.", stat: "rank:cosmos", goal: 3, gold: 60, cat: region }
+- { id: r-cosmos-f, region: cosmos, name: Museum Curator, icon: "🖼️", desc: "Collect 30 cards for the Scale Museum.", stat: cards, goal: 30, gold: 100, title: the Curator, cat: region }
+- { id: r-subzero-3, region: subzero, name: Chilly Reception, icon: "🐧", desc: "Clear Subzero Springs on Legendary.", stat: "rank:subzero", goal: 3, gold: 60, cat: region }
+- { id: r-subzero-f, region: subzero, name: Penguin Whisperer, icon: "🧊", desc: "Win 10 fights in Subzero Springs without a mistake.", stat: "flawless:subzero", goal: 10, gold: 40, cat: region }
+- { id: r-lostfound-3, region: lostfound, name: Chewed Homework, icon: "📚", desc: "Clear the Lost & Found Hall on Legendary.", stat: "rank:lostfound", goal: 3, gold: 60, cat: region }
+- { id: r-lostfound-f, region: lostfound, name: Neat Freak, icon: "🧹", desc: "Win 10 fights in the Lost & Found without a mistake.", stat: "flawless:lostfound", goal: 10, gold: 40, cat: region }
+- { id: r-twinscales-3, region: twinscales, name: No Goatee, icon: "⚖️", desc: "Clear the Twin Scales on Legendary.", stat: "rank:twinscales", goal: 3, gold: 60, cat: region }
+- { id: r-twinscales-f, region: twinscales, name: Perfectly Balanced, icon: "🪞", desc: "Win 10 fights at the Twin Scales without a mistake.", stat: "flawless:twinscales", goal: 10, gold: 40, cat: region }
+- { id: r-riddlemaze-3, region: riddlemaze, name: Clear Thinker, icon: "🧩", desc: "Clear the Riddle Maze on Legendary.", stat: "rank:riddlemaze", goal: 3, gold: 60, cat: region }
+- { id: r-riddlemaze-f, region: riddlemaze, name: Blooper Reel, icon: "🎞️", desc: "Catch the intern out 10 times in the Riddle Maze's Mistake Hunts.", stat: "hunt:riddlemaze", goal: 10, gold: 40, cat: region }

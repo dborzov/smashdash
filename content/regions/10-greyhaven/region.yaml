@@ -71,3 +71,50 @@ path:
       - { skills: [pv-read, pv-write], count: 3, taunt: "Two million, forty thousand, six. Write it, if you can hold the zeros." }
       - { skills: [pv-expanded, pv-write], count: 3, taunt: "Break me apart, then. Every piece. Miss one and I come back." }
     defeat: "*The wraith comes apart page by page. Each page lands face up, and every number on it is readable again.*"
+ranks:
+- rank: 2
+  story: greyhaven-r2
+  boss:
+    name: The Ledger Wraith, Rewritten
+    intro:
+    - You thought I was ink and nothing more. Someone has written me again. In red.
+    - Every place you count, I have shifted by one. Can you feel the city slipping?
+    taunts:
+    - Ten thousand. One hundred thousand. What is a zero between friends?
+    - Which place? Which worth? You squint at me like a page in the dark.
+    - Write it, if you can hold all the zeros at once.
+    - THE RED LEDGER OPENS.
+    defeat: Red ink runs. Grey ink fades. And the city keeps its count. For now.
+  nodes:
+  - id: ledger-duel
+    type: encounter
+    title: Duel in the Archive
+    game: duel
+    skills:
+    - pv-value
+    - pv-places
+    - pv-write
+    count: 7
+- rank: 3
+  story: greyhaven-r3
+  boss:
+    name: The First Clerk
+    hue: 0
+    intro:
+    - I wrote the first false number in the March. It was very small. It grew.
+    - Every lie you have fought began on my desk. Sit. Let us count together. I will lie; you will try
+      to catch me.
+    taunts:
+    - A million is just a thousand thousands. Or a hundred thousands. Who checks?
+    - The seven is worth seven. Only seven. Always seven.
+    - Leave the empty places empty. Nobody misses a zero.
+    - THE FIRST LIE.
+    defeat: "You caught every one. I have nothing left to write. Perhaps that is how it should end: with\
+      \ a clean page."
+treasures:
+- item: hobbs-hardtack
+  rank: 2
+- item: wrens-quill
+  rank: 3
+- item: ledger-cloak
+  flawless: 5

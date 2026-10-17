@@ -5,7 +5,8 @@
 import { useEffect, useState } from 'preact/hooks';
 import { fxQueue, dayNews, clearDayNews, useProfile } from '../../engine/store';
 import type { Fx } from '../../engine/rewards';
-import { achievementById, itemById, skillById } from '../../content';
+import { achievementById, campaignById, itemById, regionById, sizeById, skillById } from '../../content';
+import { MAX_RANK, rankInfo } from '../../engine/ranks';
 import { getProfile } from '../../engine/store';
 import { questById } from '../../engine/quests';
 import { TIER_NAMES, type Tier } from '../../engine/mastery';
@@ -32,6 +33,32 @@ function AchCard({ id }: { id: string }) {
         )}
         {a.title && <span class="chip">🏷️ New title: "{a.title}"</span>}
       </div>
+    </>
+  );
+}
+function RankCard({ region, rank }: { region: string; rank: number }) {
+  const r = regionById[region];
+  const info = rankInfo(rank);
+  const camp = r ? campaignById[r.campaign] : undefined;
+  return (
+    <>
+      <div class="rank-crest big anim-wobble" style={{ '--crest': info.color } as Record<string, string>}>
+        {info.icon}
+      </div>
+      <div class="muted" style={{ letterSpacing: '.1em', fontSize: '.8rem' }}>
+        RANK CLEARED
+      </div>
+      <h2>
+        {info.name} {r?.name}!
+      </h2>
+      {rank < MAX_RANK ? (
+        <p>
+          <b>{rankInfo(rank + 1).name}</b> opens in two sleeps.{' '}
+          <span class="muted">{camp?.cooldown}</span>
+        </p>
+      ) : (
+        <p>Every rank cleared. You are officially Ridiculous. (It's a compliment.)</p>
+      )}
     </>
   );
 }
@@ -73,6 +100,8 @@ export function FxLayer() {
           text: `${itemById[f.item]?.icon ?? '🎁'} +${f.count} ${itemById[f.item]?.name ?? f.item}`,
         });
       if (f.kind === 'egg') t.push({ id: nextId++, text: '🥚 A mysterious egg!' });
+      if (f.kind === 'card' && sizeById[f.id])
+        t.push({ id: nextId++, text: `🖼️ New museum card: ${sizeById[f.id].icon} ${sizeById[f.id].name}` });
       if (f.kind === 'quest')
         t.push({
           id: nextId++,
@@ -102,7 +131,7 @@ export function FxLayer() {
       setBig((old) => [...old, ...achs]);
       sfx('goal');
     }
-    const b = fx.filter((f) => f.kind === 'level' || f.kind === 'goal');
+    const b = fx.filter((f) => f.kind === 'level' || f.kind === 'goal' || f.kind === 'rank');
     if (b.length) {
       setBig((old) => [...old, ...b]);
       sfx(b.some((f) => f.kind === 'level') ? 'level' : 'goal');
@@ -152,8 +181,10 @@ export function FxLayer() {
                   </span>
                 ))}
               </div>
-              <p class="muted">See them all on the Hero screen.</p>
+              <p class="muted">See them all in the Trophy Room.</p>
             </>
+          ) : shown.kind === 'rank' ? (
+            <RankCard region={shown.region} rank={shown.rank} />
           ) : shown.kind === 'goal' ? (
             <>
               <div style={{ fontSize: '4rem' }}>🔥</div>

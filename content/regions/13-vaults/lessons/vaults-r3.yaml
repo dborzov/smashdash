@@ -1,0 +1,20 @@
+id: vaults-r3
+title: "Legendary: The Assayer"
+beats:
+- type: narrate
+  text: The deepest vault, behind glass so clear it looks like air. A figure sits at a set of scales that
+    weigh in thousandths.
+- type: say
+  who: warden
+  text: The Assayer. The Tallyman's master. Every coin in the March was tested here once. Every one he
+    tested was a few thousandths light.
+- type: input
+  who: hobb
+  text: The Assayer weighs a coin at $2.468$ g. Round it to one decimal place.
+  answer: 2.5
+  nudges:
+  - value: 2.4
+    text: "Look at the next digit along, the 6: that rounds **up**."
+  - value: 2.47
+    text: "One decimal place: just tenths."
+  explain: "The hundredths digit is 6, so round up: $2.5$ g."

@@ -1,0 +1,22 @@
+id: ironhold-r3
+title: "Legendary: Wobbly"
+beats:
+- type: narrate
+  text: A second troll stomps out of the mine. It looks exactly like Tipsy, except it can't stand up straight
+    at all. It leans. It sways. It's been like this since birth.
+- type: say
+  who: brokka
+  text: Tipsy's twin brother, Wobbly. He thinks EVERYTHING should tip over. Scales. Towers. Soup.
+- type: say
+  who: grimble
+  text: Steady hands, hero. Undo, undo, undo — and always to both sides.
+- type: input
+  who: brokka
+  text: "Wobbly puts 4 boxes on one pan and 36 coins on the other: $4x = 36$. What is $x$?"
+  answer: 9
+  nudges:
+  - value: 32
+    text: That's subtracting. Four boxes means **times** 4 — undo it by dividing.
+  - value: 144
+    text: "Divide, not multiply: share the 36 coins between 4 boxes."
+  explain: "$36 \\div 4 = 9$, so $x = 9$."

@@ -151,6 +151,29 @@ function Mouth({
   }
 }
 
+/**
+ * Where a hat sits on each species: the middle of the top of its head (x, y), how big the hat
+ * is there (s) and a little tilt (r, degrees). Hats are drawn for the hero's head (brim centre
+ * at 60, 40 in their own coordinates), so they are moved and scaled onto the pet.
+ */
+const HAT_SPOT: Record<string, { x: number; y: number; s: number; r?: number }> = {
+  blorp: { x: 80, y: 57, s: 0.8, r: -4 },
+  dragonling: { x: 80, y: 53, s: 0.75, r: 6 },
+  mushling: { x: 80, y: 29, s: 0.8, r: -6 },
+  owlbear: { x: 80, y: 54, s: 0.85 },
+  bonepup: { x: 72, y: 42, s: 0.72, r: -8 },
+  mimic: { x: 80, y: 53, s: 0.85, r: 5 },
+};
+
+function PetHat({ id, species }: { id: string; species: string }) {
+  const a = HAT_SPOT[species] ?? HAT_SPOT.blorp;
+  return (
+    <g transform={`translate(${a.x} ${a.y}) rotate(${a.r ?? 0}) scale(${a.s}) translate(-60 -40)`}>
+      <HatArt id={id} outfit="#9b7bff" />
+    </g>
+  );
+}
+
 export function PetArt({
   species,
   mood,
@@ -505,6 +528,7 @@ export function PetArt({
               stroke-width="2"
             />
             <Eyes mood={mood} sleep={sleep} x1={64} x2={96} y={68} r={9} />
+            {hat && !dead && <PetHat id={hat} species="mimic" />}
           </g>
         </g>
       );
@@ -544,7 +568,10 @@ export function PetArt({
       style={{ overflow: 'visible', filter: tint }}
     >
       <ellipse cx="80" cy="152" rx="56" ry="8" fill="rgba(0,0,0,.25)" />
-      <g transform={dead ? 'rotate(170 80 100) translate(0 -30)' : undefined}>{body}</g>
+      <g transform={dead ? 'rotate(170 80 100) translate(0 -30)' : undefined}>
+        {body}
+        {hat && !dead && species !== 'mimic' && <PetHat id={hat} species={species} />}
+      </g>
       {sleep && !dead && (
         <g class="zzz" font-family="Fredoka" font-weight="700" fill="#c6b8ff">
           <text x="120" y="40" font-size="22">
@@ -556,11 +583,6 @@ export function PetArt({
           <text x="148" y="8" font-size="12">
             z
           </text>
-        </g>
-      )}
-      {hat && !dead && (
-        <g transform="translate(36 -2) scale(0.75)">
-          <HatArt id={hat} outfit="#9b7bff" />
         </g>
       )}
     </svg>

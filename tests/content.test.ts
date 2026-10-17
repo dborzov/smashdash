@@ -410,7 +410,12 @@ describe('content references', () => {
       if (a.region) expect(regionIds.has(a.region), `${a.id}: region ${a.region}`).toBe(true);
       // Nothing is unlocked for a brand-new hero.
       expect(statValue(fresh, st, 0) < a.goal, `${a.id} unlocked from the start`).toBe(true);
+      if (a.cat === 'region') expect(a.region, `${a.id}: region trophies name their region`).toBeDefined();
+      if (st === 'cards') expect(a.goal, `${a.id}: more cards than exist`).toBeLessThanOrEqual(sizes.length);
     }
+    // Every region has trophies only it can give.
+    for (const r of regions)
+      expect(achievements.filter((a) => a.region === r.id).length, `${r.id} has no region trophies`).toBeGreaterThan(0);
   });
 
   it('ranks and treasures', () => {

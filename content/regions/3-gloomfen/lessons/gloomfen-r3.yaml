@@ -1,0 +1,21 @@
+id: gloomfen-r3
+title: "Legendary: Emperor of All Bogs"
+beats:
+- type: narrate
+  text: Every bog in the kingdom gurgles at once. A toad the size of a cottage rises from the mud, wearing
+    a crown made of other crowns.
+- type: say
+  who: nettle
+  text: King Slurp has declared himself EMPEROR Slurp. He's annexed six bogs, a marsh, two puddles and
+    the castle's moat. And my bath.
+- type: input
+  who: grimble
+  text: "The Emperor splits the moat into 5 equal ponds of 7 frogs each: $\\frac{x}{5} = 7$. How many\
+    \ frogs in all?"
+  answer: 35
+  nudges:
+  - value: 2
+    text: Undo dividing by 5 by **multiplying** by 5.
+  - value: 12
+    text: "Multiply, not add: 5 ponds of 7 frogs."
+  explain: "$x = 7 \\times 5 = 35$ frogs. All of them furious."

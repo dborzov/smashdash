@@ -52,6 +52,11 @@ const CAPES: Record<string, string> = {
   'ballpark-jacket': '#e0334d',
   'zero-cape': 'url(#cape-stripes)',
   'frost-cape': '#7dd3fc',
+  'bramble-cape': '#3a8a2a',
+  'tower-cape': '#2b4fd6',
+  'sailcloth-cape': '#efe4c8',
+  'ledger-cloak': '#4a4458',
+  'thorn-cape': '#7a1a2e',
 };
 
 function darker(hex: string, f = 0.7): string {

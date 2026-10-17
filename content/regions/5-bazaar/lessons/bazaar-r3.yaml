@@ -1,0 +1,20 @@
+id: bazaar-r3
+title: "Legendary: The Grand Vizier of Muddle"
+beats:
+- type: narrate
+  text: The Bazaar goes quiet. A palanquin carried by four confused camels arrives. Inside sits a man
+    in robes covered in question marks.
+- type: say
+  who: ptolemeow
+  text: The Grand Vizier of Muddle. The Muddler's old teacher. He wrote "Riddles With No Answers" and
+    "Answers With No Riddles". Both bestsellers.
+- type: input
+  who: grimble
+  text: "The Vizier says: \"Five times my number, plus two, makes thirty-seven.\" His number?"
+  answer: 7
+  nudges:
+  - value: 39
+    text: "Write it down: $5x + 2 = 37$. Undo the $+2$ first."
+  - value: 7.8
+    text: Subtract the 2 first, then divide by 5.
+  explain: $5x + 2 = 37$, so $5x = 35$ and $x = 7$.

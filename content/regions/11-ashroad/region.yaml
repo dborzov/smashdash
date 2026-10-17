@@ -70,3 +70,48 @@ path:
       - { skills: [pv-regroup, pv-shift], count: 3, taunt: "Thirty-four thousand arrows. Or is it thirty-four hundred? So easy to confuse." }
       - { skills: [pv-numberline, pv-compare], count: 3, taunt: "I moved the milestones, too. Did you notice? Nobody ever notices." }
     defeat: "*Vane's quill snaps. He looks at the ledgers, at you, and shrugs.* 'Fine. You can count. That only makes you a better target.' *He is gone before the smoke clears.*"
+ranks:
+- rank: 2
+  story: ashroad-r2
+  boss:
+    name: Maul Vane, Master Forger
+    intro:
+    - I improved my hand, child. My threes look like eights now. My hundreds look like thousands.
+    - The road is long. Every milestone is mine. Every report is mine. Which ones can you trust?
+    taunts:
+    - Which report is bigger? I wrote them both. I wrote all of them.
+    - I moved the milestones again. You will never notice. Nobody ever notices.
+    - Times ten, divide by ten — a flick of the pen.
+    - THE GREAT FORGERY.
+    defeat: My pen… is broken. My seals… are melted. The road is yours. For now.
+  nodes:
+  - id: forge-siege
+    type: encounter
+    title: Siege of the Forger's Camp
+    game: siege
+    skills:
+    - pv-compare
+    - pv-times-ten
+    - pv-shift
+    count: 7
+- rank: 3
+  story: ashroad-r3
+  boss:
+    name: The Ash-Hand
+    hue: 20
+    intro:
+    - My master forged numbers. I forge commands. Armies march where I write.
+    - One flick of ash and a hundred becomes a thousand. Are you sure of your places?
+    taunts:
+    - Ten times? A hundred times? The ash decides.
+    - Regroup the soldiers. Regroup the tens. Regroup them WRONG.
+    - Every milestone on this road is a little bit of a lie.
+    - ASH AND ORDERS.
+    defeat: The ash cools. My hand… is just a hand. I think I would like to be a baker now.
+treasures:
+- item: ember-bread
+  rank: 2
+- item: forgers-seal
+  rank: 3
+- item: wagon-lantern
+  flawless: 5

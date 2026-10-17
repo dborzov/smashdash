@@ -14,8 +14,10 @@ import {
   causeText,
   clamp,
   feedBugs,
+  isAway,
   isNight,
   knownTricks,
+  REGION_TRICKS,
   newPet,
   petMood,
   petStage,
@@ -32,6 +34,8 @@ import { Bar, Modal } from '../components/Bits';
 import { go } from '../router';
 import { sfx } from '../../audio/sfx';
 import { DAY, dayKey } from '../../engine/dates';
+import { regionById } from '../../content';
+import { Expeditions, Perks } from './PetTrips';
 
 const MOOD_TEXT: Record<string, string> = {
   happy: 'is having the BEST day. (+10% XP while happy!)',
@@ -68,6 +72,13 @@ const DECOR_SPOTS: Record<string, { left: string; top?: string; bottom?: string;
   'square-rug': { left: '34%', bottom: '3%', size: '2rem' },
   'lost-property-box': { left: '66%', bottom: '6%', size: '2.4rem' },
   'tiny-maze': { left: '30%', top: '14%', size: '2.2rem' },
+  anvil: { left: '26%', bottom: '30%', size: '2rem' },
+  'lily-pond': { left: '74%', bottom: '24%', size: '2.2rem' },
+  'flying-carpet': { left: '16%', top: '30%', size: '2.4rem' },
+  'magic-mirror': { left: '70%', top: '12%', size: '2.2rem' },
+  'tesla-coil': { left: '94%', bottom: '40%', size: '2rem' },
+  'wagon-lantern': { left: '6%', top: '8%', size: '2rem' },
+  'crystal-ball': { left: '96%', top: '22%', size: '2rem' },
 };
 
 function Den({
@@ -194,7 +205,8 @@ export function PetScreen({ p }: { p: Profile }) {
   }, []);
 
   const pet = p.pet;
-  const sleeping = !!pet && !pet.dead && isNight(now) && now > awake && !hunt;
+  const out = !!pet && isAway(pet, now);
+  const sleeping = !!pet && !pet.dead && !out && isNight(now) && now > awake && !hunt;
   const say = (s: string) => {
     setLine(s);
     setBounce(true);
@@ -343,7 +355,7 @@ export function PetScreen({ p }: { p: Profile }) {
   const mood = pet ? petMood(pet) : 'ok';
   const ageDays = pet ? Math.floor(((pet.dead?.at ?? now) - pet.born) / DAY) : 0;
   const bond = Math.floor(pet?.bond ?? 0);
-  const tricks = pet ? knownTricks(pet) : [];
+  const tricks = pet ? knownTricks(pet, p.ranks) : [];
   const nextTrick = TRICKS.find((t) => t.bond > bond);
   const dancing = p.den.includes('disco-ball') && mood === 'happy' && !sleeping;
 
@@ -388,7 +400,14 @@ export function PetScreen({ p }: { p: Profile }) {
                 <Egg cracks={taps} />
               </button>
             )}
-            {pet && (
+            {pet && out && (
+              <div class="den-away">
+                🎒 <b>Gone exploring!</b>
+                <br />
+                {pet.name} is off in {regionById[pet.away!.region]?.name}. The den is very quiet. Too quiet.
+              </div>
+            )}
+            {pet && !out && (
               <>
                 <button
                   onClick={pat}
@@ -464,30 +483,35 @@ export function PetScreen({ p }: { p: Profile }) {
                 </div>
               )}
               <div class="muted" style={{ fontSize: '.85rem' }}>
-                Bond grows with pats (a few a day), treats like 🦴 and 🧸, tricks and bug hunts. A
-                pet with a bond of 30+ follows you into fights — and sometimes sniffs out extra
-                gold.
+                Bond grows with pats (a few a day), treats like 🦴 and 🧸, tricks, bug hunts and
+                expeditions. A stronger bond helps in fights:
               </div>
+              <Perks bond={bond} name={pet.name} />
 
               <div class="section-title" style={{ margin: '6px 0 0' }}>
                 🎪 Tricks
               </div>
               <div class="row wrap">
-                {TRICKS.map((t) => {
+                {[...TRICKS, ...REGION_TRICKS].map((t) => {
                   const known = tricks.includes(t);
+                  const where = 'region' in t ? regionById[t.region as string]?.name : '';
                   return (
                     <button
                       key={t.id}
                       class={`btn small ${known ? '' : 'ghost'}`}
-                      disabled={!known || sleeping}
+                      disabled={!known || sleeping || out}
                       onClick={() => doTrick(t)}
-                      title={known ? t.name : `Needs bond ${t.bond}`}
+                      title={known ? t.name : where ? `Clear ${where} on Heroic` : `Needs bond ${t.bond}`}
                     >
                       {known ? t.icon : '🔒'} {t.name}
-                      {!known && <span class="muted"> · {t.bond}</span>}
+                      {!known && <span class="muted"> · {where ? `Heroic ${where}` : t.bond}</span>}
                     </button>
                   );
                 })}
+              </div>
+              <div class="muted" style={{ fontSize: '.85rem' }}>
+                Some tricks are only learned on adventures: clear a region on <b>Heroic</b> and your
+                pet picks up something from it.
               </div>
               {nextTrick && (
                 <div class="muted" style={{ fontSize: '.85rem' }}>
@@ -498,7 +522,7 @@ export function PetScreen({ p }: { p: Profile }) {
               <div class="row wrap" style={{ marginTop: '6px' }}>
                 <button
                   class="btn small gold"
-                  disabled={!bugsReady(pet, now) || sleeping || hunt}
+                  disabled={!bugsReady(pet, now) || sleeping || hunt || out}
                   onClick={() => {
                     sfx('whoosh');
                     setHunt(true);
@@ -544,6 +568,8 @@ export function PetScreen({ p }: { p: Profile }) {
               </div>
             </div>
           )}
+
+          {pet && !pet.dead && <Expeditions p={p} now={now} say={say} />}
 
           {pet?.dead && (
             <div class="panel center">

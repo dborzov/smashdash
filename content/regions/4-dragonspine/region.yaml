@@ -58,3 +58,47 @@ path:
       - { skills: [two-step], count: 3, taunt: "Double-wrapped! DOUBLE! Feel the heat!" }
       - { skills: [two-step, check-solution], count: 3, taunt: "I'll check your answers myself! WITH FIRE!" }
     defeat: "Ow! Okay! You win! Please don't tell anyone a kid beat me. My reputation is all I have. That and gold."
+ranks:
+- rank: 2
+  story: dragonspine-r2
+  boss:
+    name: Smolderbutt (Extra Spicy)
+    intro:
+    - HOT HOT HOT! I ate the chillies! ALL the chillies! My fire is now coming out of… everywhere!
+    - I'll wrap your sums in fire! Double-wrapped! Undo THAT, snowman!
+    taunts:
+    - Divide first, then subtract! That is the SPICY way!
+    - Last on? First off? I eat my dinner backwards! Pudding first!
+    - "*An alarming noise from the back* …DON'T LOOK."
+    - MAXIMUM SPICE!
+    defeat: Water… WATER… is there any milk? I need a lot of milk. And a cold bath. And a new bottom.
+  nodes:
+  - id: chilli-siege
+    type: encounter
+    title: Siege of the Chilli Caves
+    game: siege
+    skills:
+    - two-step
+    - undo-order
+    count: 7
+- rank: 3
+  story: dragonspine-r3
+  boss:
+    name: Old Scorchbottom, Grandmother of Fire
+    hue: 15
+    intro:
+    - In my day, we wrapped our sums in THREE layers and walked to school through LAVA.
+    - My grandson lost to you? I shall have to roast you myself. Gently. Like a crumpet.
+    taunts:
+    - Undo the inside first! That is how we did it in 1203!
+    - Pick any move, dear! They are all the same! (They are not.)
+    - Wrapped in fire, wrapped in fire! Ha!
+    - GRANNY IS ON FIRE!
+    defeat: Well, well. A clever one. Here, have a toffee. It is slightly on fire. Blow on it first.
+treasures:
+- item: fire-toffee
+  rank: 2
+- item: smoulder-scale
+  rank: 3
+- item: frost-cape
+  flawless: 5

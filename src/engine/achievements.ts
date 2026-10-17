@@ -41,7 +41,7 @@ export const DERIVED_STATS = [
 ] as const;
 
 /** Stat prefixes that take an id: `region:<id>`, `campaign:<id>`, `rank:<region>`, … */
-export const STAT_PREFIXES = ['region', 'campaign', 'rank', 'win', 'flawless', 'boss'] as const;
+export const STAT_PREFIXES = ['region', 'campaign', 'rank', 'win', 'flawless', 'boss', 'hunt'] as const;
 
 const rankAtLeast = (p: Profile, n: number) =>
   regions.filter((r) => Math.max(p.ranks?.[r.id]?.r ?? 0, regionDone(p, r) ? 1 : 0) >= n).length;

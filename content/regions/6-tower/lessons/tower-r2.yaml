@@ -1,0 +1,21 @@
+id: tower-r2
+title: "Heroic: Gigantus Maximus"
+beats:
+- type: say
+  who: zoomwhistle
+  text: Oh dear, oh dear. Gigantus Minimus has had a growth spurt. He is now Gigantus MAXIMUS. His head
+    is in the clouds. Literally. Birds are nesting in his ears.
+- type: say
+  who: grimble
+  text: Big numbers, small numbers, and a lot of zeros. Count them carefully. One missing zero and you
+    are ten times wrong.
+- type: input
+  who: zoomwhistle
+  text: How tall is Gigantus now? $10^4$ millimetres. Type it out in full.
+  answer: 10000
+  nudges:
+  - value: 40
+    text: "$10^4$ is not $10 \\times 4$: it is four tens multiplied together."
+  - value: 1000
+    text: "Count the tens: $10 \\times 10 \\times 10 \\times 10$ — that is four zeros."
+  explain: "$10^4 = 10\\,000$ mm. That is ten metres. Of giant."

@@ -1,0 +1,22 @@
+id: junkyard-r3
+title: "Legendary: MEGA-CLANKENSTEIN"
+beats:
+- type: narrate
+  text: Every bit of junk in the yard rattles. Fridges. Toasters. A tuba. They fly together into a robot
+    as tall as a lighthouse, with a toaster for a heart.
+- type: say
+  who: sprocket
+  text: MEGA-CLANKENSTEIN! It rebooted itself with every machine in the junkyard! The toaster is in charge!
+- type: say
+  who: zap
+  text: Bzzt! It has one weakness. Maths. Same as all bad robots.
+- type: input
+  who: sprocket
+  text: "Short it out: 24 V across 8 Ω. How many amps flow? ($I = V \\div R$)"
+  answer: 3
+  nudges:
+  - value: 192
+    text: "Divide, not multiply: current is volts **divided by** resistance."
+  - value: 16
+    text: "That's subtracting. $24 \\div 8$."
+  explain: "$I = 24 \\div 8 = 3$ amps."

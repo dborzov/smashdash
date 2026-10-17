@@ -54,7 +54,7 @@ export type GameEvent = (typeof GAME_EVENTS)[number];
  * Events that are also counted per region (`win:<region>` …), for region trophies and
  * flawless-fight treasures.
  */
-export const REGION_EVENTS = ['win', 'flawless', 'boss', 'rank'] as const;
+export const REGION_EVENTS = ['win', 'flawless', 'boss', 'rank', 'hunt'] as const;
 
 export function track(
   p: Profile,

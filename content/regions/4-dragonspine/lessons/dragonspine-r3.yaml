@@ -1,0 +1,23 @@
+id: dragonspine-r3
+title: "Legendary: Old Scorchbottom"
+beats:
+- type: narrate
+  text: The mountain rumbles. Out of the oldest cave crawls the oldest dragon. She has a shawl, a walking
+    stick, and a rear end that has been on fire since the Middle Ages.
+- type: say
+  who: snowbert
+  text: Smolderbutt's grandma! Old Scorchbottom! She invented being on fire!
+- type: say
+  who: grimble
+  text: She wraps her sums twice and thinks nobody remembers which layer went on last. You do. Last on,
+    first off.
+- type: input
+  who: snowbert
+  text: "Granny Scorchbottom says: $3x - 4 = 20$. What is $x$?"
+  answer: 8
+  nudges:
+  - value: 24
+    text: "That's $3x$. One $x$ is a third of that."
+  - value: 16
+    text: "Undo the **minus** 4 by **adding** 4 to both sides."
+  explain: $3x = 24$, so $x = 8$.

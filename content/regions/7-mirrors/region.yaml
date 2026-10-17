@@ -77,3 +77,50 @@ path:
       - { skills: [expand-check, expand], count: 3, taunt: "These rules are TOTALLY real. Don't test them. Please don't test them." }
       - { skills: [split-tens, round-down], count: 3, taunt: "Seven times nine is sixty-NINE! Probably! Ish!" }
     defeat: "Fine! FINE! I'll copy the whole parcel! Both coins! Even the pudding! …I hate pudding."
+ranks:
+- rank: 2
+  story: mirrors-r2
+  boss:
+    name: Halfcopy & Halfcopy
+    intro:
+    - We are Halfcopy! — And I am also Halfcopy! — Together we are ONE copy! — No, we are two halves!
+      — Same thing!
+    - We will copy your answers! — Half of them! — The wrong half!
+    taunts:
+    - Copy the 4 onto the x only! — Only the x! — Hee hee!
+    - Test it? TEST it?! — Never test it! — Testing is for cowards!
+    - Seven nines are sixty-nine! — Sixty-NINE! — Roughly!
+    - DOUBLE HALF ATTACK!
+    defeat: We… we copied each other's defeat. — Now we've lost twice. — That's a whole loss! — Hee… hee…
+  nodes:
+  - id: mirror-duel
+    type: encounter
+    title: Duel of the Reflections
+    game: duel
+    skills:
+    - expand
+    - expand-check
+    - split-tens
+    count: 7
+- rank: 3
+  story: mirrors-r3
+  boss:
+    name: Fullcopy, Keeper of Every Mistake
+    hue: 170
+    intro:
+    - I have copied every mistake ever made in these caves. Every single one. Alphabetically.
+    - Today I shall add yours to the collection. I have a folder ready. It says YOUR NAME.
+    taunts:
+    - "Mistake number 4,071: forgetting the bracket. Classic!"
+    - "Mistake number 9,320: \"it looks right, so it is right\"!"
+    - "Mistake number 12,000: rounding the wrong way! My favourite!"
+    - THE COMPLETE COLLECTION!
+    defeat: You… made no mistakes. My folder is empty. I shall have to file it under "Empty". Which is
+      a new folder. Thank you, I suppose.
+treasures:
+- item: half-sandwich
+  rank: 2
+- item: true-mirror
+  rank: 3
+- item: magic-mirror
+  flawless: 5

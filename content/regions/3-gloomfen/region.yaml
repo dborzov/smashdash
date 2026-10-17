@@ -62,3 +62,49 @@ path:
       - { skills: [one-step-mul], count: 3, taunt: "I'll split you into tiny pieces! Mathematically!" }
       - { skills: [check-solution, one-step-add, one-step-mul], count: 3, taunt: "Is that true? IS IT? Hah, you don't even know!" }
     defeat: "Glurk. Fine. FINE. You win. Grimble, your friend is… acceptable. For a non-frog."
+ranks:
+- rank: 2
+  story: gloomfen-r2
+  boss:
+    name: King Slurp the Burpening
+    intro:
+    - "*BUUUUURP* Did you hear that? That was a sum. A royal sum. And it was WRONG. On purpose."
+    - My burps fill the swamp with lies! Lovely, smelly lies!
+    taunts:
+    - Is that true? I burped it, so it must be!
+    - "*BURRRRP* Add it to one side! Just the one! The burp says so!"
+    - Multiply? DIVIDE? I only do BURP!
+    - THE ROYAL BURP OF DOOM!
+    defeat: "*hic* …my burps… are true now… all of them… this is the worst day of my reign. *small, honest\
+      \ burp*"
+  nodes:
+  - id: lily-rescue
+    type: encounter
+    title: Rescue the Frogspawn
+    game: rescue
+    skills:
+    - one-step-add
+    - one-step-mul
+    - check-solution
+    count: 7
+- rank: 3
+  story: gloomfen-r3
+  boss:
+    name: Emperor Slurp of All Bogs
+    hue: 280
+    intro:
+    - Kneel before your Emperor! (Mind the mud.) I rule every bog from here to the sea!
+    - "My burps are now LAW. Article one: x is whatever I say. Article two: BURP."
+    taunts:
+    - "Article three: checking answers is TREASON!"
+    - "Article four: plus and minus are the same thing on Thursdays!"
+    - "Article five: times and divide swap every hour!"
+    - "ARTICLE SIX: BUUUURP!"
+    defeat: I abdicate. I ab-di-*hic*-cate. You can have the bogs. Honestly, they smell.
+treasures:
+- item: swamp-smoothie
+  rank: 2
+- item: royal-burp-jar
+  rank: 3
+- item: lily-pond
+  flawless: 5

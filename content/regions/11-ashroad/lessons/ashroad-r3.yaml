@@ -1,0 +1,20 @@
+id: ashroad-r3
+title: "Legendary: The Ash-Hand"
+beats:
+- type: narrate
+  text: Smoke on the road, but no fire. A rider in grey with one hand blackened to the wrist. Every seal
+    it touches becomes a forgery.
+- type: say
+  who: wren
+  text: Vane's apprentice. The Ash-Hand. Vane forged reports. This one forges orders. Whole regiments
+    marched the wrong way last winter.
+- type: input
+  who: hobb
+  text: "An order arrives: \"Send 470 crates, times a hundred.\" How many crates is that?"
+  answer: 47000
+  nudges:
+  - value: 4700
+    text: Times a hundred shifts the digits **two** places.
+  - value: 570
+    text: Times a hundred, not plus a hundred.
+  explain: "$470 \\times 100 = 47\\,000$: two places left."

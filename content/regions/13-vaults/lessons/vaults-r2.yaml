@@ -1,0 +1,20 @@
+id: vaults-r2
+title: "Heroic: The Tallyman, Unbalanced"
+beats:
+- type: say
+  who: warden
+  text: The Tallyman has returned to the Vaults. His scales are crooked again — he weighs to the tenth
+    when it suits him, and to the hundredth when it does not.
+- type: say
+  who: hobb
+  text: Small places, small cheats. Small cheats, big losses. Watch the point.
+- type: input
+  who: warden
+  text: "Check his sum: $3.7 \\times 10$. What should it be?"
+  answer: 37
+  nudges:
+  - value: 3.7
+    text: "Times ten makes it bigger: the digits move one place left."
+  - value: 0.37
+    text: "That's dividing by ten. Times ten: bigger."
+  explain: "$3.7 \\times 10 = 37$: the digits shift one place left."

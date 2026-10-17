@@ -1,0 +1,22 @@
+id: bramblebottom-r2
+title: "Heroic: The Mayor Is Acting Weird"
+beats:
+- type: narrate
+  text: Bramblebottom, a quiet Tuesday. The Mayor gives a speech. The Mayor is shorter than usual. The
+    Mayor has a very wobbly moustache. The Mayor is a slime.
+- type: say
+  who: mayor
+  text: "Citizens! I am DEFINITELY your mayor! Today I declare: brackets are BANNED! And so is doing times\
+    \ before plus! Glorp! I mean — hooray!"
+- type: say
+  who: grimble
+  text: "That's Grub. Wearing the Mayor's hat. The real Mayor is tied up in the cheese shed, hopping mad.\
+    \ Heroic rank, hero: same village, nastier sums."
+- type: input
+  who: grimble
+  text: "Show \"the Mayor\" how it works: $3 + 2 \\times 4$?"
+  answer: 11
+  nudges:
+  - value: 20
+    text: "Times before plus! $2 \\times 4$ first, then add the 3."
+  explain: "$2 \\times 4 = 8$, then $3 + 8 = 11$. The fake moustache falls off in shame."

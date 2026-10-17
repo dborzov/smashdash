@@ -1,0 +1,20 @@
+id: junkyard-r2
+title: "Heroic: Clankenstein 2.0"
+beats:
+- type: say
+  who: sprocket
+  text: Uh-oh. Clankenstein has installed an update. CLANKENSTEIN 2.0 (BETA). It has new features. Mostly
+    shouting. And a cup holder.
+- type: say
+  who: zap
+  text: Bzzzt! The update was not tested! It's buggy! It thinks volts are a kind of biscuit!
+- type: input
+  who: sprocket
+  text: "Fix the bug: current 2 A through 6 Ω. How many volts? ($V = I \\times R$)"
+  answer: 12
+  nudges:
+  - value: 8
+    text: "Ohm's law multiplies: $V = I \\times R = 2 \\times 6$."
+  - value: 3
+    text: That's dividing. Volts are current **times** resistance.
+  explain: "$V = 2 \\times 6 = 12$ volts. Clankenstein reboots in embarrassment."

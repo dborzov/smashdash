@@ -62,3 +62,50 @@ path:
       - { skills: [two-step, undo-order], count: 3, taunt: "Wrapped! Double-wrapped! TRIPLE— no, I can't do triple. DOUBLE-wrapped!" }
       - { skills: [story-to-equation, story-solve], count: 4, taunt: "A riddle! A RIDDLE! You'll never find the x!" }
     defeat: "NOOO! My beautiful muddle! Curse you and your… your… CLARITY! I'll be back! In my TOWER!"
+ranks:
+- rank: 2
+  story: bazaar-r2
+  boss:
+    name: The Muddler (In a False Beard)
+    intro:
+    - I am NOT the Muddler! I am Mr. Uddler. A simple merchant. With an ordinary amount of hats.
+    - Buy my riddles! Each one comes with a FREE wrong answer!
+    taunts:
+    - Plus and times? Put them anywhere! It is a free market!
+    - The story says x! Or y! Or banana! Who can say?
+    - Undo the inside first! Buy one, get one muddled!
+    - CLOSING DOWN SALE! EVERYTHING MUST MUDDLE!
+    defeat: My beard! It has fallen into the hummus! …Fine. It was me. Of COURSE it was me. Who else has
+      two hats?
+  nodes:
+  - id: bazaar-duel
+    type: encounter
+    title: The Haggling Duel
+    game: duel
+    skills:
+    - name-unknown
+    - story-to-equation
+    - story-solve
+    count: 7
+- rank: 3
+  story: bazaar-r3
+  boss:
+    name: The Grand Vizier of Muddle
+    hue: 200
+    intro:
+    - I taught the Muddler everything he knows. Which is not much. But it is very confusing.
+    - "A riddle, child: what has no answer and is always wrong? …My riddles. Ha!"
+    taunts:
+    - Name the unknown? Name it Gerald! Names are fun!
+    - The question asked for camels, you answered in dates! WRONG!
+    - Double-wrapped riddle in a riddle in a riddle!
+    - BEHOLD THE ULTIMATE MUDDLE!
+    defeat: Remarkable. You answered the question that was ASKED. Nobody has done that in this bazaar
+      for forty years.
+treasures:
+- item: riddle-dates
+  rank: 2
+- item: magic-lamp
+  rank: 3
+- item: flying-carpet
+  flawless: 5

@@ -1,0 +1,24 @@
+id: greyhaven-r3
+title: "Legendary: The First Clerk"
+beats:
+- type: narrate
+  text: Beneath the archive is another archive. Beneath that, a door nobody has opened in three hundred
+    years. It is open now.
+- type: say
+  who: anselm
+  text: The First Clerk. The one who wrote the Wraith. They say every false number in the March was first
+    written in their hand.
+- type: say
+  who: voss
+  text: Then we end it here. Read every number like the city depends on it. It does.
+- type: input
+  who: wren
+  text: "The First Clerk dares you: write two million, forty thousand and six in digits."
+  answer: 2040006
+  nudges:
+  - value: 240006
+    text: "Two **million**: that needs seven digits."
+  - value: 2406
+    text: Every place needs filling, even when it is empty — zeros hold the places.
+  explain: "$2\\,040\\,006$: two millions, no hundred-thousands, four ten-thousands, and six ones. Every\
+    \ zero holds its place."

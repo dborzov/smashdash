@@ -1,0 +1,23 @@
+id: bramblebottom-r3
+title: "Legendary: Grubzilla"
+beats:
+- type: narrate
+  text: The ground shakes. The duck pond empties. Something enormous and green squelches over the hill,
+    wearing a cardboard box as a crown.
+- type: say
+  who: grimble
+  text: Grub's big brother. Grubzilla the Unboxable-er. He has eaten four boxes, two letterboxes and a
+    postman's lunchbox. The postman is fine. Hungry, but fine.
+- type: say
+  who: mayor
+  text: He's sitting on the town hall! Hero, save Bramblebottom! Also my hat. He took my hat again.
+- type: input
+  who: grimble
+  text: "Grubzilla roars: \"Two lots of $x + 3$ when $x = 4$!\" What is $2(x + 3)$?"
+  answer: 14
+  nudges:
+  - value: 11
+    text: "The 2 multiplies the whole bracket: $x + 3$ first (that is 7), then double it."
+  - value: 10
+    text: "Work out the bracket first: $4 + 3 = 7$. Then $2 \\times 7$."
+  explain: "$x + 3 = 7$, and $2 \\times 7 = 14$."

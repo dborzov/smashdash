@@ -1,0 +1,24 @@
+id: thornwall-r3
+title: "Legendary: Lord Cinder"
+beats:
+- type: narrate
+  text: The siege lines part. A figure in ash-grey armour rides forward alone. Even Sere's raiders step
+    back from him.
+- type: say
+  who: anselm
+  text: Lord Cinder. Sere's commander. He never fights. He just counts — and he counts better than any
+    general alive.
+- type: say
+  who: voss
+  text: Then we out-count him.
+- type: input
+  who: wren
+  text: A scout says "about 40,000" (to the nearest ten thousand). What is the **smallest** the army could
+    be?
+  answer: 35000
+  nudges:
+  - value: 40000
+    text: Rounded numbers hide a range. What is the smallest number that rounds **up** to 40,000?
+  - value: 39999
+    text: "Go lower: anything from 35,000 rounds to 40,000."
+  explain: "Anything from $35\\,000$ up to $44\\,999$ rounds to $40\\,000$. Smallest: $35\\,000$."

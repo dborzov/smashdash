@@ -302,3 +302,52 @@
   font-style: italic;
   color: var(--text-dim);
 }
+
+/* Expeditions and perks (PetTrips.tsx) */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--panel-solid);
+  border: 1px solid var(--panel-edge);
+}
+.perks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+}
+.perk {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--panel-edge);
+  opacity: 0.6;
+}
+.perk.on {
+  opacity: 1;
+  border-color: var(--gold);
+  background: rgba(255, 209, 102, 0.08);
+}
+.perk-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.den-away {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%) rotate(-3deg);
+  max-width: 70%;
+  text-align: center;
+  font-size: 1rem;
+  background: #fff4dc;
+  color: #3a2414;
+  border: 3px solid #c98a3c;
+  border-radius: 10px;
+  padding: 10px 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}

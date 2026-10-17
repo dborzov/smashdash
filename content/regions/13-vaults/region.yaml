@@ -71,3 +71,48 @@ path:
       - { skills: [dec-places, dec-compare], count: 3, taunt: "Smaller now. Tenths. Hundredths. The places where cheats hide their thumbs." }
       - { skills: [dec-shift, dec-round], count: 3, taunt: "Slide the point. Round the weight. One slip and the ledger is MINE." }
     defeat: "*The Tallyman's pen stops. He looks at the last page, where your name is written in a clean, correct hand.* 'Counted,' he whispers. 'I was counted.' *The bones settle, the blue light goes out, and the ledger closes by itself.*"
+ranks:
+- rank: 2
+  story: vaults-r2
+  boss:
+    name: The Tallyman, Unbalanced
+    intro:
+    - My scales were broken. I have fixed them. Crookedly. On purpose.
+    - Tenths, hundredths — I move the point when you blink.
+    taunts:
+    - Point three five is bigger than point four. More digits! More value!
+    - Slide the point. Round the weight. One slip, and the ledger is mine.
+    - Millions, then thousandths. Can you still hold them both?
+    - THE SCALES TIP.
+    defeat: Balanced. Again. I hate balance. It is so… honest.
+  nodes:
+  - id: glass-duel
+    type: encounter
+    title: Duel on the Glass Floor
+    game: duel
+    skills:
+    - dec-compare
+    - dec-shift
+    - dec-round
+    count: 7
+- rank: 3
+  story: vaults-r3
+  boss:
+    name: The Assayer
+    hue: 190
+    intro:
+    - I weigh in thousandths. Every coin I touched was a whisker light. Nobody noticed. For forty years.
+    - You may test me. I have tested better.
+    taunts:
+    - Two point four six eight. Round it down. Always down. My way.
+    - "Which is heavier: point oh nine or point one? Think carefully."
+    - Divide by a thousand. Lose a little on the way. Nobody counts the crumbs.
+    - THE FINE PRINT.
+    defeat: You noticed. After forty years, someone noticed. I suppose I should give the crumbs back.
+treasures:
+- item: glass-sweets
+  rank: 2
+- item: tallymans-scale
+  rank: 3
+- item: crystal-ball
+  flawless: 5

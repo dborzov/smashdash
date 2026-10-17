@@ -773,3 +773,448 @@
   inShop: false
   from: riddlemaze
   desc: "A hedge maze the size of a doormat. Your pet gets lost in it twice a day and loves it."
+
+# --- Treasures of the Muddled Kingdom and the Long Count --------------------------------
+- id: mystery-pie
+  name: The Mayor's Mystery Pie
+  kind: food
+  icon: 🥧
+  price: 0
+  inShop: false
+  from: bramblebottom
+  desc: Nobody knows what's in it. That's why it's called x pie. (Grub had a bite. It's fine.)
+  use: Your pet eats it and makes a face that could solve for x.
+  effect:
+    hunger: 45
+    joy: 20
+    sound: eat
+  drop: 2
+- id: grubs-box
+  name: Grub's Old Box
+  kind: relic
+  icon: 📦
+  price: 0
+  inShop: false
+  from: bramblebottom
+  desc: "The box Grub was finally unboxed from. Hide in it when things go wrong: +1 heart in kingdom fights."
+  relic:
+    campaign: kingdom
+    hearts: 1
+- id: bramble-cape
+  name: Bramble Cape
+  kind: cape
+  icon: 🌿
+  price: 0
+  inShop: false
+  from: bramblebottom
+  desc: Woven from Bramblebottom hedges. Slightly prickly. Smells of cheese shed.
+- id: troll-rock-candy
+  name: Troll Rock Candy
+  kind: food
+  icon: 🪨
+  price: 0
+  inShop: false
+  from: ironhold
+  desc: Literally a rock, dipped in sugar. Trolls love it. Pets love it more. Dentists weep.
+  use: CRUNCH. Your pet chews it for ten minutes and looks very proud.
+  effect:
+    hunger: 35
+    joy: 30
+    sound: eat
+  drop: 2
+- id: brokkas-hammer
+  name: Brokka's Balance Hammer
+  kind: relic
+  icon: 🔨
+  price: 0
+  inShop: false
+  from: ironhold
+  desc: Tap it on both sides and they stay level. Starts every kingdom fight with a ward up.
+  relic:
+    campaign: kingdom
+    ward: true
+- id: anvil
+  name: Tiny Anvil
+  kind: decor
+  icon: ⚒️
+  price: 0
+  inShop: false
+  from: ironhold
+  desc: Brokka's first anvil, from when she was little. Your pet uses it as a pillow. It's not comfy.
+- id: swamp-smoothie
+  name: Swamp Smoothie
+  kind: food
+  icon: 🥤
+  price: 0
+  inShop: false
+  from: gloomfen
+  desc: Pond weed, mud and a single blueberry. Nettle swears by it. Nettle is a frog.
+  use: Your pet drinks it, burps a perfect sum, and looks shocked at itself.
+  effect:
+    hunger: 30
+    joy: 25
+    health: 10
+    sound: burp
+  drop: 2
+- id: royal-burp-jar
+  name: Royal Burp in a Jar
+  kind: relic
+  icon: 🫙
+  price: 0
+  inShop: false
+  from: gloomfen
+  desc: "King Slurp's mightiest burp, sealed for safety. Open it in a fight and loot jumps out: +30% gold\
+    \ in kingdom fights."
+  relic:
+    campaign: kingdom
+    gold: 30
+- id: lily-pond
+  name: Lily Pond
+  kind: decor
+  icon: 🪷
+  price: 0
+  inShop: false
+  from: gloomfen
+  desc: A tiny pond with one lily pad and one very smug frog. The frog is not included. The frog came
+    anyway.
+- id: fire-toffee
+  name: Fire Toffee
+  kind: food
+  icon: 🍮
+  price: 0
+  inShop: false
+  from: dragonspine
+  desc: Old Scorchbottom's recipe. Chewy, sweet, and very slightly on fire. Blow on it first.
+  use: Your pet chews it, puffs out a smoke ring, and looks extremely pleased with itself.
+  effect:
+    hunger: 30
+    joy: 35
+    sound: burp
+  drop: 2
+- id: smoulder-scale
+  name: Smolderbutt's Lucky Scale
+  kind: relic
+  icon: 🔥
+  price: 0
+  inShop: false
+  from: dragonspine
+  desc: "Still warm. Keeps your spirits up: a heart back after just 2 clean answers in kingdom fights."
+  relic:
+    campaign: kingdom
+    rally: 2
+- id: frost-cape
+  name: Snowbert's Frost Cape
+  kind: cape
+  icon: ❄️
+  price: 0
+  inShop: false
+  from: dragonspine
+  desc: Knitted from yeti fluff. Snowbert shed it specially. It never melts, even next to a dragon bottom.
+- id: riddle-dates
+  name: Riddle Dates
+  kind: food
+  icon: 🌴
+  price: 0
+  inShop: false
+  from: bazaar
+  desc: Each one has a tiny riddle written on the stone. Most of them are about dates.
+  use: Your pet eats the date and stares at the riddle on the stone for a long time.
+  effect:
+    hunger: 40
+    joy: 20
+    bond: 2
+    sound: eat
+  drop: 2
+- id: magic-lamp
+  name: The Vizier's Lamp
+  kind: relic
+  icon: 🪔
+  price: 0
+  inShop: false
+  from: bazaar
+  desc: "Rub it and a very tired genie grants one wish: \"more XP, I suppose\". +30% XP for kingdom wins."
+  relic:
+    campaign: kingdom
+    xp: 30
+- id: flying-carpet
+  name: Flying Carpet (Grounded)
+  kind: decor
+  icon: 🧞
+  price: 0
+  inShop: false
+  from: bazaar
+  desc: It used to fly. Now it just hovers a centimetre off the floor and refuses to explain itself.
+- id: tiny-giant-cookie
+  name: Tiny Giant Cookie
+  kind: food
+  icon: 🍪
+  price: 0
+  inShop: false
+  from: tower
+  desc: "Looks tiny. Zoom in: it is enormous. Zoom out: tiny again. Tastes the same at every power of\
+    \ ten."
+  use: Your pet takes a bite and grows 10% bigger for a second. Then shrinks back. It is fine.
+  effect:
+    hunger: 45
+    joy: 15
+    sound: eat
+  drop: 2
+- id: zoom-goggles
+  name: Zoomwhistle's Spare Goggles
+  kind: relic
+  icon: 🥽
+  price: 0
+  inShop: false
+  from: tower
+  desc: "See everything ten times clearer. Including where the answer is hiding: +1 free hint in kingdom\
+    \ fights."
+  relic:
+    campaign: kingdom
+    hints: 1
+- id: tower-cape
+  name: Cape of Tens
+  kind: cape
+  icon: 🔟
+  price: 0
+  inShop: false
+  from: tower
+  desc: Ten times more cape than an ordinary cape. (It is the same size. It just feels like more.)
+- id: half-sandwich
+  name: Half a Sandwich
+  kind: food
+  icon: 🥪
+  price: 0
+  inShop: false
+  from: mirrors
+  desc: Halfcopy ate the other half. Then copied it. Then ate the copy. This half is genuine.
+  use: Your pet eats half of the half. Then the other half. Two quarters! Well done, pet.
+  effect:
+    hunger: 35
+    joy: 15
+    bond: 2
+    sound: eat
+  drop: 2
+- id: true-mirror
+  name: The True Mirror
+  kind: relic
+  icon: 🪞
+  price: 0
+  inShop: false
+  from: mirrors
+  desc: "It only shows what is really there. Mistakes bounce off it: start every kingdom fight with a\
+    \ ward up."
+  relic:
+    campaign: kingdom
+    ward: true
+- id: magic-mirror
+  name: Magic Mirror
+  kind: decor
+  icon: 🔮
+  price: 0
+  inShop: false
+  from: mirrors
+  desc: A mirror from the caves. Your pet barks at its reflection. Its reflection barks back, but half
+    as loud.
+- id: ink-pasta
+  name: Squid-Ink Pasta
+  kind: food
+  icon: 🍝
+  price: 0
+  inShop: false
+  from: bay
+  desc: Jet black and delicious. Inkbert donated the ink. Inkbert was not asked.
+  use: Your pet slurps it up and has a black moustache for an hour. It looks very distinguished.
+  effect:
+    hunger: 50
+    joy: 15
+    sound: eat
+  drop: 2
+- id: pollys-feather
+  name: Polly's Lucky Feather
+  kind: relic
+  icon: 🪶
+  price: 0
+  inShop: false
+  from: bay
+  desc: Squawk! Tickle your pet with it before a fight and it sniffs out gold much more often.
+  relic:
+    campaign: kingdom
+    pet: true
+- id: sailcloth-cape
+  name: Sailcloth Cape
+  kind: cape
+  icon: ⛵
+  price: 0
+  inShop: false
+  from: bay
+  desc: "Cut from Inkbert's ship's sail. It still has half a rule painted on it: \"y = 2x +\"."
+- id: battery-biscuit
+  name: Battery Biscuit
+  kind: food
+  icon: 🔋
+  price: 0
+  inShop: false
+  from: junkyard
+  desc: Clankenstein 2.0 thought volts were biscuits. This one IS a biscuit. Probably. Do not lick the
+    ends.
+  use: Your pet crunches it and its fur stands on end for a minute. Zing!
+  effect:
+    hunger: 30
+    joy: 35
+    sound: zap
+  drop: 2
+- id: spare-fuse
+  name: The Spare Fuse
+  kind: relic
+  icon: 🔌
+  price: 0
+  inShop: false
+  from: junkyard
+  desc: "When something blows, this takes the hit: +1 heart in kingdom fights."
+  relic:
+    campaign: kingdom
+    hearts: 1
+- id: tesla-coil
+  name: Tiny Tesla Coil
+  kind: decor
+  icon: ⚡
+  price: 0
+  inShop: false
+  from: junkyard
+  desc: Crackles quietly in the corner. Your pet loves it. Your pet is slightly fluffier than before.
+- id: hobbs-hardtack
+  name: Hobb's Hardtack
+  kind: food
+  icon: 🍘
+  price: 0
+  inShop: false
+  from: greyhaven
+  desc: Ration biscuit of the March. Lasts for years. Tastes of years.
+  use: Your pet gnaws it with grim determination. It will finish it. Eventually.
+  effect:
+    hunger: 55
+    joy: 5
+    health: 5
+    sound: eat
+  drop: 2
+- id: wrens-quill
+  name: Wren's Quill
+  kind: relic
+  icon: 🖋️
+  price: 0
+  inShop: false
+  from: greyhaven
+  desc: "The quill that caught the red ink. It points at mistakes before you make them: +1 free hint in\
+    \ Long Count fights."
+  relic:
+    campaign: march
+    hints: 1
+- id: ledger-cloak
+  name: Archivist's Cloak
+  kind: cape
+  icon: 📜
+  price: 0
+  inShop: false
+  from: greyhaven
+  desc: Grey wool, ink-stained, warm. Every archivist in Greyhaven wears one. Now you do.
+- id: ember-bread
+  name: Ember Bread
+  kind: food
+  icon: 🍞
+  price: 0
+  inShop: false
+  from: ashroad
+  desc: Baked on the Ashen Road in a campfire. Black on the outside. Warm all the way through.
+  use: Your pet eats it slowly, by the fire, like an old soldier.
+  effect:
+    hunger: 50
+    joy: 15
+    sound: eat
+  drop: 2
+- id: forgers-seal
+  name: The Forger's Broken Seal
+  kind: relic
+  icon: 🔏
+  price: 0
+  inShop: false
+  from: ashroad
+  desc: "Cracked down the middle so it can never lie again. Its weight steadies you: start every Long\
+    \ Count fight with a ward up."
+  relic:
+    campaign: march
+    ward: true
+- id: wagon-lantern
+  name: Wagon Lantern
+  kind: decor
+  icon: 🏮
+  price: 0
+  inShop: false
+  from: ashroad
+  desc: From the forty wagons that made it through. It still smells of smoke and stubbornness.
+- id: siege-stew
+  name: Siege Stew
+  kind: food
+  icon: 🍲
+  price: 0
+  inShop: false
+  from: thornwall
+  desc: Whatever was left in the stores, in one pot. Roughly forty ingredients. To the nearest ten.
+  use: Your pet eats every last bit, then licks the pot. Soldiers would be proud.
+  effect:
+    hunger: 60
+    joy: 10
+    sound: eat
+  drop: 2
+- id: thornwall-shield
+  name: Shield of Thornwall
+  kind: relic
+  icon: 🛡️
+  price: 0
+  inShop: false
+  from: thornwall
+  desc: Dented by a thousand arrows (to the nearest hundred). +1 heart in Long Count fights.
+  relic:
+    campaign: march
+    hearts: 1
+- id: thorn-cape
+  name: Thornwall Banner-Cape
+  kind: cape
+  icon: 🌹
+  price: 0
+  inShop: false
+  from: thornwall
+  desc: Dark red with a thorned rose. Worn by the defenders of the wall. They wore it well.
+- id: glass-sweets
+  name: Glass Sweets
+  kind: food
+  icon: 🍬
+  price: 0
+  inShop: false
+  from: vaults
+  desc: Clear as vault glass, sweet as a balanced ledger. Weighed to the hundredth of a gram.
+  use: Your pet crunches them and its eyes sparkle. Literally. It is the sugar.
+  effect:
+    hunger: 25
+    joy: 35
+    sound: eat
+  drop: 2
+- id: tallymans-scale
+  name: The Tallyman's True Scale
+  kind: relic
+  icon: ⚖️
+  price: 0
+  inShop: false
+  from: vaults
+  desc: "Straightened at last. Weighs your wins honestly — which means generously: +30% XP for Long Count\
+    \ wins."
+  relic:
+    campaign: march
+    xp: 30
+- id: crystal-ball
+  name: Vault Glass Orb
+  kind: decor
+  icon: 🌐
+  price: 0
+  inShop: false
+  from: vaults
+  desc: A ball of perfect vault glass. Look inside and you see the den, upside down, with your pet waving.

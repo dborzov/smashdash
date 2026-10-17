@@ -1,0 +1,20 @@
+id: mirrors-r2
+title: "Heroic: Halfcopy & Halfcopy"
+beats:
+- type: say
+  who: ogre
+  text: Hero! The imp found a mirror! He copied himself! Now there's two Halfcopies! They copy each OTHER!
+    Badly!
+- type: say
+  who: halfcopy
+  text: Hee hee! I copied me! But only half of me! So I'm a quarter-copy now! Or a double-half! Something!
+- type: input
+  who: grimble
+  text: "Bust the bracket properly: $4(x + 3) = 4x + \\square$. What goes in the square?"
+  answer: 12
+  nudges:
+  - value: 3
+    text: That's the Halfcopy mistake! The 4 multiplies the 3 too.
+  - value: 7
+    text: "Multiply, not add: $4 \\times 3$."
+  explain: $4(x + 3) = 4x + 12$. Both halves of Halfcopy groan.

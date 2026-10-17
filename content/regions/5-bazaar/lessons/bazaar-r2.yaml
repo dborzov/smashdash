@@ -1,0 +1,21 @@
+id: bazaar-r2
+title: "Heroic: The Man in the False Beard"
+beats:
+- type: say
+  who: ptolemeow
+  text: A new merchant has set up a stall. He sells "Genuine Riddles, Only Slightly Used". He has a false
+    beard, a false nose, and two hats, stacked.
+- type: say
+  who: grimble
+  text: It's the Muddler. It's obviously the Muddler. Nobody else wears two hats. He's selling fake riddles
+    with the wrong answers glued on.
+- type: input
+  who: pib
+  text: Pib sells 4 bags of dates plus 3 loose dates — 31 dates in all. How many dates in each bag?
+  answer: 7
+  nudges:
+  - value: 34
+    text: "Words first: dates in bags + loose dates = all. $4x + 3 = 31$."
+  - value: 28
+    text: That's all the dates in bags. How many in **each** of the 4 bags?
+  explain: $4x + 3 = 31$, so $4x = 28$ and $x = 7$ dates per bag.

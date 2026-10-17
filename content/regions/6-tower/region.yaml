@@ -77,3 +77,48 @@ path:
       - { skills: [pow10-down, times-pow10], count: 3, taunt: "Shrink! Shrink to a speck! A decimal speck!" }
       - { skills: [sci-notation], count: 3, taunt: "Is it giant? Is it tiny? You'll NEVER know!" }
     defeat: "Waaah! I'm shrinking! I'm shrinking! I'm… 10 to the minus 3 metres tall… this is so embarrassing."
+ranks:
+- rank: 2
+  story: tower-r2
+  boss:
+    name: Gigantus Maximus
+    intro:
+    - I AM BIGGER! TEN TIMES BIGGER! Possibly a HUNDRED! I lost count of my zeros!
+    - Stand still so I can step on you! …Where are you? Down there? You are a SPECK!
+    taunts:
+    - Shrink! Shrink to a speck! Then a speck of a speck!
+    - Ten to the four is FORTY! I am GIANT and I say so!
+    - Is it giant? Is it tiny? Even I do not know any more!
+    - MAXIMUM GIGANTUS!
+    defeat: I am… shrinking… back to normal size… which is still quite big… oh good, my trousers fit again.
+  nodes:
+  - id: speck-rescue
+    type: encounter
+    title: Rescue the Shrunken Wizards
+    game: rescue
+    skills:
+    - pow10-up
+    - pow10-down
+    - times-pow10
+    count: 7
+- rank: 3
+  story: tower-r3
+  boss:
+    name: Gigantus Infinitimus
+    hue: 300
+    intro:
+    - I am big! I am small! I am BIG! I am… small… I feel a bit sick, actually.
+    - Every second I zoom by a power of ten! Catch me if you can count the zeros!
+    taunts:
+    - Ten to the minus three! I am a crumb!
+    - Ten to the NINE! I am a planet!
+    - Scientific notation! I sneeze in scientific notation!
+    - INFINITE ZOOM!
+    defeat: Please… stop… the zooming… I would like to be one size. Any size. A nice medium.
+treasures:
+- item: tiny-giant-cookie
+  rank: 2
+- item: zoom-goggles
+  rank: 3
+- item: tower-cape
+  flawless: 5

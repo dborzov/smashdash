@@ -1,0 +1,20 @@
+id: dragonspine-r2
+title: "Heroic: Extra Spicy"
+beats:
+- type: say
+  who: snowbert
+  text: Hero! Smolderbutt ate the village's entire chilli harvest. All of it. Now his fire comes out of
+    both ends and the snow is melting off the mountain!
+- type: say
+  who: grimble
+  text: Don't stand behind him. That's all I'm saying. Don't. Stand. Behind him.
+- type: input
+  who: snowbert
+  text: "Undo it in the right order: $2x + 5 = 21$. What is $x$?"
+  answer: 8
+  nudges:
+  - value: 13
+    text: "Undo the $+5$ by **subtracting** 5, not adding."
+  - value: 5.5
+    text: Subtract 5 before you divide.
+  explain: $2x = 16$, so $x = 8$.

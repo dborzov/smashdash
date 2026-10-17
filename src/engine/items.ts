@@ -1,7 +1,7 @@
 /** Using items from the bag: pet food, toys, potions, cosmetics. */
 import type { Profile } from './profile';
 import { itemById } from '../content';
-import { addBond, clamp, feed } from './pet';
+import { addBond, clamp, feed, isAway } from './pet';
 import { HOUR } from './dates';
 import { Rng } from './rng';
 
@@ -40,6 +40,7 @@ export function useOnPet(p: Profile, id: string, rng = new Rng(), now = Date.now
   const pet = p.pet;
   if (!it || !(p.inv[id] > 0)) return { ok: false, why: "You don't have that." };
   if (!pet || pet.dead) return { ok: false, why: 'No living pet to use it on.' };
+  if (isAway(pet, now)) return { ok: false, why: `${pet.name} is out exploring. Save it for when it's back!` };
   if (it.kind === 'hat') {
     pet.hat = pet.hat === id ? undefined : id;
     return {

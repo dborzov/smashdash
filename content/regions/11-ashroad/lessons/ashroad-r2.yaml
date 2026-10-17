@@ -1,0 +1,20 @@
+id: ashroad-r2
+title: "Heroic: The Forger Returns"
+beats:
+- type: say
+  who: voss
+  text: Maul Vane has returned to the road. He's forging supply reports again. Thirty-four thousand arrows
+    sent; three thousand four hundred arrived. Somebody is lying.
+- type: say
+  who: hobb
+  text: He doesn't steal arrows. He steals zeros. It's worse. You can count missing arrows.
+- type: input
+  who: voss
+  text: "How many times bigger is $34\\,000$ than $3\\,400$?"
+  answer: 10
+  nudges:
+  - value: 30600
+    text: That's the difference. How many **times** bigger? Look at how the digits shifted.
+  - value: 100
+    text: The digits moved one place, not two.
+  explain: "The digits shifted one place left: $34\\,000 = 3\\,400 \\times 10$."

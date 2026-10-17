@@ -1,0 +1,20 @@
+id: tower-r3
+title: "Legendary: Gigantus Infinitimus"
+beats:
+- type: narrate
+  text: The tower shakes. Something is growing out of the top of it. Then it shrinks to the size of a
+    flea. Then it's bigger than the moon. It can't decide.
+- type: say
+  who: zoomwhistle
+  text: Gigantus has eaten my Zoom Potion! All of it! He is Gigantus INFINITIMUS now — he keeps zooming
+    up and down by powers of ten!
+- type: input
+  who: grimble
+  text: "Catch him at $3.2 \\times 10^3$ metres. Write that as an ordinary number."
+  answer: 3200
+  nudges:
+  - value: 320
+    text: Times $10^3$ moves the digits three places, not two.
+  - value: 32000
+    text: "Three places, not four: $3.2 \\to 32 \\to 320 \\to 3200$."
+  explain: "$3.2 \\times 1000 = 3200$ m. Ten times taller than he was a second ago."
