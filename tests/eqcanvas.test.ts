@@ -9,6 +9,7 @@ import {
   eqTex,
   frac,
   lex,
+  moveTex,
   parseEquation,
   parseStory,
   plainStory,
@@ -169,6 +170,22 @@ describe('moves on both sides', () => {
       eqFrom('(x+3)/2=5'),
     );
     expect(solvedValue(end)).toEqual(frac(7));
+  });
+  it('moves x-terms with a coefficient when x is on both sides', () => {
+    const two: Move = { op: '-', k: 'x', c: frac(2) };
+    expect(bestMove(eqFrom('5x+3=2x+15'))).toEqual(two);
+    expect(after('5x+3=2x+15', two)).toBe('3x + 3 = 15');
+    // The bigger x-term on the right: still take the smaller one away.
+    expect(bestMove(eqFrom('2x+9=5x'))).toEqual(two);
+    expect(after('2x+9=5x', two)).toBe('9 = 3x');
+    const solve = (s: string) =>
+      solvedValue(solveSteps(eqFrom(s))!.reduce((e, m) => tidyEq(applyMove(e, m)), eqFrom(s)));
+    expect(solve('5x+3=2x+15')).toEqual(frac(4));
+    expect(solve('2(x+1)=x+9')).toEqual(frac(7));
+    expect(solve('3x+5=x-3')).toEqual(frac(-4));
+    expect(solve('x+10=3x+16')).toEqual(frac(-3));
+    expect(moveTex(two)).toContain('2x');
+    renderMath(moveTex(two), false, true);
   });
   it('draws moves as valid LaTeX', () => {
     for (const [s, m] of [
