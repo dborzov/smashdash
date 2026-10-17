@@ -39,6 +39,12 @@ keep it organised, tested and documented.
     answer. Hints must be about the kid's current step, never generic ("use $x$"). New
     topics that involve equations should use or extend the slate. See `docs/vision.md`
     (*Teach, don't quiz*).
+11. **Games, not quiz spam.** If an idea has a picture, make the problem a mini-game (logic in
+    `src/games/index.ts`, UI in `src/ui/games/`, spec in the `Widget` schema) that judges every
+    move with a reason. Multiple choice only for genuine "which one?" questions.
+12. **Every region is replayable.** A new region ships with ranks 2–3 (twist stories, boss
+    variants, one extra node), three treasures and its own trophies — see *Adding a region* in
+    `docs/content-guide.md`. Tests enforce most of it.
 
 ## Handy
 

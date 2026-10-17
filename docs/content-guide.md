@@ -97,7 +97,7 @@ beats:
 | kind | fields | notes |
 | --- | --- | --- |
 | `boxes` | `a`, `b`, `reveal?` | a mystery boxes + b coins; with `reveal`, tap to open |
-| `balance` | `left`, `right` (`{x, c}`), `value`, `goal` (`none`/`tip`/`isolate`), `tools` (`both`/`left`/`right`/`divide`) | `value` = what's in a box; must start balanced for `isolate` |
+| `balance` | `left`, `right` (`{x, c}`), `value`, `goal` (`none`/`tip`/`isolate`), `tools` (`both`/`left`/`right`/`divide`/`boxes`) | `value` = what's in a box; must start balanced for `isolate`; `boxes` = take a box off both pans |
 | `unwrap` | `layers` (inside → out, e.g. `['\times 3', '+ 5']`), `value?` | tap the outer layer first |
 | `tower` | `base`, `exp` | build $base^{exp}$ floor by floor |
 | `powers` | `min`, `max`, `start` | slider over $10^n$ with real-world sizes |
@@ -115,6 +115,26 @@ beats:
 | `shifter` | `value`, `times` (−4…4) | ×10 / ÷10 as digits sliding past a fixed point |
 | `decgrid` | `value` (0–1) | tenths/hundredths shaded on a grid |
 | `eqcanvas` | `mode` (`build`/`solve`/`full`/`move`), `equation`, `story?`, `question?`, `unknown?`, `unit?`, `words?`, `scaffold?`, `traps?`, `hints?`, `demo?` | the equation slate (see below) |
+
+**Mini-games** are widgets too (logic in `src/games/index.ts`; every spec is checked by
+`validateGame` in the tests). Generators use the same specs as `game` answers.
+
+| kind | fields | notes |
+| --- | --- | --- |
+| `array` | `rows`, `cols`, `mode?` (`show`/`build`/`turn`/`split`/`double`), `target?`, `fixRows?`, `at?` | gem grids: rows × columns; build at most 8 rows |
+| `skipjump` | `step`, `jumps`, `start?` | a frog hops along a line; tap where each hop lands |
+| `tablegrid` | `mode` (`show`/`find`/`squares`/`mirror`/`row`), `size?`, `target?`, `row?` | the times-table grid |
+| `squaregrow` | `upto` (2–8) | grow a square one L-shaped layer at a time |
+| `chain` | `steps` (`tex` with `\box`, `answer`, `say?`, `options?`, `nudges?`, `hint?`, `note?`, `tolerance?`), `pics?` | a row of small steps, each with its own box and feedback |
+| `sizeline` | `items` (ids in `content/sizes.yaml`), `min?`, `max?` | the Scale Ladder |
+| `sampler` | `n`, `grid`, `seed`, `icon?` | count one patch, scale up |
+| `balloon` | `start`, `op?` (`add`/`sub`), `k?` | balloons +1, sandbags −1; without `op` it's a sandbox |
+| `sorter` | `terms` (e.g. `['3x', '-2', 'x^2']`) | sort into piles, total each pile |
+| `fruit` | `rows` (`items`, `total`), `values`, `ask?` | picture equations; `ask` = the order to find them |
+| `ineqline` | `min`, `max`, `value`, `op` (`<`/`>`/`<=`/`>=`) | pick the dot and the side |
+| `matchsticks` | `shape` (`squares`/`triangles`/`houses`), `stages` | a growing pattern (show it in a `show` beat) |
+
+Jump straight to a beat while writing: `#/preview/lesson/<id>/<beat index>`.
 
 ### The EQcanvas slate
 
@@ -181,22 +201,38 @@ that fit the board, number-line and log-line targets on the line and not already
 4. Add speakers to `content/cast.yaml` (and a portrait in `src/art/Portrait.tsx` if needed).
 5. `requires:` the region(s) that must be finished first (same campaign). Position it on the
    campaign's atlas with `map`.
-6. Set `campaign:` (`kingdom` or `march`, or add one in `content/campaigns.yaml`), `topic:`
+6. Set `campaign:` (an id in `content/campaigns.yaml`, or add a campaign there with its
+   `cooldown` excuse, `critic` and what `requires` it), `topic:`
    (one line of what it teaches — shown on its card) and `added:` (the date it ships; it is
    marked NEW on the adventure board for a while and until visited).
 7. Add a dispatch to `content/news.yaml` so players notice it.
 8. Never insert nodes into an existing region's path (it would re-lock bosses for existing
    players); add a new region instead. See `docs/decisions.md`.
+9. **Ranks.** Add `ranks:` for rank 2 and 3: a twist `story` (a lesson file named
+   `<region>-r2` / `-r3`), a `boss` variant (`name`, `hue?`, `intro`, `taunts` — one per phase
+   *plus one for the extra phase*, `defeat`) and, for rank 2, one extra `nodes` encounter using
+   the region's own skills (tests enforce that). Ranks 4–5 reuse rank 3's path, harder.
+10. **Treasures.** Add three items to `content/items.yaml` with `from: <region>` and
+   `inShop: false` (they then never drop as ordinary loot): a souvenir (food/toy, `rank: 2`), a
+   relic (`kind: relic` + `relic:` effect, usually `campaign:`-scoped, `rank: 3`), and a hat,
+   cape or decor (`flawless: 5`). New capes need a colour in `CAPES` (`src/art/Avatar.tsx`),
+   new hats a `HatArt` case, new decor a spot in `DECOR_SPOTS` (`src/ui/screens/Pet.tsx`).
+11. **Region trophies.** At least two in `content/achievements.yaml` with `cat: region` and
+   `region: <id>` (e.g. `rank:<id>` goal 3, `flawless:<id>` goal 10). Tests check every region
+   has some.
 
 ## Achievements, bounties, items
 
 - Trophies live in `content/achievements.yaml`: `{ id, name, icon, desc, stat, goal, gold,
-item?, title?, secret? }`. `stat` is an event counter (see `GameEvent` in
-  `src/engine/events.ts`), a derived stat (`statValue` in `src/engine/achievements.ts`), or
-  `region:<id>` / `campaign:<id>`. Tests reject unknown stats and trophies a new hero would
-  already have.
+item?, title?, secret?, cat, region? }`. `cat` is the Trophy Room shelf. `stat` is an event
+  counter (see `GAME_EVENTS` in `src/engine/events.ts`), a derived stat (`DERIVED_STATS` /
+  `statValue` in `src/engine/achievements.ts`), or a per-id stat: `region:<id>`,
+  `campaign:<id>`, `rank:<region>`, `win:<region>`, `flawless:<region>`, `boss:<region>`,
+  `hunt:<region>`. Tests reject unknown stats and trophies a new hero would already have.
 - Bounties are code (`QUESTS` in `src/engine/quests.ts`) because their goals and conditions
   are logic.
-- Items: `kind` is `food`, `toy`, `care`, `potion`, `hat`, `cape`, `special` or `decor`
-  (decor goes in the pet den, one of each).
+- Items: `kind` is `food`, `toy`, `care`, `potion`, `hat`, `cape`, `special`, `decor` (goes in
+  the pet den, one of each) or `relic` (worn in a relic slot; `relic:` says what it does —
+  `hearts`, `hints`, `ward`, `gold`, `xp`, `rally`, `pet` — and `campaign:` limits it to one
+  campaign). `from: <region>` marks a region treasure.
   Effects include `ward`, `lens`, `boost` (`xp2`/`lucky` + `minutes`), `bond`.

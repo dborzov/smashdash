@@ -44,17 +44,41 @@
   emulated touch taps only). Watch whether 4–5 taps per one-step equation feels slow at the
   Master tier; if so, consider letting some Master problems skip the slate.
 
+## v3 — three campaigns, ranks, treasures and the Trophy Room
+
+- **Dungeons & Times Tables** (4 regions, 12 skills): arrays, doubling, the nine trick, square
+  numbers, splitting hard facts, fact families, table patterns, ×11/×12 and quick facts, with
+  a 78-fact **Fact Map**.
+- **The Order of Magnitude** (3 regions, 9 skills): the Scale Ladder from atoms to the
+  observable universe, units, estimating, crowd counting, Fermi chains, powers of ten and
+  scientific-notation estimates, with a **Scale Museum** of cards.
+- **The Muddler Strikes Back** (4 regions, 10 skills): negative numbers (balloons and
+  sandbags), like terms (the sorter), $x$ on both sides (balance and slate), bracket
+  equations, matchstick patterns, fruit puzzles, inequalities.
+- 12 mini-games (array, skip jumps, table grid, square grow, chain, Scale Ladder, sampler,
+  balloon, sorter, fruit, inequality line, matchsticks) and two new encounter types (duel,
+  rescue). The EQcanvas handles $x$-terms with coefficients and collects like terms.
+- **Ranks** for every region (Heroic → Legendary → Mythic → Ridiculous), two days apart, with
+  twist stories, boss variants, extra nodes and Mistake Hunts.
+- **Treasures** (3 per region), **relics** (2 slots), **region trophies** (48), the **Trophy
+  Room**, a tabbed Hero page (bag, relics, collections), campaign tabs and "ready to rank up"
+  on the board, rank track on region pages.
+- Pet: expeditions, bond perks in fights, tricks learned on adventures, hats that sit on heads.
+- iPad landscape fights side by side; CSS split per area; encounter screen split up.
+- Save version 3 with a migration; all old progress kept (finished regions = rank I).
+- **To check on a real iPad:** dragging in the sorter and the Scale Ladder with a finger.
+
 ## Next ideas (roughly in priority order)
 
-- **Variables on both sides** region (balance with boxes on both pans).
-- **Negative numbers** mini-arc, then equations with negative solutions.
-- More mini-game patterns: timed "speed run" (optional), "match pairs", "sort into piles".
-- EQcanvas everywhere it fits: Ohm's law ($V = I \times R$ for $R$), variables on both sides
-  (the engine already handles subtracting $x$), and `both-sides` drills.
+- Fractions as numbers on a line; fraction ↔ decimal ↔ percentage; ratio.
+- More rank twists: hand-written rank 4–5 stories for the regions kids replay most.
+- A third Muddler film: quadratics as areas, factorising as un-busting brackets.
+- EQcanvas everywhere it fits: Ohm's law ($V = I \times R$ for $R$) and `both-sides` drills.
 - Pet evolution visuals per stage.
-- The Long Count, part two: multiplying/dividing by multiples of ten, negative numbers,
-  fractions ↔ decimals, long multiplication with estimates as the check.
+- The Long Count, part two: multiplying/dividing by multiples of ten, long multiplication
+  with estimates as the check.
 - Parent view of the Skill Tree report (printable; per-week trends).
 - Optional music per region; PWA/offline install for iPad home screen.
+- Code-split the bundle per campaign (it is ~1.2 MB before gzip).
 - Painted background art layered into scenes.
 - Custom domain on `borzov.ca`.

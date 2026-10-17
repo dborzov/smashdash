@@ -37,8 +37,19 @@ The maths core of Smashdash. Read this before adding or changing skills, lessons
 10. **Show why algebra is worth it.** The Bazaar explicitly contrasts guessing (fine for small
    numbers) with equations (fast for big ones), and Truth-or-Trap shows that you can always
    *check* an answer.
+11. **Games that make the idea visible, not quizzes.** Where an idea has a picture, the problem
+   *is* the picture: build the gem grid, hop the frog, pop balloons and drop sandbags, sort the
+   lost property into piles, put things on the Scale Ladder. Every move gets its own verdict
+   that names the misconception ("an array is rows **times** columns", "taking away sandbags
+   lifts you"). Multiple choice is kept for genuine *which one?* questions.
+12. **Come back later, harder.** A region is played again at higher **ranks**, two days apart
+   (spaced practice), with a raised difficulty floor, new problem types and a twist. Higher
+   ranks mix in the rest of the campaign (interleaving).
+13. **Catch other people's mistakes.** Mistake Hunts let someone else (the Muddler's intern,
+   Bard Barry…) answer first: the player decides whether it's right and fixes it. Spotting an
+   error is a different, deeper skill than producing an answer.
 
-## The skill graph (58 skills, 13 regions, 273 atoms)
+## The skill graph (90 skills, 24 regions, 406 atoms)
 
 The Muddled Kingdom campaign (regions 1–9):
 
@@ -180,6 +191,100 @@ and `decgrid` (tenths and hundredths shaded on a grid).
   amps without blowing the fuse. (Honest physics note: electrons really do flow from − to +
   outside the battery; "conventional current" arrows point the other way — we skip that.)
 
+## The three newer campaigns
+
+### Dungeons & Times Tables (regions 14–17): the table as a map with patterns
+
+The aim is *fluency through understanding*: kids should be able to rebuild any fact they forget
+from one they know, and only then drill for speed.
+
+```
+Tavern of Arrays           Doubling Dungeon         Hall of Squares             Grid of 144 Rooms
+  arrays ── turnaround       doubles                  square-nums                 table-patterns
+     └── skip-count          fives-tens               split-facts                 big-tables
+                             nines                    fact-families               quick-facts
+```
+
+- **Arrays first.** $4 \times 7$ is 4 rows of 7 gems (the `array` game: build it, count it,
+  split it). Turning the grid round shows $4 \times 7 = 7 \times 4$, which halves the table.
+- **Derived facts.** Doubling chains (×2 → ×4 → ×8), ×5 as half of ×10, the nine trick
+  ($9 \times 7 = 70 - 7$), squares as growing L-shaped layers (`squaregrow`: each layer is the
+  next odd number), and splitting a hard fact into easy ones ($7 \times 8 = 7 \times 7 + 7$) on
+  the **chain** game, where each small step gets its own box and its own nudges.
+- **Division as the missing factor** (fact families) and patterns in the grid (`tablegrid`:
+  find every room worth 24, mirror images across the diagonal, the 4s ending 4, 8, 2, 6, 0).
+- **Then speed.** `quick-facts` aims at the weakest facts on the **Fact Map**: every fact
+  $a \times b$ ($a \le b$, 78 of them) has its own record, like an atom, so 7 × 8 can't hide.
+
+### The Order of Magnitude (regions 18–20): how big, roughly
+
+```
+Hero HQ                    Ballpark City             Edge of Everything
+  size-sense                 round-estimate            pow-mul
+  zoom-levels                jar-count                 sci-estimate
+  unit-hop                   fermi                     how-many-fit
+```
+
+- **Size sense before numbers.** The **Scale Ladder** (`sizeline`) asks kids to place real
+  things (a hydrogen atom, a LEGO brick, a giraffe, the Sun) on a powers-of-ten line, one rung
+  per ×10. Close is rewarded; a thousand times off is called out. Each thing placed right
+  becomes a card in the Scale Museum, which makes the zoom from atoms to galaxies a collection.
+- **Estimating is a method, not a guess.** Round first, then calculate (and use it to catch
+  silly answers); count one patch and scale up (`sampler`); Fermi chains break "how many
+  slices of pizza does a school eat in a year?" into easy guesses on the chain game, with a
+  tolerance on each step.
+- **The payoff:** multiplying powers of ten (zooms add), scientific notation estimates, and
+  "how many fit?" (divide the sizes — same units first).
+
+### The Muddler Strikes Back (regions 21–24): the next step in algebra
+
+```
+Subzero Springs            Lost & Found Hall         The Twin Scales             The Riddle Maze
+  neg-numbers                like-terms                boxes-both                  pattern-rule
+  neg-add                    simplify                  both-sides-solve            fruit-puzzles
+  neg-mul                                              bracket-eq                  inequalities
+```
+
+- **Negatives with one picture all the way.** A hot-air balloon: balloons lift (+1), sandbags
+  pull (−1), the height is the number. Adding a negative is adding sandbags; *subtracting* a
+  negative is throwing sandbags overboard — up you go. Zero pairs (a balloon tied to a sandbag)
+  make "not enough to take away" possible. The sign rules for multiplying come from a
+  pattern, not a rule to memorise: $2 \times (-4), 1 \times (-4), 0 \times (-4)$… the only way
+  to carry on is up.
+- **Like terms** with the sorter: drag terms onto piles (boxes, boxes-of-boxes $x^2$, numbers),
+  then total each pile. $x^2$ gets its own pile on purpose. Tidying up after busting brackets
+  includes the classic trap: a minus in front of a bracket takes away the *whole* bag.
+- **$x$ on both sides** starts on the balance with a new tool (take a box off both pans),
+  then moves to the EQcanvas, which now allows moves like "subtract $2x$ from both sides" and
+  tidies like terms. First move: take away the *smaller* $x$-term; $x$ may end up on the right,
+  and the answer may be negative — both are fine.
+- **Puzzles that need algebra.** Matchstick patterns (find the step, the rule $3n + 1$, stage
+  100, then *which stage uses 100 sticks?* — an equation on the slate); fruit puzzles
+  (simultaneous equations in pictures: solve one fruit, substitute, compare two rows); and
+  inequalities on a number line (open/filled dot, shade a side, flip when dividing by a
+  negative).
+
+## Mini-games (`src/ui/games/`, logic in `src/games/index.ts`)
+
+| Game | Used for | What it makes visible |
+| --- | --- | --- |
+| `array` | arrays, turnaround, splitting | multiplication is rows × columns |
+| `skipjump` | skip counting | the n-th hop lands on n × the hop |
+| `tablegrid` | patterns, fact families | where a number lives in the table; mirror symmetry |
+| `squaregrow` | square numbers | each new layer is the next odd number |
+| `chain` | any multi-step mental maths | one step per box, a nudge per step |
+| `sizeline` | size sense | every rung is ×10 |
+| `sampler` | crowd counting | count a patch, multiply by the patches |
+| `balloon` | adding/subtracting negatives | sandbags, balloons and zero pairs |
+| `sorter` | like terms | boxes with boxes, numbers with numbers |
+| `fruit` | simultaneous equations | substitute; compare rows |
+| `ineqline` | inequalities | the dot (open/filled) and the side |
+| `matchsticks` | growing patterns | why the step is 3, not 4 (shared sticks) |
+
+Scoring is the same as any answer: right first time, *nudged* (got there after a nudge), or
+wrong ("Show me"). `validateGame` (tested) checks every game spec can be won and that no nudge
+is the right answer.
+
 ## EQcanvas: show your work, one step at a time
 
 Before, a story problem asked for the final number (keypad) or for one of four equations
@@ -241,11 +346,22 @@ and the check — then does the next one on the same slate.
 and lessons in Ironhold, Gloomfen, Dragonspine and the Bazaar. Master-tier stories may carry
 a **decoy** number the question doesn't need.
 
+**$x$ on both sides** (the Twin Scales): moves can carry an $x$-term with a coefficient
+("subtract $2x$ from both sides"), and tidying collects like terms on each side. The engine's
+own next move (used for hints and demos) takes away the smaller $x$-term first. Tested in
+`tests/eqcanvas.test.ts` ($5x + 3 = 2x + 15$, $2(x + 1) = x + 9$, negative answers).
+
 ## Pacing inside a region
 
 `lesson → lesson → encounter → lesson → encounter → … → boss`. Encounters mix the skills taught
 so far in the region (and sometimes earlier regions) — never untaught skills (enforced by
 `tests/content.test.ts`). The boss has 3 phases that walk up the region's skills.
+
+After the story, the region comes back at higher **ranks** (`src/engine/ranks.ts`, and
+*Ranks* in `game-design.md`): same skills, a difficulty floor (Heroic never below level 2,
+Legendary never below level 3), longer fights, a Mistake Hunt, one new node, and a boss with an
+extra phase that mixes every skill. Two calendar days between ranks: long enough to forget a
+little, which is exactly when practice does the most good.
 
 ## Mastery model (`src/engine/mastery.ts`)
 
@@ -287,11 +403,12 @@ Everything is pure and tested in `tests/adaptive.test.ts`.
 
 ## Ideas for the next topics (keep the same depth)
 
-- Variables on both sides ($3x + 2 = x + 10$), with the balance widget removing boxes.
-- Negative numbers as a prerequisite mini-arc (debt, temperature) before negative solutions.
-- Inequalities as "unbalanced scales".
-- Simple patterns → expressions ("the n-th term"); graphs with negative numbers and slopes.
+- Simultaneous equations beyond pictures (the fruit puzzles are the bridge), and graphs with
+  negative numbers and slopes (Beamhook Bay, part two).
 - Electricity, part two: parallel circuits and power ($P = V \times I$).
-- Laws of exponents ($10^a \times 10^b$), multiplying in scientific notation.
-- The Long Count, part two: multiplying and dividing big numbers by multiples of ten,
-  negative numbers on the frozen thermometer, fractions ↔ decimals.
+- Fractions as numbers on a line, fraction ↔ decimal ↔ percentage, ratio (recipes, maps).
+- The Long Count, part two: multiplying and dividing big numbers by multiples of ten.
+- Times tables, part two: long multiplication as an area model; divisibility tricks.
+- Order of Magnitude, part two: speeds and times (how long to walk to the Moon?), and
+  percentages of big numbers.
+- A third Muddler film: quadratics as areas ($x^2$ tiles), factorising as un-busting brackets.

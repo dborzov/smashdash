@@ -84,3 +84,35 @@ contributor might want to reverse.
 27. **Equation logic uses exact fractions and a small expression tree** (`src/engine/eqcanvas.ts`),
     not floats or a CAS. It only needs linear equations, it must show honest fractions after
     a bad move, and it has to say *why* in kid words — a general algebra library can't.
+28. **Regions are played again at ranks, two calendar days apart.** The owner wanted
+    adventures passed "a second time, a third time and so on", with a two-day cooldown and an
+    in-game reason. Higher ranks are *derived* from a region's existing content (its fights,
+    longer and with a difficulty floor, plus a Mistake Hunt and the boss with an extra phase),
+    with a small amount of hand-written content per rank (twist story, boss variant, one extra
+    node). That keeps 24 regions × 5 ranks maintainable. The cooldown counts calendar days
+    (`dayKey`), not 48 hours, so "come back the day after tomorrow" works however late a kid
+    plays. Spaced practice is the real reason; each campaign's `cooldown` text is the funny one.
+29. **Old progress becomes rank I, with Heroic open at once.** Save v3 marks every region a
+    player had already finished as rank I with no cooldown, so returning players see "Ready
+    to rank up" immediately instead of being told to wait two days for content they earned.
+30. **Mini-games instead of multiple-choice spam.** New topics are taught through games where
+    the picture *is* the problem (gem grids, the balloon, the sorter, the Scale Ladder, fruit
+    puzzles…). Game logic is pure (`src/games/index.ts`) and judges each move, so a wrong move
+    gets a reason, not a buzzer. A game counts like any answer: right, nudged or wrong ("Show
+    me"). The same spec works as a lesson widget and as a fight problem, so a game is written
+    once.
+31. **Treasures can't be bought or looted.** Items with `from: <region>` are only given by that
+    region (rank clears, flawless fights) or brought back by a pet from there. Relics that
+    help in fights are mostly limited to their own campaign, so the reward for mastering a
+    campaign is being stronger *in that campaign* — a reason to go deeper, not a general
+    power creep.
+32. **Region trophies name their region.** With 100+ trophies, a flat list was unusable. The
+    Trophy Room groups them into shelves, and every adventure-specific trophy carries its
+    `region` so it can be grouped and linked ("Go to the Twin Scales →").
+33. **Pet hats are anchored per species.** One shared hat position put hats floating above
+    every pet. Each species now has a hat spot (centre, top, scale, tilt) measured from its
+    art, and the hat is drawn inside the pet's own group, so it follows the mimic's lid and any
+    animation.
+34. **iPad landscape fights are side by side.** On a wide screen the arena (hero, pet, foe)
+    takes a left column and the problem gets the full height on the right, because the stacked
+    layout made kids scroll the maths under the picture. Portrait and phones keep the stack.
